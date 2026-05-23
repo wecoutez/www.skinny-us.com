@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Skinny-us">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <meta name="theme-color" content="#faf4ea">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<title>Skinny-us</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#f0e4d0;font-family:"DM Sans","Noto Sans KR",sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
+:root{
+  --pink:#e8929e;--pink-l:#f2c8d0;--pink-d:#c0687a;
+  --beige:#faf4ea;--sand:#f0e4d0;--border:#e8d5c0;
+  --text:#2e1a14;--mid:#8a6050;--soft:#a08870;
+  --serif:"DM Serif Display",serif;
+  --nav:64px;--tab:72px;
+}
+/* APP SHELL */
+#app{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--beige);max-width:430px;margin:0 auto;box-shadow:0 0 80px rgba(0,0,0,.18);overflow:hidden}
+/* STATUS BAR */
+#sb{background:var(--beige);flex-shrink:0;height:50px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 8px;border-bottom:none}
+.sb-t{font-size:13px;font-weight:600;color:var(--text)}
+.sb-i{font-size:12px;color:var(--text);opacity:.6}
+/* TOP NAV */
+#tnav{height:var(--nav);background:var(--beige);border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;z-index:10}
+.logo{font-family:var(--serif);font-size:24px;color:var(--text);letter-spacing:-.02em}.logo em{color:var(--pink);font-style:normal}
+.nav-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--pink-l),var(--pink));display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;border:2px solid var(--border);position:relative;flex-shrink:0}
+.nav-av::after{content:"";position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#7ec87e;border:2px solid var(--beige)}
+/* SCREENS */
+#screens{flex:1;overflow:hidden;position:relative}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--tab) + 20px);display:none}
+.screen.on{display:block}
+/* TAB BAR */
+#tbar{height:var(--tab);background:rgba(250,244,234,.97);border-top:1.5px solid var(--border);display:flex;align-items:flex-start;padding-top:8px;flex-shrink:0;backdrop-filter:blur(20px)}
+.tb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 0;transition:transform .1s}
+.tb:active{transform:scale(.88)}
+.ti{font-size:22px;line-height:1}
+.tl{font-size:9px;font-weight:500;color:var(--soft);letter-spacing:.02em}
+.tb.on .tl{color:var(--pink-d);font-weight:700}
+.tb.on .ti{filter:none}
+/* JOIN TAB SPECIAL */
+.tb-join{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:0;margin-top:-10px}
+.tb-join-circle{width:46px;height:46px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 16px rgba(232,146,158,.55)}
+.tb-join-lbl{font-size:9px;font-weight:700;color:var(--pink-d);letter-spacing:.02em}
+/* SECTION */
+.sec-hd{display:flex;align-items:baseline;justify-content:space-between;padding:0 20px;margin-bottom:12px}
+.sec-t{font-family:var(--serif);font-size:20px;color:var(--text)}
+.sec-a{font-size:12px;color:var(--pink-d);font-weight:500;cursor:pointer}
+/* HSCROLL */
+.hscr{display:flex;gap:12px;overflow-x:auto;padding:0 20px 4px;margin-bottom:24px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.hscr::-webkit-scrollbar{display:none}
+/* FEED CARD (horizontal) */
+.fc{flex-shrink:0;width:192px;background:white;border-radius:18px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:transform .1s;box-shadow:0 2px 8px rgba(46,26,20,.05)}
+.fc:active{transform:scale(.96)}
+.fci{width:100%;height:140px;object-fit:cover;display:block;background:var(--sand)}
+.fcb{padding:12px 14px 14px}
+.fct{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink-d);margin-bottom:4px}
+.fcn{font-size:13px;font-weight:600;color:var(--text);line-height:1.35}
+.fcs{font-size:11px;color:var(--soft);margin-top:3px}
+/* DIVIDER */
+.div{height:8px;background:var(--sand);flex-shrink:0}
+/* PILL */
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:50px;font-size:10px;font-weight:600}
+.pk{background:rgba(232,146,158,.15);color:var(--pink-d)}
+.bg{background:var(--sand);color:var(--mid)}
+/* TAG */
+.rtag{font-size:9px;padding:2px 8px;border-radius:50px;background:var(--sand);color:var(--mid);font-weight:500;white-space:nowrap}
+
+/* ── HOME ── */
+.home-hero{padding:20px 20px 0}
+.home-greet{font-size:13px;color:var(--soft);margin-bottom:4px}
+.home-title{font-family:var(--serif);font-size:30px;color:var(--text);line-height:1.12;margin-bottom:16px}
+.home-title em{color:var(--pink);font-style:italic}
+/* Profile pill */
+.pp{background:white;border-radius:20px;padding:14px 16px;display:flex;align-items:center;gap:12px;border:1.5px solid var(--border);margin-bottom:16px;cursor:pointer;box-shadow:0 2px 8px rgba(46,26,20,.04)}
+.ppa{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#f7d5de,var(--pink));display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;position:relative}
+.ppa .cat{position:absolute;bottom:-3px;right:-5px;font-size:15px}
+.ppn{font-weight:600;font-size:14px;color:var(--text);margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ppbg{background:var(--pink);color:white;font-size:8px;font-weight:700;padding:2px 7px;border-radius:50px;letter-spacing:.06em}
+.ppb{font-size:11px;color:var(--soft);line-height:1.4}
+/* Sub banner */
+.sub-banner{background:linear-gradient(135deg,var(--pink-l),#eab4c0);border-radius:18px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;margin:0 20px 20px;cursor:pointer;gap:10px}
+.sub-banner-text h4{font-family:var(--serif);font-size:16px;color:var(--text);margin-bottom:3px}
+.sub-banner-text p{font-size:11px;color:rgba(46,26,20,.6)}
+.sub-banner-btn{background:var(--text);color:white;border-radius:50px;padding:8px 16px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0}
+/* Quick stats */
+.qs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 20px;margin-bottom:24px}
+.qsc{background:white;border-radius:16px;padding:14px 10px;text-align:center;border:1px solid var(--border)}
+.qsn{font-family:var(--serif);font-size:22px;color:var(--text)}
+.qsl{font-size:9px;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+/* Today card */
+.tc{margin:0 20px 28px;background:linear-gradient(135deg,var(--pink-l),#eab4c0);border-radius:22px;padding:22px;position:relative;overflow:hidden;cursor:pointer}
+.tc::before{content:"S";position:absolute;top:-20px;right:-10px;font-family:var(--serif);font-size:150px;color:rgba(255,255,255,.12);line-height:1;pointer-events:none}
+.tc-ey{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(46,26,20,.4);margin-bottom:8px}
+.tc-tt{font-family:var(--serif);font-size:18px;color:var(--text);margin-bottom:6px;line-height:1.3}
+.tc-sb{font-size:12px;color:rgba(46,26,20,.6);line-height:1.6;margin-bottom:14px}
+.tc-btn{display:inline-flex;align-items:center;gap:6px;background:var(--text);color:white;border-radius:50px;padding:8px 16px;font-size:11px;font-weight:600;border:none;cursor:pointer}
+
+/* ── FEED / LIFE ── */
+.feed-top{padding:18px 20px 12px;display:flex;align-items:center;justify-content:space-between}
+.feed-pills{display:flex;gap:8px;padding:0 20px 16px;overflow-x:auto;scrollbar-width:none}
+.feed-pills::-webkit-scrollbar{display:none}
+.fpill{flex-shrink:0;padding:7px 16px;border-radius:50px;font-size:12px;font-weight:500;border:1.5px solid var(--border);background:white;color:var(--mid);cursor:pointer;white-space:nowrap}
+.fpill.on{background:var(--pink);color:white;border-color:var(--pink)}
+/* Post */
+.post{background:white;border-radius:20px;margin:0 16px 16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 8px rgba(46,26,20,.04)}
+.post-hd{display:flex;align-items:center;gap:10px;padding:14px 16px 10px}
+.post-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--pink-l),var(--pink));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.post-nm{font-weight:600;font-size:13px;color:var(--text)}
+.post-tm{font-size:11px;color:var(--soft)}
+.post-img{width:100%;height:260px;object-fit:cover;display:block;background:var(--sand)}
+.post-bd{padding:14px 16px 16px}
+.post-cap{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:12px}
+.post-acts{display:flex;gap:16px;align-items:center}
+.act-btn{display:flex;align-items:center;gap:5px;background:none;border:none;cursor:pointer;font-size:12px;color:var(--soft);font-family:"DM Sans",sans-serif}
+.act-btn.lk{color:var(--pink-d)}
+.act-save{margin-left:auto;width:32px;height:32px;border-radius:50%;background:var(--sand);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
+.quote-card{background:var(--sand);padding:28px 22px;text-align:center}
+.quote-card .q{font-family:var(--serif);font-size:18px;color:var(--text);line-height:1.5}
+
+/* ── PICKS ── */
+.srch{margin:16px;display:flex;align-items:center;gap:10px;background:white;border-radius:50px;padding:11px 18px;border:1.5px solid var(--border)}
+.srch input{flex:1;border:none;outline:none;font-family:"DM Sans",sans-serif;font-size:14px;color:var(--text);background:transparent}
+.srch input::placeholder{color:var(--soft)}
+.city-row{display:flex;gap:8px;padding:0 16px 14px;overflow-x:auto;scrollbar-width:none}
+.city-row::-webkit-scrollbar{display:none}
+.cch{flex-shrink:0;padding:7px 14px;border-radius:50px;font-size:12px;font-weight:500;border:1.5px solid var(--border);background:white;color:var(--mid);cursor:pointer;white-space:nowrap}
+.cch.on{background:var(--text);color:white;border-color:var(--text)}
+.rest-list{padding:0 16px;display:flex;flex-direction:column;gap:12px}
+/* Restaurant item */
+.ri{background:white;border-radius:18px;overflow:hidden;border:1px solid var(--border);display:flex;cursor:pointer;transition:transform .1s;box-shadow:0 2px 8px rgba(46,26,20,.04)}
+.ri:active{transform:scale(.98)}
+.riimg{width:100px;height:100px;object-fit:cover;display:block;flex-shrink:0;background:var(--sand)}
+.ribd{padding:12px 14px;flex:1;min-width:0}
+.rict{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink-d);margin-bottom:3px}
+.rinm{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ritp{font-size:11px;color:var(--soft);margin-bottom:6px}
+.rits{display:flex;gap:4px;flex-wrap:wrap}
+.sgpk{font-size:9px;font-weight:700;color:var(--pink-d);margin-top:5px;display:flex;align-items:center;gap:3px}
+
+/* ── PROGRAMS ── */
+.prog-hd{padding:20px 20px 16px}
+.prog-list{padding:0 16px;display:flex;flex-direction:column;gap:12px}
+.pc{background:white;border-radius:18px;padding:18px;border:1px solid var(--border);cursor:pointer;transition:transform .1s;box-shadow:0 2px 8px rgba(46,26,20,.04)}
+.pc:active{transform:scale(.98)}
+.pc-hd{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.pc-ic{font-size:30px}
+.pc-nm{font-size:15px;font-weight:600;color:var(--text)}
+.pc-mt{font-size:11px;color:var(--soft);margin-top:2px}
+.pc-ds{font-size:12px;color:var(--mid);line-height:1.6;margin-bottom:10px}
+.pbw{height:4px;background:var(--sand);border-radius:50px;overflow:hidden}
+.pb{height:100%;border-radius:50px;background:var(--pink)}
+.unlock-card{background:var(--pink);border-radius:18px;padding:22px;text-align:center;margin:14px 0 0;cursor:pointer}
+.unlock-card h4{font-family:var(--serif);font-size:19px;color:white;margin-bottom:6px}
+.unlock-card p{font-size:12px;color:rgba(255,255,255,.75);margin-bottom:16px}
+.unlock-card-btn{background:white;color:var(--pink-d);border-radius:50px;padding:10px 24px;font-size:13px;font-weight:600;display:inline-block}
+
+/* ── BEAUTY ── */
+.beauty-hd{background:linear-gradient(150deg,var(--pink-l),#eab4c0);padding:24px 20px 20px;position:relative;overflow:hidden}
+.beauty-hd::after{content:"✨";position:absolute;right:18px;top:14px;font-size:52px;opacity:.2;pointer-events:none}
+.bhe{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(46,26,20,.4);margin-bottom:8px}
+.bht{font-family:var(--serif);font-size:26px;color:var(--text);margin-bottom:6px}
+.bhs{font-size:13px;color:rgba(46,26,20,.6);line-height:1.6}
+.b-cats{display:flex;gap:10px;padding:14px 16px 8px;overflow-x:auto;scrollbar-width:none}
+.b-cats::-webkit-scrollbar{display:none}
+.bcat{flex-shrink:0;text-align:center;cursor:pointer;padding:11px 16px;border-radius:16px;border:1.5px solid var(--border);background:white;transition:all .12s}
+.bcat.on{background:var(--pink);border-color:var(--pink)}
+.bcat.on .bcl{color:white}
+.bci{font-size:22px;display:block;margin-bottom:4px}
+.bcl{font-size:10px;font-weight:500;color:var(--mid)}
+.b-list{padding:8px 16px;display:flex;flex-direction:column;gap:12px}
+.bi{background:white;border-radius:18px;padding:16px;border:1px solid var(--border);display:flex;gap:12px;cursor:pointer;transition:transform .1s}
+.bi:active{transform:scale(.98)}
+.bi-ic{font-size:26px;flex-shrink:0;width:48px;height:48px;background:var(--sand);border-radius:14px;display:flex;align-items:center;justify-content:center}
+.bi-nm{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
+.bi-sb{font-size:11px;color:var(--soft);margin-bottom:6px}
+.bi-tags{display:flex;gap:4px;flex-wrap:wrap}
+
+/* ── PROFILE ── */
+.pro-hd{background:var(--text);padding:32px 20px 26px;text-align:center;position:relative;overflow:hidden}
+.pro-dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(232,146,158,.28) 1.8px,transparent 1.8px);background-size:24px 24px;transform:rotate(45deg) scale(1.6)}
+.pro-aw{position:relative;display:inline-block;margin-bottom:14px;z-index:1}
+.pro-av{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--pink-l),var(--pink));display:flex;align-items:center;justify-content:center;font-size:44px;border:3px solid rgba(255,255,255,.12);box-shadow:0 8px 32px rgba(232,146,158,.4)}
+.pro-cat{position:absolute;top:-6px;right:-8px;font-size:22px;z-index:2}
+.pro-online{position:absolute;bottom:4px;right:4px;width:18px;height:18px;border-radius:50%;background:#7ec87e;border:2.5px solid var(--text);z-index:2}
+.pro-nm{font-family:var(--serif);font-size:26px;color:white;margin-bottom:10px;z-index:1;position:relative}
+.pro-bio{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;max-width:280px;margin:0 auto 16px;z-index:1;position:relative}
+.pro-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;z-index:1;position:relative}
+.pro-tag{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);border-radius:50px;font-size:10px;padding:4px 12px}
+.pro-stats{display:grid;grid-template-columns:repeat(4,1fr);background:white;border-bottom:1px solid var(--border)}
+.prs{padding:16px 8px;text-align:center;border-right:1px solid var(--border)}
+.prs:last-child{border-right:none}
+.prsn{font-family:var(--serif);font-size:18px;color:var(--text)}
+.prsl{font-size:9px;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+.pro-facts{padding:20px 16px}
+.pro-ft{font-family:var(--serif);font-size:18px;color:var(--text);margin-bottom:14px;padding-left:4px}
+.pro-fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pfc{background:white;border-radius:16px;padding:14px 16px;border:1px solid var(--border)}
+.pfi{font-size:20px;margin-bottom:6px}
+.pfl{font-size:10px;font-weight:600;color:var(--text);margin-bottom:2px}
+.pfv{font-size:11px;color:var(--soft);line-height:1.4}
+.plan-list{padding:4px 16px 20px}
+.planc{border-radius:18px;overflow:hidden;margin-bottom:10px;border:1.5px solid var(--border);cursor:pointer;transition:transform .1s}
+.planc:active{transform:scale(.98)}
+.planc.ft{border-color:var(--pink)}
+.plan-hd{padding:16px 18px;display:flex;align-items:center;justify-content:space-between}
+.plan-nm{font-size:15px;font-weight:600;color:var(--text)}
+.plan-pr{font-family:var(--serif);font-size:20px;color:var(--pink-d)}
+.plan-pr span{font-size:12px;color:var(--soft);font-family:"DM Sans",sans-serif;font-weight:400}
+.plan-fs{padding:0 18px 16px;display:flex;flex-direction:column;gap:6px}
+.plan-f{font-size:12px;color:var(--mid);display:flex;align-items:center;gap:7px}
+.plan-f::before{content:"checkmark";font-size:11px;color:var(--pink);font-weight:700}
+
+/* ── SUBSCRIBE SCREEN ── */
+.sub-hd{background:linear-gradient(150deg,var(--pink-l),#eab4c0);padding:28px 20px 24px;position:relative;overflow:hidden;text-align:center}
+.sub-hd::before{content:"S";position:absolute;top:-20px;right:-10px;font-family:var(--serif);font-size:180px;color:rgba(255,255,255,.12);line-height:1;pointer-events:none}
+.plan-tabs{display:flex;background:var(--sand);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.plan-tabs::-webkit-scrollbar{display:none}
+.ptab{flex-shrink:0;padding:13px 14px;background:none;border:none;border-bottom:2.5px solid transparent;font-family:"DM Sans",sans-serif;font-size:12px;font-weight:500;color:var(--soft);cursor:pointer;white-space:nowrap}
+.ptab.on{border-bottom-color:var(--pink);color:var(--pink-d);font-weight:600;background:var(--beige)}
+.plan-feat{margin:16px 16px 0;background:white;border-radius:18px;padding:20px;border:1.5px solid var(--border)}
+.plan-feat.ft{border-color:var(--pink)}
+.pf-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.pf-nm{font-family:var(--serif);font-size:18px;color:var(--text)}
+.pf-pr{font-family:var(--serif);font-size:22px;color:var(--pink-d)}
+.pf-pr span{font-size:12px;color:var(--soft);font-family:"DM Sans",sans-serif;font-weight:400}
+.pf-feats{display:flex;flex-direction:column;gap:8px}
+.pf-f{font-size:12px;color:var(--mid);display:flex;align-items:flex-start;gap:8px;line-height:1.45}
+.pf-f::before{content:"checkmark";color:var(--pink);font-weight:700;font-size:13px;flex-shrink:0;margin-top:1px}
+.bill-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 16px 0}
+.bill-opt{display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:12px;border:1.5px solid var(--border);cursor:pointer;background:var(--beige)}
+.bill-opt.on{border-color:var(--pink);background:rgba(242,200,208,.2)}
+.bill-nm{font-size:13px;font-weight:600;color:var(--text)}
+.bill-sb{font-size:10px;color:var(--soft);margin-top:1px}
+.form-sec{margin:14px 16px 0;background:white;border-radius:18px;padding:18px;border:1px solid var(--border)}
+.form-ttl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px}
+.fstep{width:22px;height:22px;border-radius:50%;background:var(--pink-l);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-d);flex-shrink:0}
+.fi{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);font-family:"DM Sans",sans-serif;font-size:14px;color:var(--text);background:var(--beige);outline:none;transition:border-color .15s;margin-bottom:10px}
+.fi:last-child{margin-bottom:0}
+.fi:focus{border-color:var(--pink)}
+.fi::placeholder{color:var(--soft)}
+.fi-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card-logos{display:flex;gap:6px;margin-bottom:14px}
+.clogo{padding:5px 12px;border:1px solid var(--border);border-radius:6px;font-size:10px;font-weight:700;color:var(--text);background:var(--beige)}
+.secure-note{display:flex;align-items:center;gap:6px;margin-top:12px;padding:10px 12px;background:var(--sand);border-radius:8px}
+.order-sum{margin:14px 16px 0;background:white;border-radius:18px;overflow:hidden;border:1px solid var(--border)}
+.os-hd{background:linear-gradient(135deg,var(--pink-l),#eab4c0);padding:18px}
+.os-lbl{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(46,26,20,.45);margin-bottom:5px}
+.os-pnm{font-family:var(--serif);font-size:17px;color:var(--text)}
+.os-prc{font-family:var(--serif);font-size:28px;color:var(--pink-d)}
+.os-body{padding:18px}
+.os-row{display:flex;justify-content:space-between;font-size:13px;color:var(--mid);margin-bottom:8px}
+.os-total{font-size:14px;font-weight:700;color:var(--text);padding-top:12px;border-top:1px solid var(--border);margin-top:4px;margin-bottom:0}
+.trust-list{padding:14px 18px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:7px}
+.trust-item{font-size:11px;color:var(--soft);display:flex;align-items:center;gap:6px}
+.sub-cta{margin:16px}
+.sub-btn{width:100%;padding:16px;background:var(--pink);color:white;border:none;border-radius:14px;font-family:"DM Sans",sans-serif;font-size:15px;font-weight:600;cursor:pointer}
+.sub-note{text-align:center;font-size:11px;color:var(--soft);margin-top:8px}
+.sub-testi{margin:14px 16px 0;background:white;border-radius:16px;padding:18px;border:1px solid var(--border)}
+.sub-testi q{font-size:13px;color:var(--text);line-height:1.7;font-style:italic;display:block;margin-bottom:8px}
+.sub-testi cite{font-size:11px;color:var(--soft);font-style:normal}
+
+/* ── MODALS ── */
+.modal{position:fixed;inset:0;z-index:200;display:none}
+.modal.open{display:block}
+.modal-bg{position:absolute;inset:0;background:rgba(46,26,20,.5);backdrop-filter:blur(4px)}
+.sheet{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--beige);border-radius:24px 24px 0 0;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.modal-body{padding:20px}
+
+/* ── FAB ── */
+#fab{position:fixed;bottom:calc(var(--tab) + 16px);right:18px;background:var(--pink);color:white;border:none;border-radius:50px;padding:12px 18px;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 20px rgba(232,146,158,.55);display:flex;align-items:center;gap:6px;z-index:50;transition:transform .12s}
+#fab:active{transform:scale(.94)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:calc(var(--tab) + 14px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:white;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:500;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:300}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* desktop preview */
+@media(min-width:431px){
+  #app{border-radius:44px;top:20px;bottom:20px;height:auto;box-shadow:0 24px 80px rgba(0,0,0,.28),0 0 0 12px #e8d5c0}
+}
+@media(max-width:380px){html{font-size:14px}}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- STATUS BAR -->
+  <div id="sb">
+    <span class="sb-t" id="sbt">9:41</span>
+    <span class="sb-i">●●● WiFi 🔋</span>
+  </div>
+
+  <!-- TOP NAV -->
+  <div id="tnav">
+    <div class="logo">skinny<em>-us</em></div>
+    <div class="nav-av" onclick="goTab('profile')">🧘‍♀️</div>
+  </div>
+
+  <!-- SCREENS -->
+  <div id="screens">
+
+    <!-- ══ HOME ══ -->
+    <div class="screen on" id="s-home">
+      
+      <!-- QUOTE OF THE DAY -->
+      <div id="qotd" style="background:var(--beige);padding:28px 24px 20px;border-bottom:1px solid var(--border)">
+        <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin-bottom:14px;display:flex;align-items:center;gap:8px">
+          <div style="width:16px;height:0.5px;background:var(--soft)"></div>
+          today's thought
+        </div>
+        <div id="qotd-text" style="font-family:var(--serif);font-size:22px;color:var(--text);line-height:1.45;font-style:italic;margin-bottom:12px"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div id="qotd-author" style="font-size:11px;color:var(--soft)"></div>
+          <button onclick="nextQuote()" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--soft);padding:4px;transition:transform .15s" onmousedown="this.style.transform='scale(.85)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(.85)'" ontouchend="this.style.transform='scale(1)'">↻</button>
+        </div>
+      </div>
+
+<div class="home-hero">
+        <div class="home-greet" id="hg">Good morning ✨</div>
+        <h1 class="home-title">Less but better.<br><em>Every day.</em></h1>
+        <div class="pp" onclick="goTab('profile')">
+          <div class="ppa">🧘‍♀️<span class="cat">🐱</span></div>
+          <div style="flex:1">
+            <div class="ppn">Skinny-girl <span class="ppbg">LIFESTYLE</span></div>
+            <div class="ppb">📍 Seoul · 🌴 California roots · 🐱 Cat mom · ✨ 30s</div>
+          </div>
+          <span style="color:var(--soft);font-size:20px">›</span>
+        </div>
+      </div>
+
+      <!-- Subscribe banner -->
+      <div class="sub-banner" onclick="openSub('chillin')">
+        <div class="sub-banner-text">
+          <h4>Get full access · $11/mo</h4>
+          <p>Programs · Life · Beauty · Monthly Insight</p>
+        </div>
+        <div class="sub-banner-btn">Join →</div>
+      </div>
+
+      <!-- Stats -->
+      <div class="qs">
+        <div class="qsc"><div class="qsn">2.4K+</div><div class="qsl">Picks</div></div>
+        <div class="qsc"><div class="qsn">38</div><div class="qsl">Cities</div></div>
+        <div class="qsc"><div class="qsn">20</div><div class="qsl">Programs</div></div>
+      </div>
+
+      <!-- Today card -->
+      <div class="tc" onclick="goTab('feed')">
+        <div class="tc-ey">Today from Skinny-girl</div>
+        <div class="tc-tt">"California taught me to eat clean. Seoul taught me discipline. My cat taught me to nap well."</div>
+        <div class="tc-sb">This week's log is up — what I ate, tried, and what my cat knocked off the counter.</div>
+        <button class="tc-btn">Read her week →</button>
+      </div>
+
+      <!-- Picks scroll -->
+      <div class="sec-hd"><div class="sec-t">Skinny-girl's Picks</div><div class="sec-a" onclick="goTab('picks')">See all</div></div>
+      <div class="hscr">
+        <div class="fc" onclick="goTab('picks')">
+          <div class="fci" style="background:linear-gradient(135deg,#c8a882,#8a6040);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0"><img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?w=400&h=280&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2.5em;position:relative;z-index:1">🏯</span></div>
+          <div class="fcb"><div class="fct">Seoul</div><div class="fcn">Osegye Hyang</div><div class="fcs">Vegan · Temple food</div></div>
+        </div>
+        <div class="fc" onclick="goTab('picks')">
+          <div class="fci" style="background:linear-gradient(135deg,#7aaa7a,#4a7a4a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=280&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2.5em;position:relative;z-index:1">🥗</span></div>
+          <div class="fcb"><div class="fct">Seoul</div><div class="fcn">Plant</div><div class="fcs">Plant-based café</div></div>
+        </div>
+        <div class="fc" onclick="goTab('picks')">
+          <div class="fci" style="background:linear-gradient(135deg,#e8a870,#c07840);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0"><img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400&h=280&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2.5em;position:relative;z-index:1">🙏</span></div>
+          <div class="fcb"><div class="fct">Los Angeles</div><div class="fcn">Gratitude Kitchen</div><div class="fcs">Plant-based</div></div>
+        </div>
+        <div class="fc" onclick="goTab('picks')">
+          <div class="fci" style="background:linear-gradient(135deg,#e8929e,#c0687a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&h=280&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2.5em;position:relative;z-index:1">🥕</span></div>
+          <div class="fcb"><div class="fct">New York</div><div class="fcn">Dirt Candy</div><div class="fcs">Vegetable fine dining</div></div>
+        </div>
+        <div class="fc" onclick="goTab('picks')">
+          <div class="fci" style="background:linear-gradient(135deg,#c8a8d0,#8a6aaa);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0"><img src="https://images.unsplash.com/photo-1617196034183-421b4040ed20?w=400&h=280&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2.5em;position:relative;z-index:1">🍱</span></div>
+          <div class="fcb"><div class="fct">Tokyo</div><div class="fcn">Ain Soph Journey</div><div class="fcs">Vegan Japanese</div></div>
+        </div>
+        <div class="fc" onclick="goTab('picks')">
+          <div class="fci" style="background:linear-gradient(135deg,#e8c870,#b09040);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=280&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2.5em;position:relative;z-index:1">🍽️</span></div>
+          <div class="fcb"><div class="fct">Milan</div><div class="fcn">Joia</div><div class="fcs">Vegetarian fine dining</div></div>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <!-- Monthly insight -->
+      <div class="sec-hd" style="margin-top:16px"><div class="sec-t">Monthly Insight</div><div class="sec-a" onclick="goTab('feed')">June 2026</div></div>
+      <div class="hscr">
+        <div class="fc" onclick="goTab('feed')">
+          <div style="height:140px;background:linear-gradient(135deg,#7b2d8b,#b060d0);display:flex;align-items:center;justify-content:center;font-size:52px">🔮</div>
+          <div class="fcb"><div class="fct">Ingredient</div><div class="fcn">Ube is the new Matcha</div><div class="fcs">+3,600% Google Trends</div></div>
+        </div>
+        <div class="fc" onclick="goTab('feed')">
+          <div style="height:140px;background:linear-gradient(135deg,#8aab8a,#5d8a5d);display:flex;align-items:center;justify-content:center;font-size:52px">🧈</div>
+          <div class="fcb"><div class="fct">Dessert</div><div class="fcn">Butter Tteok craze</div><div class="fcs">China → Seoul via SNS</div></div>
+        </div>
+        <div class="fc" onclick="goTab('feed')">
+          <div style="height:140px;background:linear-gradient(135deg,#f7c948,#e8a820);display:flex;align-items:center;justify-content:center;font-size:52px">🌻</div>
+          <div class="fcb"><div class="fct">June Event</div><div class="fcn">Yellow Day · June 20</div><div class="fcs">Happiest day of the year</div></div>
+        </div>
+        <div class="fc" onclick="goTab('feed')">
+          <div style="height:140px;background:linear-gradient(135deg,#c0687a,#e8929e);display:flex;align-items:center;justify-content:center;font-size:52px">⚽</div>
+          <div class="fcb"><div class="fct">Special</div><div class="fcn">FIFA World Cup 2026</div><div class="fcs">Opens June 12</div></div>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <!-- Programs teaser -->
+      <div class="sec-hd" style="margin-top:16px"><div class="sec-t">Body &amp; Food</div><div class="sec-a" onclick="goTab('programs')">20 programs</div></div>
+      <div class="hscr">
+        <div class="fc" onclick="goTab('programs')">
+          <div style="height:140px;background:linear-gradient(135deg,#8aab8a,#5d8a5d);display:flex;align-items:center;justify-content:center;font-size:52px">🫒</div>
+          <div class="fcb"><div class="fct">Program</div><div class="fcn">Mediterranean Diet</div><div class="fcs">4 weeks · SG pick</div></div>
+        </div>
+        <div class="fc" onclick="goTab('programs')">
+          <div style="height:140px;background:linear-gradient(135deg,#f7c948,#e8a820);display:flex;align-items:center;justify-content:center;font-size:52px">⏱️</div>
+          <div class="fcb"><div class="fct">Program</div><div class="fcn">Intermittent 16:8</div><div class="fcs">4 weeks · Beginner</div></div>
+        </div>
+        <div class="fc" onclick="goTab('programs')">
+          <div style="height:140px;background:linear-gradient(135deg,#e8929e,#c0687a);display:flex;align-items:center;justify-content:center;font-size:52px">🌱</div>
+          <div class="fcb"><div class="fct">Program</div><div class="fcn">Plant-Based Reset</div><div class="fcs">4 weeks · All levels</div></div>
+        </div>
+      </div>
+      <div style="height:8px"></div>
+    </div>
+
+    <!-- ══ FEED / LIFE ══ -->
+    <div class="screen" id="s-feed">
+      <div class="feed-top">
+        <div style="font-family:var(--serif);font-size:22px;color:var(--text)">Skinny-girl's Life</div>
+        <div style="font-size:11px;color:var(--soft)">Week of June 2</div>
+      </div>
+      <div class="feed-pills">
+        <div class="fpill on" onclick="filterFeed(this,'all')">All</div>
+        <div class="fpill" onclick="filterFeed(this,'food')">🥗 Food</div>
+        <div class="fpill" onclick="filterFeed(this,'beauty')">✨ Beauty</div>
+        <div class="fpill" onclick="filterFeed(this,'life')">🐱 Life</div>
+        <div class="fpill" onclick="filterFeed(this,'ca')">🌴 Diaries</div>
+      </div>
+
+      <div class="post" data-t="food">
+        <div class="post-hd">
+          <div class="post-av">🧘‍♀️</div>
+          <div><div class="post-nm">Skinny-girl</div><div class="post-tm">Today · 8:32 AM</div></div>
+          <span class="pill pk" style="margin-left:auto">🥗 Food</span>
+        </div>
+        <div class="post-img" style="background:linear-gradient(135deg,#7aaa7a,#4a7a4a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=400&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:3.5em;position:relative;z-index:1">🥗</span></div>
+        <div class="post-bd">
+          <div class="post-cap">Started my week with this bowl from Sallim in Insadong. The fermented black bean sauce is doing things I cannot explain. My cat tried to eat it. I do not blame her. 🐱</div>
+          <div class="post-acts">
+            <button class="act-btn" onclick="likePost(this)">♡ 248</button>
+            <button class="act-btn" onclick="toast('Comments coming soon 💬')">💬 34</button>
+            <button class="act-save" onclick="toast('Saved! 🌸')">🔖</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="post" data-t="beauty">
+        <div class="post-hd">
+          <div class="post-av">🧘‍♀️</div>
+          <div><div class="post-nm">Skinny-girl</div><div class="post-tm">Yesterday · 9:15 PM</div></div>
+          <span class="pill" style="background:rgba(248,215,218,.4);color:#c0687a;margin-left:auto">✨ Beauty</span>
+        </div>
+        <div class="post-img" style="background:linear-gradient(135deg,#f2c8d0,#c0687a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&h=400&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:3.5em;position:relative;z-index:1">✨</span></div>
+        <div class="post-bd">
+          <div class="post-cap">My Thursday night routine. Gangnam skin clinic + this niacinamide serum from Olive Young. I have never been this consistent with skincare. Moving here changed things. 🇰🇷</div>
+          <div class="post-acts">
+            <button class="act-btn" onclick="likePost(this)">♡ 412</button>
+            <button class="act-btn" onclick="toast('Comments coming soon 💬')">💬 58</button>
+            <button class="act-save" onclick="toast('Saved! 🌸')">🔖</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="post" data-t="life">
+        <div class="post-hd">
+          <div class="post-av">🧘‍♀️</div>
+          <div><div class="post-nm">Skinny-girl</div><div class="post-tm">2 days ago</div></div>
+          <span class="pill bg" style="margin-left:auto">🐱 Life</span>
+        </div>
+        <div class="quote-card">
+          <div style="font-size:64px;margin-bottom:12px">🐱</div>
+          <div class="q">"She watched me eat my salad for 20 minutes then walked away unimpressed."</div>
+        </div>
+        <div class="post-bd">
+          <div class="post-cap">This cat has opinions about everything. I respect it. Still have not named her — current frontrunner is Matcha. DM me your suggestions. 🍵</div>
+          <div class="post-acts">
+            <button class="act-btn" onclick="likePost(this)">♡ 891</button>
+            <button class="act-btn" onclick="toast('Comments coming soon 💬')">💬 127</button>
+            <button class="act-save" onclick="toast('Saved! 🌸')">🔖</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="post" data-t="ca">
+        <div class="post-hd">
+          <div class="post-av">🧘‍♀️</div>
+          <div><div class="post-nm">Skinny-girl</div><div class="post-tm">3 days ago</div></div>
+          <span class="pill" style="background:rgba(247,201,72,.2);color:#b08010;margin-left:auto">🌴 Diaries</span>
+        </div>
+        <div class="post-img" style="background:linear-gradient(135deg,#e8c870,#a08040);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=600&h=400&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:3.5em;position:relative;z-index:1">🌴</span></div>
+        <div class="post-bd">
+          <div class="post-cap">Diaries #7: The farmers market where I learned that eating seasonally was not a trend — it was just Tuesday. I miss the avocados. 🥑</div>
+          <div class="post-acts">
+            <button class="act-btn" onclick="likePost(this)">♡ 634</button>
+            <button class="act-btn" onclick="toast('Comments coming soon 💬')">💬 82</button>
+            <button class="act-save" onclick="toast('Saved! 🌸')">🔖</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="post" data-t="food">
+        <div class="post-hd">
+          <div class="post-av">🧘‍♀️</div>
+          <div><div class="post-nm">Skinny-girl</div><div class="post-tm">4 days ago</div></div>
+          <span class="pill pk" style="margin-left:auto">🥗 Food</span>
+        </div>
+        <div class="post-img" style="background:linear-gradient(135deg,#e8929e,#c0687a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&h=400&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:3.5em;position:relative;z-index:1">🥕</span></div>
+        <div class="post-bd">
+          <div class="post-cap">Dirt Candy in New York changed how I think about vegetables. The carrot tartare is not a joke. It is a revelation. 🥕</div>
+          <div class="post-acts">
+            <button class="act-btn" onclick="likePost(this)">♡ 319</button>
+            <button class="act-btn" onclick="toast('Comments coming soon 💬')">💬 45</button>
+            <button class="act-save" onclick="toast('Saved! 🌸')">🔖</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PICKS ══ -->
+    <div class="screen" id="s-picks">
+      <div class="srch">
+        <span style="color:var(--soft);font-size:16px">🔍</span>
+        <input type="text" placeholder="Search picks, cities…" oninput="filterPicks(this.value)">
+      </div>
+      <div class="city-row">
+        <div class="cch on" onclick="filterCity(this,'all')">🌍 All</div>
+        <div class="cch" onclick="filterCity(this,'Seoul')">🇰🇷 Seoul</div>
+        <div class="cch" onclick="filterCity(this,'Los Angeles')">🌴 LA</div>
+        <div class="cch" onclick="filterCity(this,'New York')">🗽 NY</div>
+        <div class="cch" onclick="filterCity(this,'Tokyo')">🌿 Tokyo</div>
+        <div class="cch" onclick="filterCity(this,'Paris')">🗼 Paris</div>
+        <div class="cch" onclick="filterCity(this,'Milan')">👗 Milan</div>
+        <div class="cch" onclick="filterCity(this,'Chicago')">🌉 Chicago</div>
+        <div class="cch" onclick="filterCity(this,'Boston')">🦞 Boston</div>
+      </div>
+      <div class="rest-list" id="rlist">
+        <div class="ri" data-city="Seoul" onclick="openRest('s1')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#c8a882,#8a6040);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🏯</span></div><div class="ribd"><div class="rict">Seoul</div><div class="rinm">Osegye Hyang</div><div class="ritp">Vegan · Temple food</div><div class="rits"><span class="rtag">Vegan</span><span class="rtag">Temple food</span><span class="rtag">Insadong</span></div><div class="sgpk">🧘‍♀️ SG pick</div></div></div>
+        <div class="ri" data-city="Seoul" onclick="openRest('s2')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#7aaa7a,#4a7a4a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🥗</span></div><div class="ribd"><div class="rict">Seoul</div><div class="rinm">Plant</div><div class="ritp">Plant-based café</div><div class="rits"><span class="rtag">Plant-based</span><span class="rtag">Café</span></div><div class="sgpk">🧘‍♀️ SG pick</div></div></div>
+        <div class="ri" data-city="Seoul" onclick="openRest('s3')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#6aaa8a,#3a7a5a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🌿</span></div><div class="ribd"><div class="rict">Seoul</div><div class="rinm">Sallim</div><div class="ritp">Korean organic</div><div class="rits"><span class="rtag">Organic</span><span class="rtag">Korean</span><span class="rtag">Fermented</span></div><div class="sgpk">🧘‍♀️ SG pick</div></div></div>
+        <div class="ri" data-city="Los Angeles" onclick="openRest('l1')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#e8a870,#c07840);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🙏</span></div><div class="ribd"><div class="rict">Los Angeles</div><div class="rinm">Gratitude Kitchen</div><div class="ritp">Plant-based</div><div class="rits"><span class="rtag">Vegan</span><span class="rtag">LA classic</span></div><div class="sgpk">🧘‍♀️ SG pick</div></div></div>
+        <div class="ri" data-city="Los Angeles" onclick="openRest('l2')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#a8c870,#7aaa40);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🛒</span></div><div class="ribd"><div class="rict">Los Angeles</div><div class="rinm">Erewhon Market Café</div><div class="ritp">Wellness market</div><div class="rits"><span class="rtag">Organic</span><span class="rtag">Wellness</span></div></div></div>
+        <div class="ri" data-city="New York" onclick="openRest('n1')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#e8929e,#c0687a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🥕</span></div><div class="ribd"><div class="rict">New York</div><div class="rinm">Dirt Candy</div><div class="ritp">Vegetable fine dining</div><div class="rits"><span class="rtag">Fine dining</span><span class="rtag">NYC</span></div><div class="sgpk">🧘‍♀️ SG pick</div></div></div>
+        <div class="ri" data-city="Tokyo" onclick="openRest('t1')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#c8a8d0,#8a6aaa);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1617196034183-421b4040ed20?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🍱</span></div><div class="ribd"><div class="rict">Tokyo</div><div class="rinm">Ain Soph Journey</div><div class="ritp">Vegan Japanese fusion</div><div class="rits"><span class="rtag">Vegan</span><span class="rtag">Japanese</span></div><div class="sgpk">🧘‍♀️ SG pick</div></div></div>
+        <div class="ri" data-city="Paris" onclick="openRest('p1')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#a8c8e8,#6a9ab8);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🧃</span></div><div class="ribd"><div class="rict">Paris</div><div class="rinm">Wild &amp; The Moon</div><div class="ritp">Raw food &amp; juice</div><div class="rits"><span class="rtag">Raw</span><span class="rtag">Juice</span></div></div></div>
+        <div class="ri" data-city="Milan" onclick="openRest('m1')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#e8c870,#b09040);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🍽️</span></div><div class="ribd"><div class="rict">Milan</div><div class="rinm">Joia</div><div class="ritp">Vegetarian fine dining</div><div class="rits"><span class="rtag">Fine dining</span><span class="rtag">Michelin</span></div><div class="sgpk">🧘‍♀️ SG pick</div></div></div>
+        <div class="ri" data-city="Chicago" onclick="openRest('c1')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#c87870,#904848);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🌮</span></div><div class="ribd"><div class="rict">Chicago</div><div class="rinm">Chicago Diner</div><div class="ritp">Vegan comfort food</div><div class="rits"><span class="rtag">Vegan</span><span class="rtag">Comfort</span></div></div></div>
+        <div class="ri" data-city="Boston" onclick="openRest('b1')"><div style="width:100px;height:100px;flex-shrink:0;background:linear-gradient(135deg,#b0c8e8,#7090b8);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=200&fit=crop&crop=center&auto=format" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s" onload="this.style.opacity=1" onerror="this.style.display='none'"><span style="font-size:2em;position:relative;z-index:1">🥂</span></div><div class="ribd"><div class="rict">Boston</div><div class="rinm">True Bistro</div><div class="ritp">Vegan French bistro</div><div class="rits"><span class="rtag">Vegan</span><span class="rtag">French</span></div><div class="sgpk">🧘‍♀️ SG pick</div></div></div>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+
+    <!-- ══ PROGRAMS ══ -->
+    <div class="screen" id="s-programs">
+      <div class="prog-hd">
+        <div style="font-family:var(--serif);font-size:26px;color:var(--text);margin-bottom:4px">Body &amp; Food</div>
+        <div style="font-size:13px;color:var(--soft)">20 programs · Curated by Skinny-girl</div>
+      </div>
+      <div class="prog-list">
+        <div class="pc" onclick="openProg('med')">
+          <div class="pc-hd"><div class="pc-ic">🫒</div><div style="flex:1"><div class="pc-nm">Mediterranean Diet</div><div class="pc-mt">4 weeks · 32 recipes · All levels</div></div><span class="pill pk">SG pick</span></div>
+          <div class="pc-ds">The diet Skinny-girl swears by. Olive oil, fresh vegetables, lean protein. Learned in one place, perfected in another.</div>
+          <div class="pbw"><div class="pb" style="width:72%"></div></div>
+        </div>
+        <div class="pc" onclick="openProg('if')">
+          <div class="pc-hd"><div class="pc-ic">⏱️</div><div style="flex:1"><div class="pc-nm">Intermittent Fasting 16:8</div><div class="pc-mt">4 weeks · Beginner friendly</div></div><span class="pill bg">Popular</span></div>
+          <div class="pc-ds">8-hour eating window. The schedule Skinny-girl uses to stay light without feeling deprived.</div>
+          <div class="pbw"><div class="pb" style="width:58%"></div></div>
+        </div>
+        <div class="pc" onclick="openProg('pb')">
+          <div class="pc-hd"><div class="pc-ic">🌱</div><div style="flex:1"><div class="pc-nm">Plant-Based Reset</div><div class="pc-mt">4 weeks · 40 recipes</div></div><span class="pill pk">Trending</span></div>
+          <div class="pc-ds">Full plant-based for 4 weeks. You will not miss meat — and that is the surprise.</div>
+          <div class="pbw"><div class="pb" style="width:45%"></div></div>
+        </div>
+        <div class="pc" onclick="openProg('keto')">
+          <div class="pc-hd"><div class="pc-ic">🥑</div><div style="flex:1"><div class="pc-nm">Keto Clean</div><div class="pc-mt">4 weeks · Advanced</div></div><span class="pill bg">Advanced</span></div>
+          <div class="pc-ds">High fat, low carb. Skinny-girl tried this for 30 days and documented everything. The results surprised her.</div>
+          <div class="pbw"><div class="pb" style="width:30%"></div></div>
+        </div>
+        <div class="pc" onclick="openProg('dash')">
+          <div class="pc-hd"><div class="pc-ic">💙</div><div style="flex:1"><div class="pc-nm">DASH Diet</div><div class="pc-mt">4 weeks · Heart-healthy</div></div></div>
+          <div class="pc-ds">Dietary Approaches to Stop Hypertension. Clean, science-backed, surprisingly delicious.</div>
+          <div class="pbw"><div class="pb" style="width:20%"></div></div>
+        </div>
+        <div class="unlock-card" onclick="openSub('chillin')">
+          <h4>15 more programs</h4>
+          <p>Paleo · Whole30 · Vegan · MIND · +11 more — unlock with Chillin plan</p>
+          <div class="unlock-card-btn">Subscribe for $11/mo →</div>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+
+    <!-- ══ BEAUTY ══ -->
+    <div class="screen" id="s-beauty">
+      <div class="beauty-hd">
+        <div class="bhe">Skinny-girl's ritual</div>
+        <div class="bht">Beauty &amp; Wellness</div>
+        <div class="bhs">Places I go. Treatments I have tried.<br>My cat approves most of them.</div>
+      </div>
+      <div class="b-cats">
+        <div class="bcat on" onclick="filterBeauty(this,'all')"><span class="bci">🌸</span><span class="bcl">All</span></div>
+        <div class="bcat" onclick="filterBeauty(this,'skin')"><span class="bci">💆</span><span class="bcl">Skin</span></div>
+        <div class="bcat" onclick="filterBeauty(this,'spa')"><span class="bci">🛁</span><span class="bcl">Spa</span></div>
+        <div class="bcat" onclick="filterBeauty(this,'pilates')"><span class="bci">🧘‍♀️</span><span class="bcl">Pilates</span></div>
+        <div class="bcat" onclick="filterBeauty(this,'product')"><span class="bci">🧴</span><span class="bcl">Products</span></div>
+      </div>
+      <div class="b-list">
+        <div class="bi" data-bc="skin" onclick="openBeauty('banobagi')"><div class="bi-ic">💉</div><div><div class="bi-nm">Banobagi Clinic</div><div class="bi-sb">📍 Gangnam, Seoul · Skincare clinic</div><div class="bi-tags"><span class="rtag">Glass skin</span><span class="rtag">Laser</span><span class="rtag">SG approved</span></div></div></div>
+        <div class="bi" data-bc="spa" onclick="openBeauty('dragonhill')"><div class="bi-ic">🛁</div><div><div class="bi-nm">Dragon Hill Spa</div><div class="bi-sb">📍 Yongsan, Seoul · Jjimjilbang</div><div class="bi-tags"><span class="rtag">Traditional</span><span class="rtag">Sauna</span><span class="rtag">24 hrs</span></div></div></div>
+        <div class="bi" data-bc="pilates" onclick="openBeauty('pilates')"><div class="bi-ic">🧘‍♀️</div><div><div class="bi-nm">Studio Pilates Gangnam</div><div class="bi-sb">📍 Gangnam · Reformer Pilates</div><div class="bi-tags"><span class="rtag">Reformer</span><span class="rtag">Private</span><span class="rtag">English OK</span></div></div></div>
+        <div class="bi" data-bc="product" onclick="openBeauty('oliveyoung')"><div class="bi-ic">🧴</div><div><div class="bi-nm">Skinny-girl Olive Young Picks</div><div class="bi-sb">🇰🇷 K-beauty · Niacinamide · SPF</div><div class="bi-tags"><span class="rtag">K-beauty</span><span class="rtag">Budget</span><span class="rtag">Top picks</span></div></div></div>
+        <div class="bi" data-bc="skin" onclick="openBeauty('redlight')"><div class="bi-ic">🔴</div><div><div class="bi-nm">Red Light Therapy Bar</div><div class="bi-sb">📍 Hongdae, Seoul · Anti-aging</div><div class="bi-tags"><span class="rtag">Red light</span><span class="rtag">Collagen</span><span class="rtag">New</span></div></div></div>
+        <div class="bi" data-bc="spa" onclick="openBeauty('hammam')"><div class="bi-ic">💎</div><div><div class="bi-nm">Itaewon Hammam Spa</div><div class="bi-sb">📍 Itaewon · Turkish-style</div><div class="bi-tags"><span class="rtag">Scrub</span><span class="rtag">Hammam</span><span class="rtag">Hidden gem</span></div></div></div>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+
+    <!-- ══ PROFILE ══ -->
+    <div class="screen" id="s-profile">
+      <div class="pro-hd">
+        <div class="pro-dots"></div>
+        <div class="pro-aw">
+          <div class="pro-av">🧘‍♀️</div>
+          <div class="pro-cat">🐱</div>
+          <div class="pro-online"></div>
+        </div>
+        <div class="pro-nm">Skinny-girl</div>
+        <div class="pro-bio">She eats clean, moves well, and is still trying to name her cat. This is her guide to living light.</div>
+        <div class="pro-tags">
+          <span class="pro-tag">📍 Seoul</span>
+          <span class="pro-tag">🌴 West Coast roots</span>
+          <span class="pro-tag">🐱 Cat mom</span>
+          <span class="pro-tag">✨ 30s</span>
+          <span class="pro-tag">🧘‍♀️ Pilates</span>
+        </div>
+      </div>
+      <div class="pro-stats">
+        <div class="prs"><div class="prsn">12.4K</div><div class="prsl">Followers</div></div>
+        <div class="prs"><div class="prsn">2.4K+</div><div class="prsl">Picks</div></div>
+        <div class="prs"><div class="prsn">38</div><div class="prsl">Cities</div></div>
+        <div class="prs"><div class="prsn">5 yrs</div><div class="prsl">In Seoul</div></div>
+      </div>
+      <div class="pro-facts">
+        <div class="pro-ft">About Skinny-girl</div>
+        <div class="pro-fg">
+          <div class="pfc"><div class="pfi">☕</div><div class="pfl">Morning ritual</div><div class="pfv">Lemon water. Always. No exceptions.</div></div>
+          <div class="pfc"><div class="pfi">🥗</div><div class="pfl">Favourite meal</div><div class="pfv">Anything with good olive oil and something fermented.</div></div>
+          <div class="pfc"><div class="pfi">🏃‍♀️</div><div class="pfl">Workout</div><div class="pfv">Pilates reformer + Han River walks.</div></div>
+          <div class="pfc"><div class="pfi">🐱</div><div class="pfl">Cat name</div><div class="pfv">TBD. Matcha is winning.</div></div>
+          <div class="pfc"><div class="pfi">🌱</div><div class="pfl">Food philosophy</div><div class="pfv">Less ingredients, more intention.</div></div>
+          <div class="pfc"><div class="pfi">🧴</div><div class="pfl">Skin secret</div><div class="pfv">Niacinamide + SPF every single day.</div></div>
+        </div>
+      </div>
+      <div class="plan-list">
+        <div class="pro-ft" style="padding-left:4px">Plans</div>
+        <div class="planc" onclick="openSub('free')">
+          <div class="plan-hd" style="background:var(--sand)"><div class="plan-nm">Just Browsing</div><div class="plan-pr">Free</div></div>
+          <div class="plan-fs"><div class="plan-f">Browse picks</div><div class="plan-f">Trend highlights (preview)</div></div>
+        </div>
+        <div class="planc ft" onclick="openSub('chillin')">
+          <div class="plan-hd" style="background:linear-gradient(135deg,var(--pink-l),#eab4c0)">
+            <div><div class="plan-nm">Chillin</div><div style="font-size:10px;color:var(--mid);margin-top:2px">Skinny-girl picks this for you</div></div>
+            <div style="text-align:right"><div style="background:var(--pink);color:white;font-size:9px;font-weight:700;padding:2px 9px;border-radius:50px;margin-bottom:4px;display:inline-block">POPULAR</div><div class="plan-pr">$11<span>/mo</span></div></div>
+          </div>
+          <div class="plan-fs">
+            <div class="plan-f">Full monthly insight</div>
+            <div class="plan-f">All 20 Body and Food programs</div>
+            <div class="plan-f">Skinny-girl Life weekly log</div>
+            <div class="plan-f">City guides with personal notes</div>
+            <div class="plan-f">Full beauty ritual guide</div>
+          </div>
+        </div>
+        <div class="planc" onclick="openSub('pro')">
+          <div class="plan-hd" style="background:var(--sand)"><div class="plan-nm">Pro</div><div class="plan-pr">$39<span>/mo</span></div></div>
+          <div class="plan-fs">
+            <div class="plan-f">Everything in Chillin</div>
+            <div class="plan-f">Ask Skinny-girl directly monthly</div>
+            <div class="plan-f">Private community access</div>
+          </div>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+
+    <!-- ══ SUBSCRIBE ══ -->
+    <div class="screen" id="s-sub">
+      <div class="sub-hd">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(46,26,20,.4);margin-bottom:8px;position:relative;z-index:1">Join Skinny-us</div>
+        <div style="font-family:var(--serif);font-size:26px;color:var(--text);margin-bottom:6px;position:relative;z-index:1">Choose your plan</div>
+        <div style="font-size:13px;color:rgba(46,26,20,.6);position:relative;z-index:1">Get full access. Cancel anytime.</div>
+      </div>
+      <div class="plan-tabs">
+        <button class="ptab on" onclick="selPlan(this,'free')">Free</button>
+        <button class="ptab" onclick="selPlan(this,'chillin')">Chillin · $11</button>
+        <button class="ptab" onclick="selPlan(this,'pro')">Pro · $39</button>
+        <button class="ptab" onclick="selPlan(this,'b2b')">B2B · $499</button>
+      </div>
+      <div class="plan-feat" id="pfc">
+        <div class="pf-top"><div class="pf-nm" id="pfc-nm">Chillin Plan</div><div class="pf-pr" id="pfc-pr">$11<span>/mo</span></div></div>
+        <div class="pf-feats" id="pfc-feats"></div>
+      </div>
+      <div class="bill-row" id="bill-row">
+        <label class="bill-opt on" id="bm" onclick="setBill('monthly')">
+          <input type="radio" name="billing" value="monthly" checked style="accent-color:var(--pink)">
+          <div><div class="bill-nm">Monthly</div><div class="bill-sb" id="bm-sb">$11 / month</div></div>
+        </label>
+        <label class="bill-opt" id="ba" onclick="setBill('annual')">
+          <input type="radio" name="billing" value="annual" style="accent-color:var(--pink)">
+          <div><div class="bill-nm">Annual <span style="background:var(--pink);color:white;font-size:8px;padding:1px 6px;border-radius:50px">-20%</span></div><div class="bill-sb" id="ba-sb">$106 / year</div></div>
+        </label>
+      </div>
+      <div class="form-sec" id="form-detail">
+        <div class="form-ttl"><div class="fstep">1</div>Your details</div>
+        <input class="fi" type="text" placeholder="Full name">
+        <input class="fi" type="email" placeholder="Email address">
+        <div class="fi-row"><input class="fi" type="text" placeholder="City" style="margin-bottom:0"><input class="fi" type="text" placeholder="Country" style="margin-bottom:0"></div>
+      </div>
+      <div class="form-sec" id="form-pay">
+        <div class="form-ttl"><div class="fstep">2</div>Payment method</div>
+        <div class="card-logos"><div class="clogo">VISA</div><div class="clogo">MC</div><div class="clogo">AMEX</div><div class="clogo">Apple Pay</div></div>
+        <input class="fi" type="text" placeholder="Card number" maxlength="19" oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/(.{4})/g,'$1 ').trim()">
+        <div class="fi-row"><input class="fi" type="text" placeholder="MM / YY" maxlength="7" style="margin-bottom:0"><input class="fi" type="text" placeholder="CVV" maxlength="4" style="margin-bottom:0"></div>
+        <input class="fi" type="text" placeholder="Name on card" style="margin-top:10px;margin-bottom:0">
+        <div class="secure-note"><span>🔒</span><span style="font-size:11px;color:var(--soft)">Secured by Stripe. We never store your card details.</span></div>
+      </div>
+      <div class="form-sec" id="form-free" style="display:none;text-align:center;padding:28px">
+        <div style="font-size:40px;margin-bottom:10px">🌸</div>
+        <div style="font-family:var(--serif);font-size:20px;color:var(--text);margin-bottom:6px">Start for free</div>
+        <div style="font-size:13px;color:var(--soft)">Browse picks and highlights. No card needed.</div>
+      </div>
+      <div class="order-sum" id="order-sum">
+        <div class="os-hd"><div class="os-lbl">Order Summary</div><div class="os-pnm" id="os-nm">Chillin Plan</div><div class="os-prc" id="os-pr">$11<span style="font-size:14px;color:rgba(46,26,20,.5);font-family:'DM Sans',sans-serif;font-weight:400">/mo</span></div></div>
+        <div class="os-body">
+          <div class="os-row"><span id="os-item">Chillin x 1 month</span><span id="os-ip">$11.00</span></div>
+          <div class="os-row"><span>Tax</span><span>$0.00</span></div>
+          <div class="os-row" id="os-disc" style="display:none;color:var(--pink-d)"><span>Annual discount (20%)</span><span id="os-dv"></span></div>
+          <div class="os-row os-total"><span>Total today</span><span id="os-tot">$11.00</span></div>
+          <div style="font-size:11px;color:var(--soft);margin-top:6px" id="os-note">Billed monthly. Cancel anytime.</div>
+        </div>
+        <div class="trust-list">
+          <div class="trust-item">✓ 7-day free trial</div>
+          <div class="trust-item">✓ Cancel anytime</div>
+          <div class="trust-item">✓ Secured by Stripe</div>
+        </div>
+      </div>
+      <div class="sub-cta">
+        <button class="sub-btn" id="sub-btn" onclick="submitSub()">Start my Chillin plan</button>
+        <div class="sub-note">No questions asked.</div>
+      </div>
+      <div class="sub-testi">
+        <q>Found restaurants I never would have discovered on my own. The monthly insight is worth it alone.</q>
+        <cite>J.H. · Chillin member</cite>
+      </div>
+      <div style="height:20px"></div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- TAB BAR -->
+  <div id="tbar">
+    <button class="tb on" onclick="goTab('home')"><span class="ti">🏠</span><span class="tl">Home</span></button>
+    <button class="tb" onclick="goTab('feed')"><span class="ti">📖</span><span class="tl">Life</span></button>
+    <button class="tb" onclick="goTab('picks')"><span class="ti">📍</span><span class="tl">Picks</span></button>
+    <button class="tb-join" onclick="openSub('chillin')"><div class="tb-join-circle">🌸</div><div class="tb-join-lbl">Join</div></button>
+    <button class="tb" onclick="goTab('programs')"><span class="ti">🌿</span><span class="tl">Programs</span></button>
+    <button class="tb" onclick="goTab('beauty')"><span class="ti">✨</span><span class="tl">Beauty</span></button>
+    <button class="tb" onclick="goTab('profile')"><span class="ti">🧘‍♀️</span><span class="tl">Profile</span></button>
+  </div>
+
+</div><!-- /app -->
+
+<!-- MODALS -->
+<div class="modal" id="m-prog"><div class="modal-bg" onclick="closeModal('m-prog')"></div><div class="sheet"><div class="sheet-handle"></div><div class="modal-body" id="prog-body"></div></div></div>
+<div class="modal" id="m-beauty"><div class="modal-bg" onclick="closeModal('m-beauty')"></div><div class="sheet"><div class="sheet-handle"></div><div class="modal-body" id="beauty-body"></div></div></div>
+<div class="modal" id="m-rest"><div class="modal-bg" onclick="closeModal('m-rest')"></div><div class="sheet"><div class="sheet-handle"></div><div id="rest-body"></div></div></div>
+
+<!-- FAB -->
+<button id="fab" onclick="openSub('chillin')">🌸 Join</button>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ── NAV ──
+var TABS = ['home','feed','picks','programs','beauty','profile','sub'];
+function goTab(t) {
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on');});
+  document.querySelectorAll('.tb').forEach(function(b){b.classList.remove('on');});
+  var sc = document.getElementById('s-'+t);
+  if (sc) { sc.classList.add('on'); sc.scrollTop = 0; }
+  var idx = TABS.indexOf(t);
+  var tabs = document.querySelectorAll('.tb');
+  if (tabs[idx]) tabs[idx].classList.add('on');
+  var fab = document.getElementById('fab');
+  if (fab) fab.style.display = (t === 'sub') ? 'none' : 'flex';
+}
+
+// ── FILTERS ──
+function filterFeed(el, type) {
+  document.querySelectorAll('.fpill').forEach(function(p){p.classList.remove('on');});
+  el.classList.add('on');
+  document.querySelectorAll('.post').forEach(function(p){
+    p.style.display = (type === 'all' || p.dataset.t === type) ? 'block' : 'none';
+  });
+}
+function filterCity(el, city) {
+  document.querySelectorAll('.cch').forEach(function(c){c.classList.remove('on');});
+  el.classList.add('on');
+  document.querySelectorAll('#rlist .ri').forEach(function(r){
+    r.style.display = (city === 'all' || r.dataset.city === city) ? 'flex' : 'none';
+  });
+}
+function filterPicks(q) {
+  var lq = q.toLowerCase();
+  document.querySelectorAll('#rlist .ri').forEach(function(r){
+    var txt = r.textContent.toLowerCase();
+    r.style.display = (!lq || txt.indexOf(lq) > -1) ? 'flex' : 'none';
+  });
+}
+function filterBeauty(el, cat) {
+  document.querySelectorAll('.bcat').forEach(function(c){c.classList.remove('on');});
+  el.classList.add('on');
+  document.querySelectorAll('.bi').forEach(function(b){
+    b.style.display = (cat === 'all' || b.dataset.bc === cat) ? 'flex' : 'none';
+  });
+}
+
+// ── LIKE ──
+function likePost(btn) {
+  var lk = btn.classList.toggle('lk');
+  var n = parseInt(btn.textContent.replace(/\D/g,''));
+  btn.textContent = (lk ? '\u2665 ' : '\u2661 ') + (lk ? n+1 : n-1);
+  if (lk) toast('Liked! \uD83C\uDF38');
+}
+
+// ── TOAST ──
+var tt;
+function toast(m) {
+  var el = document.getElementById('toast');
+  el.textContent = m;
+  el.classList.add('show');
+  clearTimeout(tt);
+  tt = setTimeout(function(){el.classList.remove('show');}, 2200);
+}
+
+// ── MODAL ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── RESTAURANT DETAIL ──
+var REST_INFO = {
+  s1: {name:'Osegye Hyang', city:'Seoul', type:'Vegan Temple food', photo:'https://picsum.photos/seed/1590301157890-4810ed/600/400', note:'Seoul iconic Buddhist vegan temple food. No garlic, no onion — yet the most flavourful meal. Go for lunch on a weekday.'},
+  s2: {name:'Plant', city:'Seoul', type:'Plant-based café', photo:'https://picsum.photos/seed/1512621776951-a57141/600/400', note:'The prettiest plant-based café in Seoul. Every dish looks like it was made by someone who cares deeply about colour.'},
+  s3: {name:'Sallim', city:'Seoul', type:'Korean organic', photo:'https://picsum.photos/seed/1563245372-f21724e38/600/400', note:'My neighbourhood spot for Korean organic food. The fermented black bean sauce is the reason I love this part of the city.'},
+  l1: {name:'Gratitude Kitchen', city:'Los Angeles', type:'Plant-based', photo:'https://picsum.photos/seed/1498837167922-ddd275/600/400', note:'The LA classic. This is where clean eating culture crystallised into actual good food, not just good intentions.'},
+  l2: {name:'Erewhon Market Cafe', city:'Los Angeles', type:'Wellness market', photo:'https://picsum.photos/seed/1551218808-94e220e08/600/400', note:'Expensive and worth it. The tonic bar alone changes how you think about what a drink can do.'},
+  n1: {name:'Dirt Candy', city:'New York', type:'Vegetable fine dining', photo:'https://picsum.photos/seed/1540420773420-336677/600/400', note:'Changed how I think about vegetables. The carrot tartare is not a joke. It is a revelation.'},
+  t1: {name:'Ain Soph Journey', city:'Tokyo', type:'Vegan Japanese fusion', photo:'https://picsum.photos/seed/1617196034183-421b40/600/400', note:'The best vegan Japanese fusion in Tokyo. The dashi is made from kombu — deeply savoury without a single animal in it.'},
+  p1: {name:'Wild & The Moon', city:'Paris', type:'Raw food and juice', photo:'https://picsum.photos/seed/1543352634-a1c51d9f1/600/400', note:'Raw food in Paris proved that clean eating can be sophisticated and genuinely delicious.'},
+  m1: {name:'Joia', city:'Milan', type:'Vegetarian fine dining', photo:'https://picsum.photos/seed/1414235077428-338989/600/400', note:'A Michelin-starred vegetarian restaurant in Milan. This place exists. And it is extraordinary.'},
+  c1: {name:'Chicago Diner', city:'Chicago', type:'Vegan comfort food', photo:'https://picsum.photos/seed/1565299624946-b28f40/600/400', note:'Comfort food without compromise. The Radical Reuben is iconic.'},
+  b1: {name:'True Bistro', city:'Boston', type:'Vegan French bistro', photo:'https://picsum.photos/seed/1504674900247-0877df/600/400', note:'A French bistro where everything is vegan and nothing tastes like it. The wine list is also excellent.'},
+};
+function openRest(id) {
+  var r = REST_INFO[id];
+  if (!r) return;
+  document.getElementById('rest-body').innerHTML =
+    '<img src="'+r.photo+'" style="width:100%;height:220px;object-fit:cover;display:block;background:var(--sand)">'
+    +'<div style="padding:20px">'
+    +'<div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink-d);margin-bottom:4px">'+r.city+'</div>'
+    +'<div style="font-family:var(--serif);font-size:22px;color:var(--text);margin-bottom:3px">'+r.name+'</div>'
+    +'<div style="font-size:13px;color:var(--soft);margin-bottom:14px">'+r.type+'</div>'
+    +'<div style="background:rgba(242,200,208,.2);border-radius:14px;padding:14px;margin-bottom:16px;border:1px solid var(--pink-l)">'
+    +'<div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink-d);margin-bottom:6px">Skinny-girl note</div>'
+    +'<p style="font-size:13px;color:var(--text);line-height:1.7;font-style:italic">'+r.note+'</p>'
+    +'</div>'
+    +'<button onclick="closeModal(\'m-rest\')" style="width:100%;padding:14px;background:var(--pink);color:white;border:none;border-radius:14px;font-family:\'DM Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer">Got it \uD83C\uDF38</button>'
+    +'</div>';
+  openModal('m-rest');
+}
+
+// ── PROGRAM DETAIL ──
+var PROGS = {
+  med: {icon:'🫒',name:'Mediterranean Diet',weeks:'4 weeks',level:'All levels',recipes:'32 recipes',color:'linear-gradient(135deg,#8aab8a,#5d8a5d)',desc:'The diet Skinny-girl swears by. Olive oil, fresh vegetables, whole grains, and lean protein. Scientifically proven to reduce inflammation.',plan:['Foundation: olive oil swap, vegetable forward meals','Expanding: fresh fish 3x, whole grain switch','Deepening: herbs and spices mastery, social dining','Integration: meal prep system, long-term habits'],meals:['Greek Salad Bowl','Grilled Salmon + Lemon Caper','Hummus and Veggie Platter','Lentil Soup','Stuffed Bell Peppers','Baked Cod + Tomatoes','Tabbouleh','Roasted Eggplant Dip']},
+  if: {icon:'⏱️',name:'Intermittent Fasting 16:8',weeks:'4 weeks',level:'Beginner',recipes:'28 recipes',color:'linear-gradient(135deg,#f7c948,#e8a820)',desc:'Eat within an 8-hour window, fast for 16. Simple, effective, and surprisingly easy once your body adapts.',plan:['Adaptation: 12:12 start, shift eating window gradually','14:10 window, focus on break-fast quality','Full 16:8, optimise your eating window foods','Maintenance: sustainable integration with social life'],meals:['Breaking Fast Smoothie Bowl','Midday Protein Plate','Korean Buddha Bowl','High-Protein Salad','Avocado Toast plus Eggs','Grilled Chicken plus Veggies','Lemon Herb Quinoa','Berry Protein Shake']},
+  pb: {icon:'🌱',name:'Plant-Based Reset',weeks:'4 weeks',level:'All levels',recipes:'40 recipes',color:'linear-gradient(135deg,#e8929e,#c0687a)',desc:'Full plant-based for 4 weeks. Inspired by incredible vegan scenes around the world. You will not miss meat.',plan:['Protein planning: tofu, tempeh, legumes mastery','Expanding flavour: Korean vegan, Mediterranean plant-based','Nutrient optimisation: B12, iron, omega-3 plant sources','Lifestyle integration: eating out plant-based anywhere'],meals:['Tofu Scramble','Korean Bibimbap Vegan','Lentil Bolognese','Chickpea Curry','Tempeh Stir-fry','Avocado Sushi Bowl','Black Bean Tacos','Coconut Chia Pudding']},
+  keto: {icon:'🥑',name:'Keto Clean',weeks:'4 weeks',level:'Advanced',recipes:'24 recipes',color:'linear-gradient(135deg,#4a7fa8,#2e5f8a)',desc:'High fat, low carb. Skinny-girl tried this for 30 days and documented everything. The results surprised her.',plan:['Keto adaptation: cut carbs below 20g, fat is your friend','Ketosis confirmed: energy shifts, appetite drops','Optimise: electrolytes, sleep quality, exercise on keto','Sustainable: carb cycling intro, long-term keto strategy'],meals:['Bacon and Egg Cups','Avocado Tuna Salad','Cauliflower Rice Bowl','Zucchini Noodles plus Pesto','Salmon plus Asparagus','Cheese and Nut Snack Board','Beef Lettuce Wraps','Keto Cheesecake']},
+  dash: {icon:'💙',name:'DASH Diet',weeks:'4 weeks',level:'All levels',recipes:'30 recipes',color:'linear-gradient(135deg,#5a8aaa,#3a6a8a)',desc:'Dietary Approaches to Stop Hypertension. Clean, science-backed, surprisingly delicious.',plan:['Sodium awareness: reading labels, cooking without salt','Potassium loading: bananas, sweet potatoes, leafy greens','Whole grains mastery: barley, oats, quinoa, farro','DASH lifestyle: long-term habit building, eating out guide'],meals:['Oatmeal plus Berries','Grilled Chicken Salad','Quinoa and Roasted Veg','Lentil and Spinach Soup','Baked Salmon plus Broccoli','Whole Grain Pasta plus Tomato','Sweet Potato Bowl','Fruit and Yoghurt Parfait']},
+};
+function openProg(id) {
+  var p = PROGS[id];
+  if (!p) return;
+  var weeks = '<div style="display:flex;flex-direction:column;gap:10px">';
+  for (var i=0;i<p.plan.length;i++) {
+    weeks += '<div style="display:flex;gap:10px;align-items:flex-start">'
+      +'<div style="width:22px;height:22px;border-radius:50%;background:var(--pink);color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">'+(i+1)+'</div>'
+      +'<div style="font-size:12px;color:var(--mid);line-height:1.5">'+p.plan[i]+'</div>'
+      +'</div>';
+  }
+  weeks += '</div>';
+  var meals = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  for (var j=0;j<p.meals.length;j++) {
+    meals += '<div style="background:var(--sand);border-radius:10px;padding:9px 12px;font-size:11px;color:var(--text);font-weight:500">'+p.meals[j]+'</div>';
+  }
+  meals += '</div>';
+  document.getElementById('prog-body').innerHTML =
+    '<div style="background:'+p.color+';border-radius:18px;padding:24px 22px;margin-bottom:20px">'
+    +'<div style="font-size:48px;margin-bottom:10px">'+p.icon+'</div>'
+    +'<div style="font-family:var(--serif);font-size:22px;color:white;margin-bottom:4px">'+p.name+'</div>'
+    +'<div style="font-size:12px;color:rgba(255,255,255,.7)">'+p.weeks+' · '+p.level+' · '+p.recipes+'</div>'
+    +'</div>'
+    +'<div style="background:white;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--border)">'
+    +'<p style="font-size:13px;color:var(--text);line-height:1.7">'+p.desc+'</p>'
+    +'</div>'
+    +'<div style="background:white;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--border)">'
+    +'<div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink-d);margin-bottom:12px">4-Week Plan</div>'
+    +weeks
+    +'</div>'
+    +'<div style="background:white;border-radius:16px;padding:18px;margin-bottom:20px;border:1px solid var(--border)">'
+    +'<div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink-d);margin-bottom:12px">Sample Meals</div>'
+    +meals
+    +'</div>'
+    +'<button onclick="openSub(\'chillin\');closeModal(\'m-prog\')" style="width:100%;padding:15px;background:var(--pink);color:white;border:none;border-radius:14px;font-family:\'DM Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:20px">Unlock full program \u2192</button>';
+  openModal('m-prog');
+}
+
+// ── BEAUTY DETAIL ──
+var BEAUTY = {
+  banobagi: {icon:'💉',name:'Banobagi Clinic',area:'Gangnam, Seoul',type:'Medical Skincare',color:'linear-gradient(135deg,var(--pink-l),#eab4c0)',note:'Their Carbon Laser Peel is worth every won. Book the 10am slot.',hours:'Mon-Sat 10am-7pm',price:'80,000-500,000 KRW',tip:'Book 2 weeks in advance. English-speaking consultants available.'},
+  dragonhill: {icon:'🛁',name:'Dragon Hill Spa',area:'Yongsan, Seoul',type:'Jjimjilbang',color:'linear-gradient(135deg,#8aab8a,#5d8a5d)',note:'Go on a Tuesday morning. Bring your own shampoo. The Himalayan salt sauna is transformative.',hours:'24 hours',price:'12,000-20,000 KRW entry',tip:'Try the body scrub treatment. Life-changing.'},
+  pilates: {icon:'🧘‍♀️',name:'Studio Pilates Gangnam',area:'Gangnam, Seoul',type:'Reformer Pilates',color:'linear-gradient(135deg,var(--pink-l),#c0687a)',note:'Do the 6am class. Brutal but the rest of your day feels incredible. Ask for Minji.',hours:'Mon-Sat 6am-9pm',price:'50,000 KRW per session',tip:'First session often discounted. Wear grip socks.'},
+  oliveyoung: {icon:'🧴',name:'Skinny-girl Olive Young Picks',area:'Korea Nationwide',type:'K-Beauty Products',color:'linear-gradient(135deg,#8aab8a,#3d6b4a)',note:'These are my actual repurchase list. Not sponsored. Not a single one.',hours:'Most stores 10am-10pm',price:'5,000-40,000 KRW per product',tip:'Download the Olive Young app for 20% off first order.'},
+  redlight: {icon:'🔴',name:'Red Light Therapy Bar',area:'Hongdae, Seoul',type:'Anti-Aging',color:'linear-gradient(135deg,#c84830,#e86050)',note:'Still in trial phase. Early results on skin texture are promising. Go 3x per week.',hours:'Tue-Sun 11am-8pm',price:'30,000 KRW per 20min session',tip:'Wear the provided goggles. Consistency matters.'},
+  hammam: {icon:'💎',name:'Itaewon Hammam Spa',area:'Itaewon, Seoul',type:'Turkish Hammam',color:'linear-gradient(135deg,#4a7fa8,#2e5f8a)',note:'The full package is 90 minutes and genuinely transformative. Go with a friend.',hours:'Wed-Mon 11am-9pm',price:'60,000-120,000 KRW',tip:'Booking required. English available. Everything is provided.'},
+};
+function openBeauty(id) {
+  var b = BEAUTY[id];
+  if (!b) return;
+  document.getElementById('beauty-body').innerHTML =
+    '<div style="background:'+b.color+';padding:24px 22px 20px;margin-bottom:20px;border-radius:18px">'
+    +'<div style="font-size:44px;margin-bottom:10px">'+b.icon+'</div>'
+    +'<div style="font-family:var(--serif);font-size:22px;color:var(--text);margin-bottom:3px">'+b.name+'</div>'
+    +'<div style="font-size:12px;color:rgba(46,26,20,.6)">'+b.area+' · '+b.type+'</div>'
+    +'</div>'
+    +'<div style="background:rgba(242,200,208,.2);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid var(--pink-l)">'
+    +'<div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink-d);margin-bottom:6px">Skinny-girl note</div>'
+    +'<p style="font-size:13px;color:var(--text);line-height:1.7;font-style:italic">"'+b.note+'"</p>'
+    +'</div>'
+    +'<div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:12px">'
+    +'<div><div style="font-size:10px;color:var(--soft);margin-bottom:3px">Hours</div><div style="font-size:12px;font-weight:600;color:var(--text)">'+b.hours+'</div></div>'
+    +'<div><div style="font-size:10px;color:var(--soft);margin-bottom:3px">Price</div><div style="font-size:12px;font-weight:600;color:var(--text)">'+b.price+'</div></div>'
+    +'</div>'
+    +'<div style="background:var(--sand);border-radius:12px;padding:12px 14px;margin-bottom:20px;display:flex;gap:8px">'
+    +'<span style="font-size:14px">💡</span><span style="font-size:12px;color:var(--mid);line-height:1.6">'+b.tip+'</span>'
+    +'</div>'
+    +'<button onclick="closeModal(\'m-beauty\')" style="width:100%;padding:14px;background:var(--pink);color:white;border:none;border-radius:14px;font-family:\'DM Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:20px">Got it \uD83C\uDF38</button>';
+  openModal('m-beauty');
+}
+
+// ── SUBSCRIBE ──
+var PLANS = {
+  free:    {name:'Just Browsing',price:0,annual:0,cta:'Create free account',feats:['Browse picks','Trend highlights preview','Basic search']},
+  chillin: {name:'Chillin Plan',price:11,annual:106,cta:'Start my Chillin plan',feats:['Full monthly What I am Watching','All 20 Body and Food programs','Skinny-girl Life weekly log','City guides with personal notes','Full beauty ritual guide']},
+  pro:     {name:'Pro Plan',price:39,annual:374,cta:'Go Pro',feats:['Everything in Chillin','Ask Skinny-girl directly monthly','Private community access','Priority support']},
+  b2b:     {name:'B2B Plan',price:499,annual:4788,cta:'Start B2B plan',feats:['Full brand trend reports','Custom curated city guides','White-label content','Dedicated account manager','API access']},
+};
+var curPlan='chillin', curBill='monthly';
+
+function selPlan(el, plan) {
+  document.querySelectorAll('.ptab').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on');
+  curPlan = plan;
+  curBill = 'monthly';
+  var r = document.querySelector('input[name="billing"]');
+  if (r) r.checked = true;
+  setBill('monthly', true);
+  updPlanUI();
+}
+function setBill(mode, skip) {
+  curBill = mode;
+  var bm = document.getElementById('bm');
+  var ba = document.getElementById('ba');
+  if (bm) bm.className = 'bill-opt' + (mode === 'monthly' ? ' on' : '');
+  if (ba) ba.className = 'bill-opt' + (mode === 'annual' ? ' on' : '');
+  if (!skip) updPlanUI();
+}
+function updPlanUI() {
+  var pl = PLANS[curPlan] || PLANS.chillin;
+  var free = curPlan === 'free';
+  var annual = curBill === 'annual';
+  // feature card
+  var nm = document.getElementById('pfc-nm');
+  var pr = document.getElementById('pfc-pr');
+  var ff = document.getElementById('pfc-feats');
+  var pfc = document.getElementById('pfc');
+  if (nm) nm.textContent = pl.name;
+  if (pr) pr.innerHTML = free ? 'Free' : '$'+pl.price+'<span>/mo</span>';
+  if (ff) ff.innerHTML = pl.feats.map(function(f){return '<div class="pf-f">'+f+'</div>';}).join('');
+  if (pfc) pfc.className = 'plan-feat' + (curPlan === 'chillin' ? ' ft' : '');
+  // show/hide sections
+  var br = document.getElementById('bill-row');
+  var fp = document.getElementById('form-pay');
+  var fr = document.getElementById('form-free');
+  var os = document.getElementById('order-sum');
+  if (br) br.style.display = free ? 'none' : 'grid';
+  if (fp) fp.style.display = free ? 'none' : 'block';
+  if (fr) fr.style.display = free ? 'block' : 'none';
+  if (os) os.style.display = free ? 'none' : 'block';
+  // billing subs
+  var bms = document.getElementById('bm-sb');
+  var bas = document.getElementById('ba-sb');
+  if (bms) bms.textContent = free ? 'Always free' : '$'+pl.price+' / month';
+  if (bas) bas.textContent = free ? 'N/A' : '$'+pl.annual+' / year';
+  // order summary
+  var onm = document.getElementById('os-nm');
+  var opr = document.getElementById('os-pr');
+  var oit = document.getElementById('os-item');
+  var oip = document.getElementById('os-ip');
+  var odr = document.getElementById('os-disc');
+  var odv = document.getElementById('os-dv');
+  var oto = document.getElementById('os-tot');
+  var ono = document.getElementById('os-note');
+  if (onm) onm.textContent = pl.name;
+  var displayPrice = annual ? pl.annual : pl.price;
+  if (opr) opr.innerHTML = '$'+displayPrice+'<span style="font-size:14px;color:rgba(46,26,20,.5);font-family:\'DM Sans\',sans-serif;font-weight:400">'+(annual?'/yr':'/mo')+'</span>';
+  if (oit) oit.textContent = pl.name + (annual ? ' x 12 months' : ' x 1 month');
+  if (oip) oip.textContent = '$'+(annual ? pl.price*12 : pl.price)+'.00';
+  if (odr) odr.style.display = annual ? 'flex' : 'none';
+  if (annual && odv) odv.textContent = '-$'+((pl.price*12)-pl.annual).toFixed(2);
+  if (oto) oto.textContent = '$'+displayPrice+'.00';
+  if (ono) ono.textContent = annual ? 'Billed annually. Cancel anytime.' : 'Billed monthly. Cancel anytime.';
+  // cta
+  var btn = document.getElementById('sub-btn');
+  if (btn) btn.textContent = pl.cta;
+}
+function openSub(plan) {
+  goTab('sub');
+  setTimeout(function(){
+    var tabs = document.querySelectorAll('.ptab');
+  var order = ['free','chillin','pro','b2b'];
+  var idx = order.indexOf(plan || 'chillin');
+  if (tabs[idx]) selPlan(tabs[idx], plan || 'chillin');
+  else updPlanUI();
+  }, 60);
+}
+function submitSub() {
+  if (curPlan === 'free') { toast('Welcome! Browsing for free \uD83C\uDF38'); return; }
+  toast('Demo mode — Stripe coming soon! \uD83C\uDF38');
+}
+
+// ── CLOCK + GREETING ──
+function clock() {
+  var n = new Date();
+  var el = document.getElementById('sbt');
+  if (el) el.textContent = n.getHours()+':'+(('0'+n.getMinutes()).slice(-2));
+}
+function greeting() {
+  var h = new Date().getHours();
+  var el = document.getElementById('hg');
+  if (el) el.textContent = h<12?'Good morning \u2728':h<17?'Good afternoon \uD83C\uDF3F':h<21?'Good evening \uD83C\uDF38':'Good night \uD83C\uDF19';
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', function(){
+  clock(); greeting(); updPlanUI(); showQuote(qIdx);
+
+    // Handle PWA shortcuts
+    var urlParams = new URLSearchParams(window.location.search);
+    var initTab = urlParams.get('tab');
+    if (initTab) setTimeout(function(){ goTab(initTab); }, 100);
+  setInterval(clock, 15000);
+  document.querySelectorAll('input[name="billing"]').forEach(function(r){
+    r.addEventListener('change', function(){ setBill(this.value); });
+  });
+});
+
+// ── QUOTES ──
+var QUOTES = [
+  {q:"The secret of change is to focus all your energy not on fighting the old, but on building the new.", a:"Socrates"},
+  {q:"Take care of your body. It is the only place you have to live.", a:"Jim Rohn"},
+  {q:"She believed she could, so she did.", a:"R.S. Grey"},
+  {q:"Almost everything will work again if you unplug it for a few minutes — including you.", a:"Anne Lamott"},
+  {q:"Nourishing yourself in a way that helps you blossom in the direction you want to go is attainable.", a:"Deborah Day"},
+  {q:"The groundwork of all happiness is health.", a:"Leigh Hunt"},
+  {q:"Movement is a medicine for creating change.", a:"Carol Welch"},
+  {q:"A calm mind, a fit body, a house full of love — these things cannot be bought. They must be earned.", a:"Naval Ravikant"},
+  {q:"Eat food. Not too much. Mostly plants.", a:"Michael Pollan"},
+  {q:"Your health is an investment, not an expense.", a:"Unknown"},
+  {q:"Life is not merely being alive, but being well.", a:"Marcus Valerius Martial"},
+  {q:"Let food be thy medicine and medicine be thy food.", a:"Hippocrates"},
+  {q:"There is no diet that will do what eating healthy does.", a:"Unknown"},
+  {q:"To keep the body in good health is a duty.", a:"Buddha"},
+  {q:"Progress, not perfection.", a:"Unknown"},
+  {q:"Rest is not idle, rest is regeneration.", a:"Unknown"},
+  {q:"The food you eat can be either the safest and most powerful form of medicine — or the slowest form of poison.", a:"Ann Wigmore"},
+  {q:"Small steps in the right direction can turn out to be the biggest step of your life.", a:"Unknown"},
+  {q:"Health is not about the weight you lose, but about the life you gain.", a:"Unknown"},
+  {q:"Be gentle with yourself. You are a child of the universe.", a:"Max Ehrmann"},
+];
+var qIdx = Math.floor(Math.random() * QUOTES.length);
+function showQuote(idx) {
+  var q = QUOTES[idx % QUOTES.length];
+  var qt = document.getElementById('qotd-text');
+  var qa = document.getElementById('qotd-author');
+  if (!qt || !qa) return;
+  qt.style.opacity = '0';
+  qt.style.transform = 'translateY(6px)';
+  setTimeout(function(){
+    qt.textContent = '"' + q.q + '"';
+    qa.textContent = '— ' + q.a;
+    qt.style.transition = 'opacity .3s ease, transform .3s ease';
+    qt.style.opacity = '1';
+    qt.style.transform = 'translateY(0)';
+  }, 150);
+}
+function nextQuote() {
+  qIdx = (qIdx + 1) % QUOTES.length;
+  showQuote(qIdx);
+}
+
+</script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js')
+          .then(function(r) { console.log('SW registered'); })
+          .catch(function(e) { console.log('SW error', e); });
+      });
+    }
+  </script>
+</body>
+</html>

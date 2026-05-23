@@ -1,0 +1,50 @@
+{
+  "name": "Skinny-us",
+  "short_name": "Skinny-us",
+  "description": "Living light with Skinny-girl — food, beauty, wellness",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf4ea",
+  "theme_color": "#e8929e",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "categories": ["health", "lifestyle", "food"],
+  "shortcuts": [
+    {
+      "name": "Picks",
+      "short_name": "Picks",
+      "description": "Skinny-girl's restaurant picks",
+      "url": "/?tab=picks",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Life",
+      "short_name": "Life",
+      "description": "Skinny-girl's weekly life log",
+      "url": "/?tab=feed",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
