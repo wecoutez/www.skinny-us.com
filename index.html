@@ -5,207 +5,271 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Skinny-us — Korea, curated.</title>
 <meta name="description" content="Korea's wellness side, curated by a local. Eat, beauty, body, trends — in English.">
-<meta property="og:title" content="Skinny-us — Korea, curated.">
-<meta property="og:description" content="Korea's wellness side, curated by a local.">
-<meta name="theme-color" content="#FDFBF7">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#FFFFFF">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,550;1,9..144,450;1,9..144,550&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg-1: #FBE3EC; --bg-2: #F8C8DA; --bg-3: #F0AEC4; --peach: #FBD4D0;
-    --pink: #A8305C; --pink-mid: #C05A82; --pink-soft: #D0739A;
-    --cta-1: #F8C8DA; --cta-2: #F0AEC4; --cta-3: #E095AE;
+    --white: #FFFFFF;
+    --bg-soft: #FDFBF7;
+    --line: #F1E9E0;
+    --ink: #A8305C;
+    --ink-mid: #C05A82;
+    --ink-soft: #D0739A;
+    --g1: #F8C8DA; --g2: #F0AEC4; --g3: #E095AE;
   }
 
   html { scroll-behavior: smooth; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #FDFBF7;
-    color: var(--pink);
-    line-height: 1.55;
+    background: var(--white);
+    color: var(--ink);
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
   }
 
-  .blob { display: none; }
+  .phone { max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; }
 
-  .wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 0 22px; }
-
-  .glass {
-    background: #FFFFFF;
-    border: 1px solid #F0E7DC;
-    border-radius: 26px;
-    box-shadow: 0 8px 24px rgba(90,50,40,0.06);
+  /* ── Top bar (floats over hero) ─────────── */
+  .top {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+  }
+  .wordmark {
+    font-family: 'Fraunces', serif; font-weight: 550; font-size: 20px;
+    letter-spacing: -0.3px; color: #fff; text-shadow: 0 1px 8px rgba(168,48,92,0.4);
+  }
+  .wordmark em { font-style: italic; }
+  .top .join-sm {
+    font-size: 12.5px; font-weight: 700; color: var(--ink); text-decoration: none;
+    padding: 9px 18px; border-radius: 999px; background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px); box-shadow: 0 6px 18px rgba(168,48,92,0.25);
   }
 
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 15px 30px; border-radius: 999px; border: none; text-decoration: none;
-    color: #fff; font-size: 15px; font-weight: 600; letter-spacing: -0.1px;
-    text-shadow: 0 1px 2px rgba(180,90,120,0.3); cursor: pointer;
-    background: linear-gradient(155deg, var(--cta-1), var(--cta-2) 50%, var(--cta-3) 100%);
-    border-top: 0.8px solid rgba(255,255,255,0.5);
-    box-shadow: 0 14px 32px rgba(224,149,174,0.45), inset 0 2px 3px rgba(255,255,255,0.55), inset 0 -3px 7px rgba(180,90,120,0.3);
-    transition: transform .15s ease;
+  /* ── HERO: quote over big bright image ──── */
+  .hero {
+    position: relative; height: 78vh; min-height: 480px; max-height: 640px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    overflow: hidden;
   }
-  .btn:hover { transform: translateY(-2px); }
-  .btn.ghost {
-    background: #FFFFFF; color: var(--pink-soft); text-shadow: none;
-    border: 1px solid #F0E7DC;
-    box-shadow: 0 6px 16px rgba(90,50,40,0.06);
+  .hero .img {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(120% 90% at 80% 10%, rgba(255,255,255,0.35), transparent 55%),
+      linear-gradient(160deg, #FBD4D0 0%, #F0AEC4 45%, #D0739A 100%);
   }
-
-  nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 0 0; }
-  .logo { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; letter-spacing: -0.4px; }
-  .logo .mark {
-    width: 34px; height: 34px; border-radius: 9px;
-    background: linear-gradient(155deg, var(--bg-1), var(--bg-2) 50%, var(--bg-3) 90%);
-    box-shadow: 0 8px 18px rgba(200,120,140,0.35), inset 0 2px 2px rgba(255,255,255,0.85), inset 0 -3px 5px rgba(200,120,140,0.22);
+  .hero .img img { width: 100%; height: 100%; object-fit: cover; }
+  .hero .scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(168,48,92,0.12) 0%, rgba(168,48,92,0) 35%, rgba(168,48,92,0.55) 100%);
+  }
+  .hero .content { position: relative; padding: 0 26px 40px; }
+  .hero .eyebrow {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(168,48,92,0.4);
+    margin-bottom: 12px;
+  }
+  .hero .quote {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 550;
+    font-size: clamp(27px, 7.4vw, 36px); line-height: 1.22; letter-spacing: -0.5px;
+    color: #fff; text-shadow: 0 2px 12px rgba(168,48,92,0.45);
+  }
+  .hero .author {
+    margin-top: 14px; font-size: 12.5px; font-weight: 500;
+    color: rgba(255,255,255,0.92); text-shadow: 0 1px 3px rgba(168,48,92,0.4);
+  }
+  .hero .hint {
+    position: absolute; right: 22px; bottom: 40px;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(255,255,255,0.25); backdrop-filter: blur(6px);
     display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 15px; text-decoration: none;
   }
-  .logo .mark span {
-    font-size: 19px; font-weight: 900; letter-spacing: -1px;
-    background: linear-gradient(180deg, #FFF, #F2E3E5);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    filter: drop-shadow(0 1px 2px rgba(200,120,140,0.4));
-  }
-  nav .btn { padding: 10px 20px; font-size: 13px; }
 
-  .hero { text-align: center; padding: 60px 0 34px; }
-  .hero .who {
-    display: inline-flex; align-items: center; gap: 7px;
-    padding: 7px 16px; border-radius: 999px; margin-bottom: 18px;
-    background: #FFFFFF; border: 1px solid #F0E7DC;
-    box-shadow: 0 6px 16px rgba(90,50,40,0.06);
-    font-size: 12px; font-weight: 600; color: var(--pink-soft);
-  }
-  .hero h1 {
-    font-size: clamp(48px, 10vw, 84px);
-    font-weight: 900; letter-spacing: -3px; line-height: 0.98;
-  }
-  .hero h1 .grad {
-    background: linear-gradient(120deg, #E8759D 0%, #E095AE 45%, #A8305C 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .hero p { font-size: 17px; color: var(--pink-mid); margin-top: 18px; }
+  /* ── WHITE BODY ─────────────────────────── */
+  .body-white { background: var(--white); position: relative; padding-top: 26px; }
 
-  /* Quote of the day — 페이지의 스테이트먼트 피스 */
-  .qotd {
-    text-align: center; padding: 44px 34px 38px; margin: 34px 0 40px;
-    background: linear-gradient(155deg, var(--cta-1) 0%, var(--cta-2) 50%, var(--cta-3) 100%) !important;
-    border: none !important; border-top: 0.8px solid rgba(255,255,255,0.55) !important;
-    border-radius: 32px;
-    box-shadow: 0 24px 52px rgba(224,149,174,0.5), 0 8px 20px rgba(224,149,174,0.28),
-                inset 0 2px 4px rgba(255,255,255,0.55), inset 0 -5px 12px rgba(180,90,120,0.3) !important;
+  .sec-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 0 20px; margin-bottom: 14px;
   }
-  .qotd .lb { font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin-bottom: 14px; text-shadow: 0 1px 2px rgba(180,90,120,0.3); }
-  .qotd .q {
-    font-size: clamp(21px, 3.6vw, 30px); font-weight: 600; font-style: italic;
-    letter-spacing: -0.5px; line-height: 1.35; color: #fff;
-    text-shadow: 0 2px 5px rgba(180,90,120,0.35);
+  .sec-head h2 {
+    font-family: 'Fraunces', serif; font-weight: 550; font-size: 22px; letter-spacing: -0.3px;
   }
-  .qotd .a { font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.85); margin-top: 14px; text-shadow: 0 1px 2px rgba(180,90,120,0.3); }
+  .sec-head .more { font-size: 12px; font-weight: 600; color: var(--ink-soft); text-decoration: none; }
 
-  /* Categories */
-  .cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; margin-bottom: 44px; }
-  .cat { padding: 28px 10px; text-align: center; transition: transform .18s ease, box-shadow .18s ease; }
-  .cat:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(200,120,140,0.18); }
-  .cat .em { font-size: 42px; display: block; margin-bottom: 10px; filter: drop-shadow(0 5px 10px rgba(200,120,140,0.3)); }
-  .cat h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
-  .cat p { font-size: 10.5px; color: var(--pink-mid); margin-top: 2px; }
+  /* Category chips */
+  .chips { display: flex; gap: 8px; padding: 0 20px 16px; overflow-x: auto; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+    padding: 9px 18px; border-radius: 999px; white-space: nowrap;
+    background: var(--white); color: var(--ink-soft); border: 1px solid var(--line);
+    transition: all .18s ease;
+  }
+  .chip.active {
+    color: #fff; border-color: transparent;
+    background: linear-gradient(155deg, var(--g1), var(--g2) 50%, var(--g3));
+    box-shadow: 0 8px 20px rgba(224,149,174,0.4);
+    text-shadow: 0 1px 2px rgba(180,90,120,0.3);
+  }
 
-  /* Join */
-  .join { text-align: center; padding-bottom: 64px; }
-  .join .card { padding: 36px 30px; }
-  .join h2 { font-size: clamp(24px, 4vw, 30px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 6px; }
-  .join .sub { font-size: 13.5px; color: var(--pink-mid); margin-bottom: 22px; }
-  .join .fine { font-size: 11px; color: var(--pink-mid); opacity: 0.8; margin-top: 14px; }
+  /* Horizontal card row */
+  .row {
+    display: flex; gap: 14px; padding: 2px 20px 10px;
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  }
+  .row::-webkit-scrollbar { display: none; }
+  .card {
+    flex: 0 0 156px; scroll-snap-align: start; cursor: pointer;
+    transition: transform .18s ease;
+  }
+  .card:hover { transform: translateY(-3px); }
+  .card .thumb {
+    position: relative; width: 156px; height: 156px; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 10px 24px rgba(200,120,140,0.2);
+    display: flex; align-items: center; justify-content: center; font-size: 46px;
+  }
+  .card .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .card .thumb .area {
+    position: absolute; left: 8px; bottom: 8px;
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    color: #fff; background: rgba(168,48,92,0.55); backdrop-filter: blur(4px);
+    padding: 4px 9px; border-radius: 999px;
+  }
+  .card h3 { font-size: 13.5px; font-weight: 700; letter-spacing: -0.2px; margin-top: 9px; line-height: 1.3; }
+  .card p { font-size: 11.5px; color: var(--ink-mid); margin-top: 2px; }
+
+  /* ── Trending Now feed ──────────────────── */
+  .trending { padding: 30px 0 8px; }
+  .feed-item {
+    display: flex; gap: 14px; padding: 16px 20px;
+    border-top: 1px solid var(--line);
+    text-decoration: none; color: inherit;
+  }
+  .feed-item:last-of-type { border-bottom: 1px solid var(--line); }
+  .feed-item .num {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 450;
+    font-size: 20px; color: var(--ink-soft); width: 26px; flex-shrink: 0; padding-top: 2px;
+  }
+  .feed-item .txt { flex: 1; }
+  .feed-item .txt .kicker {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 3px;
+  }
+  .feed-item .txt h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.32; }
+  .feed-item .txt p { font-size: 12.5px; color: var(--ink-mid); margin-top: 4px; }
+  .feed-item .fthumb {
+    width: 74px; height: 74px; border-radius: 16px; flex-shrink: 0; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; font-size: 30px;
+    box-shadow: 0 8px 18px rgba(200,120,140,0.18);
+  }
+  .feed-item .fthumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ── Join ───────────────────────────────── */
+  .join { padding: 36px 20px 20px; }
+  .join .card-j {
+    text-align: center; padding: 34px 26px; border-radius: 28px;
+    background: linear-gradient(155deg, var(--g1), var(--g2) 55%, var(--g3));
+    box-shadow: 0 22px 48px rgba(224,149,174,0.45), inset 0 2px 4px rgba(255,255,255,0.5);
+  }
+  .join h2 {
+    font-family: 'Fraunces', serif; font-weight: 550; font-size: 27px; letter-spacing: -0.4px;
+    color: #fff; text-shadow: 0 2px 6px rgba(168,48,92,0.35); line-height: 1.15;
+  }
+  .join h2 em { font-style: italic; }
+  .join .sub { font-size: 13px; color: rgba(255,255,255,0.92); margin: 10px 0 20px; text-shadow: 0 1px 3px rgba(168,48,92,0.3); }
+  .join .cta {
+    display: inline-block; text-decoration: none;
+    background: #fff; color: var(--ink); font-weight: 700; font-size: 14.5px;
+    padding: 14px 34px; border-radius: 999px;
+    box-shadow: 0 12px 26px rgba(168,48,92,0.28);
+  }
+  .join .alt { display: block; margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.85); }
+  .join .alt a { color: #fff; }
 
   footer {
-    padding: 22px 0 36px; text-align: center;
-    font-size: 12px; color: var(--pink-mid);
-    border-top: 1px solid rgba(168,48,92,0.12);
+    text-align: center; padding: 18px 20px 42px;
+    font-size: 11.5px; color: var(--ink-mid);
   }
-  footer a { color: var(--pink-mid); text-decoration: underline; }
-  footer .row { display: flex; justify-content: center; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+  footer .row-f { display: flex; justify-content: center; gap: 14px; margin-bottom: 6px; flex-wrap: wrap; }
+  footer a { color: var(--ink-mid); }
 
-  @media (max-width: 620px) {
-    .cats { grid-template-columns: repeat(2, 1fr); }
-    .hero { padding: 44px 0 26px; }
-  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
+<div class="phone">
 
-<div class="blob b1"></div>
-<div class="blob b2"></div>
-
-<div class="wrap">
-
-  <nav>
-    <div class="logo"><div class="mark"><span>S</span></div>Skinny-us</div>
-    <a class="btn" href="#join">Join 🌸</a>
-  </nav>
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="who">🧘‍♀️ Curated by a local in Seoul</div>
-    <h1>Korea, <span class="grad">curated</span>.</h1>
-    <p>The wellness side of Korea — in English, one pick at a time.</p>
-  </div>
-
-  <!-- QUOTE OF THE DAY -->
-  <div class="glass qotd">
-    <div class="lb">Quote of the day</div>
-    <div class="q" id="q-text">"Eat food. Not too much. Mostly plants."</div>
-    <div class="a" id="q-author">— Michael Pollan</div>
-  </div>
-
-  <!-- CATEGORIES -->
-  <div class="cats">
-    <div class="glass cat"><span class="em">🍜</span><h3>Eat</h3><p>where &amp; what to order</p></div>
-    <div class="glass cat"><span class="em">✨</span><h3>Beauty</h3><p>spa · skin · pilates</p></div>
-    <div class="glass cat"><span class="em">🌿</span><h3>Body</h3><p>4-week programs</p></div>
-    <div class="glass cat"><span class="em">📈</span><h3>Trend</h3><p>what Korea's into</p></div>
-  </div>
-
-  <!-- PHOTOS — 구글 시트에서 자동 로드 -->
-  <section id="photos" style="display:none;padding:0 0 44px;">
-    <div style="text-align:center;margin-bottom:18px;">
-      <div style="font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--pink-soft);">📸 Korea this week</div>
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <div class="top">
+      <div class="wordmark">skinny-<em>us</em></div>
+      <a class="join-sm" href="#join">Join 🌸</a>
     </div>
-    <div id="photo-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:13px;"></div>
-  </section>
+    <div class="img" id="hero-img">
+      <!-- Drop a big bright photo here:
+      <img src="hero.jpg" alt=""> -->
+    </div>
+    <div class="scrim"></div>
+    <div class="content">
+      <div class="eyebrow">Today's thought</div>
+      <div class="quote" id="q-text">"Movement is a medicine for creating change."</div>
+      <div class="author" id="q-author">— Carol Welch</div>
+    </div>
+    <a class="hint" href="#picks" aria-label="Scroll to picks">↓</a>
+  </header>
 
-  <!-- JOIN -->
-  <div class="join" id="join">
-    <div class="glass card">
-      <h2>Find out more 🌸</h2>
-      <div class="sub">$9.99/mo · free week · cancel anytime</div>
-      <div style="display:flex;flex-direction:column;gap:11px;align-items:center;">
-        <!-- ⬇️ STRIPE_PAYMENT_LINK 자리에 Stripe Payment Link 주소 -->
-        <a class="btn" href="STRIPE_PAYMENT_LINK">Join on the web</a>
-        <!-- ⬇️ YOUR_APP_STORE_URL 자리에 실제 앱스토어 링크 -->
-        <a class="btn ghost" href="YOUR_APP_STORE_URL"> Or join with the app</a>
+  <!-- ── WHITE BODY ── -->
+  <main class="body-white" id="picks">
+
+    <div class="sec-head">
+      <h2>This week's picks</h2>
+      <a class="more" href="#join">All 2.4K+ picks →</a>
+    </div>
+
+    <div class="chips" role="tablist" aria-label="Pick a category">
+      <button class="chip active" data-cat="eat" role="tab" aria-selected="true">🍜 Eat</button>
+      <button class="chip" data-cat="beauty" role="tab" aria-selected="false">✨ Beauty</button>
+      <button class="chip" data-cat="body" role="tab" aria-selected="false">🌿 Body</button>
+      <button class="chip" data-cat="trend" role="tab" aria-selected="false">📈 Trend</button>
+    </div>
+
+    <div class="row" id="cards"></div>
+
+    <!-- ── TRENDING NOW ── -->
+    <section class="trending">
+      <div class="sec-head">
+        <h2>Trending now</h2>
       </div>
-      <div class="fine">Web checkout secured by Stripe · app membership via the App Store</div>
-    </div>
-  </div>
+      <div id="feed"></div>
+    </section>
 
-  <footer>
-    <div class="row">
-      <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use</a>
-      <a href="https://wecoutez.github.io/skinny-us-legal/privacy">Privacy Policy</a>
-      <a href="mailto:awonspc@gmail.com">Contact</a>
-    </div>
-    © 2026 Skinny-us. Made in Seoul 🌸
-  </footer>
+    <!-- ── JOIN ── -->
+    <section class="join" id="join">
+      <div class="card-j">
+        <h2>Less but better.<br><em>Every day.</em></h2>
+        <div class="sub">All picks · 4-week programs · monthly insight<br>$9.99/mo · free week · cancel anytime</div>
+        <a class="cta" href="STRIPE_PAYMENT_LINK">Join Skinny-us</a>
+        <span class="alt">or <a href="YOUR_APP_STORE_URL">join with the app</a></span>
+      </div>
+    </section>
 
+    <footer>
+      <div class="row-f">
+        <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use</a>
+        <a href="https://wecoutez.github.io/skinny-us-legal/privacy">Privacy Policy</a>
+        <a href="mailto:awonspc@gmail.com">Contact</a>
+      </div>
+      © 2026 Skinny-us · Made in Seoul 🌸
+    </footer>
+  </main>
 </div>
 
 <script>
-  // 오늘의 명언 — 날짜 기준으로 매일 하나씩 바뀜 (앱과 동일한 20개 풀)
+  // ── Daily quote (same 20-quote pool as the app) ──
   var QUOTES = [
     {q:"The secret of change is to focus all your energy not on fighting the old, but on building the new.", a:"Socrates"},
     {q:"Take care of your body. It is the only place you have to live.", a:"Jim Rohn"},
@@ -230,80 +294,99 @@
   ];
   var d = new Date();
   var dayIndex = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 86400000);
-  var todays = QUOTES[dayIndex % QUOTES.length];
-  document.getElementById('q-text').textContent = '"' + todays.q + '"';
-  document.getElementById('q-author').textContent = '\u2014 ' + todays.a;
+  var t = QUOTES[dayIndex % QUOTES.length];
+  document.getElementById('q-text').textContent = '"' + t.q + '"';
+  document.getElementById('q-author').textContent = '\u2014 ' + t.a;
 
-  // ── 📸 PHOTO GALLERY — 구글 시트에서 로드 ──────────────────────────
-  // 설정 방법:
-  // 1) 구글 시트에서 파일 → 공유 → 웹에 게시 → "쉼표로 구분된 값(.csv)" 선택 → 게시
-  // 2) 나오는 링크(https://docs.google.com/spreadsheets/d/e/...../pub?output=csv)를 아래에 붙여넣기
-  var SHEET_CSV_URL = "PASTE_YOUR_PUBLISHED_SHEET_CSV_URL_HERE";
+  // ── Picks — edit here (img optional; gradient shows if empty) ──
+  var PICKS = {
+    eat: [
+      { t:"Perilla oil makguksu", s:"cold, nutty, weirdly light", area:"Seongsu", e:"🍜", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
+      { t:"Temple food, no temple", s:"vegan by tradition · under ₩12,000", area:"Mangwon", e:"🥬", g:"linear-gradient(155deg,#F8D8C8,#E095AE)" },
+      { t:"One-bowl bibim spots", s:"the office-worker lunch move", area:"Euljiro", e:"🥣", g:"linear-gradient(155deg,#F8C8DA,#D0739A)" },
+      { t:"Late-night gimbap done right", s:"what locals actually order", area:"Yeonnam", e:"🍙", g:"linear-gradient(155deg,#FBE3EC,#F0AEC4)" }
+    ],
+    beauty: [
+      { t:"The quiet sauna", s:"women-only · scrub is the point", area:"Hannam", e:"🧖‍♀️", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
+      { t:"Glass skin, the boring way", s:"what derm clinics actually say", area:"Gangnam", e:"💧", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" },
+      { t:"Pharmacy skincare haul", s:"the ₩30,000 starter list", area:"Olive Young", e:"🧴", g:"linear-gradient(155deg,#FBD4D0,#D0739A)" },
+      { t:"Scalp care is the new skincare", s:"why every salon offers it now", area:"Cheongdam", e:"💆‍♀️", g:"linear-gradient(155deg,#F0AEC4,#C05A82)" }
+    ],
+    body: [
+      { t:"Han River 5k that doesn't feel like one", s:"week 1 of the Body program", area:"Jamwon", e:"🏃‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
+      { t:"Pilates, booked like a local", s:"apps, prices, etiquette", area:"Citywide", e:"🤸‍♀️", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
+      { t:"Mountain before brunch", s:"the 2-hour Inwangsan loop", area:"Seochon", e:"⛰️", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
+      { t:"Stretching cafés exist here", s:"yes, really — how they work", area:"Seongsu", e:"🧘‍♀️", g:"linear-gradient(155deg,#FBE3EC,#D0739A)" }
+    ],
+    trend: [
+      { t:"Perfume cocktail bars", s:"top, heart, base notes — in a glass", area:"Apgujeong", e:"🍸", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
+      { t:"Zero-sugar everything", s:"the convenience store takeover", area:"Everywhere", e:"🥤", g:"linear-gradient(155deg,#F8C8DA,#F0AEC4)" },
+      { t:"Wellness pop-ups of the month", s:"what's open right now", area:"Seongsu·Hannam", e:"📍", g:"linear-gradient(155deg,#FBD4D0,#E095AE)" },
+      { t:"The quiet-luxury gym wave", s:"why memberships went members-only", area:"Dosan", e:"🏋️‍♀️", g:"linear-gradient(155deg,#F0AEC4,#A8305C)" }
+    ]
+  };
 
-  // 구글 드라이브 공유 링크 → 이미지 표시용 주소로 변환 (일반 URL은 그대로 사용)
-  function toImageUrl(link) {
-    link = (link || "").trim();
-    var m = link.match(/\/d\/([-\w]{20,})/) || link.match(/[?&]id=([-\w]{20,})/);
-    if (m) return "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1200";
-    return link;
+  // ── Trending Now — ranked feed ──
+  var TRENDING = [
+    { k:"Trend · Apgujeong", t:"Perfume cocktail bars are spreading across Asia — Seoul's are the originals", p:"Top, heart, base notes. You smell it before you sip it.", e:"🍸", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
+    { k:"Beauty · Hannam", t:"The women-only sauna that isn't in any guidebook", p:"The 세신 scrub: 30 minutes, one layer newer.", e:"🧖‍♀️", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
+    { k:"Eat · Seongsu", t:"Perilla oil makguksu — the bowl every grandma approves of", p:"Go before 11:30. The noon line is office workers, not tourists.", e:"🍜", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
+    { k:"Body · Han River", t:"The 7am Jamwon–Banpo loop, and why Koreans run early", p:"Flat, shaded, ends in banana milk.", e:"🏃‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
+    { k:"Beauty · Gangnam", t:"Glass skin, according to actual dermatologists here", p:"Sunscreen, sleep, one active. The 10-step routine is for export.", e:"💧", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" }
+  ];
+
+  function renderCards(cat) {
+    var wrap = document.getElementById('cards');
+    wrap.innerHTML = "";
+    (PICKS[cat] || []).forEach(function (c) {
+      var el = document.createElement('div');
+      el.className = "card";
+      el.innerHTML =
+        '<div class="thumb" style="background:' + c.g + '">' +
+          (c.img ? '<img src="' + c.img + '" alt="' + c.t + '" loading="lazy">' : c.e) +
+          '<span class="area">' + c.area + '</span>' +
+        '</div>' +
+        '<h3>' + c.t + '</h3>' +
+        '<p>' + c.s + '</p>';
+      wrap.appendChild(el);
+    });
+    wrap.scrollLeft = 0;
   }
 
-  // 간단 CSV 파서 (따옴표 안 쉼표 처리)
-  function parseCSV(text) {
-    var rows = [], row = [], cur = "", inQ = false;
-    for (var i = 0; i < text.length; i++) {
-      var c = text[i];
-      if (inQ) {
-        if (c === '"' && text[i+1] === '"') { cur += '"'; i++; }
-        else if (c === '"') inQ = false;
-        else cur += c;
-      } else {
-        if (c === '"') inQ = true;
-        else if (c === ',') { row.push(cur); cur = ""; }
-        else if (c === '\n' || c === '\r') {
-          if (cur !== "" || row.length) { row.push(cur); rows.push(row); row = []; cur = ""; }
-        } else cur += c;
-      }
-    }
-    if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
-    return rows;
+  function renderFeed() {
+    var wrap = document.getElementById('feed');
+    TRENDING.forEach(function (f, i) {
+      var el = document.createElement('a');
+      el.className = "feed-item";
+      el.href = "#join";
+      el.innerHTML =
+        '<div class="num">' + (i + 1) + '</div>' +
+        '<div class="txt">' +
+          '<div class="kicker">' + f.k + '</div>' +
+          '<h3>' + f.t + '</h3>' +
+          '<p>' + f.p + '</p>' +
+        '</div>' +
+        '<div class="fthumb" style="background:' + f.g + '">' +
+          (f.img ? '<img src="' + f.img + '" alt="" loading="lazy">' : f.e) +
+        '</div>';
+      wrap.appendChild(el);
+    });
   }
 
-  if (SHEET_CSV_URL.indexOf("http") === 0) {
-    fetch(SHEET_CSV_URL)
-      .then(function(r) { return r.text(); })
-      .then(function(text) {
-        var rows = parseCSV(text);
-        if (rows.length < 2) return;
-        var header = rows[0].map(function(h){ return h.trim().toLowerCase(); });
-        var iTitle = header.indexOf("title"), iArea = header.indexOf("area"),
-            iImg = header.indexOf("image_link"), iShow = header.indexOf("show");
-        var grid = document.getElementById("photo-grid");
-        var count = 0;
-        for (var r = 1; r < rows.length; r++) {
-          var show = (rows[r][iShow] || "").trim().toLowerCase();
-          var img = toImageUrl(rows[r][iImg]);
-          if (show !== "yes" || !img) continue;
-          var title = rows[r][iTitle] || "", area = rows[r][iArea] || "";
-          var tile = document.createElement("div");
-          tile.style.cssText = "position:relative;border-radius:20px;overflow:hidden;height:190px;box-shadow:0 12px 26px rgba(200,120,140,0.22);";
-          tile.innerHTML =
-            '<img src="' + img + '" alt="' + title.replace(/"/g,'') + '" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:linear-gradient(135deg,#FBD4D0,#F0AEC4);">' +
-            '<div style="position:absolute;left:0;right:0;bottom:0;padding:26px 12px 11px;background:linear-gradient(180deg,rgba(168,48,92,0) 0%,rgba(168,48,92,0.55) 100%);">' +
-              '<div style="font-size:13px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(168,48,92,0.5);">' + title + '</div>' +
-              '<div style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.85);">' + area + '</div>' +
-            '</div>';
-          grid.appendChild(tile);
-          count++;
-        }
-        if (count > 0) document.getElementById("photos").style.display = "block";
-      })
-      .catch(function(){ /* 시트를 못 읽으면 섹션을 그냥 숨김 */ });
-  }
-</script>
+  renderCards('eat');
+  renderFeed();
 
-<script>
-  // 예전 PWA 서비스워커/캐시 제거 — 방문자가 옛날 페이지를 계속 보는 문제 해결
+  document.querySelectorAll('.chip').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.chip').forEach(function (b) {
+        b.classList.remove('active'); b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
+      renderCards(btn.dataset.cat);
+    });
+  });
+
+  // ── Old PWA cleanup (keeps visitors off the cached old site) ──
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations()
       .then(function(rs){ rs.forEach(function(r){ r.unregister(); }); });
@@ -312,6 +395,5 @@
     }
   }
 </script>
-
 </body>
 </html>
