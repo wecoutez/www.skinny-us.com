@@ -373,8 +373,114 @@
     });
   }
 
+  // ── 구글 시트 연동 ─────────────────────────────────────────────
+  // 시트: https://docs.google.com/spreadsheets/d/1FtW96csH5-p38TJyMb7JJd_stepndnncITlkNHXGcGc
+  // "Site" 탭을 CSV로 읽어옴. 시트 공유가 '링크가 있는 모든 사용자-뷰어' 이상이어야 함.
+  // 시트를 못 읽으면 위의 기본(PICKS/TRENDING) 내용이 그대로 표시됨.
+  var SHEET_ID = "1FtW96csH5-p38TJyMb7JJd_stepndnncITlkNHXGcGc";
+  var SHEET_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&sheet=Site";
+
+  // 구글 드라이브 공유 링크 → 이미지 주소 자동 변환 (일반 URL은 그대로)
+  function toImageUrl(link) {
+    link = (link || "").trim();
+    var m = link.match(/\/d\/([-\w]{20,})/) || link.match(/[?&]id=([-\w]{20,})/);
+    if (m) return "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1600";
+    return link;
+  }
+
+  // 간단 CSV 파서 (따옴표 안 쉼표/줄바꿈 처리)
+  function parseCSV(text) {
+    var rows = [], row = [], cur = "", inQ = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (inQ) {
+        if (c === '"' && text[i+1] === '"') { cur += '"'; i++; }
+        else if (c === '"') inQ = false;
+        else cur += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === ',') { row.push(cur); cur = ""; }
+        else if (c === '\n' || c === '\r') {
+          if (cur !== "" || row.length) { row.push(cur); rows.push(row); row = []; cur = ""; }
+        } else cur += c;
+      }
+    }
+    if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+    return rows;
+  }
+
+  // 카테고리별 기본 그라데이션/이모지 (이미지 없을 때)
+  var CAT_STYLE = {
+    eat:    { e:"🍜", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
+    beauty: { e:"✨", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
+    body:   { e:"🌿", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
+    trend:  { e:"📈", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" }
+  };
+
+  function loadSheet() {
+    fetch(SHEET_URL)
+      .then(function (r) { if (!r.ok) throw new Error("sheet"); return r.text(); })
+      .then(function (text) {
+        var rows = parseCSV(text);
+        if (rows.length < 2) return;
+        var h = rows[0].map(function (x) { return x.trim().toLowerCase(); });
+        var iType = h.indexOf("type"), iCat = h.indexOf("category"),
+            iTitle = h.indexOf("title"), iSub = h.indexOf("subtitle"),
+            iArea = h.indexOf("area"), iImg = h.indexOf("image_link"),
+            iShow = h.indexOf("show"), iOrder = h.indexOf("order");
+        if (iType < 0 || iTitle < 0) return;
+
+        var newPicks = { eat: [], beauty: [], body: [], trend: [] };
+        var newTrending = [];
+        var heroImg = "";
+
+        rows.slice(1).forEach(function (r) {
+          function g(i) { return i >= 0 && r[i] ? r[i].trim() : ""; }
+          if (g(iShow).toLowerCase() !== "yes") return;
+          var type = g(iType).toLowerCase();
+          var img = toImageUrl(g(iImg));
+          var order = parseFloat(g(iOrder)) || 999;
+
+          if (type === "hero") {
+            if (img && !heroImg) heroImg = img;
+          } else if (type === "pick") {
+            var cat = g(iCat).toLowerCase();
+            if (!newPicks[cat]) return;
+            var st = CAT_STYLE[cat];
+            newPicks[cat].push({ t: g(iTitle), s: g(iSub), area: g(iArea),
+              e: st.e, g: st.g, img: img || null, _o: order });
+          } else if (type === "trending") {
+            newTrending.push({ k: g(iArea), t: g(iTitle), p: g(iSub),
+              e: "🌸", g: "linear-gradient(155deg,#F8C8DA,#E095AE)", img: img || null, _o: order });
+          }
+        });
+
+        var hasPicks = Object.keys(newPicks).some(function (k) { return newPicks[k].length; });
+        if (hasPicks) {
+          Object.keys(newPicks).forEach(function (k) {
+            newPicks[k].sort(function (a, b) { return a._o - b._o; });
+          });
+          PICKS = newPicks;
+          var activeChip = document.querySelector('.chip.active');
+          renderCards(activeChip ? activeChip.dataset.cat : 'eat');
+        }
+        if (newTrending.length) {
+          newTrending.sort(function (a, b) { return a._o - b._o; });
+          TRENDING = newTrending;
+          document.getElementById('feed').innerHTML = "";
+          renderFeed();
+        }
+        if (heroImg) {
+          var hw = document.getElementById('hero-img');
+          hw.innerHTML = '<img src="' + heroImg + '" alt="">';
+        }
+      })
+      .catch(function () { /* 시트를 못 읽으면 기본 내용 유지 */ });
+  }
+
   renderCards('eat');
   renderFeed();
+  loadSheet();
 
   document.querySelectorAll('.chip').forEach(function (btn) {
     btn.addEventListener('click', function () {
