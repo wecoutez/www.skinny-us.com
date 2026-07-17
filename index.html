@@ -302,5 +302,16 @@
   }
 </script>
 
+<script>
+  // 예전 PWA 서비스워커/캐시 제거 — 방문자가 옛날 페이지를 계속 보는 문제 해결
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations()
+      .then(function(rs){ rs.forEach(function(r){ r.unregister(); }); });
+    if (window.caches) {
+      caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); });
+    }
+  }
+</script>
+
 </body>
 </html>

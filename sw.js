@@ -1,34 +1,22 @@
-// Skinny-us Service Worker — offline support
-const CACHE = 'skinny-us-v1';
-const ASSETS = ['/', '/index.html'];
-
-self.addEventListener('install', function(e) {
-  e.waitUntil(
-    caches.open(CACHE).then(function(cache) {
-      return cache.addAll(ASSETS);
-    })
-  );
+// Self-destructing service worker.
+// Clears all old caches and unregisters itself so visitors see the new site.
+self.addEventListener('install', function () {
   self.skipWaiting();
 });
-
-self.addEventListener('activate', function(e) {
+self.addEventListener('activate', function (e) {
   e.waitUntil(
-    caches.keys().then(function(keys) {
-      return Promise.all(
-        keys.filter(function(k) { return k !== CACHE; })
-            .map(function(k) { return caches.delete(k); })
-      );
-    })
-  );
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', function(e) {
-  e.respondWith(
-    caches.match(e.request).then(function(cached) {
-      return cached || fetch(e.request).catch(function() {
-        return caches.match('/index.html');
-      });
-    })
+    caches.keys()
+      .then(function (keys) {
+        return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+      })
+      .then(function () {
+        return self.registration.unregister();
+      })
+      .then(function () {
+        return self.clients.matchAll();
+      })
+      .then(function (clients) {
+        clients.forEach(function (client) { client.navigate(client.url); });
+      })
   );
 });
