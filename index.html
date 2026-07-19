@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skinny-us — Asia's wellness side, curated.</title>
+<title>Skinny-us — Skinny Genius</title>
 <meta name="description" content="Wellness picks curated by locals. Korea live now — more countries coming.">
 <meta name="theme-color" content="#FFFFFF">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,550;1,9..144,450;1,9..144,550&display=swap" rel="stylesheet">
@@ -35,9 +35,9 @@
   /* ═══ ENTRY ═══ */
   .entry {
     position: relative; min-height: 100vh; min-height: 100dvh;
-    display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+    display: flex; flex-direction: column; justify-content: space-between; align-items: center;
     text-align: center;
-    padding: 26px 26px 40px; overflow: hidden;
+    padding: 30px 26px 40px; overflow: hidden;
   }
   .entry .bg { position: absolute; inset: 0; }
   .entry .bg img { width: 100%; height: 100%; object-fit: cover; }
@@ -46,8 +46,14 @@
     background: linear-gradient(185deg, rgba(248,200,218,0.25) 0%, rgba(168,48,92,0.45) 55%, rgba(122,26,58,0.85) 100%);
   }
   .entry > * { position: relative; width: 100%; }
-  .entry .wordmark { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); width: auto; font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:#fff; text-shadow:0 1px 8px rgba(122,26,58,0.5); }
+  .entry .wordmark { margin-bottom: 32px; font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:#fff; text-shadow:0 1px 8px rgba(122,26,58,0.5); }
   .entry .wordmark em { font-style: italic; }
+  .entry .wordmark .slogan {
+    display:block; margin-top:3px;
+    font-family:'Inter',sans-serif; font-size:10px; font-weight:600;
+    letter-spacing:0.22em; text-transform:uppercase;
+    color:rgba(255,255,255,0.88); text-shadow:0 1px 4px rgba(122,26,58,0.45);
+  }
   .entry h1 {
     font-family:'Fraunces',serif; font-weight:550; font-size: clamp(38px,10vw,50px);
     line-height:1.06; letter-spacing:-1px; color:#fff; text-shadow:0 2px 14px rgba(122,26,58,0.5);
@@ -77,6 +83,15 @@
     color:#fff; background:rgba(168,48,92,0.55); padding:4px 10px; border-radius:999px;
   }
   .entry .fine { font-size:11px; color:rgba(255,255,255,0.8); text-align:center; text-shadow:0 1px 3px rgba(122,26,58,0.4); }
+  .entry .entry-join {
+    display:block; width:100%; max-width:460px; margin:0 auto 18px;
+    text-decoration:none; text-align:center;
+    font-size:14px; font-weight:700; color:#fff;
+    padding:14px; border-radius:999px;
+    background:linear-gradient(155deg,var(--g2),var(--g3));
+    box-shadow:0 12px 26px rgba(122,26,58,0.3);
+    text-shadow:0 1px 2px rgba(180,90,120,0.35);
+  }
 
   /* ═══ SHARED CHROME ═══ */
   .topbar {
@@ -275,6 +290,61 @@
   footer .row-f { display:flex; justify-content:center; gap:14px; margin-bottom:6px; flex-wrap:wrap; }
   footer a { color:var(--ink-mid); }
 
+  /* ═══ JOIN / PLAN PAGE ═══ */
+  .join-hero {
+    position:relative; overflow:hidden; margin:0; padding:40px 22px 32px;
+    min-height:170px; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; text-align:center;
+    background: linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3));
+  }
+  .join-hero h1 { font-family:'Fraunces',serif; font-weight:550; font-size:30px; color:#fff; text-shadow:0 2px 8px rgba(168,48,92,0.35); line-height:1.15; }
+  .join-hero h1 em { font-style:italic; }
+  .join-hero p { font-size:13px; font-weight:500; color:rgba(255,255,255,0.94); margin-top:8px; text-shadow:0 1px 3px rgba(168,48,92,0.3); }
+  .planlist { display:flex; flex-direction:column; gap:12px; padding:24px 20px 4px; max-width:520px; margin:0 auto; }
+  .plan {
+    position:relative; width:100%; text-align:left; cursor:pointer;
+    background:var(--white); border:2px solid var(--line); border-radius:22px; padding:18px 18px 16px;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .plan.active { border-color:var(--ink); box-shadow:0 12px 28px rgba(200,120,140,0.2); }
+  .plan .p-top { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+  .plan .p-name { font-size:15px; font-weight:700; color:var(--ink); }
+  .plan .p-price { font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:var(--ink); white-space:nowrap; }
+  .plan .p-price span { font-family:'Inter',sans-serif; font-size:11px; font-weight:600; color:var(--ink-soft); }
+  .plan .p-desc { font-size:12px; color:var(--ink-mid); margin-top:6px; line-height:1.5; }
+  .plan .p-badge {
+    position:absolute; top:-9px; left:18px;
+    font-size:9.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    color:#fff; background:var(--ink); padding:4px 11px; border-radius:999px;
+  }
+  .plan .p-check {
+    position:absolute; top:16px; right:16px; width:20px; height:20px; border-radius:50%;
+    border:2px solid var(--line); display:flex; align-items:center; justify-content:center;
+    font-size:11px; color:#fff; background:transparent;
+  }
+  .plan.active .p-check { background:var(--ink); border-color:var(--ink); }
+  .plan.active .p-price { margin-right:26px; }
+  .pay-wrap { padding:18px 20px 8px; max-width:520px; margin:0 auto; text-align:center; }
+  .pay-cta {
+    display:block; width:100%; text-decoration:none; text-align:center;
+    color:#fff; font-weight:700; font-size:15px;
+    padding:16px; border-radius:999px;
+    background:linear-gradient(155deg,var(--g2),var(--g3));
+    box-shadow:0 14px 30px rgba(224,149,174,0.5);
+    text-shadow:0 1px 2px rgba(180,90,120,0.3);
+  }
+  .pay-note { font-size:11px; color:var(--ink-soft); margin-top:12px; line-height:1.6; }
+  .pay-paypal {
+    display:block; width:100%; margin-top:10px; text-decoration:none; text-align:center;
+    font-size:14px; font-weight:600; color:#253B80;
+    padding:14px; border-radius:999px;
+    background:#fff; border:1.5px solid var(--line);
+  }
+  .pay-paypal b { color:#253B80; font-weight:800; }
+  .pay-paypal i { color:#179BD7; font-style:italic; font-weight:800; }
+  .join-feat { max-width:520px; margin:10px auto 0; padding:0 20px; }
+  .join-feat li { list-style:none; font-size:12.5px; color:var(--ink-mid); padding:7px 0; border-bottom:1px solid var(--line); text-align:center; }
+  .join-feat li:last-child { border-bottom:none; }
+
   /* ═══ LOCKED PICKS (members tier) ═══ */
   .pcard.locked .bg img { filter: blur(7px) saturate(0.9); transform: scale(1.06); }
   .pcard.locked .bg { filter: blur(2px); }
@@ -348,7 +418,6 @@
 
   /* ═══ FULL-WIDTH RESPONSIVE ═══ */
   .entry { padding-left:var(--gx); padding-right:var(--gx); }
-  .entry .wordmark { left:var(--gx); }
   .topbar { padding-left:var(--gx); padding-right:var(--gx); }
   .hero, .cat-hero { padding-left:var(--gx); padding-right:var(--gx); }
   .quote-strip { margin-left:var(--gx); margin-right:var(--gx); }
@@ -390,8 +459,8 @@
 
   <!-- ═══════════ ENTRY VIEW ═══════════ -->
   <section class="view entry on" id="view-entry">
-    <div class="bg"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1546874177-9e664107314e?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c2VvdWwlMjBuaWdodHxlbnwwfHwwfHx8MA%3D%3D" alt=""></div>
-    <div class="wordmark">skinny-<em>us</em></div>
+    <div class="bg"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1617283458655-1ef09d4f17f2?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" alt=""></div>
+    <div class="wordmark">skinny-<em>us</em><span class="slogan">Skinny Genius</span></div>
     <div>
       <h1>Asia's wellness side,<br><em>curated.</em></h1>
       <div class="lede">Eat, beauty, body, trends — picked by locals, in English. Choose where you're headed.</div>
@@ -417,6 +486,7 @@
           <span class="soon">TBD</span>
         </div>
       </div>
+      <a class="entry-join" href="#/join">Join Skinny-us 🌸</a>
       <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸</div>
     </div>
   </section>
@@ -429,11 +499,11 @@
         <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
       </span>
       <button class="where" onclick="go('entry')">🇰🇷 Seoul, Korea ▾</button>
-      <a class="join-sm" href="#join-home">Join 🌸</a>
+      <a class="join-sm" href="#/join">Join 🌸</a>
     </div>
 
     <header class="hero">
-      <div class="img" id="hero-img"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1533577116850-9cc66cad8a9b?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2VvdWwlMjBuaWdodHxlbnwwfHwwfHx8MA%3D%3D" alt=""></div>
+      <div class="img" id="hero-img"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YWVzdGhldGljJTIwY2FmZXxlbnwwfHwwfHx8MA%3D%3D" alt=""></div>
       <div class="greet">Curated by a local 🧘‍♀️</div>
       <h1>Where in Seoul<br>today?</h1>
       <div class="search">
@@ -455,7 +525,7 @@
 
     <div class="sec-head">
       <h2 id="picks-title">This week's picks</h2>
-      <a class="more" href="#join-home">All 2.4K+ →</a>
+      <a class="more" href="#/join">All 2.4K+ →</a>
     </div>
     <div class="cards" id="cards"></div>
     <div class="empty" id="cards-empty">No picks match — try another search 🌸</div>
@@ -475,7 +545,7 @@
       <div class="card-j">
         <h2>Less but better.<br><em>Every day.</em></h2>
         <div class="sub">All picks · 4-week programs · monthly insight<br>$9.99/mo · free week · cancel anytime</div>
-        <a class="cta" href="STRIPE_PAYMENT_LINK">Join Skinny-us</a>
+        <a class="cta" href="#/join">Join Skinny-us</a>
         <span class="alt">or <a href="YOUR_APP_STORE_URL">join with the app</a></span>
       </div>
     </section>
@@ -495,7 +565,7 @@
     <div class="topbar">
       <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
       <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
-      <a class="join-sm" href="#join-cat">Join 🌸</a>
+      <a class="join-sm" href="#/join">Join 🌸</a>
     </div>
 
     <header class="cat-hero">
@@ -516,9 +586,61 @@
       <div class="card-j">
         <h2>Want the full list?</h2>
         <div class="sub">Every pick · maps &amp; booking notes · updated weekly<br>$9.99/mo · free week · cancel anytime</div>
-        <a class="cta" href="STRIPE_PAYMENT_LINK">Join Skinny-us</a>
+        <a class="cta" href="#/join">Join Skinny-us</a>
       </div>
     </section>
+
+    <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
+  </section>
+
+  <!-- ═══════════ JOIN / PLAN VIEW ═══════════ -->
+  <section class="view" id="view-join" style="display:none">
+    <div class="topbar">
+      <span class="tb-left">
+        <button class="backchip" onclick="history.length > 1 ? history.back() : go('home')" aria-label="Back">←</button>
+        <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
+      </span>
+      <span></span>
+    </div>
+
+    <header class="join-hero">
+      <h1>Join <em>Skinny-us</em></h1>
+      <p>Every pick · maps &amp; booking notes · updated weekly</p>
+    </header>
+
+    <div class="planlist" id="planlist">
+      <button class="plan active" data-plan="monthly" onclick="selectPlan('monthly')">
+        <span class="p-badge">Most popular</span>
+        <span class="p-check">✓</span>
+        <div class="p-top"><span class="p-name">Monthly membership</span><span class="p-price">$9.99 <span>/mo</span></span></div>
+        <div class="p-desc">Free first week · full list across all categories · weekly updates · cancel anytime.</div>
+      </button>
+      <button class="plan" data-plan="single" onclick="selectPlan('single')">
+        <span class="p-check">✓</span>
+        <div class="p-top"><span class="p-name">One-trip access</span><span class="p-price">$9.90 <span>one-time</span></span></div>
+        <div class="p-desc">Full list unlocked for 30 days — perfect for a single visit to Seoul. No subscription.</div>
+      </button>
+      <button class="plan" data-plan="consult" onclick="selectPlan('consult')">
+        <span class="p-check">✓</span>
+        <div class="p-top"><span class="p-name">Personal consultation</span><span class="p-price">$49 <span>one-time</span></span></div>
+        <div class="p-desc">1:1 with the curator — a custom list built around your dates, tastes, and neighborhoods. Includes full list access for 30 days.</div>
+      </button>
+    </div>
+
+    <div class="pay-wrap">
+      <a class="pay-cta" id="pay-btn" href="STRIPE_PAYMENT_LINK_MONTHLY">Continue to payment →</a>
+      <a class="pay-paypal" id="pay-paypal" href="https://www.paypal.com/ncp/payment/SYM2PFTGUDFBJ">
+        Pay with <b>Pay</b><i>Pal</i>
+      </a>
+      <div class="pay-note">Secure checkout by Stripe or PayPal · Apple Pay &amp; cards accepted<br>Instant access after payment · cancel anytime from your receipt email</div>
+    </div>
+
+    <ul class="join-feat">
+      <li>🍜 Every food pick — with what to order and what to skip</li>
+      <li>✨ Beauty &amp; sauna spots locals actually use</li>
+      <li>📍 Google Maps links for every place</li>
+      <li>🔄 Updated weekly — closures and new openings included</li>
+    </ul>
 
     <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
   </section>
@@ -557,8 +679,8 @@
   ];
 
   var CATS = {
-    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D" },
-    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://images.unsplash.com/photo-1544161515-4ab6ce6db874?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c3BhfGVufDB8fDB8fHww" },
+    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://images.unsplash.com/photo-1635363638580-c2809d049eee?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D" },
+    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://images.unsplash.com/photo-1515377905703-c4788e51af15?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c3BhfGVufDB8fDB8fHww" },
     body:   { name:"Body",   em:"🌿", tag:"4-week programs",         desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" },
     trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", img:"https://images.unsplash.com/photo-1626100856386-68942e5ec239?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" }
   };
@@ -576,7 +698,7 @@
   // tier: "free" = preview (안목 증명), "paid" = members only (blurred + unlock)
   // wt = why_trust, ot = order_tip, av = avoid_if, pr = price_range, bf = best_for, map = google maps link
   var PICKS = [
-    { cat:"eat", hood:"seongsu", tier:"free", t:"Perilla oil makguksu", loc:"Seongsu", meta:"6 min from Seongsu Stn · from ₩9,000", e:"🍜", img:"https://images.unsplash.com/photo-1635363638580-c2809d049eee?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)",
+    { cat:"eat", hood:"seongsu", tier:"free", t:"Perilla oil makguksu", loc:"Seongsu", meta:"6 min from Seongsu Stn · from ₩9,000", e:"🍜", img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)",
       pr:"$", bf:"solo · quick",
       wt:"No sponsored posts, no English menu, and the noon line is all local office workers — the most honest review there is.",
       ot:"Perilla oil makguksu + one mandu plate to share. Skip the bulgogi add-on.",
@@ -594,9 +716,9 @@
       ot:"Start at Jamwon exit 4, run toward Banpo bridge. Go before 8am in summer.",
       av:"Skip it if you want scenery variety — it's one river view the whole way.",
       map:"https://maps.google.com/?q=jamwon+hangang+park" },
-    { cat:"trend", hood:"apgujeong", tier:"paid", t:"Perfume cocktail bars", loc:"Apgujeong", meta:"reservation apps only", e:"🍸", img:"https://images.unsplash.com/photo-1617283458655-1ef09d4f17f2?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
+    { cat:"trend", hood:"apgujeong", tier:"paid", t:"Perfume cocktail bars", loc:"Apgujeong", meta:"reservation apps only", e:"🍸", img:"https://images.unsplash.com/photo-1616091216791-a5360b5fc78a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWVzdGhldGljJTIwY2FmZXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
     { cat:"eat", hood:"mangwon", tier:"paid", t:"Temple food, no temple", loc:"Mangwon", meta:"vegan · under ₩12,000", e:"🥬", img:"https://images.unsplash.com/photo-1590301157890-4810ed352733?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#F8D8C8,#E095AE)" },
-    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Glass skin, the boring way", loc:"Gangnam", meta:"derm-approved clinic list", e:"💧", img:"https://images.unsplash.com/photo-1515377905703-c4788e51af15?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c3BhfGVufDB8fDB8fHww", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" },
+    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Glass skin, the boring way", loc:"Gangnam", meta:"derm-approved clinic list", e:"💧", img:"https://images.unsplash.com/photo-1540555700478-4be289fbecef?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHNwYXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" },
     { cat:"eat", hood:"yeonnam", tier:"paid", t:"Late-night gimbap done right", loc:"Yeonnam", meta:"open til 2am", e:"🍙", g:"linear-gradient(155deg,#FBE3EC,#F0AEC4)" },
     { cat:"body", hood:"seongsu", tier:"paid", t:"Stretching cafés exist here", loc:"Seongsu", meta:"walk-in OK · from ₩15,000", e:"🧘‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
     { cat:"trend", hood:"seongsu", tier:"paid", t:"Wellness pop-ups of the month", loc:"Seongsu", meta:"what's open right now", e:"📍", g:"linear-gradient(155deg,#FBD4D0,#E095AE)" },
@@ -625,7 +747,7 @@
   function isLocked(p) { return p.tier === "paid" && !IS_MEMBER; }
 
   function showView(key) {
-    ['entry', 'home', 'cat'].forEach(function (k) {
+    ['entry', 'home', 'cat', 'join'].forEach(function (k) {
       var el = document.getElementById('view-' + k);
       if (!el) return;
       el.classList.toggle('on', k === key);
@@ -644,6 +766,9 @@
     } else if (view === 'home') {
       showView('home');
       try { location.hash = '#/home'; } catch (e) {}
+    } else if (view === 'join') {
+      showView('join');
+      try { location.hash = '#/join'; } catch (e) {}
     } else {
       showView('entry');
       try { location.hash = '#/'; } catch (e) {}
@@ -659,11 +784,29 @@
       showView('cat');
     } else if (h === '#/home') {
       showView('home');
+    } else if (h === '#/join') {
+      showView('join');
     } else {
       showView('entry');
     }
   }
   window.addEventListener('hashchange', route);
+
+  // 앱 내부 링크(#/...)는 브라우저 내비게이션 대신 직접 화면 전환.
+  // 일부 미리보기/샌드박스 환경에서 앵커 내비게이션이 차단되어도 동작하게 한다.
+  document.addEventListener('click', function (e) {
+    var el = e.target;
+    while (el && el !== document && !(el.tagName === 'A' && el.getAttribute('href'))) el = el.parentNode;
+    if (!el || el === document) return;
+    var h = el.getAttribute('href');
+    if (!h || h.indexOf('#/') !== 0) return;
+    e.preventDefault();
+    var mCat = h.match(/^#\/c\/(\w+)/);
+    if (h === '#/join') go('join');
+    else if (h === '#/home') go('home');
+    else if (mCat && CATS[mCat[1]]) go('cat', mCat[1]);
+    else go('entry');
+  });
 
   // ═══ RENDER ═════════════════════════════════════════════════════
   var d = new Date();
@@ -684,6 +827,37 @@
       (p.meta ? '<div class="meta">' + p.meta + '</div>' : '') + '</div>';
   }
 
+  // ═══ JOIN / PLANS ═══════════════════════════════════════════════
+  // 실제 Stripe Payment Link로 교체하세요 (플랜별 1개씩)
+  var PLAN_LINKS = {
+    monthly: "STRIPE_PAYMENT_LINK_MONTHLY",
+    single:  "STRIPE_PAYMENT_LINK_SINGLE",
+    consult: "STRIPE_PAYMENT_LINK_CONSULT"
+  };
+  // 실제 PayPal 결제 링크로 교체하세요 (예: https://paypal.me/계정명/9.99USD 또는 PayPal 결제 버튼 링크)
+  var PAYPAL_LINKS = {
+    monthly: "https://www.paypal.com/ncp/payment/SYM2PFTGUDFBJ",
+    single:  "https://www.paypal.com/ncp/payment/FUHPN6HG2PNZ8",
+    consult: "https://www.paypal.com/ncp/payment/7J7STNZ9GFH5N"
+  };
+  function selectPlan(id) {
+    var plans = document.querySelectorAll('#planlist .plan');
+    for (var i = 0; i < plans.length; i++) {
+      plans[i].classList.toggle('active', plans[i].getAttribute('data-plan') === id);
+    }
+    document.getElementById('pay-btn').setAttribute('href', PLAN_LINKS[id] || '#');
+    var pp = document.getElementById('pay-paypal');
+    var link = PAYPAL_LINKS[id] || '';
+    // 실제 링크가 설정되기 전(placeholder 상태)에는 PayPal 버튼을 숨긴다
+    if (link.indexOf('http') === 0) {
+      pp.setAttribute('href', link);
+      pp.style.display = 'block';
+    } else {
+      pp.style.display = 'none';
+    }
+  }
+  selectPlan('monthly');
+
   // ═══ PICK DETAIL SHEET ══════════════════════════════════════════
   function openSheet(p) {
     var body = document.getElementById('sheet-body');
@@ -700,7 +874,7 @@
           '<div class="big">🔒</div>' +
           '<h3>Unlock the full list</h3>' +
           '<p>Why we trust it, what to order, and who should skip it —<br>the parts a sponsored blog can\u2019t write.</p>' +
-          '<a class="cta" href="STRIPE_PAYMENT_LINK">Unlock the full list</a>' +
+          '<button class="cta" style="border:none;cursor:pointer;font-family:inherit" onclick="closeSheet();go(\'join\')">Unlock the full list</button>' +
         '</div>';
     } else {
       html += '<div class="scat">' + catName + ' · ' + p.loc + ', Seoul</div>' +
@@ -775,7 +949,7 @@
     wrap.innerHTML = "";
     TRENDING.forEach(function (f, i) {
       var el = document.createElement('a');
-      el.className = "feed-item"; el.href = "#join-home";
+      el.className = "feed-item"; el.href = "#/join";
       el.innerHTML = '<div class="num">' + (i + 1) + '</div>' +
         '<div class="txt"><div class="kicker-row"><span class="kicker">' + f.k + '</span>' +
         (f.dist ? '<span class="dist">📍 ' + f.dist + '</span>' : '') + '</div>' +
@@ -848,7 +1022,7 @@
   var GRADS = { eat:"linear-gradient(155deg,#FBD4D0,#F0AEC4)", beauty:"linear-gradient(155deg,#F8C8DA,#E095AE)", body:"linear-gradient(155deg,#F0AEC4,#D0739A)", trend:"linear-gradient(155deg,#E8AFC4,#C05A82)" };
   var EMOJIS = { eat:"🍜", beauty:"✨", body:"🌿", trend:"📈" };
 
-  fetch(SHEET_URL)
+  if (typeof fetch === 'function') fetch(SHEET_URL)
     .then(function (r) { if (!r.ok) throw new Error("sheet"); return r.text(); })
     .then(function (text) {
       var rows = parseCSV(text);
