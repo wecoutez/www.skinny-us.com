@@ -497,7 +497,7 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v9</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v10</span></div>
     </div>
   </section>
 
@@ -730,8 +730,24 @@
 
   // Member 판별: 실제 배포 시 Members 로직으로 교체.
   // 테스트: ?member=1 로 접속하면 전체 열람 상태를 시뮬레이션.
-  var IS_MEMBER = /[?&]member=1/.test(location.search) || sGet('localStorage', 'su_member') === '1';
-  if (/[?&]member=1/.test(location.search)) sSet('localStorage', 'su_member', '1');
+  // ── 멤버 입장권 검증 ──
+  // 저장된 입장권은 (1) 현재 MEMBER_CODE와 일치하고 (2) 30일 이내일 때만 유효.
+  // → 코드를 교체하면 기존 기기들도 전부 재입력 필요. 30일 지나면 자동 만료.
+  var MEMBER_CODE = "SEOUL26";
+  var MEMBER_DAYS = 30;
+  function validMemberPass() {
+    try {
+      var raw = sGet('localStorage', 'su_member');
+      if (!raw) return false;
+      var p = JSON.parse(raw);
+      if (p.c !== MEMBER_CODE) return false;
+      if (Date.now() - p.t > MEMBER_DAYS * 24 * 60 * 60 * 1000) return false;
+      return true;
+    } catch (e) { return false; }
+  }
+  function saveMemberPass() { sSet('localStorage', 'su_member', JSON.stringify({ c: MEMBER_CODE, t: Date.now() })); }
+  var IS_MEMBER = /[?&]member=1/.test(location.search) || validMemberPass();
+  if (/[?&]member=1/.test(location.search)) saveMemberPass();
   function isLocked(p) { return p.tier === "paid" && !IS_MEMBER; }
 
   function showView(key) {
@@ -779,7 +795,6 @@
   // ── 멤버 입장: 액세스 코드 방식 ──
   // 결제 완료자에게 코드를 전달한다 (PayPal 결제 완료 메시지/이메일에 기재).
   // 코드는 주기적으로 교체 권장. 실제 배포 시 기존 Members 로그인으로 교체 가능.
-  var MEMBER_CODE = "SEOUL26";
   function toggleCode() {
     var el = document.getElementById('g-code');
     el.style.display = (el.style.display === 'none') ? 'flex' : 'none';
@@ -790,7 +805,7 @@
     if (v === MEMBER_CODE.toUpperCase()) {
       track('member:enter');
       IS_MEMBER = true;
-      sSet('localStorage', 'su_member', '1');
+      saveMemberPass();
       go('home');
     } else {
       document.getElementById('g-code-err').style.display = 'block';
