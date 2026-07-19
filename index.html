@@ -35,9 +35,9 @@
   /* ═══ ENTRY ═══ */
   .entry {
     position: relative; min-height: 100vh; min-height: 100dvh;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
     text-align: center;
-    padding: 30px 26px 40px; overflow: hidden;
+    padding: 12vh 26px 5vh; overflow: hidden;
   }
   .entry .bg { position: absolute; inset: 0; }
   .entry .bg img { width: 100%; height: 100%; object-fit: cover; }
@@ -46,7 +46,8 @@
     background: linear-gradient(185deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.82) 100%);
   }
   .entry > * { position: relative; width: 100%; }
-  .entry .poster-head { width:100%; margin-bottom:5vh; }
+  .entry > div:last-child { margin-bottom:auto; }
+  .entry .poster-head { width:100%; margin-top:auto; margin-bottom:5vh; }
   .entry .big-title {
     font-family:'Instrument Serif',serif; font-weight:400; font-style:italic;
     font-size:clamp(38px,9.5vw,72px); line-height:1.05; text-align:center;
@@ -87,6 +88,15 @@
     box-shadow:0 12px 26px rgba(0,0,0,0.35);
   }
 
+  @media (max-height:760px) {
+    .entry { padding-top:8vh; }
+    .entry .big-title { font-size:clamp(30px,8.5vw,40px); }
+    .entry .poster-head { margin-bottom:3vh; }
+    .entry .lede { margin-bottom:14px; }
+    .countries { gap:7px; margin-bottom:12px; }
+    .country { padding:11px 14px; }
+    .entry .entry-join { padding:12px 14px; margin-bottom:10px; }
+  }
   @media (max-width:480px) {
     .entry { padding:22px 22px 30px; }
     .entry .big-title { font-size:clamp(32px,9.5vw,42px); }
