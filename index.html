@@ -83,6 +83,15 @@
     color:#fff; background:rgba(168,48,92,0.55); padding:4px 10px; border-radius:999px;
   }
   .entry .fine { font-size:11px; color:rgba(255,255,255,0.8); text-align:center; text-shadow:0 1px 3px rgba(122,26,58,0.4); }
+  .entry .entry-join {
+    display:block; width:100%; max-width:460px; margin:0 auto 18px;
+    text-decoration:none; text-align:center;
+    font-size:14px; font-weight:700; color:#fff;
+    padding:14px; border-radius:999px;
+    background:linear-gradient(155deg,var(--g2),var(--g3));
+    box-shadow:0 12px 26px rgba(122,26,58,0.3);
+    text-shadow:0 1px 2px rgba(180,90,120,0.35);
+  }
 
   /* ═══ SHARED CHROME ═══ */
   .topbar {
@@ -324,6 +333,14 @@
     text-shadow:0 1px 2px rgba(180,90,120,0.3);
   }
   .pay-note { font-size:11px; color:var(--ink-soft); margin-top:12px; line-height:1.6; }
+  .pay-paypal {
+    display:block; width:100%; margin-top:10px; text-decoration:none; text-align:center;
+    font-size:14px; font-weight:600; color:#253B80;
+    padding:14px; border-radius:999px;
+    background:#fff; border:1.5px solid var(--line);
+  }
+  .pay-paypal b { color:#253B80; font-weight:800; }
+  .pay-paypal i { color:#179BD7; font-style:italic; font-weight:800; }
   .join-feat { max-width:520px; margin:10px auto 0; padding:0 20px; }
   .join-feat li { list-style:none; font-size:12.5px; color:var(--ink-mid); padding:7px 0; border-bottom:1px solid var(--line); text-align:center; }
   .join-feat li:last-child { border-bottom:none; }
@@ -469,6 +486,7 @@
           <span class="soon">TBD</span>
         </div>
       </div>
+      <a class="entry-join" href="#/join">Join Skinny-us 🌸</a>
       <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸</div>
     </div>
   </section>
@@ -611,7 +629,10 @@
 
     <div class="pay-wrap">
       <a class="pay-cta" id="pay-btn" href="STRIPE_PAYMENT_LINK_MONTHLY">Continue to payment →</a>
-      <div class="pay-note">Secure checkout by Stripe · Apple Pay &amp; cards accepted<br>Instant access after payment · cancel anytime from your receipt email</div>
+      <a class="pay-paypal" id="pay-paypal" href="PAYPAL_LINK_MONTHLY">
+        Pay with <b>Pay</b><i>Pal</i>
+      </a>
+      <div class="pay-note">Secure checkout by Stripe or PayPal · Apple Pay &amp; cards accepted<br>Instant access after payment · cancel anytime from your receipt email</div>
     </div>
 
     <ul class="join-feat">
@@ -797,12 +818,19 @@
     single:  "STRIPE_PAYMENT_LINK_SINGLE",
     consult: "STRIPE_PAYMENT_LINK_CONSULT"
   };
+  // 실제 PayPal 결제 링크로 교체하세요 (예: https://paypal.me/계정명/9.99USD 또는 PayPal 결제 버튼 링크)
+  var PAYPAL_LINKS = {
+    monthly: "PAYPAL_LINK_MONTHLY",
+    single:  "PAYPAL_LINK_SINGLE",
+    consult: "PAYPAL_LINK_CONSULT"
+  };
   function selectPlan(id) {
     var plans = document.querySelectorAll('#planlist .plan');
     for (var i = 0; i < plans.length; i++) {
       plans[i].classList.toggle('active', plans[i].getAttribute('data-plan') === id);
     }
     document.getElementById('pay-btn').setAttribute('href', PLAN_LINKS[id] || '#');
+    document.getElementById('pay-paypal').setAttribute('href', PAYPAL_LINKS[id] || '#');
   }
 
   // ═══ PICK DETAIL SHEET ══════════════════════════════════════════
