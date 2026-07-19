@@ -3,252 +3,345 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skinny-us — Korea, curated.</title>
-<meta name="description" content="Korea's wellness side, curated by a local. Eat, beauty, body, trends — in English.">
+<title>Skinny-us — Asia's wellness side, curated.</title>
+<meta name="description" content="Wellness picks curated by locals. Korea live now — more countries coming.">
 <meta name="theme-color" content="#FFFFFF">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,550;1,9..144,450;1,9..144,550&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --white: #FFFFFF;
-    --bg-soft: #FDFBF7;
-    --line: #F1E9E0;
-    --ink: #A8305C;
-    --ink-mid: #C05A82;
-    --ink-soft: #D0739A;
-    --g1: #F8C8DA; --g2: #F0AEC4; --g3: #E095AE;
+    --white:#FFFFFF; --cream:#FDFBF7; --line:#F1E9E0;
+    --ink:#A8305C; --ink-mid:#C05A82; --ink-soft:#D0739A;
+    --g1:#F8C8DA; --g2:#F0AEC4; --g3:#E095AE;
   }
 
   html { scroll-behavior: smooth; }
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--white);
-    color: var(--ink);
-    line-height: 1.5;
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    background: var(--white); color: var(--ink); line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
-
   .phone { max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; }
+  .view { display: none; }
+  .view.on { display: block; }
+  button { font-family: inherit; }
 
-  /* ── Top bar (floats over hero) ─────────── */
-  .top {
-    position: absolute; top: 0; left: 0; right: 0; z-index: 10;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px;
-  }
-  .wordmark {
-    font-family: 'Fraunces', serif; font-weight: 550; font-size: 20px;
-    letter-spacing: -0.3px; color: #fff; text-shadow: 0 1px 8px rgba(168,48,92,0.4);
-  }
-  .wordmark em { font-style: italic; }
-  .top .join-sm {
-    font-size: 12.5px; font-weight: 700; color: var(--ink); text-decoration: none;
-    padding: 9px 18px; border-radius: 999px; background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(8px); box-shadow: 0 6px 18px rgba(168,48,92,0.25);
-  }
-
-  /* ── HERO: quote over big bright image ──── */
-  .hero {
-    position: relative; height: 78vh; min-height: 480px; max-height: 640px;
+  /* ═══ ENTRY ═══ */
+  .entry {
+    position: relative; min-height: 100vh; min-height: 100dvh;
     display: flex; flex-direction: column; justify-content: flex-end;
-    overflow: hidden;
+    padding: 26px 26px 40px; overflow: hidden;
   }
-  .hero .img {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(120% 90% at 80% 10%, rgba(255,255,255,0.35), transparent 55%),
-      linear-gradient(160deg, #FBD4D0 0%, #F0AEC4 45%, #D0739A 100%);
+  .entry .bg { position: absolute; inset: 0; }
+  .entry .bg img { width: 100%; height: 100%; object-fit: cover; }
+  .entry .bg::after {
+    content:""; position: absolute; inset: 0;
+    background: linear-gradient(185deg, rgba(248,200,218,0.25) 0%, rgba(168,48,92,0.45) 55%, rgba(122,26,58,0.85) 100%);
   }
-  .hero .img img { width: 100%; height: 100%; object-fit: cover; }
-  .hero .scrim {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(168,48,92,0.12) 0%, rgba(168,48,92,0) 35%, rgba(168,48,92,0.55) 100%);
+  .entry > * { position: relative; }
+  .entry .wordmark { position: absolute; top: 26px; left: 26px; font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:#fff; text-shadow:0 1px 8px rgba(122,26,58,0.5); }
+  .entry .wordmark em { font-style: italic; }
+  .entry h1 {
+    font-family:'Fraunces',serif; font-weight:550; font-size: clamp(38px,10vw,50px);
+    line-height:1.06; letter-spacing:-1px; color:#fff; text-shadow:0 2px 14px rgba(122,26,58,0.5);
   }
-  .hero .content { position: relative; padding: 0 26px 40px; }
-  .hero .eyebrow {
-    font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
-    color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(168,48,92,0.4);
-    margin-bottom: 12px;
-  }
-  .hero .quote {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 550;
-    font-size: clamp(27px, 7.4vw, 36px); line-height: 1.22; letter-spacing: -0.5px;
-    color: #fff; text-shadow: 0 2px 12px rgba(168,48,92,0.45);
-  }
-  .hero .author {
-    margin-top: 14px; font-size: 12.5px; font-weight: 500;
-    color: rgba(255,255,255,0.92); text-shadow: 0 1px 3px rgba(168,48,92,0.4);
-  }
-  .hero .hint {
-    position: absolute; right: 22px; bottom: 40px;
-    width: 34px; height: 34px; border-radius: 50%;
-    background: rgba(255,255,255,0.25); backdrop-filter: blur(6px);
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 15px; text-decoration: none;
-  }
+  .entry h1 em { font-style: italic; }
+  .entry .lede { font-size:14.5px; font-weight:500; color:rgba(255,255,255,0.94); margin:14px 0 24px; text-shadow:0 1px 4px rgba(122,26,58,0.5); }
 
-  /* ── WHITE BODY ─────────────────────────── */
-  .body-white { background: var(--white); position: relative; padding-top: 26px; }
+  .countries { display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+  .country {
+    display:flex; align-items:center; gap:13px; width:100%;
+    padding:14px 16px; border-radius:20px; border:none; cursor:pointer; text-align:left;
+    background: rgba(255,255,255,0.94);
+    box-shadow: 0 10px 26px rgba(122,26,58,0.25);
+    transition: transform .15s;
+  }
+  .country:not(.tbd):hover { transform: translateY(-2px); }
+  .country .flag { font-size:26px; }
+  .country .txt { flex:1; }
+  .country .txt b { display:block; font-size:15px; color:var(--ink); }
+  .country .txt span { font-size:11.5px; color:var(--ink-mid); font-weight:500; }
+  .country .go { font-size:16px; color:var(--ink-soft); }
+  .country.tbd { background: rgba(255,255,255,0.35); backdrop-filter: blur(6px); cursor: default; box-shadow:none; }
+  .country.tbd .txt b, .country.tbd .go { color: rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(122,26,58,0.4); }
+  .country.tbd .txt span { color: rgba(255,255,255,0.8); text-shadow:0 1px 3px rgba(122,26,58,0.4); }
+  .country .soon {
+    font-size:9.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:#fff; background:rgba(168,48,92,0.55); padding:4px 10px; border-radius:999px;
+  }
+  .entry .fine { font-size:11px; color:rgba(255,255,255,0.8); text-align:center; text-shadow:0 1px 3px rgba(122,26,58,0.4); }
 
-  .sec-head {
-    display: flex; align-items: baseline; justify-content: space-between;
-    padding: 0 20px; margin-bottom: 14px;
+  /* ═══ SHARED CHROME ═══ */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding: 13px 18px;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
   }
-  .sec-head h2 {
-    font-family: 'Fraunces', serif; font-weight: 550; font-size: 22px; letter-spacing: -0.3px;
+  .topbar .wordmark { font-family:'Fraunces',serif; font-weight:550; font-size:19px; color:var(--ink); cursor:pointer; }
+  .topbar .wordmark em { font-style:italic; color:var(--ink-soft); }
+  .topbar .where {
+    display:flex; align-items:center; gap:6px; cursor:pointer; border:none;
+    font-size:11.5px; font-weight:700; color:var(--ink);
+    background:var(--cream); border:1px solid var(--line); border-radius:999px; padding:7px 13px;
   }
-  .sec-head .more { font-size: 12px; font-weight: 600; color: var(--ink-soft); text-decoration: none; }
-
-  /* Category chips */
-  .chips { display: flex; gap: 8px; padding: 0 20px 16px; overflow-x: auto; scrollbar-width: none; }
-  .chips::-webkit-scrollbar { display: none; }
-  .chip {
-    font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
-    padding: 9px 18px; border-radius: 999px; white-space: nowrap;
-    background: var(--white); color: var(--ink-soft); border: 1px solid var(--line);
-    transition: all .18s ease;
-  }
-  .chip.active {
-    color: #fff; border-color: transparent;
-    background: linear-gradient(155deg, var(--g1), var(--g2) 50%, var(--g3));
-    box-shadow: 0 8px 20px rgba(224,149,174,0.4);
+  .topbar .join-sm {
+    font-size:12px; font-weight:700; color:#fff; text-decoration:none;
+    padding:8px 16px; border-radius:999px;
+    background: linear-gradient(155deg,var(--g1),var(--g2) 50%,var(--g3));
+    box-shadow: 0 8px 18px rgba(224,149,174,0.4);
     text-shadow: 0 1px 2px rgba(180,90,120,0.3);
   }
 
-  /* Horizontal card row */
-  .row {
-    display: flex; gap: 14px; padding: 2px 20px 10px;
-    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  /* ═══ HOME HERO ═══ */
+  .hero {
+    position: relative; overflow: hidden;
+    padding: 26px 22px 30px; margin: 14px 14px 0;
+    border-radius: 30px;
   }
-  .row::-webkit-scrollbar { display: none; }
-  .card {
-    flex: 0 0 156px; scroll-snap-align: start; cursor: pointer;
-    transition: transform .18s ease;
+  .hero .img { position:absolute; inset:0; }
+  .hero .img img { width:100%; height:100%; object-fit:cover; }
+  .hero .img::after {
+    content:""; position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(168,48,92,0.35), rgba(168,48,92,0.6));
   }
-  .card:hover { transform: translateY(-3px); }
-  .card .thumb {
-    position: relative; width: 156px; height: 156px; border-radius: 20px; overflow: hidden;
-    box-shadow: 0 10px 24px rgba(200,120,140,0.2);
-    display: flex; align-items: center; justify-content: center; font-size: 46px;
+  .hero > *:not(.img) { position: relative; }
+  .hero .greet { font-size:12.5px; font-weight:600; color:rgba(255,255,255,0.92); text-shadow:0 1px 3px rgba(122,26,58,0.4); }
+  .hero h1 {
+    font-family:'Fraunces',serif; font-weight:550; font-style:italic;
+    font-size: clamp(29px,7.8vw,36px); line-height:1.12; color:#fff;
+    text-shadow: 0 2px 10px rgba(122,26,58,0.45); margin:5px 0 16px;
   }
-  .card .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .card .thumb .area {
-    position: absolute; left: 8px; bottom: 8px;
-    font-size: 9.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
-    color: #fff; background: rgba(168,48,92,0.55); backdrop-filter: blur(4px);
-    padding: 4px 9px; border-radius: 999px;
+  .search {
+    display:flex; align-items:center; gap:10px;
+    background: rgba(255,255,255,0.97); border-radius:999px; padding:13px 17px;
+    box-shadow: 0 14px 32px rgba(122,26,58,0.3);
   }
-  .card h3 { font-size: 13.5px; font-weight: 700; letter-spacing: -0.2px; margin-top: 9px; line-height: 1.3; }
-  .card p { font-size: 11.5px; color: var(--ink-mid); margin-top: 2px; }
+  .search .icon { font-size:14px; opacity:0.75; }
+  .search input { flex:1; border:none; outline:none; background:none; font-family:inherit; font-size:13.5px; font-weight:500; color:var(--ink); }
+  .search input::placeholder { color:var(--ink-soft); }
 
-  /* ── Trending Now feed ──────────────────── */
-  .trending { padding: 30px 0 8px; }
+  /* Quote strip */
+  .quote-strip {
+    display:flex; align-items:center; gap:13px;
+    margin:16px 20px 4px; padding:14px 17px;
+    background:var(--cream); border:1px solid var(--line); border-radius:20px;
+  }
+  .quote-strip .mark { font-family:'Fraunces',serif; font-size:32px; line-height:0.6; color:var(--g3); padding-top:11px; }
+  .quote-strip .q { font-family:'Fraunces',serif; font-style:italic; font-size:14px; line-height:1.4; color:var(--ink-mid); }
+  .quote-strip .a { font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:3px; }
+
+  /* Sections */
+  .sec-head { display:flex; align-items:baseline; justify-content:space-between; padding:0 20px; margin:24px 0 12px; }
+  .sec-head h2 { font-family:'Fraunces',serif; font-weight:550; font-size:20px; letter-spacing:-0.3px; }
+  .sec-head .more { font-size:12px; font-weight:600; color:var(--ink-soft); text-decoration:none; background:none; border:none; cursor:pointer; }
+
+  /* Category tiles (home) */
+  .catgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 20px; }
+  .cattile {
+    border:none; cursor:pointer; text-align:center; padding:16px 6px 13px;
+    background:var(--white); border:1px solid var(--line); border-radius:20px;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .cattile:hover { transform:translateY(-3px); box-shadow:0 12px 26px rgba(200,120,140,0.16); }
+  .cattile .em { font-size:26px; display:block; margin-bottom:6px; }
+  .cattile b { font-size:12.5px; color:var(--ink); display:block; }
+  .cattile span { font-size:9.5px; color:var(--ink-soft); font-weight:600; }
+
+  /* Neighborhood tiles */
+  .hoods { display:flex; gap:11px; padding:0 20px 4px; overflow-x:auto; scrollbar-width:none; }
+  .hoods::-webkit-scrollbar { display:none; }
+  .hood { flex:0 0 auto; cursor:pointer; text-align:center; border:none; background:none; }
+  .hood .tile {
+    width:66px; height:66px; border-radius:20px;
+    display:flex; align-items:center; justify-content:center; font-size:26px;
+    background: linear-gradient(155deg,var(--g1),var(--g2));
+    box-shadow:0 8px 18px rgba(200,120,140,0.18);
+    border:2px solid transparent; transition:border-color .15s, transform .15s;
+  }
+  .hood.active .tile { border-color: var(--ink); transform: translateY(-2px); }
+  .hood h4 { font-size:11px; font-weight:700; margin-top:6px; color:var(--ink); }
+  .hood p { font-size:9.5px; color:var(--ink-soft); font-weight:600; }
+
+  /* Pick cards */
+  .cards { display:flex; gap:14px; padding:2px 20px 8px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .cards::-webkit-scrollbar { display:none; }
+  .cards.grid { display:grid; grid-template-columns:1fr 1fr; overflow:visible; scroll-snap-type:none; }
+  .pcard {
+    position:relative; flex:0 0 208px; height:262px; border-radius:24px; overflow:hidden;
+    scroll-snap-align:start; cursor:pointer;
+    box-shadow: 0 14px 30px rgba(200,120,140,0.22);
+    display:flex; align-items:flex-end;
+    transition: transform .18s;
+  }
+  .cards.grid .pcard { flex:none; width:100%; height:225px; }
+  .pcard:hover { transform:translateY(-4px); }
+  .pcard .bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:56px; }
+  .pcard .bg img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .pcard .scrim { position:absolute; inset:0; background:linear-gradient(180deg, rgba(168,48,92,0) 38%, rgba(168,48,92,0.74) 100%); }
+  .pcard .cat {
+    position:absolute; top:11px; left:11px;
+    font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--ink); background:rgba(255,255,255,0.92); padding:5px 10px; border-radius:999px;
+  }
+  .pcard .info { position:relative; padding:13px 14px; width:100%; }
+  .pcard .info h3 { font-size:14.5px; font-weight:700; line-height:1.28; color:#fff; text-shadow:0 1px 4px rgba(122,26,58,0.45); }
+  .pcard .info .loc { display:flex; align-items:center; gap:4px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.92); margin-top:4px; text-shadow:0 1px 3px rgba(122,26,58,0.45); }
+  .pcard .info .meta { font-size:10px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px; }
+
+  /* Category page header */
+  .cat-hero {
+    position:relative; overflow:hidden; margin:14px 14px 0; border-radius:30px;
+    padding:30px 22px;
+  }
+  .cat-hero .img { position:absolute; inset:0; }
+  .cat-hero .img img { width:100%; height:100%; object-fit:cover; }
+  .cat-hero .img::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(168,48,92,0.4), rgba(168,48,92,0.62)); }
+  .cat-hero > *:not(.img) { position:relative; }
+  .cat-hero .back {
+    display:inline-flex; align-items:center; gap:6px; border:none; cursor:pointer;
+    font-size:12px; font-weight:700; color:var(--ink);
+    background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px; margin-bottom:18px;
+  }
+  .cat-hero h1 { font-family:'Fraunces',serif; font-weight:550; font-size:32px; color:#fff; text-shadow:0 2px 10px rgba(122,26,58,0.45); }
+  .cat-hero h1 em { font-style:italic; }
+  .cat-hero p { font-size:13px; font-weight:500; color:rgba(255,255,255,0.92); margin-top:6px; text-shadow:0 1px 4px rgba(122,26,58,0.45); }
+
+  /* Trending */
   .feed-item {
-    display: flex; gap: 14px; padding: 16px 20px;
-    border-top: 1px solid var(--line);
-    text-decoration: none; color: inherit;
+    display:flex; gap:14px; padding:15px 20px; align-items:flex-start;
+    border-top:1px solid var(--line); text-decoration:none; color:inherit;
   }
-  .feed-item:last-of-type { border-bottom: 1px solid var(--line); }
-  .feed-item .num {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 450;
-    font-size: 20px; color: var(--ink-soft); width: 26px; flex-shrink: 0; padding-top: 2px;
-  }
-  .feed-item .txt { flex: 1; }
-  .feed-item .txt .kicker {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--ink-soft); margin-bottom: 3px;
-  }
-  .feed-item .txt h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.32; }
-  .feed-item .txt p { font-size: 12.5px; color: var(--ink-mid); margin-top: 4px; }
+  .feed-item:last-of-type { border-bottom:1px solid var(--line); }
+  .feed-item .num { font-family:'Fraunces',serif; font-style:italic; font-size:19px; color:var(--ink-soft); width:24px; flex-shrink:0; padding-top:2px; }
+  .feed-item .txt { flex:1; }
+  .feed-item .kicker-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
+  .feed-item .kicker { font-size:9.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
+  .feed-item .dist { font-size:9.5px; font-weight:700; color:var(--ink); background:var(--cream); border:1px solid var(--line); padding:2.5px 8px; border-radius:999px; }
+  .feed-item h3 { font-size:14.5px; font-weight:700; line-height:1.32; }
+  .feed-item p { font-size:12px; color:var(--ink-mid); margin-top:3px; }
   .feed-item .fthumb {
-    width: 74px; height: 74px; border-radius: 16px; flex-shrink: 0; overflow: hidden;
-    display: flex; align-items: center; justify-content: center; font-size: 30px;
-    box-shadow: 0 8px 18px rgba(200,120,140,0.18);
+    width:66px; height:66px; border-radius:16px; flex-shrink:0; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; font-size:27px;
+    background: linear-gradient(155deg,var(--g1),var(--g3));
+    box-shadow: 0 8px 18px rgba(200,120,140,0.16);
   }
-  .feed-item .fthumb img { width: 100%; height: 100%; object-fit: cover; }
+  .feed-item .fthumb img { width:100%; height:100%; object-fit:cover; }
 
-  /* ── Join ───────────────────────────────── */
-  .join { padding: 36px 20px 20px; }
+  .empty { padding:26px 20px; text-align:center; font-size:13px; color:var(--ink-soft); display:none; }
+
+  /* Join + footer */
+  .join { padding:32px 20px 16px; }
   .join .card-j {
-    text-align: center; padding: 34px 26px; border-radius: 28px;
-    background: linear-gradient(155deg, var(--g1), var(--g2) 55%, var(--g3));
+    text-align:center; padding:32px 26px; border-radius:28px;
+    background: linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3));
     box-shadow: 0 22px 48px rgba(224,149,174,0.45), inset 0 2px 4px rgba(255,255,255,0.5);
   }
-  .join h2 {
-    font-family: 'Fraunces', serif; font-weight: 550; font-size: 27px; letter-spacing: -0.4px;
-    color: #fff; text-shadow: 0 2px 6px rgba(168,48,92,0.35); line-height: 1.15;
-  }
-  .join h2 em { font-style: italic; }
-  .join .sub { font-size: 13px; color: rgba(255,255,255,0.92); margin: 10px 0 20px; text-shadow: 0 1px 3px rgba(168,48,92,0.3); }
+  .join h2 { font-family:'Fraunces',serif; font-weight:550; font-size:25px; color:#fff; text-shadow:0 2px 6px rgba(168,48,92,0.35); line-height:1.16; }
+  .join h2 em { font-style:italic; }
+  .join .sub { font-size:12.5px; color:rgba(255,255,255,0.92); margin:10px 0 18px; text-shadow:0 1px 3px rgba(168,48,92,0.3); }
   .join .cta {
-    display: inline-block; text-decoration: none;
-    background: #fff; color: var(--ink); font-weight: 700; font-size: 14.5px;
-    padding: 14px 34px; border-radius: 999px;
+    display:inline-block; text-decoration:none;
+    background:#fff; color:var(--ink); font-weight:700; font-size:14px;
+    padding:13px 32px; border-radius:999px;
     box-shadow: 0 12px 26px rgba(168,48,92,0.28);
   }
-  .join .alt { display: block; margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.85); }
-  .join .alt a { color: #fff; }
+  .join .alt { display:block; margin-top:11px; font-size:11.5px; color:rgba(255,255,255,0.85); }
+  .join .alt a { color:#fff; }
 
-  footer {
-    text-align: center; padding: 18px 20px 42px;
-    font-size: 11.5px; color: var(--ink-mid);
-  }
-  footer .row-f { display: flex; justify-content: center; gap: 14px; margin-bottom: 6px; flex-wrap: wrap; }
-  footer a { color: var(--ink-mid); }
+  footer { text-align:center; padding:14px 20px 40px; font-size:11px; color:var(--ink-mid); }
+  footer .row-f { display:flex; justify-content:center; gap:14px; margin-bottom:6px; flex-wrap:wrap; }
+  footer a { color:var(--ink-mid); }
 
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } html { scroll-behavior:auto; } }
 </style>
 </head>
 <body>
 <div class="phone">
 
-  <!-- ── HERO ── -->
-  <header class="hero">
-    <div class="top">
-      <div class="wordmark">skinny-<em>us</em></div>
-      <a class="join-sm" href="#join">Join 🌸</a>
+  <!-- ═══════════ ENTRY VIEW ═══════════ -->
+  <section class="view entry" id="view-entry">
+    <div class="bg"><img src="https://picsum.photos/seed/skinnyseoul/900/1400" alt=""></div>
+    <div class="wordmark">skinny-<em>us</em></div>
+    <div>
+      <h1>Asia's wellness side,<br><em>curated.</em></h1>
+      <div class="lede">Eat, beauty, body, trends — picked by locals, in English. Choose where you're headed.</div>
+      <div class="countries">
+        <button class="country" onclick="go('home')">
+          <span class="flag">🇰🇷</span>
+          <span class="txt"><b>Korea</b><span>Seoul live · 2.4K+ picks · 7 neighborhoods</span></span>
+          <span class="go">→</span>
+        </button>
+        <div class="country tbd">
+          <span class="flag">🇯🇵</span>
+          <span class="txt"><b>Japan</b><span>Tokyo · Osaka</span></span>
+          <span class="soon">TBD</span>
+        </div>
+        <div class="country tbd">
+          <span class="flag">🇹🇼</span>
+          <span class="txt"><b>Taiwan</b><span>Taipei</span></span>
+          <span class="soon">TBD</span>
+        </div>
+        <div class="country tbd">
+          <span class="flag">🇹🇭</span>
+          <span class="txt"><b>Thailand</b><span>Bangkok</span></span>
+          <span class="soon">TBD</span>
+        </div>
+      </div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸</div>
     </div>
-    <div class="img" id="hero-img">
-      <!-- Drop a big bright photo here:
-      <img src="hero.jpg" alt=""> -->
-    </div>
-    <div class="scrim"></div>
-    <div class="content">
-      <div class="eyebrow">Today's thought</div>
-      <div class="quote" id="q-text">"Movement is a medicine for creating change."</div>
-      <div class="author" id="q-author">— Carol Welch</div>
-    </div>
-    <a class="hint" href="#picks" aria-label="Scroll to picks">↓</a>
-  </header>
+  </section>
 
-  <!-- ── WHITE BODY ── -->
-  <main class="body-white" id="picks">
+  <!-- ═══════════ HOME VIEW ═══════════ -->
+  <section class="view" id="view-home">
+    <div class="topbar">
+      <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
+      <button class="where" onclick="go('entry')">🇰🇷 Seoul, Korea ▾</button>
+      <a class="join-sm" href="#join-home">Join 🌸</a>
+    </div>
+
+    <header class="hero">
+      <div class="img" id="hero-img"><img src="https://picsum.photos/seed/skinnyhero/900/700" alt=""></div>
+      <div class="greet">Curated by a local 🧘‍♀️</div>
+      <h1>Where in Seoul<br>today?</h1>
+      <div class="search">
+        <span class="icon">🔍</span>
+        <input id="search-input" type="text" placeholder="Try “sauna”, “makguksu”, “Seongsu”…" aria-label="Search picks">
+      </div>
+    </header>
+
+    <div class="quote-strip">
+      <div class="mark">“</div>
+      <div>
+        <div class="q" id="q-text"></div>
+        <div class="a" id="q-author"></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><h2>Browse</h2></div>
+    <div class="catgrid">
+      <button class="cattile" onclick="go('cat','eat')"><span class="em">🍜</span><b>Eat</b><span>where &amp; what</span></button>
+      <button class="cattile" onclick="go('cat','beauty')"><span class="em">✨</span><b>Beauty</b><span>spa · skin</span></button>
+      <button class="cattile" onclick="go('cat','body')"><span class="em">🌿</span><b>Body</b><span>programs</span></button>
+      <button class="cattile" onclick="go('cat','trend')"><span class="em">📈</span><b>Trend</b><span>right now</span></button>
+    </div>
+
+    <div class="sec-head"><h2>Explore by neighborhood</h2></div>
+    <div class="hoods" id="hoods"></div>
 
     <div class="sec-head">
-      <h2>This week's picks</h2>
-      <a class="more" href="#join">All 2.4K+ picks →</a>
+      <h2 id="picks-title">This week's picks</h2>
+      <a class="more" href="#join-home">All 2.4K+ →</a>
     </div>
+    <div class="cards" id="cards"></div>
+    <div class="empty" id="cards-empty">No picks match — try another search 🌸</div>
 
-    <div class="chips" role="tablist" aria-label="Pick a category">
-      <button class="chip active" data-cat="eat" role="tab" aria-selected="true">🍜 Eat</button>
-      <button class="chip" data-cat="beauty" role="tab" aria-selected="false">✨ Beauty</button>
-      <button class="chip" data-cat="body" role="tab" aria-selected="false">🌿 Body</button>
-      <button class="chip" data-cat="trend" role="tab" aria-selected="false">📈 Trend</button>
-    </div>
+    <div class="sec-head"><h2>Trending now</h2></div>
+    <div id="feed"></div>
 
-    <div class="row" id="cards"></div>
-
-    <!-- ── TRENDING NOW ── -->
-    <section class="trending">
-      <div class="sec-head">
-        <h2>Trending now</h2>
-      </div>
-      <div id="feed"></div>
-    </section>
-
-    <!-- ── JOIN ── -->
-    <section class="join" id="join">
+    <section class="join" id="join-home">
       <div class="card-j">
         <h2>Less but better.<br><em>Every day.</em></h2>
         <div class="sub">All picks · 4-week programs · monthly insight<br>$9.99/mo · free week · cancel anytime</div>
@@ -265,11 +358,44 @@
       </div>
       © 2026 Skinny-us · Made in Seoul 🌸
     </footer>
-  </main>
+  </section>
+
+  <!-- ═══════════ CATEGORY VIEW ═══════════ -->
+  <section class="view" id="view-cat">
+    <div class="topbar">
+      <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
+      <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
+      <a class="join-sm" href="#join-cat">Join 🌸</a>
+    </div>
+
+    <header class="cat-hero">
+      <div class="img"><img id="cat-img" src="" alt=""></div>
+      <button class="back" onclick="go('home')">← Home</button>
+      <h1 id="cat-title"></h1>
+      <p id="cat-desc"></p>
+    </header>
+
+    <div class="sec-head"><h2>Explore by neighborhood</h2></div>
+    <div class="hoods" id="cat-hoods"></div>
+
+    <div class="sec-head"><h2 id="cat-picks-title">All picks</h2></div>
+    <div class="cards grid" id="cat-cards"></div>
+    <div class="empty" id="cat-empty">Nothing here yet — more picks coming 🌸</div>
+
+    <section class="join" id="join-cat">
+      <div class="card-j">
+        <h2>Want the full list?</h2>
+        <div class="sub">Every pick · maps &amp; booking notes · updated weekly<br>$9.99/mo · free week · cancel anytime</div>
+        <a class="cta" href="STRIPE_PAYMENT_LINK">Join Skinny-us</a>
+      </div>
+    </section>
+
+    <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
+  </section>
 </div>
 
 <script>
-  // ── Daily quote (same 20-quote pool as the app) ──
+  // ═══ DATA ═══════════════════════════════════════════════════════
   var QUOTES = [
     {q:"The secret of change is to focus all your energy not on fighting the old, but on building the new.", a:"Socrates"},
     {q:"Take care of your body. It is the only place you have to live.", a:"Jim Rohn"},
@@ -292,103 +418,185 @@
     {q:"Health is not about the weight you lose, but about the life you gain.", a:"Unknown"},
     {q:"Be gentle with yourself. You are a child of the universe.", a:"Max Ehrmann"}
   ];
-  var d = new Date();
-  var dayIndex = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 86400000);
-  var t = QUOTES[dayIndex % QUOTES.length];
-  document.getElementById('q-text').textContent = '"' + t.q + '"';
-  document.getElementById('q-author').textContent = '\u2014 ' + t.a;
 
-  // ── Picks — edit here (img optional; gradient shows if empty) ──
-  var PICKS = {
-    eat: [
-      { t:"Perilla oil makguksu", s:"cold, nutty, weirdly light", area:"Seongsu", e:"🍜", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
-      { t:"Temple food, no temple", s:"vegan by tradition · under ₩12,000", area:"Mangwon", e:"🥬", g:"linear-gradient(155deg,#F8D8C8,#E095AE)" },
-      { t:"One-bowl bibim spots", s:"the office-worker lunch move", area:"Euljiro", e:"🥣", g:"linear-gradient(155deg,#F8C8DA,#D0739A)" },
-      { t:"Late-night gimbap done right", s:"what locals actually order", area:"Yeonnam", e:"🍙", g:"linear-gradient(155deg,#FBE3EC,#F0AEC4)" }
-    ],
-    beauty: [
-      { t:"The quiet sauna", s:"women-only · scrub is the point", area:"Hannam", e:"🧖‍♀️", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
-      { t:"Glass skin, the boring way", s:"what derm clinics actually say", area:"Gangnam", e:"💧", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" },
-      { t:"Pharmacy skincare haul", s:"the ₩30,000 starter list", area:"Olive Young", e:"🧴", g:"linear-gradient(155deg,#FBD4D0,#D0739A)" },
-      { t:"Scalp care is the new skincare", s:"why every salon offers it now", area:"Cheongdam", e:"💆‍♀️", g:"linear-gradient(155deg,#F0AEC4,#C05A82)" }
-    ],
-    body: [
-      { t:"Han River 5k that doesn't feel like one", s:"week 1 of the Body program", area:"Jamwon", e:"🏃‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
-      { t:"Pilates, booked like a local", s:"apps, prices, etiquette", area:"Citywide", e:"🤸‍♀️", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
-      { t:"Mountain before brunch", s:"the 2-hour Inwangsan loop", area:"Seochon", e:"⛰️", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
-      { t:"Stretching cafés exist here", s:"yes, really — how they work", area:"Seongsu", e:"🧘‍♀️", g:"linear-gradient(155deg,#FBE3EC,#D0739A)" }
-    ],
-    trend: [
-      { t:"Perfume cocktail bars", s:"top, heart, base notes — in a glass", area:"Apgujeong", e:"🍸", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
-      { t:"Zero-sugar everything", s:"the convenience store takeover", area:"Everywhere", e:"🥤", g:"linear-gradient(155deg,#F8C8DA,#F0AEC4)" },
-      { t:"Wellness pop-ups of the month", s:"what's open right now", area:"Seongsu·Hannam", e:"📍", g:"linear-gradient(155deg,#FBD4D0,#E095AE)" },
-      { t:"The quiet-luxury gym wave", s:"why memberships went members-only", area:"Dosan", e:"🏋️‍♀️", g:"linear-gradient(155deg,#F0AEC4,#A8305C)" }
-    ]
+  var CATS = {
+    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://picsum.photos/seed/skinnyeat/900/500" },
+    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://picsum.photos/seed/skinnybeauty/900/500" },
+    body:   { name:"Body",   em:"🌿", tag:"4-week programs",         desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", img:"https://picsum.photos/seed/skinnybody/900/500" },
+    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", img:"https://picsum.photos/seed/skinnytrend/900/500" }
   };
 
-  // ── Trending Now — ranked feed ──
-  var TRENDING = [
-    { k:"Trend · Apgujeong", t:"Perfume cocktail bars are spreading across Asia — Seoul's are the originals", p:"Top, heart, base notes. You smell it before you sip it.", e:"🍸", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
-    { k:"Beauty · Hannam", t:"The women-only sauna that isn't in any guidebook", p:"The 세신 scrub: 30 minutes, one layer newer.", e:"🧖‍♀️", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
-    { k:"Eat · Seongsu", t:"Perilla oil makguksu — the bowl every grandma approves of", p:"Go before 11:30. The noon line is office workers, not tourists.", e:"🍜", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
-    { k:"Body · Han River", t:"The 7am Jamwon–Banpo loop, and why Koreans run early", p:"Flat, shaded, ends in banana milk.", e:"🏃‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
-    { k:"Beauty · Gangnam", t:"Glass skin, according to actual dermatologists here", p:"Sunscreen, sleep, one active. The 10-step routine is for export.", e:"💧", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" }
+  var HOODS = [
+    { id:"all",       name:"All Seoul",  emoji:"🗺️", note:"2.4K+ picks" },
+    { id:"seongsu",   name:"Seongsu",    emoji:"🏭", note:"48 picks" },
+    { id:"hannam",    name:"Hannam",     emoji:"🕯️", note:"31 picks" },
+    { id:"apgujeong", name:"Apgujeong",  emoji:"🍸", note:"27 picks" },
+    { id:"gangnam",   name:"Gangnam",    emoji:"💧", note:"39 picks" },
+    { id:"yeonnam",   name:"Yeonnam",    emoji:"🍙", note:"22 picks" },
+    { id:"mangwon",   name:"Mangwon",    emoji:"🥬", note:"18 picks" }
   ];
 
-  function renderCards(cat) {
-    var wrap = document.getElementById('cards');
+  var PICKS = [
+    { cat:"eat", hood:"seongsu", t:"Perilla oil makguksu", loc:"Seongsu", meta:"6 min from Seongsu Stn · from ₩9,000", e:"🍜", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
+    { cat:"beauty", hood:"hannam", t:"The quiet sauna", loc:"Hannam", meta:"women-only · cash · scrub ₩25,000", e:"🧖‍♀️", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
+    { cat:"body", hood:"seongsu", t:"Stretching cafés exist here", loc:"Seongsu", meta:"walk-in OK · from ₩15,000", e:"🧘‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
+    { cat:"trend", hood:"apgujeong", t:"Perfume cocktail bars", loc:"Apgujeong", meta:"reservation apps only", e:"🍸", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
+    { cat:"eat", hood:"mangwon", t:"Temple food, no temple", loc:"Mangwon", meta:"vegan · under ₩12,000", e:"🥬", g:"linear-gradient(155deg,#F8D8C8,#E095AE)" },
+    { cat:"beauty", hood:"gangnam", t:"Glass skin, the boring way", loc:"Gangnam", meta:"derm-approved clinic list", e:"💧", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" },
+    { cat:"eat", hood:"yeonnam", t:"Late-night gimbap done right", loc:"Yeonnam", meta:"open til 2am", e:"🍙", g:"linear-gradient(155deg,#FBE3EC,#F0AEC4)" },
+    { cat:"body", hood:"gangnam", t:"Han River 5k that doesn't feel like one", loc:"Jamwon", meta:"7am start · flat & shaded", e:"🏃‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
+    { cat:"trend", hood:"seongsu", t:"Wellness pop-ups of the month", loc:"Seongsu", meta:"what's open right now", e:"📍", g:"linear-gradient(155deg,#FBD4D0,#E095AE)" },
+    { cat:"beauty", hood:"gangnam", t:"Scalp care is the new skincare", loc:"Cheongdam", meta:"why every salon offers it", e:"💆‍♀️", g:"linear-gradient(155deg,#F0AEC4,#C05A82)" }
+  ];
+
+  var TRENDING = [
+    { k:"TREND · APGUJEONG", dist:"Apgujeong Rodeo Stn 400m", t:"Perfume cocktail bars are spreading across Asia", p:"Top, heart, base notes. You smell it before you sip it.", e:"🍸" },
+    { k:"BEAUTY · HANNAM", dist:"Hangangjin Stn 650m", t:"The women-only sauna that isn't in any guidebook", p:"The seshin scrub: 30 minutes, one layer newer.", e:"🧖‍♀️" },
+    { k:"EAT · SEONGSU", dist:"Seongsu Stn 350m", t:"Perilla oil makguksu — grandma approved", p:"Go before 11:30. The noon line is office workers.", e:"🍜" },
+    { k:"BODY · HAN RIVER", dist:"Jamwon exit 4", t:"The 7am Jamwon–Banpo loop", p:"Flat, shaded, ends in banana milk.", e:"🏃‍♀️" },
+    { k:"BEAUTY · GANGNAM", dist:"Sinnonhyeon Stn 300m", t:"Glass skin, according to actual dermatologists", p:"Sunscreen, sleep, one active. The rest is export.", e:"💧" }
+  ];
+
+  // ═══ ROUTER ═════════════════════════════════════════════════════
+  var state = { hood:"all", q:"", catHood:"all", curCat:null };
+
+  function go(view, arg) {
+    if (view === 'entry') location.hash = '#/';
+    else if (view === 'home') location.hash = '#/home';
+    else if (view === 'cat') location.hash = '#/c/' + arg;
+  }
+
+  function route() {
+    var h = location.hash || '#/';
+    var views = { entry: document.getElementById('view-entry'), home: document.getElementById('view-home'), cat: document.getElementById('view-cat') };
+    Object.keys(views).forEach(function (k) { views[k].classList.remove('on'); });
+
+    var mCat = h.match(/^#\/c\/(\w+)/);
+    if (mCat && CATS[mCat[1]]) {
+      state.curCat = mCat[1]; state.catHood = "all";
+      renderCatPage();
+      views.cat.classList.add('on');
+    } else if (h === '#/home' || sessionStorage.getItem('entered') === '1' && h === '#/') {
+      if (h === '#/') { location.hash = '#/home'; return; }
+      views.home.classList.add('on');
+    } else {
+      views.entry.classList.add('on');
+    }
+    if (h === '#/home') sessionStorage.setItem('entered', '1');
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+
+  // ═══ RENDER ═════════════════════════════════════════════════════
+  var d = new Date();
+  var dayIndex = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 86400000);
+  var tq = QUOTES[dayIndex % QUOTES.length];
+  document.getElementById('q-text').textContent = tq.q;
+  document.getElementById('q-author').textContent = tq.a + " \u00B7 Today's thought";
+
+  function pcardHTML(p) {
+    return '<div class="bg" style="background:' + p.g + '">' +
+      (p.img ? '<img src="' + p.img + '" alt="' + p.t + '" loading="lazy">' : p.e) +
+      '</div><div class="scrim"></div>' +
+      '<span class="cat">' + p.cat + '</span>' +
+      '<div class="info"><h3>' + p.t + '</h3>' +
+      '<div class="loc">📍 ' + p.loc + ', Seoul</div>' +
+      (p.meta ? '<div class="meta">' + p.meta + '</div>' : '') + '</div>';
+  }
+
+  function renderHoods(elId, activeKey, onPick) {
+    var wrap = document.getElementById(elId);
     wrap.innerHTML = "";
-    (PICKS[cat] || []).forEach(function (c) {
-      var el = document.createElement('div');
-      el.className = "card";
-      el.innerHTML =
-        '<div class="thumb" style="background:' + c.g + '">' +
-          (c.img ? '<img src="' + c.img + '" alt="' + c.t + '" loading="lazy">' : c.e) +
-          '<span class="area">' + c.area + '</span>' +
-        '</div>' +
-        '<h3>' + c.t + '</h3>' +
-        '<p>' + c.s + '</p>';
+    HOODS.forEach(function (h) {
+      var el = document.createElement('button');
+      el.className = "hood" + (state[activeKey] === h.id ? " active" : "");
+      el.innerHTML = '<div class="tile">' + h.emoji + '</div><h4>' + h.name + '</h4><p>' + h.note + '</p>';
+      el.addEventListener('click', function () { state[activeKey] = h.id; onPick(); });
       wrap.appendChild(el);
     });
-    wrap.scrollLeft = 0;
+  }
+
+  function renderHome() {
+    renderHoods('hoods', 'hood', renderHome);
+    var wrap = document.getElementById('cards');
+    var empty = document.getElementById('cards-empty');
+    wrap.innerHTML = ""; var shown = 0;
+    PICKS.forEach(function (p) {
+      if (state.hood !== "all" && p.hood !== state.hood) return;
+      if (state.q) {
+        var hay = (p.t + " " + p.loc + " " + (p.meta || "") + " " + p.cat).toLowerCase();
+        if (hay.indexOf(state.q) === -1) return;
+      }
+      shown++;
+      var el = document.createElement('div');
+      el.className = "pcard";
+      el.innerHTML = pcardHTML(p);
+      el.addEventListener('click', function () { go('cat', p.cat); });
+      wrap.appendChild(el);
+    });
+    empty.style.display = shown ? "none" : "block";
+    var title = document.getElementById('picks-title');
+    if (state.hood !== "all") {
+      var h = HOODS.filter(function (x) { return x.id === state.hood; })[0];
+      title.textContent = "Picks in " + (h ? h.name : "Seoul");
+    } else title.textContent = "This week's picks";
   }
 
   function renderFeed() {
     var wrap = document.getElementById('feed');
+    wrap.innerHTML = "";
     TRENDING.forEach(function (f, i) {
       var el = document.createElement('a');
-      el.className = "feed-item";
-      el.href = "#join";
-      el.innerHTML =
-        '<div class="num">' + (i + 1) + '</div>' +
-        '<div class="txt">' +
-          '<div class="kicker">' + f.k + '</div>' +
-          '<h3>' + f.t + '</h3>' +
-          '<p>' + f.p + '</p>' +
-        '</div>' +
-        '<div class="fthumb" style="background:' + f.g + '">' +
-          (f.img ? '<img src="' + f.img + '" alt="" loading="lazy">' : f.e) +
-        '</div>';
+      el.className = "feed-item"; el.href = "#join-home";
+      el.innerHTML = '<div class="num">' + (i + 1) + '</div>' +
+        '<div class="txt"><div class="kicker-row"><span class="kicker">' + f.k + '</span>' +
+        (f.dist ? '<span class="dist">📍 ' + f.dist + '</span>' : '') + '</div>' +
+        '<h3>' + f.t + '</h3><p>' + f.p + '</p></div>' +
+        '<div class="fthumb">' + (f.img ? '<img src="' + f.img + '" alt="" loading="lazy">' : f.e) + '</div>';
       wrap.appendChild(el);
     });
   }
 
-  // ── 구글 시트 연동 ─────────────────────────────────────────────
-  // 시트: https://docs.google.com/spreadsheets/d/1FtW96csH5-p38TJyMb7JJd_stepndnncITlkNHXGcGc
-  // "Site" 탭을 CSV로 읽어옴. 시트 공유가 '링크가 있는 모든 사용자-뷰어' 이상이어야 함.
-  // 시트를 못 읽으면 위의 기본(PICKS/TRENDING) 내용이 그대로 표시됨.
+  function renderCatPage() {
+    var c = CATS[state.curCat];
+    if (!c) return;
+    document.getElementById('cat-title').innerHTML = c.em + ' <em>' + c.name + '</em>';
+    document.getElementById('cat-desc').textContent = c.desc;
+    document.getElementById('cat-img').src = c.img;
+    renderHoods('cat-hoods', 'catHood', renderCatPage);
+    var wrap = document.getElementById('cat-cards');
+    var empty = document.getElementById('cat-empty');
+    wrap.innerHTML = ""; var shown = 0;
+    PICKS.forEach(function (p) {
+      if (p.cat !== state.curCat) return;
+      if (state.catHood !== "all" && p.hood !== state.catHood) return;
+      shown++;
+      var el = document.createElement('div');
+      el.className = "pcard";
+      el.innerHTML = pcardHTML(p);
+      wrap.appendChild(el);
+    });
+    empty.style.display = shown ? "none" : "block";
+    document.getElementById('cat-picks-title').textContent =
+      state.catHood === "all" ? "All " + c.name.toLowerCase() + " picks" :
+      c.name + " in " + HOODS.filter(function (x) { return x.id === state.catHood; })[0].name;
+  }
+
+  document.getElementById('search-input').addEventListener('input', function (e) {
+    state.q = e.target.value.trim().toLowerCase();
+    renderHome();
+  });
+
+  // ═══ GOOGLE SHEET (기존 시트 그대로) ═════════════════════════════
   var SHEET_ID = "1FtW96csH5-p38TJyMb7JJd_stepndnncITlkNHXGcGc";
   var SHEET_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&sheet=Site";
 
-  // 구글 드라이브 공유 링크 → 이미지 주소 자동 변환 (일반 URL은 그대로)
   function toImageUrl(link) {
     link = (link || "").trim();
     var m = link.match(/\/d\/([-\w]{20,})/) || link.match(/[?&]id=([-\w]{20,})/);
     if (m) return "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1600";
     return link;
   }
-
-  // 간단 CSV 파서 (따옴표 안 쉼표/줄바꿈 처리)
   function parseCSV(text) {
     var rows = [], row = [], cur = "", inQ = false;
     for (var i = 0; i < text.length; i++) {
@@ -408,97 +616,51 @@
     if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
     return rows;
   }
+  var GRADS = { eat:"linear-gradient(155deg,#FBD4D0,#F0AEC4)", beauty:"linear-gradient(155deg,#F8C8DA,#E095AE)", body:"linear-gradient(155deg,#F0AEC4,#D0739A)", trend:"linear-gradient(155deg,#E8AFC4,#C05A82)" };
+  var EMOJIS = { eat:"🍜", beauty:"✨", body:"🌿", trend:"📈" };
 
-  // 카테고리별 기본 그라데이션/이모지 (이미지 없을 때)
-  var CAT_STYLE = {
-    eat:    { e:"🍜", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
-    beauty: { e:"✨", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
-    body:   { e:"🌿", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
-    trend:  { e:"📈", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" }
-  };
-
-  function loadSheet() {
-    fetch(SHEET_URL)
-      .then(function (r) { if (!r.ok) throw new Error("sheet"); return r.text(); })
-      .then(function (text) {
-        var rows = parseCSV(text);
-        if (rows.length < 2) return;
-        var h = rows[0].map(function (x) { return x.trim().toLowerCase(); });
-        var iType = h.indexOf("type"), iCat = h.indexOf("category"),
-            iTitle = h.indexOf("title"), iSub = h.indexOf("subtitle"),
-            iArea = h.indexOf("area"), iImg = h.indexOf("image_link"),
-            iShow = h.indexOf("show"), iOrder = h.indexOf("order");
-        if (iType < 0 || iTitle < 0) return;
-
-        var newPicks = { eat: [], beauty: [], body: [], trend: [] };
-        var newTrending = [];
-        var heroImg = "";
-
-        rows.slice(1).forEach(function (r) {
-          function g(i) { return i >= 0 && r[i] ? r[i].trim() : ""; }
-          if (g(iShow).toLowerCase() !== "yes") return;
-          var type = g(iType).toLowerCase();
-          var img = toImageUrl(g(iImg));
-          var order = parseFloat(g(iOrder)) || 999;
-
-          if (type === "hero") {
-            if (img && !heroImg) heroImg = img;
-          } else if (type === "pick") {
-            var cat = g(iCat).toLowerCase();
-            if (!newPicks[cat]) return;
-            var st = CAT_STYLE[cat];
-            newPicks[cat].push({ t: g(iTitle), s: g(iSub), area: g(iArea),
-              e: st.e, g: st.g, img: img || null, _o: order });
-          } else if (type === "trending") {
-            newTrending.push({ k: g(iArea), t: g(iTitle), p: g(iSub),
-              e: "🌸", g: "linear-gradient(155deg,#F8C8DA,#E095AE)", img: img || null, _o: order });
-          }
-        });
-
-        var hasPicks = Object.keys(newPicks).some(function (k) { return newPicks[k].length; });
-        if (hasPicks) {
-          Object.keys(newPicks).forEach(function (k) {
-            newPicks[k].sort(function (a, b) { return a._o - b._o; });
-          });
-          PICKS = newPicks;
-          var activeChip = document.querySelector('.chip.active');
-          renderCards(activeChip ? activeChip.dataset.cat : 'eat');
+  fetch(SHEET_URL)
+    .then(function (r) { if (!r.ok) throw new Error("sheet"); return r.text(); })
+    .then(function (text) {
+      var rows = parseCSV(text);
+      if (rows.length < 2) return;
+      var h = rows[0].map(function (x) { return x.trim().toLowerCase(); });
+      var iType = h.indexOf("type"), iCat = h.indexOf("category"), iTitle = h.indexOf("title"),
+          iSub = h.indexOf("subtitle"), iArea = h.indexOf("area"), iImg = h.indexOf("image_link"),
+          iShow = h.indexOf("show"), iOrder = h.indexOf("order");
+      if (iType < 0 || iTitle < 0) return;
+      var newPicks = [], newTrending = [], heroImg = "";
+      rows.slice(1).forEach(function (r) {
+        function g(i) { return i >= 0 && r[i] ? r[i].trim() : ""; }
+        if (g(iShow).toLowerCase() !== "yes") return;
+        var type = g(iType).toLowerCase();
+        var img = toImageUrl(g(iImg));
+        var order = parseFloat(g(iOrder)) || 999;
+        if (type === "hero") { if (img && !heroImg) heroImg = img; }
+        else if (type === "pick") {
+          var cat = g(iCat).toLowerCase();
+          newPicks.push({ cat: cat, hood: g(iArea).toLowerCase().replace(/[^a-z]/g, ""),
+            t: g(iTitle), loc: g(iArea), meta: g(iSub),
+            e: EMOJIS[cat] || "🌸", g: GRADS[cat] || GRADS.eat, img: img || null, _o: order });
+        } else if (type === "trending") {
+          newTrending.push({ k: g(iArea).toUpperCase(), t: g(iTitle), p: g(iSub), e: "🌸", img: img || null, _o: order });
         }
-        if (newTrending.length) {
-          newTrending.sort(function (a, b) { return a._o - b._o; });
-          TRENDING = newTrending;
-          document.getElementById('feed').innerHTML = "";
-          renderFeed();
-        }
-        if (heroImg) {
-          var hw = document.getElementById('hero-img');
-          hw.innerHTML = '<img src="' + heroImg + '" alt="">';
-        }
-      })
-      .catch(function () { /* 시트를 못 읽으면 기본 내용 유지 */ });
-  }
-
-  renderCards('eat');
-  renderFeed();
-  loadSheet();
-
-  document.querySelectorAll('.chip').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('.chip').forEach(function (b) {
-        b.classList.remove('active'); b.setAttribute('aria-selected', 'false');
       });
-      btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
-      renderCards(btn.dataset.cat);
-    });
-  });
+      if (newPicks.length) { newPicks.sort(function (a, b) { return a._o - b._o; }); PICKS = newPicks; }
+      if (newTrending.length) { newTrending.sort(function (a, b) { return a._o - b._o; }); TRENDING = newTrending; }
+      if (heroImg) document.getElementById('hero-img').innerHTML = '<img src="' + heroImg + '" alt="">';
+      renderHome(); renderFeed();
+      if (state.curCat) renderCatPage();
+    })
+    .catch(function () { /* 시트를 못 읽으면 기본 콘텐츠 유지 */ });
 
-  // ── Old PWA cleanup (keeps visitors off the cached old site) ──
+  // ═══ INIT ═══════════════════════════════════════════════════════
+  renderHome(); renderFeed(); route();
+
+  // Old PWA cleanup
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations()
-      .then(function(rs){ rs.forEach(function(r){ r.unregister(); }); });
-    if (window.caches) {
-      caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); });
-    }
+    navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ r.unregister(); }); });
+    if (window.caches) caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); });
   }
 </script>
 </body>
