@@ -6,7 +6,7 @@
 <title>Skinny-us — Skinny Genius</title>
 <meta name="description" content="Wellness picks curated by locals. Korea live now — more countries coming.">
 <meta name="theme-color" content="#FFFFFF">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,550;1,9..144,450;1,9..144,550&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Yellowtail&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -43,30 +43,30 @@
   .entry .bg img { width: 100%; height: 100%; object-fit: cover; }
   .entry .bg::after {
     content:""; position: absolute; inset: 0;
-    background: linear-gradient(185deg, rgba(248,200,218,0.25) 0%, rgba(168,48,92,0.45) 55%, rgba(122,26,58,0.85) 100%);
+    background: linear-gradient(185deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.82) 100%);
   }
   .entry > * { position: relative; width: 100%; }
-  .entry .wordmark { margin-bottom: 32px; font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:#fff; text-shadow:0 1px 8px rgba(122,26,58,0.5); }
-  .entry .wordmark em { font-style: italic; }
+  .entry .wordmark { margin-bottom: 32px; font-family:'Yellowtail',cursive; font-weight:400; font-size:30px; color:#fff; text-shadow:0 1px 8px rgba(0,0,0,0.5); }
+  .entry .wordmark em { font-style: normal; }
   .entry .wordmark .slogan {
     display:block; margin-top:3px;
-    font-family:'Inter',sans-serif; font-size:10px; font-weight:600;
-    letter-spacing:0.22em; text-transform:uppercase;
-    color:rgba(255,255,255,0.88); text-shadow:0 1px 4px rgba(122,26,58,0.45);
+    font-family:'Space Mono',monospace; font-size:10px; font-weight:700;
+    letter-spacing:0.28em; text-transform:uppercase;
+    color:rgba(255,255,255,0.88); text-shadow:0 1px 4px rgba(0,0,0,0.5);
   }
   .entry h1 {
-    font-family:'Fraunces',serif; font-weight:550; font-size: clamp(38px,10vw,50px);
-    line-height:1.06; letter-spacing:-1px; color:#fff; text-shadow:0 2px 14px rgba(122,26,58,0.5);
+    font-family:'Yellowtail',cursive; font-weight:400; font-size: clamp(42px,11vw,58px);
+    line-height:1.2; letter-spacing:0; color:#fff; text-shadow:0 2px 14px rgba(0,0,0,0.5);
   }
-  .entry h1 em { font-style: italic; }
-  .entry .lede { font-size:14.5px; font-weight:500; color:rgba(255,255,255,0.94); margin:14px 0 24px; text-shadow:0 1px 4px rgba(122,26,58,0.5); }
+  .entry h1 em { font-style: normal; }
+  .entry .lede { font-family:'Space Mono',monospace; font-size:11.5px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; line-height:1.7; color:rgba(255,255,255,0.94); margin:14px 0 24px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
 
   .countries { display:flex; flex-direction:column; gap:10px; margin:0 auto 22px; width:100%; max-width:460px; }
   .country {
     display:flex; align-items:center; gap:13px; width:100%;
     padding:14px 16px; border-radius:20px; border:none; cursor:pointer; text-align:left;
-    background: rgba(255,255,255,0.94);
-    box-shadow: 0 10px 26px rgba(122,26,58,0.25);
+    background: rgba(255,255,255,0.96);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.3);
     transition: transform .15s;
   }
   .country:not(.tbd):hover { transform: translateY(-2px); }
@@ -75,19 +75,19 @@
   .country .txt b { display:block; font-size:15px; color:var(--ink); }
   .country .txt span { font-size:11.5px; color:var(--ink-mid); font-weight:500; }
   .country .go { font-size:16px; color:var(--ink-soft); }
-  .country.tbd { background: rgba(255,255,255,0.35); backdrop-filter: blur(6px); cursor: default; box-shadow:none; }
-  .country.tbd .txt b, .country.tbd .go { color: rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(122,26,58,0.4); }
-  .country.tbd .txt span { color: rgba(255,255,255,0.8); text-shadow:0 1px 3px rgba(122,26,58,0.4); }
+  .country.tbd { background: rgba(255,255,255,0.22); border:1px solid rgba(255,255,255,0.3); backdrop-filter: blur(6px); cursor: default; box-shadow:none; }
+  .country.tbd .txt b, .country.tbd .go { color: rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.4); }
+  .country.tbd .txt span { color: rgba(255,255,255,0.75); text-shadow:0 1px 3px rgba(0,0,0,0.4); }
   .country .soon {
     font-size:9.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
     color:#fff; background:rgba(168,48,92,0.55); padding:4px 10px; border-radius:999px;
   }
-  .entry .fine { font-size:11px; color:rgba(255,255,255,0.8); text-align:center; text-shadow:0 1px 3px rgba(122,26,58,0.4); }
+  .entry .fine { font-size:11px; color:rgba(255,255,255,0.8); text-align:center; text-shadow:0 1px 3px rgba(0,0,0,0.4); }
   .entry .entry-join {
     display:block; width:100%; max-width:460px; margin:0 auto 18px;
     text-decoration:none; text-align:center;
     font-size:14px; font-weight:700; color:#fff;
-    padding:14px; border-radius:999px;
+    padding:14px 16px; border-radius:20px;
     background:linear-gradient(155deg,var(--g2),var(--g3));
     box-shadow:0 12px 26px rgba(122,26,58,0.3);
     text-shadow:0 1px 2px rgba(180,90,120,0.35);
@@ -101,14 +101,14 @@
     background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
   }
-  .topbar .wordmark { font-family:'Fraunces',serif; font-weight:550; font-size:19px; color:var(--ink); cursor:pointer; }
+  .topbar .wordmark { font-family:'Yellowtail',cursive; font-weight:400; font-size:24px; color:var(--ink); cursor:pointer; }
   .topbar .backchip {
     display:flex; align-items:center; justify-content:center;
     width:32px; height:32px; border-radius:50%; border:1px solid var(--line); cursor:pointer;
     background:var(--cream); color:var(--ink); font-size:15px; line-height:1; padding:0;
   }
   .topbar .tb-left { display:flex; align-items:center; gap:9px; }
-  .topbar .wordmark em { font-style:italic; color:var(--ink-soft); }
+  .topbar .wordmark em { font-style:normal; color:var(--ink-soft); }
   .topbar .where {
     display:flex; align-items:center; gap:6px; cursor:pointer; border:none;
     font-size:11.5px; font-weight:700; color:var(--ink);
@@ -135,14 +135,14 @@
   .hero .img img { width:100%; height:100%; object-fit:cover; }
   .hero .img::after {
     content:""; position:absolute; inset:0;
-    background: linear-gradient(180deg, rgba(168,48,92,0.35), rgba(168,48,92,0.6));
+    background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.62));
   }
   .hero > *:not(.img) { position: relative; }
-  .hero .greet { font-size:12.5px; font-weight:600; color:rgba(255,255,255,0.92); text-shadow:0 1px 3px rgba(122,26,58,0.4); }
+  .hero .greet { font-family:'Space Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.92); text-shadow:0 1px 3px rgba(0,0,0,0.45); }
   .hero h1 {
-    font-family:'Fraunces',serif; font-weight:550; font-style:italic;
-    font-size: clamp(29px,7.8vw,36px); line-height:1.12; color:#fff;
-    text-shadow: 0 2px 10px rgba(122,26,58,0.45); margin:5px 0 16px;
+    font-family:'Yellowtail',cursive; font-weight:400; font-style:normal;
+    font-size: clamp(34px,9vw,44px); line-height:1.25; color:#fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5); margin:5px 0 16px;
   }
   .search {
     display:flex; align-items:center; gap:10px; width:100%; max-width:520px; margin:0 auto;
@@ -161,12 +161,12 @@
     background:none; border:none; border-left:2px solid var(--g2); padding-left:15px; border-radius:0;
   }
   .quote-strip .mark { display:none; }
-  .quote-strip .q { font-family:'Fraunces',serif; font-style:italic; font-size:13.5px; line-height:1.45; color:var(--ink-mid); }
+  .quote-strip .q { font-family:'Yellowtail',cursive; font-weight:400; font-size:17px; line-height:1.5; color:var(--ink-mid); }
   .quote-strip .a { font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:4px; }
 
   /* Sections */
   .sec-head { display:flex; align-items:baseline; justify-content:space-between; padding:0 20px; margin:30px 0 14px; }
-  .sec-head h2 { font-family:'Fraunces',serif; font-weight:550; font-size:20px; letter-spacing:-0.3px; }
+  .sec-head h2 { font-family:'Space Mono',monospace; font-weight:700; font-size:13px; letter-spacing:0.16em; text-transform:uppercase; }
   .sec-head .more { font-size:12px; font-weight:600; color:var(--ink-soft); text-decoration:none; background:none; border:none; cursor:pointer; }
 
   /* Category tiles (home) */
@@ -211,15 +211,15 @@
   .pcard:hover { transform:translateY(-4px); }
   .pcard .bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:56px; }
   .pcard .bg img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-  .pcard .scrim { position:absolute; inset:0; background:linear-gradient(180deg, rgba(168,48,92,0) 38%, rgba(168,48,92,0.74) 100%); }
+  .pcard .scrim { position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(0,0,0,0.72) 100%); }
   .pcard .cat {
     position:absolute; top:11px; left:11px;
     font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
     color:var(--ink); background:rgba(255,255,255,0.92); padding:5px 10px; border-radius:999px;
   }
   .pcard .info { position:relative; padding:13px 14px; width:100%; }
-  .pcard .info h3 { font-size:14.5px; font-weight:700; line-height:1.28; color:#fff; text-shadow:0 1px 4px rgba(122,26,58,0.45); }
-  .pcard .info .loc { display:flex; align-items:center; gap:4px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.92); margin-top:4px; text-shadow:0 1px 3px rgba(122,26,58,0.45); }
+  .pcard .info h3 { font-size:14.5px; font-weight:700; line-height:1.28; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,0.45); }
+  .pcard .info .loc { display:flex; align-items:center; gap:4px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.92); margin-top:4px; text-shadow:0 1px 3px rgba(0,0,0,0.45); }
   .pcard .info .meta { font-size:10px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px; }
 
   /* Category page header */
@@ -232,17 +232,17 @@
   }
   .cat-hero .img { position:absolute; inset:0; }
   .cat-hero .img img { width:100%; height:100%; object-fit:cover; }
-  .cat-hero .img::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(168,48,92,0.4), rgba(168,48,92,0.62)); }
+  .cat-hero .img::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.6)); }
   .cat-hero > *:not(.img) { position:relative; }
   .cat-hero .back {
     position:absolute; top:14px; left:var(--gx); z-index:2;
     display:inline-flex; align-items:center; gap:6px; border:none; cursor:pointer;
     font-size:12px; font-weight:700; color:var(--ink);
-    background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px;
+    background:rgba(255,255,255,0.94); border:1px solid var(--line); padding:8px 15px; border-radius:999px;
   }
-  .cat-hero h1 { font-family:'Fraunces',serif; font-weight:550; font-size:32px; color:#fff; text-shadow:0 2px 10px rgba(122,26,58,0.45); }
-  .cat-hero h1 em { font-style:italic; }
-  .cat-hero p { font-size:13px; font-weight:500; color:rgba(255,255,255,0.92); margin-top:6px; text-shadow:0 1px 4px rgba(122,26,58,0.45); }
+  .cat-hero h1 { font-family:'Yellowtail',cursive; font-weight:400; font-size:40px; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,0.5); }
+  .cat-hero h1 em { font-style:normal; }
+  .cat-hero p { font-size:13px; font-weight:500; color:rgba(255,255,255,0.92); margin-top:6px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
 
   /* Trending */
   .feed-item {
@@ -250,7 +250,7 @@
     border-top:1px solid var(--line); text-decoration:none; color:inherit;
   }
   .feed-item:last-of-type { border-bottom:1px solid var(--line); }
-  .feed-item .num { font-family:'Fraunces',serif; font-style:italic; font-size:19px; color:var(--ink-soft); width:24px; flex-shrink:0; padding-top:2px; }
+  .feed-item .num { font-family:'Space Mono',monospace; font-weight:700; font-size:15px; color:var(--ink-soft); width:24px; flex-shrink:0; padding-top:3px; }
   .feed-item .txt { flex:1; }
   .feed-item .kicker-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
   .feed-item .kicker { font-size:9.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
@@ -274,8 +274,8 @@
     background: linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3));
     box-shadow: 0 22px 48px rgba(224,149,174,0.45), inset 0 2px 4px rgba(255,255,255,0.5);
   }
-  .join h2 { font-family:'Fraunces',serif; font-weight:550; font-size:25px; color:#fff; text-shadow:0 2px 6px rgba(168,48,92,0.35); line-height:1.16; }
-  .join h2 em { font-style:italic; }
+  .join h2 { font-family:'Yellowtail',cursive; font-weight:400; font-size:30px; color:#fff; text-shadow:0 2px 6px rgba(168,48,92,0.35); line-height:1.3; }
+  .join h2 em { font-style:normal; }
   .join .sub { font-size:12.5px; color:rgba(255,255,255,0.92); margin:10px 0 18px; text-shadow:0 1px 3px rgba(168,48,92,0.3); }
   .join .cta {
     display:inline-block; text-decoration:none;
@@ -296,8 +296,8 @@
     min-height:170px; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; text-align:center;
     background: linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3));
   }
-  .join-hero h1 { font-family:'Fraunces',serif; font-weight:550; font-size:30px; color:#fff; text-shadow:0 2px 8px rgba(168,48,92,0.35); line-height:1.15; }
-  .join-hero h1 em { font-style:italic; }
+  .join-hero h1 { font-family:'Yellowtail',cursive; font-weight:400; font-size:38px; color:#fff; text-shadow:0 2px 8px rgba(168,48,92,0.35); line-height:1.25; }
+  .join-hero h1 em { font-style:normal; }
   .join-hero p { font-size:13px; font-weight:500; color:rgba(255,255,255,0.94); margin-top:8px; text-shadow:0 1px 3px rgba(168,48,92,0.3); }
   .planlist { display:flex; flex-direction:column; gap:12px; padding:24px 20px 4px; max-width:520px; margin:0 auto; }
   .plan {
@@ -308,8 +308,8 @@
   .plan.active { border-color:var(--ink); box-shadow:0 12px 28px rgba(200,120,140,0.2); }
   .plan .p-top { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
   .plan .p-name { font-size:15px; font-weight:700; color:var(--ink); }
-  .plan .p-price { font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:var(--ink); white-space:nowrap; }
-  .plan .p-price span { font-family:'Inter',sans-serif; font-size:11px; font-weight:600; color:var(--ink-soft); }
+  .plan .p-price { font-family:'Space Mono',monospace; font-weight:700; font-size:18px; color:var(--ink); white-space:nowrap; }
+  .plan .p-price span { font-family:'Inter',sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); }
   .plan .p-desc { font-size:12px; color:var(--ink-mid); margin-top:6px; line-height:1.5; }
   .plan .p-badge {
     position:absolute; top:-9px; left:18px;
@@ -334,10 +334,11 @@
   }
   .pay-note { font-size:11px; color:var(--ink-soft); margin-top:12px; line-height:1.6; }
   .pay-paypal {
-    display:block; width:100%; margin-top:10px; text-decoration:none; text-align:center;
-    font-size:14px; font-weight:600; color:#253B80;
-    padding:14px; border-radius:999px;
-    background:#fff; border:1.5px solid var(--line);
+    display:block; width:100%; text-decoration:none; text-align:center;
+    font-size:15px; font-weight:700; color:#253B80;
+    padding:16px; border-radius:999px;
+    background:#fff; border:2px solid #253B80;
+    box-shadow:0 14px 30px rgba(200,120,140,0.3);
   }
   .pay-paypal b { color:#253B80; font-weight:800; }
   .pay-paypal i { color:#179BD7; font-style:italic; font-weight:800; }
@@ -382,7 +383,7 @@
   }
   .sheet .simg img { width:100%; height:100%; object-fit:cover; }
   .sheet .scat { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
-  .sheet h2 { font-family:'Fraunces',serif; font-weight:550; font-size:25px; letter-spacing:-0.3px; line-height:1.15; margin:4px 0 10px; }
+  .sheet h2 { font-family:'Yellowtail',cursive; font-weight:400; font-size:29px; letter-spacing:0; line-height:1.25; margin:4px 0 10px; }
   .sheet .chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px; }
   .sheet .chip {
     font-size:10.5px; font-weight:700; color:var(--ink);
@@ -405,7 +406,7 @@
   }
   .sheet .lockpanel { text-align:center; padding:26px 18px 8px; }
   .sheet .lockpanel .big { font-size:34px; }
-  .sheet .lockpanel h3 { font-family:'Fraunces',serif; font-weight:550; font-size:19px; margin:8px 0 6px; }
+  .sheet .lockpanel h3 { font-family:'Yellowtail',cursive; font-weight:400; font-size:23px; margin:8px 0 6px; }
   .sheet .lockpanel p { font-size:12.5px; color:var(--ink-mid); line-height:1.5; margin-bottom:18px; }
   .sheet .lockpanel .cta {
     display:inline-block; text-decoration:none;
@@ -462,7 +463,7 @@
     <div class="bg"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1617283458655-1ef09d4f17f2?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" alt=""></div>
     <div class="wordmark">skinny-<em>us</em><span class="slogan">Skinny Genius</span></div>
     <div>
-      <h1>Asia's wellness side,<br><em>curated.</em></h1>
+      <h1>For Skinny Genius,</h1>
       <div class="lede">Eat, beauty, body, trends — picked by locals, in English. Choose where you're headed.</div>
       <div class="countries">
         <button class="country" onclick="go('home')">
@@ -486,7 +487,7 @@
           <span class="soon">TBD</span>
         </div>
       </div>
-      <a class="entry-join" href="#/join">Join Skinny-us 🌸</a>
+      <a class="entry-join" href="#/join">Join Skinny-us</a>
       <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸</div>
     </div>
   </section>
@@ -499,7 +500,7 @@
         <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
       </span>
       <button class="where" onclick="go('entry')">🇰🇷 Seoul, Korea ▾</button>
-      <a class="join-sm" href="#/join">Join 🌸</a>
+      <a class="join-sm" href="#/join">Join</a>
     </div>
 
     <header class="hero">
@@ -565,7 +566,7 @@
     <div class="topbar">
       <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
       <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
-      <a class="join-sm" href="#/join">Join 🌸</a>
+      <a class="join-sm" href="#/join">Join</a>
     </div>
 
     <header class="cat-hero">
@@ -617,7 +618,7 @@
       </button>
       <button class="plan" data-plan="single" onclick="selectPlan('single')">
         <span class="p-check">✓</span>
-        <div class="p-top"><span class="p-name">One-trip access</span><span class="p-price">$9.90 <span>one-time</span></span></div>
+        <div class="p-top"><span class="p-name">One-trip access</span><span class="p-price">$12.00 <span>one-time</span></span></div>
         <div class="p-desc">Full list unlocked for 30 days — perfect for a single visit to Seoul. No subscription.</div>
       </button>
       <button class="plan" data-plan="consult" onclick="selectPlan('consult')">
@@ -628,11 +629,10 @@
     </div>
 
     <div class="pay-wrap">
-      <a class="pay-cta" id="pay-btn" href="STRIPE_PAYMENT_LINK_MONTHLY">Continue to payment →</a>
       <a class="pay-paypal" id="pay-paypal" href="https://www.paypal.com/ncp/payment/SYM2PFTGUDFBJ">
-        Pay with <b>Pay</b><i>Pal</i>
+        Pay with <b>Pay</b><i>Pal</i> →
       </a>
-      <div class="pay-note">Secure checkout by Stripe or PayPal · Apple Pay &amp; cards accepted<br>Instant access after payment · cancel anytime from your receipt email</div>
+      <div class="pay-note">Secure checkout by PayPal · cards accepted, no PayPal account needed<br>Instant access after payment</div>
     </div>
 
     <ul class="join-feat">
@@ -828,12 +828,6 @@
   }
 
   // ═══ JOIN / PLANS ═══════════════════════════════════════════════
-  // 실제 Stripe Payment Link로 교체하세요 (플랜별 1개씩)
-  var PLAN_LINKS = {
-    monthly: "STRIPE_PAYMENT_LINK_MONTHLY",
-    single:  "STRIPE_PAYMENT_LINK_SINGLE",
-    consult: "STRIPE_PAYMENT_LINK_CONSULT"
-  };
   // 실제 PayPal 결제 링크로 교체하세요 (예: https://paypal.me/계정명/9.99USD 또는 PayPal 결제 버튼 링크)
   var PAYPAL_LINKS = {
     monthly: "https://www.paypal.com/ncp/payment/SYM2PFTGUDFBJ",
@@ -845,7 +839,6 @@
     for (var i = 0; i < plans.length; i++) {
       plans[i].classList.toggle('active', plans[i].getAttribute('data-plan') === id);
     }
-    document.getElementById('pay-btn').setAttribute('href', PLAN_LINKS[id] || '#');
     var pp = document.getElementById('pay-paypal');
     var link = PAYPAL_LINKS[id] || '';
     // 실제 링크가 설정되기 전(placeholder 상태)에는 PayPal 버튼을 숨긴다
