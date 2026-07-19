@@ -35,9 +35,9 @@
   /* ═══ ENTRY ═══ */
   .entry {
     position: relative; min-height: 100vh; min-height: 100dvh;
-    display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+    display: flex; flex-direction: column; justify-content: space-between; align-items: center;
     text-align: center;
-    padding: 26px 26px 40px; overflow: hidden;
+    padding: 30px 26px 40px; overflow: hidden;
   }
   .entry .bg { position: absolute; inset: 0; }
   .entry .bg img { width: 100%; height: 100%; object-fit: cover; }
@@ -46,7 +46,7 @@
     background: linear-gradient(185deg, rgba(248,200,218,0.25) 0%, rgba(168,48,92,0.45) 55%, rgba(122,26,58,0.85) 100%);
   }
   .entry > * { position: relative; width: 100%; }
-  .entry .wordmark { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); width: auto; font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:#fff; text-shadow:0 1px 8px rgba(122,26,58,0.5); }
+  .entry .wordmark { margin-bottom: 32px; font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:#fff; text-shadow:0 1px 8px rgba(122,26,58,0.5); }
   .entry .wordmark em { font-style: italic; }
   .entry .wordmark .slogan {
     display:block; margin-top:3px;
