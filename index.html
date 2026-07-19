@@ -290,6 +290,36 @@
   footer .row-f { display:flex; justify-content:center; gap:14px; margin-bottom:6px; flex-wrap:wrap; }
   footer a { color:var(--ink-mid); }
 
+  /* ═══ MEMBERS GATE ═══ */
+  .gate {
+    position:fixed; inset:0; z-index:60;
+    display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
+    text-align:center; padding:40px 26px calc(52px + env(safe-area-inset-bottom));
+    background: linear-gradient(180deg,
+      rgba(253,251,247,0) 0%,
+      rgba(248,200,218,0.3) 28%,
+      rgba(240,174,196,0.8) 52%,
+      var(--g3) 76%);
+  }
+  .gate .g-brand { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(168,48,92,0.3); }
+  .gate h1 { font-family:'Yellowtail',cursive; font-weight:400; font-size:clamp(46px,12vw,64px); line-height:1.2; color:#fff; text-shadow:0 2px 12px rgba(168,48,92,0.35); margin:14px 0 20px; }
+  .gate .g-copy {
+    font-family:'Space Mono',monospace; font-size:11.5px; font-weight:400;
+    letter-spacing:0.14em; text-transform:uppercase; line-height:1.9;
+    color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(168,48,92,0.3);
+    max-width:420px; margin:0 auto 30px;
+  }
+  .gate .g-join {
+    display:block; width:100%; max-width:400px; margin:0 auto 14px;
+    text-decoration:none; text-align:center;
+    font-size:14.5px; font-weight:700; color:var(--ink);
+    padding:15px 16px; border-radius:20px;
+    background:#fff;
+    box-shadow:0 14px 30px rgba(168,48,92,0.3);
+  }
+  .gate .g-member { font-size:12px; font-weight:600; color:rgba(255,255,255,0.9); text-decoration:underline; cursor:pointer; background:none; border:none; }
+  .gate .g-back { position:absolute; top:20px; left:20px; border:none; cursor:pointer; font-size:12px; font-weight:700; color:var(--ink); background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px; }
+
   /* ═══ JOIN / PLAN PAGE ═══ */
   .join-hero {
     position:relative; overflow:hidden; margin:0; padding:40px 22px 32px;
@@ -594,6 +624,18 @@
     <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
   </section>
 
+  <!-- ═══════════ MEMBERS GATE ═══════════ -->
+  <section class="view gate" id="view-gate" style="display:none">
+    <button class="g-back" onclick="go('entry')">← Back</button>
+    <div>
+      <div class="g-brand">Skinny Genius · Seoul</div>
+      <h1>The Real List</h1>
+      <div class="g-copy">The most trendy &amp; personally curated spots in Seoul — hand-picked, tested, and listed. Members only.</div>
+      <a class="g-join" href="#/join">Join to unlock</a>
+      <button class="g-member" onclick="enterAsMember()">Already a member? Continue →</button>
+    </div>
+  </section>
+
   <!-- ═══════════ JOIN / PLAN VIEW ═══════════ -->
   <section class="view" id="view-join" style="display:none">
     <div class="topbar">
@@ -747,17 +789,31 @@
   function isLocked(p) { return p.tier === "paid" && !IS_MEMBER; }
 
   function showView(key) {
+    // 게이트는 오버레이: 뒤에 실제 홈 화면을 깔고 그 위에 그라데이션을 덮는다
+    var behind = (key === 'gate') ? 'home' : key;
     ['entry', 'home', 'cat', 'join'].forEach(function (k) {
       var el = document.getElementById('view-' + k);
       if (!el) return;
-      el.classList.toggle('on', k === key);
-      el.style.display = (k === key) ? 'block' : 'none';
+      el.classList.toggle('on', k === behind);
+      el.style.display = (k === behind) ? 'block' : 'none';
     });
+    var gate = document.getElementById('view-gate');
+    if (gate) {
+      gate.classList.toggle('on', key === 'gate');
+      gate.style.display = (key === 'gate') ? 'flex' : 'none';
+    }
+    document.body.style.overflow = (key === 'gate') ? 'hidden' : '';
     window.scrollTo(0, 0);
   }
 
   // 클릭 → 즉시 화면 전환. 해시는 뒤로가기/공유용으로만 갱신.
+  // home/cat은 멤버 전용: 비멤버는 게이트로 보낸다.
   function go(view, arg) {
+    if ((view === 'home' || view === 'cat') && !IS_MEMBER) {
+      showView('gate');
+      try { location.hash = '#/gate'; } catch (e) {}
+      return;
+    }
     if (view === 'cat') {
       state.curCat = arg; state.catHood = "all";
       renderCatPage();
@@ -775,10 +831,20 @@
     }
   }
 
+  // 실제 배포 시 기존 Members 로그인/검증 로직으로 교체할 자리.
+  // 프로토타입: 멤버 플래그를 저장하고 입장시킨다.
+  function enterAsMember() {
+    IS_MEMBER = true;
+    sSet('localStorage', 'su_member', '1');
+    go('home');
+  }
+
   function route() {
     var h = location.hash || '#/';
     var mCat = h.match(/^#\/c\/(\w+)/);
-    if (mCat && CATS[mCat[1]]) {
+    if ((mCat || h === '#/home') && !IS_MEMBER) {
+      showView('gate');
+    } else if (mCat && CATS[mCat[1]]) {
       state.curCat = mCat[1]; state.catHood = "all";
       renderCatPage();
       showView('cat');
@@ -786,6 +852,8 @@
       showView('home');
     } else if (h === '#/join') {
       showView('join');
+    } else if (h === '#/gate') {
+      showView('gate');
     } else {
       showView('entry');
     }
