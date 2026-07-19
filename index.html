@@ -14,6 +14,11 @@
     --white:#FFFFFF; --cream:#FDFBF7; --line:#F1E9E0;
     --ink:#A8305C; --ink-mid:#C05A82; --ink-soft:#D0739A;
     --g1:#F8C8DA; --g2:#F0AEC4; --g3:#E095AE;
+    --gx:20px;  /* section side padding */
+    --gm:14px;  /* hero side margin */
+  }
+  @media (min-width:760px) {
+    :root { --gx:max(28px, calc((100vw - 1040px) / 2)); --gm:max(20px, calc((100vw - 1040px) / 2)); }
   }
 
   html { scroll-behavior: smooth; }
@@ -22,7 +27,7 @@
     background: var(--white); color: var(--ink); line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
-  .phone { max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; }
+  .phone { width: 100%; margin: 0 auto; background: var(--white); min-height: 100vh; }
   .view { display: none; }
   .view.on { display: block; }
   button { font-family: inherit; }
@@ -30,7 +35,8 @@
   /* ═══ ENTRY ═══ */
   .entry {
     position: relative; min-height: 100vh; min-height: 100dvh;
-    display: flex; flex-direction: column; justify-content: flex-end;
+    display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+    text-align: center;
     padding: 26px 26px 40px; overflow: hidden;
   }
   .entry .bg { position: absolute; inset: 0; }
@@ -39,8 +45,8 @@
     content:""; position: absolute; inset: 0;
     background: linear-gradient(185deg, rgba(248,200,218,0.25) 0%, rgba(168,48,92,0.45) 55%, rgba(122,26,58,0.85) 100%);
   }
-  .entry > * { position: relative; }
-  .entry .wordmark { position: absolute; top: 26px; left: 26px; font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:#fff; text-shadow:0 1px 8px rgba(122,26,58,0.5); }
+  .entry > * { position: relative; width: 100%; }
+  .entry .wordmark { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); width: auto; font-family:'Fraunces',serif; font-weight:550; font-size:21px; color:#fff; text-shadow:0 1px 8px rgba(122,26,58,0.5); }
   .entry .wordmark em { font-style: italic; }
   .entry h1 {
     font-family:'Fraunces',serif; font-weight:550; font-size: clamp(38px,10vw,50px);
@@ -49,7 +55,7 @@
   .entry h1 em { font-style: italic; }
   .entry .lede { font-size:14.5px; font-weight:500; color:rgba(255,255,255,0.94); margin:14px 0 24px; text-shadow:0 1px 4px rgba(122,26,58,0.5); }
 
-  .countries { display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+  .countries { display:flex; flex-direction:column; gap:10px; margin:0 auto 22px; width:100%; max-width:460px; }
   .country {
     display:flex; align-items:center; gap:13px; width:100%;
     padding:14px 16px; border-radius:20px; border:none; cursor:pointer; text-align:left;
@@ -81,6 +87,12 @@
     border-bottom: 1px solid var(--line);
   }
   .topbar .wordmark { font-family:'Fraunces',serif; font-weight:550; font-size:19px; color:var(--ink); cursor:pointer; }
+  .topbar .backchip {
+    display:flex; align-items:center; justify-content:center;
+    width:32px; height:32px; border-radius:50%; border:1px solid var(--line); cursor:pointer;
+    background:var(--cream); color:var(--ink); font-size:15px; line-height:1; padding:0;
+  }
+  .topbar .tb-left { display:flex; align-items:center; gap:9px; }
   .topbar .wordmark em { font-style:italic; color:var(--ink-soft); }
   .topbar .where {
     display:flex; align-items:center; gap:6px; cursor:pointer; border:none;
@@ -98,8 +110,11 @@
   /* ═══ HOME HERO ═══ */
   .hero {
     position: relative; overflow: hidden;
-    padding: 26px 22px 30px; margin: 14px 14px 0;
-    border-radius: 30px;
+    padding: 44px 22px 36px; margin: 0;
+    border-radius: 0;
+    min-height: 240px;
+    display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+    text-align: center;
   }
   .hero .img { position:absolute; inset:0; }
   .hero .img img { width:100%; height:100%; object-fit:cover; }
@@ -115,26 +130,27 @@
     text-shadow: 0 2px 10px rgba(122,26,58,0.45); margin:5px 0 16px;
   }
   .search {
-    display:flex; align-items:center; gap:10px;
+    display:flex; align-items:center; gap:10px; width:100%; max-width:520px; margin:0 auto;
     background: rgba(255,255,255,0.97); border-radius:999px; padding:13px 17px;
     box-shadow: 0 14px 32px rgba(122,26,58,0.3);
   }
+  .search input { text-align:center; }
   .search .icon { font-size:14px; opacity:0.75; }
   .search input { flex:1; border:none; outline:none; background:none; font-family:inherit; font-size:13.5px; font-weight:500; color:var(--ink); }
   .search input::placeholder { color:var(--ink-soft); }
 
   /* Quote strip */
   .quote-strip {
-    display:flex; align-items:center; gap:13px;
-    margin:16px 20px 4px; padding:14px 17px;
-    background:var(--cream); border:1px solid var(--line); border-radius:20px;
+    display:flex; align-items:flex-start; gap:11px;
+    margin:30px 20px 6px; padding:0;
+    background:none; border:none; border-left:2px solid var(--g2); padding-left:15px; border-radius:0;
   }
-  .quote-strip .mark { font-family:'Fraunces',serif; font-size:32px; line-height:0.6; color:var(--g3); padding-top:11px; }
-  .quote-strip .q { font-family:'Fraunces',serif; font-style:italic; font-size:14px; line-height:1.4; color:var(--ink-mid); }
-  .quote-strip .a { font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:3px; }
+  .quote-strip .mark { display:none; }
+  .quote-strip .q { font-family:'Fraunces',serif; font-style:italic; font-size:13.5px; line-height:1.45; color:var(--ink-mid); }
+  .quote-strip .a { font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:4px; }
 
   /* Sections */
-  .sec-head { display:flex; align-items:baseline; justify-content:space-between; padding:0 20px; margin:24px 0 12px; }
+  .sec-head { display:flex; align-items:baseline; justify-content:space-between; padding:0 20px; margin:30px 0 14px; }
   .sec-head h2 { font-family:'Fraunces',serif; font-weight:550; font-size:20px; letter-spacing:-0.3px; }
   .sec-head .more { font-size:12px; font-weight:600; color:var(--ink-soft); text-decoration:none; background:none; border:none; cursor:pointer; }
 
@@ -146,24 +162,24 @@
     transition: transform .15s, box-shadow .15s;
   }
   .cattile:hover { transform:translateY(-3px); box-shadow:0 12px 26px rgba(200,120,140,0.16); }
-  .cattile .em { font-size:26px; display:block; margin-bottom:6px; }
+  .cattile .em { font-size:24px; display:block; margin-bottom:7px; line-height:1; }
   .cattile b { font-size:12.5px; color:var(--ink); display:block; }
   .cattile span { font-size:9.5px; color:var(--ink-soft); font-weight:600; }
 
   /* Neighborhood tiles */
-  .hoods { display:flex; gap:11px; padding:0 20px 4px; overflow-x:auto; scrollbar-width:none; }
+  .hoods { display:flex; gap:12px; padding:2px 20px 8px; overflow-x:auto; scrollbar-width:none; align-items:flex-start; }
   .hoods::-webkit-scrollbar { display:none; }
-  .hood { flex:0 0 auto; cursor:pointer; text-align:center; border:none; background:none; }
+  .hood { flex:0 0 76px; width:76px; cursor:pointer; text-align:center; border:none; background:none; padding:0; }
   .hood .tile {
-    width:66px; height:66px; border-radius:20px;
-    display:flex; align-items:center; justify-content:center; font-size:26px;
+    width:64px; height:64px; margin:0 auto; border-radius:20px;
+    display:flex; align-items:center; justify-content:center; font-size:24px;
     background: linear-gradient(155deg,var(--g1),var(--g2));
     box-shadow:0 8px 18px rgba(200,120,140,0.18);
     border:2px solid transparent; transition:border-color .15s, transform .15s;
   }
   .hood.active .tile { border-color: var(--ink); transform: translateY(-2px); }
-  .hood h4 { font-size:11px; font-weight:700; margin-top:6px; color:var(--ink); }
-  .hood p { font-size:9.5px; color:var(--ink-soft); font-weight:600; }
+  .hood h4 { font-size:11px; font-weight:700; margin-top:7px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .hood p { font-size:9.5px; color:var(--ink-soft); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
   /* Pick cards */
   .cards { display:flex; gap:14px; padding:2px 20px 8px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
@@ -193,17 +209,21 @@
 
   /* Category page header */
   .cat-hero {
-    position:relative; overflow:hidden; margin:14px 14px 0; border-radius:30px;
-    padding:30px 22px;
+    position:relative; overflow:hidden; margin:0; border-radius:0;
+    padding:34px 22px 30px;
+    min-height:190px;
+    display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
+    text-align:center;
   }
   .cat-hero .img { position:absolute; inset:0; }
   .cat-hero .img img { width:100%; height:100%; object-fit:cover; }
   .cat-hero .img::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(168,48,92,0.4), rgba(168,48,92,0.62)); }
   .cat-hero > *:not(.img) { position:relative; }
   .cat-hero .back {
+    position:absolute; top:14px; left:var(--gx); z-index:2;
     display:inline-flex; align-items:center; gap:6px; border:none; cursor:pointer;
     font-size:12px; font-weight:700; color:var(--ink);
-    background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px; margin-bottom:18px;
+    background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px;
   }
   .cat-hero h1 { font-family:'Fraunces',serif; font-weight:550; font-size:32px; color:#fff; text-shadow:0 2px 10px rgba(122,26,58,0.45); }
   .cat-hero h1 em { font-style:italic; }
@@ -255,6 +275,113 @@
   footer .row-f { display:flex; justify-content:center; gap:14px; margin-bottom:6px; flex-wrap:wrap; }
   footer a { color:var(--ink-mid); }
 
+  /* ═══ LOCKED PICKS (members tier) ═══ */
+  .pcard.locked .bg img { filter: blur(7px) saturate(0.9); transform: scale(1.06); }
+  .pcard.locked .bg { filter: blur(2px); }
+  .pcard.locked .info h3, .pcard.locked .info .loc, .pcard.locked .info .meta { filter: blur(4px); user-select:none; }
+  .pcard .lockpill {
+    position:absolute; top:11px; right:11px; z-index:2;
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:#fff; background:rgba(122,26,58,0.72); backdrop-filter: blur(4px);
+    padding:5px 10px; border-radius:999px;
+  }
+
+  /* ═══ PICK DETAIL SHEET ═══ */
+  .veil {
+    position:fixed; inset:0; z-index:40;
+    background:rgba(122,26,58,0.45); backdrop-filter:blur(2px);
+    opacity:0; pointer-events:none; transition:opacity .2s;
+  }
+  .veil.on { opacity:1; pointer-events:auto; }
+  .sheet {
+    position:fixed; left:50%; bottom:0; z-index:50;
+    width:100%; max-width:480px;
+    transform:translate(-50%,105%);
+    background:var(--white); border-radius:28px 28px 0 0;
+    padding:10px 22px calc(28px + env(safe-area-inset-bottom));
+    max-height:88dvh; overflow-y:auto;
+    box-shadow:0 -18px 50px rgba(122,26,58,0.3);
+    transition:transform .28s cubic-bezier(.2,.8,.2,1);
+  }
+  .sheet.on { transform:translate(-50%,0); }
+  .sheet .grab { width:40px; height:4px; border-radius:999px; background:var(--line); margin:4px auto 16px; }
+  .sheet .simg {
+    height:170px; border-radius:20px; overflow:hidden; margin-bottom:16px;
+    display:flex; align-items:center; justify-content:center; font-size:52px;
+  }
+  .sheet .simg img { width:100%; height:100%; object-fit:cover; }
+  .sheet .scat { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
+  .sheet h2 { font-family:'Fraunces',serif; font-weight:550; font-size:25px; letter-spacing:-0.3px; line-height:1.15; margin:4px 0 10px; }
+  .sheet .chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px; }
+  .sheet .chip {
+    font-size:10.5px; font-weight:700; color:var(--ink);
+    background:var(--cream); border:1px solid var(--line);
+    padding:5px 11px; border-radius:999px;
+  }
+  .sheet .sblock { border-radius:18px; padding:14px 16px; margin-bottom:10px; background:var(--cream); border:1px solid var(--line); }
+  .sheet .sblock.trust { background:linear-gradient(155deg,#FDF0F5,#FBE3EC); border-color:#F5CFDE; }
+  .sheet .sblock .lb {
+    display:block; font-size:9.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:5px;
+  }
+  .sheet .sblock p { font-size:13px; line-height:1.55; color:var(--ink); }
+  .sheet .sblock.avoid p { color:var(--ink-mid); }
+  .sheet .mapbtn {
+    display:flex; align-items:center; justify-content:center; gap:7px;
+    width:100%; margin-top:8px; padding:14px; border-radius:999px;
+    font-size:13.5px; font-weight:700; color:var(--ink); text-decoration:none;
+    background:var(--white); border:1.5px solid var(--ink-soft);
+  }
+  .sheet .lockpanel { text-align:center; padding:26px 18px 8px; }
+  .sheet .lockpanel .big { font-size:34px; }
+  .sheet .lockpanel h3 { font-family:'Fraunces',serif; font-weight:550; font-size:19px; margin:8px 0 6px; }
+  .sheet .lockpanel p { font-size:12.5px; color:var(--ink-mid); line-height:1.5; margin-bottom:18px; }
+  .sheet .lockpanel .cta {
+    display:inline-block; text-decoration:none;
+    color:#fff; font-weight:700; font-size:14px;
+    padding:13px 32px; border-radius:999px;
+    background:linear-gradient(155deg,var(--g2),var(--g3));
+    box-shadow:0 12px 26px rgba(224,149,174,0.5);
+  }
+  .sheet .blurline { height:12px; border-radius:6px; background:var(--line); margin:8px auto; filter:blur(2px); }
+
+  /* ═══ FULL-WIDTH RESPONSIVE ═══ */
+  .entry { padding-left:var(--gx); padding-right:var(--gx); }
+  .entry .wordmark { left:var(--gx); }
+  .topbar { padding-left:var(--gx); padding-right:var(--gx); }
+  .hero, .cat-hero { padding-left:var(--gx); padding-right:var(--gx); }
+  .quote-strip { margin-left:var(--gx); margin-right:var(--gx); }
+  .sec-head, .catgrid, .feed-item, .empty { padding-left:var(--gx); padding-right:var(--gx); }
+  .hoods { padding-left:var(--gx); padding-right:var(--gx); }
+  .cards { padding-left:var(--gx); padding-right:var(--gx); }
+  .join { padding-left:var(--gx); padding-right:var(--gx); }
+  footer { padding-left:var(--gx); padding-right:var(--gx); }
+  .sec-head { margin-top:30px; }
+
+  @media (min-width:760px) {
+    .entry .countries { max-width:460px; }
+    .entry h1 { font-size:clamp(44px,5.5vw,64px); }
+    .hero { min-height:340px; padding-top:64px; padding-bottom:52px; }
+    .hero h1 { font-size:clamp(34px,3.6vw,46px); }
+    .cat-hero { min-height:240px; }
+    .search { max-width:520px; }
+    .catgrid { grid-template-columns:repeat(4, minmax(140px, 190px)); justify-content:center; }
+    .hoods { justify-content:safe center; }
+    .cattile .em { font-size:28px; }
+    .hood { flex:0 0 88px; width:88px; }
+    .hood .tile { width:72px; height:72px; font-size:27px; }
+    .hood h4 { font-size:12px; }
+    .cards .pcard { flex:0 0 236px; height:290px; }
+    .cards.grid { grid-template-columns:repeat(auto-fill, minmax(232px, 1fr)); }
+    .cards.grid .pcard { height:250px; }
+    .feed-item .txt { max-width:680px; }
+    .feed-item .fthumb { width:78px; height:78px; }
+    .join .card-j { max-width:620px; margin:0 auto; }
+    .quote-strip { max-width:640px; }
+    .sheet { max-width:560px; }
+  }
+
   @media (prefers-reduced-motion: reduce) { * { transition:none !important; } html { scroll-behavior:auto; } }
 </style>
 </head>
@@ -262,8 +389,8 @@
 <div class="phone">
 
   <!-- ═══════════ ENTRY VIEW ═══════════ -->
-  <section class="view entry" id="view-entry">
-    <div class="bg"><img src="https://picsum.photos/seed/skinnyseoul/900/1400" alt=""></div>
+  <section class="view entry on" id="view-entry">
+    <div class="bg"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1546874177-9e664107314e?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c2VvdWwlMjBuaWdodHxlbnwwfHwwfHx8MA%3D%3D" alt=""></div>
     <div class="wordmark">skinny-<em>us</em></div>
     <div>
       <h1>Asia's wellness side,<br><em>curated.</em></h1>
@@ -295,15 +422,18 @@
   </section>
 
   <!-- ═══════════ HOME VIEW ═══════════ -->
-  <section class="view" id="view-home">
+  <section class="view" id="view-home" style="display:none">
     <div class="topbar">
-      <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
+      <span class="tb-left">
+        <button class="backchip" onclick="go('entry')" aria-label="Back to country select">←</button>
+        <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
+      </span>
       <button class="where" onclick="go('entry')">🇰🇷 Seoul, Korea ▾</button>
       <a class="join-sm" href="#join-home">Join 🌸</a>
     </div>
 
     <header class="hero">
-      <div class="img" id="hero-img"><img src="https://picsum.photos/seed/skinnyhero/900/700" alt=""></div>
+      <div class="img" id="hero-img"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1533577116850-9cc66cad8a9b?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2VvdWwlMjBuaWdodHxlbnwwfHwwfHx8MA%3D%3D" alt=""></div>
       <div class="greet">Curated by a local 🧘‍♀️</div>
       <h1>Where in Seoul<br>today?</h1>
       <div class="search">
@@ -311,14 +441,6 @@
         <input id="search-input" type="text" placeholder="Try “sauna”, “makguksu”, “Seongsu”…" aria-label="Search picks">
       </div>
     </header>
-
-    <div class="quote-strip">
-      <div class="mark">“</div>
-      <div>
-        <div class="q" id="q-text"></div>
-        <div class="a" id="q-author"></div>
-      </div>
-    </div>
 
     <div class="sec-head"><h2>Browse</h2></div>
     <div class="catgrid">
@@ -341,6 +463,14 @@
     <div class="sec-head"><h2>Trending now</h2></div>
     <div id="feed"></div>
 
+    <div class="quote-strip">
+      <div class="mark">“</div>
+      <div>
+        <div class="q" id="q-text"></div>
+        <div class="a" id="q-author"></div>
+      </div>
+    </div>
+
     <section class="join" id="join-home">
       <div class="card-j">
         <h2>Less but better.<br><em>Every day.</em></h2>
@@ -361,7 +491,7 @@
   </section>
 
   <!-- ═══════════ CATEGORY VIEW ═══════════ -->
-  <section class="view" id="view-cat">
+  <section class="view" id="view-cat" style="display:none">
     <div class="topbar">
       <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
       <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
@@ -369,7 +499,7 @@
     </div>
 
     <header class="cat-hero">
-      <div class="img"><img id="cat-img" src="" alt=""></div>
+      <div class="img"><img id="cat-img" src="" alt="" onerror="this.style.display='none'" onload="this.style.display=''"></div>
       <button class="back" onclick="go('home')">← Home</button>
       <h1 id="cat-title"></h1>
       <p id="cat-desc"></p>
@@ -392,6 +522,13 @@
 
     <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
   </section>
+</div>
+
+<!-- ═══════════ PICK DETAIL SHEET ═══════════ -->
+<div class="veil" id="veil" style="display:none" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet" style="display:none" role="dialog" aria-modal="true">
+  <div class="grab"></div>
+  <div id="sheet-body"></div>
 </div>
 
 <script>
@@ -420,10 +557,10 @@
   ];
 
   var CATS = {
-    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://picsum.photos/seed/skinnyeat/900/500" },
-    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://picsum.photos/seed/skinnybeauty/900/500" },
-    body:   { name:"Body",   em:"🌿", tag:"4-week programs",         desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", img:"https://picsum.photos/seed/skinnybody/900/500" },
-    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", img:"https://picsum.photos/seed/skinnytrend/900/500" }
+    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D" },
+    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://images.unsplash.com/photo-1544161515-4ab6ce6db874?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c3BhfGVufDB8fDB8fHww" },
+    body:   { name:"Body",   em:"🌿", tag:"4-week programs",         desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" },
+    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", img:"https://images.unsplash.com/photo-1626100856386-68942e5ec239?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" }
   };
 
   var HOODS = [
@@ -436,17 +573,34 @@
     { id:"mangwon",   name:"Mangwon",    emoji:"🥬", note:"18 picks" }
   ];
 
+  // tier: "free" = preview (안목 증명), "paid" = members only (blurred + unlock)
+  // wt = why_trust, ot = order_tip, av = avoid_if, pr = price_range, bf = best_for, map = google maps link
   var PICKS = [
-    { cat:"eat", hood:"seongsu", t:"Perilla oil makguksu", loc:"Seongsu", meta:"6 min from Seongsu Stn · from ₩9,000", e:"🍜", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)" },
-    { cat:"beauty", hood:"hannam", t:"The quiet sauna", loc:"Hannam", meta:"women-only · cash · scrub ₩25,000", e:"🧖‍♀️", g:"linear-gradient(155deg,#F8C8DA,#E095AE)" },
-    { cat:"body", hood:"seongsu", t:"Stretching cafés exist here", loc:"Seongsu", meta:"walk-in OK · from ₩15,000", e:"🧘‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
-    { cat:"trend", hood:"apgujeong", t:"Perfume cocktail bars", loc:"Apgujeong", meta:"reservation apps only", e:"🍸", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
-    { cat:"eat", hood:"mangwon", t:"Temple food, no temple", loc:"Mangwon", meta:"vegan · under ₩12,000", e:"🥬", g:"linear-gradient(155deg,#F8D8C8,#E095AE)" },
-    { cat:"beauty", hood:"gangnam", t:"Glass skin, the boring way", loc:"Gangnam", meta:"derm-approved clinic list", e:"💧", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" },
-    { cat:"eat", hood:"yeonnam", t:"Late-night gimbap done right", loc:"Yeonnam", meta:"open til 2am", e:"🍙", g:"linear-gradient(155deg,#FBE3EC,#F0AEC4)" },
-    { cat:"body", hood:"gangnam", t:"Han River 5k that doesn't feel like one", loc:"Jamwon", meta:"7am start · flat & shaded", e:"🏃‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
-    { cat:"trend", hood:"seongsu", t:"Wellness pop-ups of the month", loc:"Seongsu", meta:"what's open right now", e:"📍", g:"linear-gradient(155deg,#FBD4D0,#E095AE)" },
-    { cat:"beauty", hood:"gangnam", t:"Scalp care is the new skincare", loc:"Cheongdam", meta:"why every salon offers it", e:"💆‍♀️", g:"linear-gradient(155deg,#F0AEC4,#C05A82)" }
+    { cat:"eat", hood:"seongsu", tier:"free", t:"Perilla oil makguksu", loc:"Seongsu", meta:"6 min from Seongsu Stn · from ₩9,000", e:"🍜", img:"https://images.unsplash.com/photo-1635363638580-c2809d049eee?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)",
+      pr:"$", bf:"solo · quick",
+      wt:"No sponsored posts, no English menu, and the noon line is all local office workers — the most honest review there is.",
+      ot:"Perilla oil makguksu + one mandu plate to share. Skip the bulgogi add-on.",
+      av:"Skip it if you need AC comfort and space — it's tight, fast, and you'll be out in 25 minutes.",
+      map:"https://maps.google.com/?q=perilla+oil+makguksu+seongsu" },
+    { cat:"beauty", hood:"hannam", tier:"free", t:"The quiet sauna", loc:"Hannam", meta:"women-only · cash · scrub ₩25,000", e:"🧖‍♀️", img:"https://images.unsplash.com/photo-1583417267826-aebc4d1542e1?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNwYXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#F8C8DA,#E095AE)",
+      pr:"$$", bf:"solo",
+      wt:"20 years in beauty and this is where industry people actually go — no tourist pricing, no upsell scripts.",
+      ot:"Book the 30-min seshin scrub. Bring cash; cards not accepted for scrubs.",
+      av:"Skip it if full nudity in a shared bath isn't your thing — there's no private option.",
+      map:"https://maps.google.com/?q=hannam+women+sauna" },
+    { cat:"body", hood:"gangnam", tier:"free", t:"Han River 5k that doesn't feel like one", loc:"Jamwon", meta:"7am start · flat & shaded", e:"🏃‍♀️", img:"https://images.unsplash.com/photo-1637073760127-1c914f00d3e1?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D", g:"linear-gradient(155deg,#F0AEC4,#D0739A)",
+      pr:"$", bf:"solo · group",
+      wt:"This is the loop Seoul runners default to — flat, shaded, and it ends at a convenience store for banana milk.",
+      ot:"Start at Jamwon exit 4, run toward Banpo bridge. Go before 8am in summer.",
+      av:"Skip it if you want scenery variety — it's one river view the whole way.",
+      map:"https://maps.google.com/?q=jamwon+hangang+park" },
+    { cat:"trend", hood:"apgujeong", tier:"paid", t:"Perfume cocktail bars", loc:"Apgujeong", meta:"reservation apps only", e:"🍸", img:"https://images.unsplash.com/photo-1617283458655-1ef09d4f17f2?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
+    { cat:"eat", hood:"mangwon", tier:"paid", t:"Temple food, no temple", loc:"Mangwon", meta:"vegan · under ₩12,000", e:"🥬", img:"https://images.unsplash.com/photo-1590301157890-4810ed352733?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#F8D8C8,#E095AE)" },
+    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Glass skin, the boring way", loc:"Gangnam", meta:"derm-approved clinic list", e:"💧", img:"https://images.unsplash.com/photo-1515377905703-c4788e51af15?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c3BhfGVufDB8fDB8fHww", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" },
+    { cat:"eat", hood:"yeonnam", tier:"paid", t:"Late-night gimbap done right", loc:"Yeonnam", meta:"open til 2am", e:"🍙", g:"linear-gradient(155deg,#FBE3EC,#F0AEC4)" },
+    { cat:"body", hood:"seongsu", tier:"paid", t:"Stretching cafés exist here", loc:"Seongsu", meta:"walk-in OK · from ₩15,000", e:"🧘‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
+    { cat:"trend", hood:"seongsu", tier:"paid", t:"Wellness pop-ups of the month", loc:"Seongsu", meta:"what's open right now", e:"📍", g:"linear-gradient(155deg,#FBD4D0,#E095AE)" },
+    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Scalp care is the new skincare", loc:"Cheongdam", meta:"why every salon offers it", e:"💆‍♀️", g:"linear-gradient(155deg,#F0AEC4,#C05A82)" }
   ];
 
   var TRENDING = [
@@ -460,30 +614,54 @@
   // ═══ ROUTER ═════════════════════════════════════════════════════
   var state = { hood:"all", q:"", catHood:"all", curCat:null };
 
+  // 스토리지 접근이 차단된 환경(샌드박스 미리보기 등)에서도 죽지 않게 감싼다
+  function sGet(store, k) { try { return window[store].getItem(k); } catch (e) { return null; } }
+  function sSet(store, k, v) { try { window[store].setItem(k, v); } catch (e) {} }
+
+  // Member 판별: 실제 배포 시 Members 로직으로 교체.
+  // 테스트: ?member=1 로 접속하면 전체 열람 상태를 시뮬레이션.
+  var IS_MEMBER = /[?&]member=1/.test(location.search) || sGet('localStorage', 'su_member') === '1';
+  if (/[?&]member=1/.test(location.search)) sSet('localStorage', 'su_member', '1');
+  function isLocked(p) { return p.tier === "paid" && !IS_MEMBER; }
+
+  function showView(key) {
+    ['entry', 'home', 'cat'].forEach(function (k) {
+      var el = document.getElementById('view-' + k);
+      if (!el) return;
+      el.classList.toggle('on', k === key);
+      el.style.display = (k === key) ? 'block' : 'none';
+    });
+    window.scrollTo(0, 0);
+  }
+
+  // 클릭 → 즉시 화면 전환. 해시는 뒤로가기/공유용으로만 갱신.
   function go(view, arg) {
-    if (view === 'entry') location.hash = '#/';
-    else if (view === 'home') location.hash = '#/home';
-    else if (view === 'cat') location.hash = '#/c/' + arg;
+    if (view === 'cat') {
+      state.curCat = arg; state.catHood = "all";
+      renderCatPage();
+      showView('cat');
+      try { location.hash = '#/c/' + arg; } catch (e) {}
+    } else if (view === 'home') {
+      showView('home');
+      try { location.hash = '#/home'; } catch (e) {}
+    } else {
+      showView('entry');
+      try { location.hash = '#/'; } catch (e) {}
+    }
   }
 
   function route() {
     var h = location.hash || '#/';
-    var views = { entry: document.getElementById('view-entry'), home: document.getElementById('view-home'), cat: document.getElementById('view-cat') };
-    Object.keys(views).forEach(function (k) { views[k].classList.remove('on'); });
-
     var mCat = h.match(/^#\/c\/(\w+)/);
     if (mCat && CATS[mCat[1]]) {
       state.curCat = mCat[1]; state.catHood = "all";
       renderCatPage();
-      views.cat.classList.add('on');
-    } else if (h === '#/home' || sessionStorage.getItem('entered') === '1' && h === '#/') {
-      if (h === '#/') { location.hash = '#/home'; return; }
-      views.home.classList.add('on');
+      showView('cat');
+    } else if (h === '#/home') {
+      showView('home');
     } else {
-      views.entry.classList.add('on');
+      showView('entry');
     }
-    if (h === '#/home') sessionStorage.setItem('entered', '1');
-    window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', route);
 
@@ -495,14 +673,63 @@
   document.getElementById('q-author').textContent = tq.a + " \u00B7 Today's thought";
 
   function pcardHTML(p) {
+    var locked = isLocked(p);
     return '<div class="bg" style="background:' + p.g + '">' +
-      (p.img ? '<img src="' + p.img + '" alt="' + p.t + '" loading="lazy">' : p.e) +
+      (p.img ? '<img src="' + p.img + '" alt="' + (locked ? 'Members pick' : p.t) + '" loading="lazy" onerror="this.remove()">' : p.e) +
       '</div><div class="scrim"></div>' +
       '<span class="cat">' + p.cat + '</span>' +
+      (locked ? '<span class="lockpill">🔒 Members</span>' : '') +
       '<div class="info"><h3>' + p.t + '</h3>' +
       '<div class="loc">📍 ' + p.loc + ', Seoul</div>' +
       (p.meta ? '<div class="meta">' + p.meta + '</div>' : '') + '</div>';
   }
+
+  // ═══ PICK DETAIL SHEET ══════════════════════════════════════════
+  function openSheet(p) {
+    var body = document.getElementById('sheet-body');
+    var catName = (CATS[p.cat] ? CATS[p.cat].name : p.cat);
+    var html = '<div class="simg" style="background:' + p.g + '">' +
+      (p.img ? '<img src="' + p.img + '" alt="" onerror="this.remove()">' : p.e) + '</div>';
+
+    if (isLocked(p)) {
+      html += '<div class="scat">' + catName + ' · ' + p.loc + '</div>' +
+        '<h2>A members-only pick</h2>' +
+        '<div class="blurline" style="width:82%"></div>' +
+        '<div class="blurline" style="width:64%"></div>' +
+        '<div class="lockpanel">' +
+          '<div class="big">🔒</div>' +
+          '<h3>Unlock the full list</h3>' +
+          '<p>Why we trust it, what to order, and who should skip it —<br>the parts a sponsored blog can\u2019t write.</p>' +
+          '<a class="cta" href="STRIPE_PAYMENT_LINK">Unlock the full list</a>' +
+        '</div>';
+    } else {
+      html += '<div class="scat">' + catName + ' · ' + p.loc + ', Seoul</div>' +
+        '<h2>' + p.t + '</h2>' +
+        '<div class="chips">' +
+          (p.pr ? '<span class="chip">' + p.pr + '</span>' : '') +
+          (p.bf ? '<span class="chip">Best for: ' + p.bf + '</span>' : '') +
+          (p.meta ? '<span class="chip">' + p.meta + '</span>' : '') +
+        '</div>' +
+        (p.wt ? '<div class="sblock trust"><span class="lb">Why we trust it</span><p>' + p.wt + '</p></div>' : '') +
+        (p.ot ? '<div class="sblock"><span class="lb">What to order</span><p>' + p.ot + '</p></div>' : '') +
+        (p.av ? '<div class="sblock avoid"><span class="lb">Skip it if</span><p>' + p.av + '</p></div>' : '') +
+        (p.map ? '<a class="mapbtn" href="' + p.map + '" target="_blank" rel="noopener">📍 Open in Google Maps</a>' : '');
+    }
+    body.innerHTML = html;
+    var veil = document.getElementById('veil'), sheet = document.getElementById('sheet');
+    veil.style.display = 'block'; sheet.style.display = 'block';
+    requestAnimationFrame(function () {
+      veil.classList.add('on'); sheet.classList.add('on');
+    });
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSheet() {
+    var veil = document.getElementById('veil'), sheet = document.getElementById('sheet');
+    veil.classList.remove('on'); sheet.classList.remove('on');
+    setTimeout(function () { veil.style.display = 'none'; sheet.style.display = 'none'; }, 300);
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
 
   function renderHoods(elId, activeKey, onPick) {
     var wrap = document.getElementById(elId);
@@ -531,7 +758,8 @@
       var el = document.createElement('div');
       el.className = "pcard";
       el.innerHTML = pcardHTML(p);
-      el.addEventListener('click', function () { go('cat', p.cat); });
+      if (isLocked(p)) el.classList.add('locked');
+      el.addEventListener('click', function () { openSheet(p); });
       wrap.appendChild(el);
     });
     empty.style.display = shown ? "none" : "block";
@@ -572,8 +800,9 @@
       if (state.catHood !== "all" && p.hood !== state.catHood) return;
       shown++;
       var el = document.createElement('div');
-      el.className = "pcard";
+      el.className = "pcard" + (isLocked(p) ? " locked" : "");
       el.innerHTML = pcardHTML(p);
+      el.addEventListener('click', function () { openSheet(p); });
       wrap.appendChild(el);
     });
     empty.style.display = shown ? "none" : "block";
@@ -627,7 +856,10 @@
       var h = rows[0].map(function (x) { return x.trim().toLowerCase(); });
       var iType = h.indexOf("type"), iCat = h.indexOf("category"), iTitle = h.indexOf("title"),
           iSub = h.indexOf("subtitle"), iArea = h.indexOf("area"), iImg = h.indexOf("image_link"),
-          iShow = h.indexOf("show"), iOrder = h.indexOf("order");
+          iShow = h.indexOf("show"), iOrder = h.indexOf("order"),
+          iTier = h.indexOf("tier"), iWt = h.indexOf("why_trust"), iOt = h.indexOf("order_tip"),
+          iAv = h.indexOf("avoid_if"), iPr = h.indexOf("price_range"), iBf = h.indexOf("best_for"),
+          iMap = h.indexOf("map_link");
       if (iType < 0 || iTitle < 0) return;
       var newPicks = [], newTrending = [], heroImg = "";
       rows.slice(1).forEach(function (r) {
@@ -639,8 +871,12 @@
         if (type === "hero") { if (img && !heroImg) heroImg = img; }
         else if (type === "pick") {
           var cat = g(iCat).toLowerCase();
+          // tier 컬럼이 없거나 비어 있으면 paid로 취급 (기본은 잠금)
+          var tier = g(iTier).toLowerCase() === "free" ? "free" : "paid";
           newPicks.push({ cat: cat, hood: g(iArea).toLowerCase().replace(/[^a-z]/g, ""),
             t: g(iTitle), loc: g(iArea), meta: g(iSub),
+            tier: tier, wt: g(iWt), ot: g(iOt), av: g(iAv),
+            pr: g(iPr), bf: g(iBf), map: g(iMap),
             e: EMOJIS[cat] || "🌸", g: GRADS[cat] || GRADS.eat, img: img || null, _o: order });
         } else if (type === "trending") {
           newTrending.push({ k: g(iArea).toUpperCase(), t: g(iTitle), p: g(iSub), e: "🌸", img: img || null, _o: order });
@@ -658,10 +894,12 @@
   renderHome(); renderFeed(); route();
 
   // Old PWA cleanup
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ r.unregister(); }); });
-    if (window.caches) caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); });
-  }
+  try {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ r.unregister(); }); }).catch(function(){});
+      if (window.caches) caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); }).catch(function(){});
+    }
+  } catch (e) {}
 </script>
 </body>
 </html>
