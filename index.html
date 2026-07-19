@@ -46,20 +46,23 @@
     background: linear-gradient(185deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.82) 100%);
   }
   .entry > * { position: relative; width: 100%; }
-  .entry .wordmark { margin-bottom: 32px; font-family:'Yellowtail',cursive; font-weight:400; font-size:30px; color:#fff; text-shadow:0 1px 8px rgba(0,0,0,0.5); }
-  .entry .wordmark em { font-style: normal; }
-  .entry .wordmark .slogan {
-    display:block; margin-top:3px;
-    font-family:'Space Mono',monospace; font-size:10px; font-weight:700;
-    letter-spacing:0.28em; text-transform:uppercase;
-    color:rgba(255,255,255,0.88); text-shadow:0 1px 4px rgba(0,0,0,0.5);
+  .entry .poster-head { }
+  .entry .poster-top {
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'Space Mono',monospace; font-size:11px; font-weight:700;
+    letter-spacing:0.3em; text-transform:uppercase;
+    color:#fff; text-shadow:0 1px 4px rgba(0,0,0,0.5);
   }
-  .entry h1 {
-    font-family:'Instrument Serif',serif; font-weight:400; font-style:italic; font-size: clamp(52px,13vw,84px);
-    line-height:1.05; letter-spacing:-0.01em; color:#F8A5C6; text-shadow:0 2px 16px rgba(0,0,0,0.45);
+  .entry .poster-top .pt { border-bottom:1.5px solid rgba(255,255,255,0.85); padding-bottom:5px; }
+  .entry .poster-top .star { font-size:13px; }
+  .entry .big-title {
+    font-family:'Instrument Serif',serif; font-weight:400; font-style:italic;
+    font-size:clamp(38px,9.5vw,72px); line-height:1.05; text-align:center;
+    letter-spacing:0; color:#F8A5C6;
+    text-shadow:0 2px 16px rgba(0,0,0,0.4);
+    margin-top:16px;
   }
-  .entry h1 em { font-style: normal; }
-  .entry .lede { font-family:'Space Mono',monospace; font-size:11.5px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; line-height:1.7; color:rgba(255,255,255,0.94); margin:14px 0 24px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
+  .entry .lede { font-family:'Space Mono',monospace; font-size:11px; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; line-height:1.7; color:rgba(255,255,255,0.94); margin:12px auto 22px; max-width:420px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
 
   .countries { display:flex; flex-direction:column; gap:10px; margin:0 auto 22px; width:100%; max-width:460px; }
   .country {
@@ -75,12 +78,12 @@
   .country .txt b { display:block; font-size:15px; color:#111; }
   .country .txt span { font-size:11.5px; color:rgba(0,0,0,0.55); font-weight:500; }
   .country .go { font-size:16px; color:#111; }
-  .country.tbd { background: rgba(240,174,196,0.88); border:none; backdrop-filter: blur(6px); cursor: default; box-shadow:none; }
-  .country.tbd .txt b, .country.tbd .go { color: #fff; text-shadow:0 1px 3px rgba(168,48,92,0.35); }
-  .country.tbd .txt span { color: rgba(255,255,255,0.85); text-shadow:0 1px 3px rgba(168,48,92,0.35); }
+  .country.tbd { background: rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.28); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: default; box-shadow:none; }
+  .country.tbd .txt b, .country.tbd .go { color: rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.4); }
+  .country.tbd .txt span { color: rgba(255,255,255,0.7); text-shadow:0 1px 3px rgba(0,0,0,0.4); }
   .country .soon {
     font-size:9.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
-    color:var(--ink); background:rgba(255,255,255,0.92); padding:4px 10px; border-radius:999px;
+    color:#fff; background:rgba(255,255,255,0.22); border:1px solid rgba(255,255,255,0.3); padding:4px 10px; border-radius:999px;
   }
   .entry .fine { font-size:11px; color:rgba(255,255,255,0.8); text-align:center; text-shadow:0 1px 3px rgba(0,0,0,0.4); }
   .entry .entry-join {
@@ -90,6 +93,17 @@
     padding:14px 16px; border-radius:20px;
     background:#fff;
     box-shadow:0 12px 26px rgba(0,0,0,0.35);
+  }
+
+  @media (max-width:480px) {
+    .entry { padding:22px 22px 30px; }
+    .entry .poster-top { font-size:10px; letter-spacing:0.22em; }
+    .entry .big-title { font-size:clamp(32px,9.5vw,42px); margin-top:12px; }
+    .entry .lede { font-size:10px; letter-spacing:0.1em; margin:10px auto 18px; }
+    .countries { gap:8px; margin-bottom:16px; }
+    .country { padding:12px 15px; }
+    .country .flag { font-size:22px; }
+    .entry .entry-join { padding:13px 15px; margin-bottom:14px; }
   }
 
   /* ═══ SHARED CHROME ═══ */
@@ -104,21 +118,20 @@
   .topbar .backchip {
     display:flex; align-items:center; justify-content:center;
     width:32px; height:32px; border-radius:50%; border:1px solid var(--line); cursor:pointer;
-    background:var(--cream); color:var(--ink); font-size:15px; line-height:1; padding:0;
+    background:var(--cream); color:#111; font-size:15px; line-height:1; padding:0;
   }
   .topbar .tb-left { display:flex; align-items:center; gap:9px; }
   .topbar .wordmark em { font-style:normal; color:var(--ink-soft); }
   .topbar .where {
     display:flex; align-items:center; gap:6px; cursor:pointer; border:none;
-    font-size:11.5px; font-weight:700; color:var(--ink);
+    font-size:11.5px; font-weight:700; color:#111;
     background:var(--cream); border:1px solid var(--line); border-radius:999px; padding:7px 13px;
   }
   .topbar .join-sm {
-    font-size:12px; font-weight:700; color:#fff; text-decoration:none;
+    font-size:12px; font-weight:700; color:#111; text-decoration:none;
     padding:8px 16px; border-radius:999px;
     background: linear-gradient(155deg,var(--g1),var(--g2) 50%,var(--g3));
     box-shadow: 0 8px 18px rgba(224,149,174,0.4);
-    text-shadow: 0 1px 2px rgba(180,90,120,0.3);
   }
 
   /* ═══ HOME HERO ═══ */
@@ -177,7 +190,7 @@
   }
   .cattile:hover { transform:translateY(-3px); box-shadow:0 12px 26px rgba(200,120,140,0.16); }
   .cattile .em { font-size:24px; display:block; margin-bottom:7px; line-height:1; }
-  .cattile b { font-size:12.5px; color:var(--ink); display:block; }
+  .cattile b { font-size:12.5px; color:#111; display:block; }
   .cattile span { font-size:9.5px; color:var(--ink-soft); font-weight:600; }
 
   /* Neighborhood tiles */
@@ -192,7 +205,7 @@
     border:2px solid transparent; transition:border-color .15s, transform .15s;
   }
   .hood.active .tile { border-color: var(--ink); transform: translateY(-2px); }
-  .hood h4 { font-size:11px; font-weight:700; margin-top:7px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .hood h4 { font-size:11px; font-weight:700; margin-top:7px; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .hood p { font-size:9.5px; color:var(--ink-soft); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
   /* Pick cards */
@@ -236,7 +249,7 @@
   .cat-hero .back {
     position:absolute; top:14px; left:var(--gx); z-index:2;
     display:inline-flex; align-items:center; gap:6px; border:none; cursor:pointer;
-    font-size:12px; font-weight:700; color:var(--ink);
+    font-size:12px; font-weight:700; color:#111;
     background:rgba(255,255,255,0.94); border:1px solid var(--line); padding:8px 15px; border-radius:999px;
   }
   .cat-hero h1 { font-family:'Instrument Serif',serif; font-weight:400; font-style:italic; font-size:46px; line-height:1.05; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,0.5); }
@@ -278,7 +291,7 @@
   .join .sub { font-size:12.5px; color:rgba(255,255,255,0.92); margin:10px 0 18px; text-shadow:0 1px 3px rgba(168,48,92,0.3); }
   .join .cta {
     display:inline-block; text-decoration:none;
-    background:#fff; color:var(--ink); font-weight:700; font-size:14px;
+    background:#fff; color:#111; font-weight:700; font-size:14px;
     padding:13px 32px; border-radius:999px;
     box-shadow: 0 12px 26px rgba(168,48,92,0.28);
   }
@@ -288,6 +301,8 @@
   footer { text-align:center; padding:14px 20px 40px; font-size:11px; color:var(--ink-mid); }
   footer .row-f { display:flex; justify-content:center; gap:14px; margin-bottom:6px; flex-wrap:wrap; }
   footer a { color:var(--ink-mid); }
+
+
 
   /* ═══ MEMBERS GATE ═══ */
   .gate {
@@ -308,72 +323,28 @@
     color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.5);
     max-width:420px; margin:0 auto 30px;
   }
+  .gate .g-cred { margin:0 auto 26px; max-width:420px; }
+  .gate .g-cred em {
+    display:block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400;
+    font-size:19px; color:#fff; text-shadow:0 1px 6px rgba(0,0,0,0.5); margin-bottom:6px;
+  }
+  .gate .g-cred span {
+    font-family:'Space Mono',monospace; font-size:10px; font-weight:700;
+    letter-spacing:0.14em; text-transform:uppercase;
+    color:rgba(255,255,255,0.85); text-shadow:0 1px 3px rgba(0,0,0,0.5);
+  }
   .gate .g-join {
     display:block; width:100%; max-width:400px; margin:0 auto 14px;
     text-decoration:none; text-align:center;
-    font-size:14.5px; font-weight:700; color:var(--ink);
+    font-size:14.5px; font-weight:700; color:#111;
     padding:15px 16px; border-radius:20px;
     background:#fff;
     box-shadow:0 14px 30px rgba(0,0,0,0.4);
   }
   .gate .g-member { font-size:12px; font-weight:600; color:rgba(255,255,255,0.9); text-decoration:underline; cursor:pointer; background:none; border:none; }
-  .gate .g-back { position:absolute; top:20px; left:20px; border:none; cursor:pointer; font-size:12px; font-weight:700; color:var(--ink); background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px; }
+  body.gated .topbar { visibility:hidden; }
+  .gate .g-back { position:absolute; top:20px; left:20px; border:none; cursor:pointer; font-size:12px; font-weight:700; color:#111; background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px; }
 
-  /* ═══ JOIN / PLAN PAGE ═══ */
-  .join-hero {
-    position:relative; overflow:hidden; margin:0; padding:40px 22px 32px;
-    min-height:170px; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; text-align:center;
-    background: linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3));
-  }
-  .join-hero h1 { font-family:'Instrument Serif',serif; font-weight:400; font-style:italic; font-size:44px; color:#fff; text-shadow:0 2px 8px rgba(168,48,92,0.35); line-height:1.08; }
-  .join-hero h1 em { font-style:normal; }
-  .join-hero p { font-size:13px; font-weight:500; color:rgba(255,255,255,0.94); margin-top:8px; text-shadow:0 1px 3px rgba(168,48,92,0.3); }
-  .planlist { display:flex; flex-direction:column; gap:12px; padding:24px 20px 4px; max-width:520px; margin:0 auto; }
-  .plan {
-    position:relative; width:100%; text-align:left; cursor:pointer;
-    background:var(--white); border:2px solid var(--line); border-radius:22px; padding:18px 18px 16px;
-    transition:border-color .15s, box-shadow .15s;
-  }
-  .plan.active { border-color:var(--ink); box-shadow:0 12px 28px rgba(200,120,140,0.2); }
-  .plan .p-top { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
-  .plan .p-name { font-size:15px; font-weight:700; color:var(--ink); }
-  .plan .p-price { font-family:'Space Mono',monospace; font-weight:700; font-size:18px; color:var(--ink); white-space:nowrap; }
-  .plan .p-price span { font-family:'Inter',sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); }
-  .plan .p-desc { font-size:12px; color:var(--ink-mid); margin-top:6px; line-height:1.5; }
-  .plan .p-badge {
-    position:absolute; top:-9px; left:18px;
-    font-size:9.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
-    color:#fff; background:var(--ink); padding:4px 11px; border-radius:999px;
-  }
-  .plan .p-check {
-    position:absolute; top:16px; right:16px; width:20px; height:20px; border-radius:50%;
-    border:2px solid var(--line); display:flex; align-items:center; justify-content:center;
-    font-size:11px; color:#fff; background:transparent;
-  }
-  .plan.active .p-check { background:var(--ink); border-color:var(--ink); }
-  .plan.active .p-price { margin-right:26px; }
-  .pay-wrap { padding:18px 20px 8px; max-width:520px; margin:0 auto; text-align:center; }
-  .pay-cta {
-    display:block; width:100%; text-decoration:none; text-align:center;
-    color:#fff; font-weight:700; font-size:15px;
-    padding:16px; border-radius:999px;
-    background:linear-gradient(155deg,var(--g2),var(--g3));
-    box-shadow:0 14px 30px rgba(224,149,174,0.5);
-    text-shadow:0 1px 2px rgba(180,90,120,0.3);
-  }
-  .pay-note { font-size:11px; color:var(--ink-soft); margin-top:12px; line-height:1.6; }
-  .pay-paypal {
-    display:block; width:100%; text-decoration:none; text-align:center;
-    font-size:15px; font-weight:700; color:#253B80;
-    padding:16px; border-radius:999px;
-    background:#fff; border:2px solid #253B80;
-    box-shadow:0 14px 30px rgba(200,120,140,0.3);
-  }
-  .pay-paypal b { color:#253B80; font-weight:800; }
-  .pay-paypal i { color:#179BD7; font-style:italic; font-weight:800; }
-  .join-feat { max-width:520px; margin:10px auto 0; padding:0 20px; }
-  .join-feat li { list-style:none; font-size:12.5px; color:var(--ink-mid); padding:7px 0; border-bottom:1px solid var(--line); text-align:center; }
-  .join-feat li:last-child { border-bottom:none; }
 
   /* ═══ LOCKED PICKS (members tier) ═══ */
   .pcard.locked .bg img { filter: blur(7px) saturate(0.9); transform: scale(1.06); }
@@ -430,7 +401,7 @@
   .sheet .mapbtn {
     display:flex; align-items:center; justify-content:center; gap:7px;
     width:100%; margin-top:8px; padding:14px; border-radius:999px;
-    font-size:13.5px; font-weight:700; color:var(--ink); text-decoration:none;
+    font-size:13.5px; font-weight:700; color:#111; text-decoration:none;
     background:var(--white); border:1.5px solid var(--ink-soft);
   }
   .sheet .lockpanel { text-align:center; padding:26px 18px 8px; }
@@ -439,7 +410,7 @@
   .sheet .lockpanel p { font-size:12.5px; color:var(--ink-mid); line-height:1.5; margin-bottom:18px; }
   .sheet .lockpanel .cta {
     display:inline-block; text-decoration:none;
-    color:#fff; font-weight:700; font-size:14px;
+    color:#111; font-weight:700; font-size:14px;
     padding:13px 32px; border-radius:999px;
     background:linear-gradient(155deg,var(--g2),var(--g3));
     box-shadow:0 12px 26px rgba(224,149,174,0.5);
@@ -489,10 +460,12 @@
 
   <!-- ═══════════ ENTRY VIEW ═══════════ -->
   <section class="view entry on" id="view-entry">
-    <div class="bg"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1667670154793-c95087f7dc12?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" alt=""></div>
-    <div class="wordmark">skinny-<em>us</em><span class="slogan">Skinny Genius</span></div>
+    <div class="bg"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1570191913384-7b4ff11716e7?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bmFtc2FuJTIwdG93ZXJ8ZW58MHx8MHx8fDA%3D" alt=""></div>
+    <div class="poster-head">
+      <div class="poster-top"><span class="pt">Seoul</span><span class="star">✳</span><span class="pt">Korea</span></div>
+      <div class="big-title">For Skinny Genius,</div>
+    </div>
     <div>
-      <h1>For Skinny Genius,</h1>
       <div class="lede">Eat, beauty, body, trends — picked by locals, in English. Choose where you're headed.</div>
       <div class="countries">
         <button class="country" onclick="go('home')">
@@ -516,8 +489,8 @@
           <span class="soon">TBD</span>
         </div>
       </div>
-      <a class="entry-join" href="#/join">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸</div>
+      <a class="entry-join" href="join.html">Join Skinny-us</a>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a></div>
     </div>
   </section>
 
@@ -529,12 +502,12 @@
         <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
       </span>
       <button class="where" onclick="go('entry')">🇰🇷 Seoul, Korea ▾</button>
-      <a class="join-sm" href="#/join">Join</a>
+      <a class="join-sm" href="join.html">Join</a>
     </div>
 
     <header class="hero">
       <div class="img" id="hero-img"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YWVzdGhldGljJTIwY2FmZXxlbnwwfHwwfHx8MA%3D%3D" alt=""></div>
-      <div class="greet">Curated by a local 🧘‍♀️</div>
+      <div class="greet">Curated by a Seoul marketer · 12 yrs on trend</div>
       <h1>Where in Seoul<br>today?</h1>
       <div class="search">
         <span class="icon">🔍</span>
@@ -555,7 +528,7 @@
 
     <div class="sec-head">
       <h2 id="picks-title">This week's picks</h2>
-      <a class="more" href="#/join">All 2.4K+ →</a>
+      <a class="more" href="join.html">All 2.4K+ →</a>
     </div>
     <div class="cards" id="cards"></div>
     <div class="empty" id="cards-empty">No picks match — try another search 🌸</div>
@@ -575,7 +548,7 @@
       <div class="card-j">
         <h2>Less but better.<br><em>Every day.</em></h2>
         <div class="sub">All picks · 4-week programs · monthly insight<br>$9.99/mo · free week · cancel anytime</div>
-        <a class="cta" href="#/join">Join Skinny-us</a>
+        <a class="cta" href="join.html">Join Skinny-us</a>
         <span class="alt">or <a href="YOUR_APP_STORE_URL">join with the app</a></span>
       </div>
     </section>
@@ -595,7 +568,7 @@
     <div class="topbar">
       <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
       <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
-      <a class="join-sm" href="#/join">Join</a>
+      <a class="join-sm" href="join.html">Join</a>
     </div>
 
     <header class="cat-hero">
@@ -616,7 +589,7 @@
       <div class="card-j">
         <h2>Want the full list?</h2>
         <div class="sub">Every pick · maps &amp; booking notes · updated weekly<br>$9.99/mo · free week · cancel anytime</div>
-        <a class="cta" href="#/join">Join Skinny-us</a>
+        <a class="cta" href="join.html">Join Skinny-us</a>
       </div>
     </section>
 
@@ -630,61 +603,15 @@
       <div class="g-brand">Skinny Genius · Seoul</div>
       <h1>The Real List</h1>
       <div class="g-copy">The most trendy &amp; personally curated spots in Seoul — hand-picked, tested, and listed. Members only.</div>
-      <a class="g-join" href="#/join">Join to unlock</a>
+      <div class="g-cred">
+        <em>Curated by a Seoul-based marketer</em>
+        <span>12 yrs on trend in Korea · 10 yrs living abroad</span>
+      </div>
+      <a class="g-join" href="join.html">Join to unlock</a>
       <button class="g-member" onclick="enterAsMember()">Already a member? Continue →</button>
     </div>
   </section>
 
-  <!-- ═══════════ JOIN / PLAN VIEW ═══════════ -->
-  <section class="view" id="view-join" style="display:none">
-    <div class="topbar">
-      <span class="tb-left">
-        <button class="backchip" onclick="history.length > 1 ? history.back() : go('home')" aria-label="Back">←</button>
-        <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
-      </span>
-      <span></span>
-    </div>
-
-    <header class="join-hero">
-      <h1>Join <em>Skinny-us</em></h1>
-      <p>Every pick · maps &amp; booking notes · updated weekly</p>
-    </header>
-
-    <div class="planlist" id="planlist">
-      <button class="plan active" data-plan="monthly" onclick="selectPlan('monthly')">
-        <span class="p-badge">Most popular</span>
-        <span class="p-check">✓</span>
-        <div class="p-top"><span class="p-name">Monthly membership</span><span class="p-price">$9.99 <span>/mo</span></span></div>
-        <div class="p-desc">Free first week · full list across all categories · weekly updates · cancel anytime.</div>
-      </button>
-      <button class="plan" data-plan="single" onclick="selectPlan('single')">
-        <span class="p-check">✓</span>
-        <div class="p-top"><span class="p-name">One-trip access</span><span class="p-price">$12.00 <span>one-time</span></span></div>
-        <div class="p-desc">Full list unlocked for 30 days — perfect for a single visit to Seoul. No subscription.</div>
-      </button>
-      <button class="plan" data-plan="consult" onclick="selectPlan('consult')">
-        <span class="p-check">✓</span>
-        <div class="p-top"><span class="p-name">Personal consultation</span><span class="p-price">$49 <span>one-time</span></span></div>
-        <div class="p-desc">1:1 with the curator — a custom list built around your dates, tastes, and neighborhoods. Includes full list access for 30 days.</div>
-      </button>
-    </div>
-
-    <div class="pay-wrap">
-      <a class="pay-paypal" id="pay-paypal" href="https://www.paypal.com/ncp/payment/SYM2PFTGUDFBJ">
-        Pay with <b>Pay</b><i>Pal</i> →
-      </a>
-      <div class="pay-note">Secure checkout by PayPal · cards accepted, no PayPal account needed<br>Instant access after payment</div>
-    </div>
-
-    <ul class="join-feat">
-      <li>🍜 Every food pick — with what to order and what to skip</li>
-      <li>✨ Beauty &amp; sauna spots locals actually use</li>
-      <li>📍 Google Maps links for every place</li>
-      <li>🔄 Updated weekly — closures and new openings included</li>
-    </ul>
-
-    <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
-  </section>
 </div>
 
 <!-- ═══════════ PICK DETAIL SHEET ═══════════ -->
@@ -774,6 +701,15 @@
     { k:"BEAUTY · GANGNAM", dist:"Sinnonhyeon Stn 300m", t:"Glass skin, according to actual dermatologists", p:"Sunscreen, sleep, one active. The rest is export.", e:"💧" }
   ];
 
+  function track(ev){
+    try{
+      var arr = JSON.parse(localStorage.getItem('su_log') || '[]');
+      arr.push({ t: Date.now(), e: ev });
+      if (arr.length > 300) arr = arr.slice(-300);
+      localStorage.setItem('su_log', JSON.stringify(arr));
+    }catch(e){}
+  }
+
   // ═══ ROUTER ═════════════════════════════════════════════════════
   var state = { hood:"all", q:"", catHood:"all", curCat:null };
 
@@ -790,7 +726,7 @@
   function showView(key) {
     // 게이트는 오버레이: 뒤에 실제 홈 화면을 깔고 그 위에 그라데이션을 덮는다
     var behind = (key === 'gate') ? 'home' : key;
-    ['entry', 'home', 'cat', 'join'].forEach(function (k) {
+    ['entry', 'home', 'cat'].forEach(function (k) {
       var el = document.getElementById('view-' + k);
       if (!el) return;
       el.classList.toggle('on', k === behind);
@@ -802,6 +738,8 @@
       gate.style.display = (key === 'gate') ? 'flex' : 'none';
     }
     document.body.style.overflow = (key === 'gate') ? 'hidden' : '';
+    document.body.classList.toggle('gated', key === 'gate');
+    if (key !== 'admin') track('view:' + key);
     window.scrollTo(0, 0);
   }
 
@@ -821,9 +759,6 @@
     } else if (view === 'home') {
       showView('home');
       try { location.hash = '#/home'; } catch (e) {}
-    } else if (view === 'join') {
-      showView('join');
-      try { location.hash = '#/join'; } catch (e) {}
     } else {
       showView('entry');
       try { location.hash = '#/'; } catch (e) {}
@@ -833,6 +768,7 @@
   // 실제 배포 시 기존 Members 로그인/검증 로직으로 교체할 자리.
   // 프로토타입: 멤버 플래그를 저장하고 입장시킨다.
   function enterAsMember() {
+    track('member:enter');
     IS_MEMBER = true;
     sSet('localStorage', 'su_member', '1');
     go('home');
@@ -849,8 +785,6 @@
       showView('cat');
     } else if (h === '#/home') {
       showView('home');
-    } else if (h === '#/join') {
-      showView('join');
     } else if (h === '#/gate') {
       showView('gate');
     } else {
@@ -869,8 +803,7 @@
     if (!h || h.indexOf('#/') !== 0) return;
     e.preventDefault();
     var mCat = h.match(/^#\/c\/(\w+)/);
-    if (h === '#/join') go('join');
-    else if (h === '#/home') go('home');
+    if (h === '#/home') go('home');
     else if (mCat && CATS[mCat[1]]) go('cat', mCat[1]);
     else go('entry');
   });
@@ -894,29 +827,7 @@
       (p.meta ? '<div class="meta">' + p.meta + '</div>' : '') + '</div>';
   }
 
-  // ═══ JOIN / PLANS ═══════════════════════════════════════════════
-  // 실제 PayPal 결제 링크로 교체하세요 (예: https://paypal.me/계정명/9.99USD 또는 PayPal 결제 버튼 링크)
-  var PAYPAL_LINKS = {
-    monthly: "https://www.paypal.com/ncp/payment/SYM2PFTGUDFBJ",
-    single:  "https://www.paypal.com/ncp/payment/FUHPN6HG2PNZ8",
-    consult: "https://www.paypal.com/ncp/payment/7J7STNZ9GFH5N"
-  };
-  function selectPlan(id) {
-    var plans = document.querySelectorAll('#planlist .plan');
-    for (var i = 0; i < plans.length; i++) {
-      plans[i].classList.toggle('active', plans[i].getAttribute('data-plan') === id);
-    }
-    var pp = document.getElementById('pay-paypal');
-    var link = PAYPAL_LINKS[id] || '';
-    // 실제 링크가 설정되기 전(placeholder 상태)에는 PayPal 버튼을 숨긴다
-    if (link.indexOf('http') === 0) {
-      pp.setAttribute('href', link);
-      pp.style.display = 'block';
-    } else {
-      pp.style.display = 'none';
-    }
-  }
-  selectPlan('monthly');
+
 
   // ═══ PICK DETAIL SHEET ══════════════════════════════════════════
   function openSheet(p) {
@@ -934,7 +845,7 @@
           '<div class="big">🔒</div>' +
           '<h3>Unlock the full list</h3>' +
           '<p>Why we trust it, what to order, and who should skip it —<br>the parts a sponsored blog can\u2019t write.</p>' +
-          '<button class="cta" style="border:none;cursor:pointer;font-family:inherit" onclick="closeSheet();go(\'join\')">Unlock the full list</button>' +
+          '<button class="cta" style="border:none;cursor:pointer;font-family:inherit" onclick="location.href=\'join.html\'">Unlock the full list</button>' +
         '</div>';
     } else {
       html += '<div class="scat">' + catName + ' · ' + p.loc + ', Seoul</div>' +
@@ -1009,7 +920,7 @@
     wrap.innerHTML = "";
     TRENDING.forEach(function (f, i) {
       var el = document.createElement('a');
-      el.className = "feed-item"; el.href = "#/join";
+      el.className = "feed-item"; el.href = "join.html";
       el.innerHTML = '<div class="num">' + (i + 1) + '</div>' +
         '<div class="txt"><div class="kicker-row"><span class="kicker">' + f.k + '</span>' +
         (f.dist ? '<span class="dist">📍 ' + f.dist + '</span>' : '') + '</div>' +
