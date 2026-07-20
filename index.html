@@ -256,6 +256,102 @@
   .cat-hero h1 em { font-style:normal; }
   .cat-hero p { font-size:13px; font-weight:500; color:rgba(255,255,255,0.92); margin-top:6px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
 
+  /* ═══ CATEGORY THEMES ═══════════════════════════════════════════
+     각 카테고리는 성격에 맞는 팔레트 + 레이아웃을 가진다.
+     eat=메뉴판 리스트 · beauty=아치 카드 · body=프로그램 로그 · trend=다크 랭킹 차트 */
+  .cat-eyebrow { display:inline-block; font-family:'Space Mono',monospace; font-size:9.5px; font-weight:700; letter-spacing:0.24em; text-transform:uppercase; color:rgba(255,255,255,0.92); margin-bottom:10px; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+  .cat-eyebrow:empty { display:none; }
+  .cat-ticker { display:none; overflow:hidden; white-space:nowrap; background:#FF5FA2; color:#20101C; font-family:'Space Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; padding:9px 0; }
+  .cat-ticker span { display:inline-block; animation:su-tick 28s linear infinite; }
+  @keyframes su-tick { to { transform:translateX(-50%); } }
+
+  /* row-list 공통 (eat / trend) */
+  .cat-eat .cards.grid, .cat-trend .cards.grid { display:flex; flex-direction:column; gap:10px; }
+  .cat-eat .pcard, .cat-trend .pcard { flex:none; width:100%; height:auto; display:flex; align-items:center; gap:13px; overflow:visible; }
+  .cat-eat .pcard .bg, .cat-trend .pcard .bg { position:relative; inset:auto; flex:0 0 88px; width:88px; height:88px; overflow:hidden; font-size:36px; }
+  .cat-eat .pcard .scrim, .cat-eat .pcard .cat,
+  .cat-trend .pcard .scrim, .cat-trend .pcard .cat { display:none; }
+  .cat-eat .pcard .info, .cat-trend .pcard .info { flex:1; min-width:0; padding:0; }
+  .cat-eat .pcard .lockpill, .cat-trend .pcard .lockpill { position:static; order:9; margin-left:auto; flex-shrink:0; }
+
+  /* — EAT · 메뉴판 — */
+  #view-cat.cat-eat { background:#FFF7EB; }
+  .cat-eat .cat-hero .img::after { background:linear-gradient(180deg, rgba(112,32,6,0.32), rgba(70,18,2,0.74)); }
+  .cat-eat .cat-eyebrow { border:1.5px solid rgba(255,216,164,0.9); color:#FFD9A8; padding:5px 12px; border-radius:4px; transform:rotate(-2deg); }
+  .cat-eat .cat-hero h1 { color:#FFE9CB; }
+  .cat-eat .sec-head h2 { color:#B4451F; }
+  .cat-eat .hood .tile { background:linear-gradient(155deg,#FFE3BF,#F7C398); box-shadow:0 8px 18px rgba(180,90,40,0.16); }
+  .cat-eat .hood.active .tile { border-color:#B4451F; }
+  .cat-eat .hood p { color:#C07A4C; }
+  .cat-eat .pcard { padding:11px 13px; border-radius:16px; background:#FFFDF8; border:1px solid #F2DFC4; box-shadow:0 6px 16px rgba(180,110,50,0.1); }
+  .cat-eat .pcard .bg { border-radius:14px; }
+  .cat-eat .pcard .info h3 { color:#2E1608; text-shadow:none; font-size:14px; padding-bottom:7px; border-bottom:2px dotted #E9CBA2; }
+  .cat-eat .pcard .info .loc { color:#8A5A34; text-shadow:none; margin-top:6px; }
+  .cat-eat .pcard .info .meta { color:#B4451F; font-family:'Space Mono',monospace; font-size:9.5px; }
+  .cat-eat .join .card-j { background:linear-gradient(155deg,#F7B267,#E4572E); box-shadow:0 22px 48px rgba(228,87,46,0.35), inset 0 2px 4px rgba(255,255,255,0.4); }
+  .cat-eat .empty, .cat-eat footer { color:#C07A4C; }
+
+  /* — BEAUTY · 아치 카드 — */
+  #view-cat.cat-beauty { background:#FDF8FB; }
+  .cat-beauty .cat-hero .img { filter:saturate(0.82) brightness(1.04); }
+  .cat-beauty .cat-hero .img::after { background:linear-gradient(180deg, rgba(253,244,250,0.08), rgba(122,72,104,0.62)); }
+  .cat-beauty .cat-eyebrow { letter-spacing:0.34em; }
+  .cat-beauty .sec-head h2 { color:#A76F92; }
+  .cat-beauty .hood .tile { border-radius:999px; background:linear-gradient(155deg,#F6E3EF,#E7C6DD); box-shadow:0 8px 18px rgba(167,111,146,0.16); }
+  .cat-beauty .hood.active .tile { border-color:#A76F92; }
+  .cat-beauty .hood p { color:#BB8AA8; }
+  .cat-beauty .pcard { border-radius:120px 120px 22px 22px; box-shadow:0 14px 30px rgba(167,111,146,0.24), inset 0 0 0 4px rgba(255,255,255,0.75); }
+  .cat-beauty .pcard .cat { display:none; }
+  .cat-beauty .pcard .lockpill { left:50%; right:auto; transform:translateX(-50%); top:16px; }
+  .cat-beauty .pcard .scrim { background:linear-gradient(180deg, rgba(60,25,48,0) 42%, rgba(60,25,48,0.72) 100%); }
+  .cat-beauty .pcard .info { text-align:center; padding-bottom:15px; }
+  .cat-beauty .pcard .info .loc { justify-content:center; }
+  .cat-beauty .join .card-j { background:linear-gradient(155deg,#EFC9E2,#C48EB0); box-shadow:0 22px 48px rgba(196,142,176,0.4), inset 0 2px 4px rgba(255,255,255,0.5); }
+  .cat-beauty .empty, .cat-beauty footer { color:#BB8AA8; }
+
+  /* — BODY · 프로그램 카드 (와이드 이미지 스트립) — */
+  #view-cat.cat-body { background:#F4F8F0; }
+  .cat-body .cat-hero .img::after { background:linear-gradient(180deg, rgba(30,50,22,0.32), rgba(22,38,16,0.74)); }
+  .cat-body .cat-eyebrow { color:#D6EBC4; }
+  .cat-body .cat-hero h1 { color:#EAF6DE; }
+  .cat-body .sec-head h2 { color:#4C6B3E; }
+  .cat-body .hood .tile { background:linear-gradient(155deg,#E2EED4,#C6DCB2); box-shadow:0 8px 18px rgba(90,124,70,0.16); }
+  .cat-body .hood.active .tile { border-color:#4C6B3E; }
+  .cat-body .hood p { color:#7B9A66; }
+  .cat-body .cards.grid { display:flex; flex-direction:column; gap:14px; }
+  .cat-body .pcard { flex:none; width:100%; height:auto; display:block; border-radius:18px; background:#fff; border:1px solid #DCE8D0; overflow:hidden; box-shadow:0 10px 24px rgba(90,124,70,0.12); }
+  .cat-body .pcard .bg { position:relative; inset:auto; width:100%; height:140px; font-size:46px; }
+  .cat-body .pcard .scrim { display:none; }
+  .cat-body .pcard .cat { color:#fff; background:#5B7C4E; }
+  .cat-body .pcard .info { padding:13px 16px 15px; }
+  .cat-body .pcard .info h3 { color:#1E2E16; text-shadow:none; font-size:15px; display:flex; align-items:center; gap:8px; }
+  .cat-body .pcard .info h3::before { content:""; flex:0 0 15px; width:15px; height:15px; border-radius:50%; border:2.5px solid #5B7C4E; }
+  .cat-body .pcard .info .loc { color:#5E7A4C; text-shadow:none; margin-top:5px; }
+  .cat-body .pcard .info .meta { color:#7B9A66; font-family:'Space Mono',monospace; font-size:9.5px; }
+  .cat-body .join .card-j { background:linear-gradient(155deg,#A9C98C,#5B7C4E); box-shadow:0 22px 48px rgba(91,124,78,0.35), inset 0 2px 4px rgba(255,255,255,0.35); }
+  .cat-body .empty, .cat-body footer { color:#7B9A66; }
+
+  /* — TREND · 다크 랭킹 차트 — */
+  #view-cat.cat-trend { background:#1A1322; }
+  .cat-trend .cat-hero .img { filter:saturate(1.15); }
+  .cat-trend .cat-hero .img::after { background:linear-gradient(180deg, rgba(26,19,34,0.35), rgba(26,19,34,0.96)); }
+  .cat-trend .cat-eyebrow { color:#FF7DB4; }
+  .cat-trend .cat-ticker { display:block; }
+  .cat-trend .sec-head h2 { color:#FF7DB4; }
+  .cat-trend .hood .tile { background:#251B31; border:2px solid #372A47; box-shadow:none; }
+  .cat-trend .hood.active .tile { border-color:#FF5FA2; }
+  .cat-trend .hood h4 { color:#fff; }
+  .cat-trend .hood p { color:#8E7BA6; }
+  .cat-trend .cards.grid { counter-reset:su-rank; }
+  .cat-trend .pcard { padding:12px 14px; border-radius:16px; background:#231A2F; border:1px solid #34273F; box-shadow:none; }
+  .cat-trend .pcard::before { counter-increment:su-rank; content:counter(su-rank); font-family:'Space Mono',monospace; font-weight:700; font-size:19px; color:#FF5FA2; min-width:22px; text-align:center; flex-shrink:0; }
+  .cat-trend .pcard .bg { border-radius:14px; }
+  .cat-trend .pcard .info h3 { color:#fff; text-shadow:none; font-size:14px; }
+  .cat-trend .pcard .info .loc { color:#B9A7CC; text-shadow:none; }
+  .cat-trend .pcard .info .meta { color:#8E7BA6; font-family:'Space Mono',monospace; font-size:9.5px; }
+  .cat-trend .join .card-j { background:linear-gradient(155deg,#FF5FA2,#B23A78); box-shadow:0 22px 48px rgba(255,95,162,0.25), inset 0 2px 4px rgba(255,255,255,0.25); }
+  .cat-trend .empty, .cat-trend footer { color:#8E7BA6; }
+
   /* Trending */
   .feed-item {
     display:flex; gap:14px; padding:15px 20px; align-items:flex-start;
@@ -450,7 +546,7 @@
     .sheet { max-width:560px; }
   }
 
-  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } html { scroll-behavior:auto; } }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } html { scroll-behavior:auto; } }
 </style>
 </head>
 <body>
@@ -486,7 +582,7 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v11</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v13</span></div>
     </div>
   </section>
 
@@ -569,9 +665,11 @@
     <header class="cat-hero">
       <div class="img"><img id="cat-img" src="" alt="" onerror="this.style.display='none'" onload="this.style.display=''"></div>
       <button class="back" onclick="go('home')">← Home</button>
+      <div class="cat-eyebrow" id="cat-eyebrow"></div>
       <h1 id="cat-title"></h1>
       <p id="cat-desc"></p>
     </header>
+    <div class="cat-ticker" id="cat-ticker" aria-hidden="true"></div>
 
     <div class="sec-head"><h2>Explore by neighborhood</h2></div>
     <div class="hoods" id="cat-hoods"></div>
@@ -643,10 +741,10 @@
   ];
 
   var CATS = {
-    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://images.unsplash.com/photo-1635363638580-c2809d049eee?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D" },
-    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://images.unsplash.com/photo-1515377905703-c4788e51af15?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c3BhfGVufDB8fDB8fHww" },
-    body:   { name:"Body",   em:"🌿", tag:"4-week programs",         desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" },
-    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", img:"https://images.unsplash.com/photo-1689770765550-3bbe196f3dd1?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGFlc3RoZXRpYyUyMGNhZmV8ZW58MHx8MHx8fDA%3D" }
+    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  eyebrow:"Today's menu", desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://images.unsplash.com/photo-1635363638580-c2809d049eee?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D" },
+    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      eyebrow:"Skin · steam · scrub", desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://images.unsplash.com/photo-1515377905703-c4788e51af15?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c3BhfGVufDB8fDB8fHww" },
+    body:   { name:"Body",   em:"🌿", tag:"4-week programs",         eyebrow:"Programs, week by week", desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" },
+    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", img:"https://images.unsplash.com/photo-1689770765550-3bbe196f3dd1?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGFlc3RoZXRpYyUyMGNhZmV8ZW58MHx8MHx8fDA%3D" }
   };
 
   var HOODS = [
@@ -956,6 +1054,21 @@
   function renderCatPage() {
     var c = CATS[state.curCat];
     if (!c) return;
+    var vc = document.getElementById('view-cat');
+    vc.classList.remove('cat-eat', 'cat-beauty', 'cat-body', 'cat-trend');
+    vc.classList.add('cat-' + state.curCat);
+    document.getElementById('cat-eyebrow').textContent = c.eyebrow || '';
+    var tk = document.getElementById('cat-ticker');
+    if (state.curCat === 'trend') {
+      var names = [];
+      PICKS.forEach(function (p) { if (p.cat === 'trend') names.push(p.t); });
+      if (!names.length) names = ["Seongsu pop-ups", "Booked-out counters", "New in Hannam", "What everyone's ordering"];
+      var line = names.join('  ✦  ') + '  ✦  ';
+      tk.textContent = '';
+      var sp = document.createElement('span');
+      sp.textContent = line + line;
+      tk.appendChild(sp);
+    }
     document.getElementById('cat-title').innerHTML = c.em + ' <em>' + c.name + '</em>';
     document.getElementById('cat-desc').textContent = c.desc;
     document.getElementById('cat-img').src = c.img;
