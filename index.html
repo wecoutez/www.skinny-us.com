@@ -633,9 +633,6 @@
       <button class="cattile" onclick="go('cat','trend')"><span class="em">📈</span><b>Trend</b><span>right now</span></button>
     </div>
 
-    <div class="sec-head"><h2>Explore by neighborhood</h2></div>
-    <div class="hoods" id="hoods"></div>
-
     <div class="sec-head">
       <h2 id="picks-title">This week's picks</h2>
       <a class="more" href="join.html">All 2.4K+ →</a>
@@ -1155,7 +1152,6 @@
   }
 
   function renderHome() {
-    renderHoods('hoods', 'hood', renderHome);
     var wrap = document.getElementById('cards');
     var empty = document.getElementById('cards-empty');
     wrap.innerHTML = ""; var shown = 0;
