@@ -137,9 +137,9 @@
   /* ═══ HOME HERO ═══ */
   .hero {
     position: relative; overflow: hidden;
-    padding: 44px 22px 36px; margin: 0;
+    padding: 56px 22px 40px; margin: 0;
     border-radius: 0;
-    min-height: 240px;
+    min-height: clamp(300px, 46vh, 440px);
     display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
     text-align: center;
   }
@@ -544,7 +544,7 @@
   @media (min-width:760px) {
     .entry .countries { max-width:460px; }
     .entry h1 { font-size:clamp(44px,5.5vw,64px); }
-    .hero { min-height:340px; padding-top:64px; padding-bottom:52px; }
+    .hero { min-height:clamp(320px, 42vh, 460px); padding-top:64px; padding-bottom:52px; }
     .hero h1 { font-size:clamp(34px,3.6vw,46px); }
     .cat-hero { min-height:clamp(320px, 42vh, 460px); }
     .search { max-width:520px; }
@@ -617,7 +617,7 @@
     </div>
 
     <header class="hero">
-      <div class="img" id="hero-img"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1549804795-05e3d7ec4d3c?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFlc3RoZXRpYyUyMGNhZmV8ZW58MHx8MHx8fDA%3D" alt=""></div>
+      <div class="img" id="hero-img"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1612150139260-09745e8a1d55?fm=jpg&q=60&w=2400&auto=format&fit=crop" alt=""></div>
       <div class="greet">Curated by a Seoul marketer · 12 yrs on trend</div>
       <h1>Where in Seoul<br>today?</h1>
       <div class="search">
