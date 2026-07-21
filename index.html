@@ -6,7 +6,7 @@
 <title>Skinny-us — Skinny Genius</title>
 <meta name="description" content="Wellness picks curated by locals. Korea live now — more countries coming.">
 <meta name="theme-color" content="#FFFFFF">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Yellowtail&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,7 +23,7 @@
 
   html { scroll-behavior: smooth; }
   body {
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-family:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
     background: var(--white); color: var(--ink); line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
@@ -54,7 +54,7 @@
     text-shadow:0 2px 16px rgba(0,0,0,0.4);
     margin:0;
   }
-  .entry .lede { font-family:'Space Mono',monospace; font-size:11px; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; line-height:1.7; color:rgba(255,255,255,0.94); margin:12px auto 22px; max-width:420px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
+  .entry .lede { font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; line-height:1.7; color:rgba(255,255,255,0.94); margin:12px auto 22px; max-width:420px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
 
   .countries { display:flex; flex-direction:column; gap:10px; margin:0 auto 22px; width:100%; max-width:460px; }
   .country {
@@ -68,16 +68,16 @@
   .country .flag { font-size:26px; }
   .country .txt { flex:1; }
   .country .txt b { display:block; font-size:15px; color:#111; }
-  .country .txt span { font-size:11.5px; color:rgba(0,0,0,0.55); font-weight:500; }
+  .country .txt span { font-size:12.5px; color:rgba(0,0,0,0.55); font-weight:500; }
   .country .go { font-size:16px; color:#111; }
   .country.tbd { background: rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.28); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: default; box-shadow:none; }
   .country.tbd .txt b, .country.tbd .go { color: rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.4); }
   .country.tbd .txt span { color: rgba(255,255,255,0.7); text-shadow:0 1px 3px rgba(0,0,0,0.4); }
   .country .soon {
-    font-size:9.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
     color:#fff; background:rgba(255,255,255,0.22); border:1px solid rgba(255,255,255,0.3); padding:4px 10px; border-radius:999px;
   }
-  .entry .fine { font-size:11px; color:rgba(255,255,255,0.8); text-align:center; text-shadow:0 1px 3px rgba(0,0,0,0.4); }
+  .entry .fine { font-size:12px; color:rgba(255,255,255,0.8); text-align:center; text-shadow:0 1px 3px rgba(0,0,0,0.4); }
   .entry .entry-join {
     display:block; width:100%; max-width:460px; margin:0 auto 18px;
     text-decoration:none; text-align:center;
@@ -99,7 +99,7 @@
   @media (max-width:480px) {
     .entry { padding:22px 22px 30px; }
     .entry .big-title { font-size:clamp(32px,9.5vw,42px); }
-    .entry .lede { font-size:10px; letter-spacing:0.1em; margin:10px auto 18px; }
+    .entry .lede { font-size:11px; letter-spacing:0.1em; margin:10px auto 18px; }
     .countries { gap:8px; margin-bottom:16px; }
     .country { padding:12px 15px; }
     .country .flag { font-size:22px; }
@@ -114,7 +114,7 @@
     background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
   }
-  .topbar .wordmark { font-family:'Yellowtail',cursive; font-weight:400; font-size:24px; color:var(--ink); cursor:pointer; }
+  .topbar .wordmark { font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; font-size:27px; letter-spacing:0.01em; color:var(--ink); cursor:pointer; }
   .topbar .backchip {
     display:flex; align-items:center; justify-content:center;
     width:32px; height:32px; border-radius:50%; border:1px solid var(--line); cursor:pointer;
@@ -124,7 +124,7 @@
   .topbar .wordmark em { font-style:normal; color:var(--ink-soft); }
   .topbar .where {
     display:flex; align-items:center; gap:6px; cursor:pointer; border:none;
-    font-size:11.5px; font-weight:700; color:#111;
+    font-size:12.5px; font-weight:700; color:#111;
     background:var(--cream); border:1px solid var(--line); border-radius:999px; padding:7px 13px;
   }
   .topbar .join-sm {
@@ -150,7 +150,7 @@
     background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.62));
   }
   .hero > *:not(.img) { position: relative; }
-  .hero .greet { font-family:'Space Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.92); text-shadow:0 1px 3px rgba(0,0,0,0.45); }
+  .hero .greet { font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.92); text-shadow:0 1px 3px rgba(0,0,0,0.45); }
   .hero h1 {
     font-family:'Instrument Serif',serif; font-weight:400; font-style:italic;
     font-size: clamp(38px,10vw,54px); line-height:1.08; color:#fff;
@@ -173,12 +173,12 @@
     background:none; border:none; border-left:2px solid var(--g2); padding-left:15px; border-radius:0;
   }
   .quote-strip .mark { display:none; }
-  .quote-strip .q { font-family:'Yellowtail',cursive; font-weight:400; font-size:17px; line-height:1.5; color:var(--ink-mid); }
-  .quote-strip .a { font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:4px; }
+  .quote-strip .q { font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; font-size:20px; line-height:1.5; color:var(--ink-mid); }
+  .quote-strip .a { font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:4px; }
 
   /* Sections */
   .sec-head { display:flex; align-items:baseline; justify-content:space-between; padding:0 20px; margin:30px 0 14px; }
-  .sec-head h2 { font-family:'Space Mono',monospace; font-weight:700; font-size:13px; letter-spacing:0.16em; text-transform:uppercase; }
+  .sec-head h2 { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.16em; text-transform:uppercase; }
   .sec-head .more { font-size:12px; font-weight:600; color:var(--ink-soft); text-decoration:none; background:none; border:none; cursor:pointer; }
 
   /* Category tiles (home) */
@@ -191,7 +191,7 @@
   .cattile:hover { transform:translateY(-3px); box-shadow:0 12px 26px rgba(200,120,140,0.16); }
   .cattile .em { font-size:24px; display:block; margin-bottom:7px; line-height:1; }
   .cattile b { font-size:12.5px; color:#111; display:block; }
-  .cattile span { font-size:9.5px; color:var(--ink-soft); font-weight:600; }
+  .cattile span { font-size:11px; color:var(--ink-soft); font-weight:600; }
 
   /* Neighborhood tiles */
   .hoods { display:flex; gap:12px; padding:2px 20px 8px; overflow-x:auto; scrollbar-width:none; align-items:flex-start; }
@@ -205,8 +205,8 @@
     border:2px solid transparent; transition:border-color .15s, transform .15s;
   }
   .hood.active .tile { border-color: var(--ink); transform: translateY(-2px); }
-  .hood h4 { font-size:11px; font-weight:700; margin-top:7px; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .hood p { font-size:9.5px; color:var(--ink-soft); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .hood h4 { font-size:12px; font-weight:700; margin-top:7px; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .hood p { font-size:11px; color:var(--ink-soft); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
   /* Pick cards */
   .cards { display:flex; gap:14px; padding:2px 20px 8px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
@@ -226,19 +226,39 @@
   .pcard .scrim { position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(0,0,0,0.72) 100%); }
   .pcard .cat {
     position:absolute; top:11px; left:11px;
-    font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    font-size:10.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
     color:var(--ink); background:rgba(255,255,255,0.92); padding:5px 10px; border-radius:999px;
   }
   .pcard .info { position:relative; padding:13px 14px; width:100%; }
-  .pcard .info h3 { font-size:14.5px; font-weight:700; line-height:1.28; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,0.45); }
-  .pcard .info .loc { display:flex; align-items:center; gap:4px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.92); margin-top:4px; text-shadow:0 1px 3px rgba(0,0,0,0.45); }
-  .pcard .info .meta { font-size:10px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px; }
+  .pcard .info h3 { font-size:15.5px; font-weight:700; line-height:1.28; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,0.45); }
+  .pcard .info .loc { display:flex; align-items:center; gap:4px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.92); margin-top:4px; text-shadow:0 1px 3px rgba(0,0,0,0.45); }
+  .pcard .info .meta { font-size:11px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px; }
+
+  /* Category tab bar (always visible on category pages) */
+  .cat-stick { position:sticky; top:0; z-index:20; }
+  .cat-stick .topbar { position:relative; top:auto; }
+  .cat-tabs {
+    display:flex; gap:8px; align-items:center;
+    padding:9px var(--gx) 10px; overflow-x:auto; scrollbar-width:none;
+    background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .cat-tabs::-webkit-scrollbar { display:none; }
+  .cat-tab {
+    flex:0 0 auto; display:inline-flex; align-items:center; gap:6px;
+    border:1px solid var(--line); background:#fff; color:#111; cursor:pointer;
+    font-size:12px; font-weight:700; padding:8px 14px; border-radius:999px;
+    transition:transform .15s, background .15s;
+  }
+  .cat-tab .em { font-size:14px; line-height:1; }
+  .cat-tab:hover { transform:translateY(-1px); }
+  .cat-tab.active { background:var(--ink); border-color:var(--ink); color:#fff; }
 
   /* Category page header */
   .cat-hero {
     position:relative; overflow:hidden; margin:0; border-radius:0;
-    padding:34px 22px 30px;
-    min-height:190px;
+    padding:56px 22px 40px;
+    min-height:clamp(300px, 46vh, 440px);
     display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
     text-align:center;
   }
@@ -254,25 +274,23 @@
   }
   .cat-hero h1 { font-family:'Instrument Serif',serif; font-weight:400; font-style:italic; font-size:46px; line-height:1.05; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,0.5); }
   .cat-hero h1 em { font-style:normal; }
-  .cat-hero p { font-size:13px; font-weight:500; color:rgba(255,255,255,0.92); margin-top:6px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
+  .cat-hero p { font-size:14.5px; font-weight:500; color:rgba(255,255,255,0.92); margin-top:6px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
 
   /* ═══ CATEGORY THEMES ═══════════════════════════════════════════
      각 카테고리는 성격에 맞는 팔레트 + 레이아웃을 가진다.
      eat=메뉴판 리스트 · beauty=아치 카드 · body=프로그램 로그 · trend=다크 랭킹 차트 */
-  .cat-eyebrow { display:inline-block; font-family:'Space Mono',monospace; font-size:9.5px; font-weight:700; letter-spacing:0.24em; text-transform:uppercase; color:rgba(255,255,255,0.92); margin-bottom:10px; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+  .cat-eyebrow { display:inline-block; font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.24em; text-transform:uppercase; color:rgba(255,255,255,0.92); margin-bottom:10px; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   .cat-eyebrow:empty { display:none; }
-  .cat-ticker { display:none; overflow:hidden; white-space:nowrap; background:#FF5FA2; color:#20101C; font-family:'Space Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; padding:9px 0; }
+  .cat-ticker { display:none; overflow:hidden; white-space:nowrap; background:#FF5FA2; color:#20101C; font-family:'Space Grotesk',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; padding:9px 0; }
   .cat-ticker span { display:inline-block; animation:su-tick 28s linear infinite; }
   @keyframes su-tick { to { transform:translateX(-50%); } }
 
   /* row-list 공통 (eat / trend) */
-  .cat-eat .cards.grid, .cat-trend .cards.grid { display:flex; flex-direction:column; gap:10px; }
-  .cat-eat .pcard, .cat-trend .pcard { flex:none; width:100%; height:auto; display:flex; align-items:center; gap:13px; overflow:visible; }
-  .cat-eat .pcard .bg, .cat-trend .pcard .bg { position:relative; inset:auto; flex:0 0 88px; width:88px; height:88px; overflow:hidden; font-size:36px; }
+  .cat-eat .pcard, .cat-trend .pcard { flex:none; width:100%; height:auto; display:block; overflow:hidden; }
+  .cat-eat .pcard .bg, .cat-trend .pcard .bg { position:relative; inset:auto; width:100%; aspect-ratio:1/1; height:auto; overflow:hidden; font-size:44px; display:flex; align-items:center; justify-content:center; }
   .cat-eat .pcard .scrim, .cat-eat .pcard .cat,
   .cat-trend .pcard .scrim, .cat-trend .pcard .cat { display:none; }
-  .cat-eat .pcard .info, .cat-trend .pcard .info { flex:1; min-width:0; padding:0; }
-  .cat-eat .pcard .lockpill, .cat-trend .pcard .lockpill { position:static; order:9; margin-left:auto; flex-shrink:0; }
+  .cat-eat .pcard .info, .cat-trend .pcard .info { padding:11px 12px 13px; }
 
   /* — EAT · 메뉴판 — */
   #view-cat.cat-eat { background:#FFF7EB; }
@@ -283,11 +301,11 @@
   .cat-eat .hood .tile { background:linear-gradient(155deg,#FFE3BF,#F7C398); box-shadow:0 8px 18px rgba(180,90,40,0.16); }
   .cat-eat .hood.active .tile { border-color:#B4451F; }
   .cat-eat .hood p { color:#C07A4C; }
-  .cat-eat .pcard { padding:11px 13px; border-radius:16px; background:#FFFDF8; border:1px solid #F2DFC4; box-shadow:0 6px 16px rgba(180,110,50,0.1); }
-  .cat-eat .pcard .bg { border-radius:14px; }
+  .cat-eat .pcard { padding:0; border-radius:16px; background:#FFFDF8; border:1px solid #F2DFC4; box-shadow:0 6px 16px rgba(180,110,50,0.1); overflow:hidden; }
+  .cat-eat .pcard .bg { border-radius:0; }
   .cat-eat .pcard .info h3 { color:#2E1608; text-shadow:none; font-size:14px; padding-bottom:7px; border-bottom:2px dotted #E9CBA2; }
   .cat-eat .pcard .info .loc { color:#8A5A34; text-shadow:none; margin-top:6px; }
-  .cat-eat .pcard .info .meta { color:#B4451F; font-family:'Space Mono',monospace; font-size:9.5px; }
+  .cat-eat .pcard .info .meta { color:#B4451F; font-family:'Space Grotesk',sans-serif; font-size:11px; }
   .cat-eat .join .card-j { background:linear-gradient(155deg,#F7B267,#E4572E); box-shadow:0 22px 48px rgba(228,87,46,0.35), inset 0 2px 4px rgba(255,255,255,0.4); }
   .cat-eat .empty, .cat-eat footer { color:#C07A4C; }
 
@@ -318,16 +336,15 @@
   .cat-body .hood .tile { background:linear-gradient(155deg,#E2EED4,#C6DCB2); box-shadow:0 8px 18px rgba(90,124,70,0.16); }
   .cat-body .hood.active .tile { border-color:#4C6B3E; }
   .cat-body .hood p { color:#7B9A66; }
-  .cat-body .cards.grid { display:flex; flex-direction:column; gap:14px; }
-  .cat-body .pcard { flex:none; width:100%; height:auto; display:block; border-radius:18px; background:#fff; border:1px solid #DCE8D0; overflow:hidden; box-shadow:0 10px 24px rgba(90,124,70,0.12); }
-  .cat-body .pcard .bg { position:relative; inset:auto; width:100%; height:140px; font-size:46px; }
+  .cat-body .pcard { width:100%; height:auto; display:block; border-radius:18px; background:#fff; border:1px solid #DCE8D0; overflow:hidden; box-shadow:0 10px 24px rgba(90,124,70,0.12); }
+  .cat-body .pcard .bg { position:relative; inset:auto; width:100%; height:auto; aspect-ratio:1/1; font-size:46px; }
   .cat-body .pcard .scrim { display:none; }
   .cat-body .pcard .cat { color:#fff; background:#5B7C4E; }
   .cat-body .pcard .info { padding:13px 16px 15px; }
   .cat-body .pcard .info h3 { color:#1E2E16; text-shadow:none; font-size:15px; display:flex; align-items:center; gap:8px; }
   .cat-body .pcard .info h3::before { content:""; flex:0 0 15px; width:15px; height:15px; border-radius:50%; border:2.5px solid #5B7C4E; }
   .cat-body .pcard .info .loc { color:#5E7A4C; text-shadow:none; margin-top:5px; }
-  .cat-body .pcard .info .meta { color:#7B9A66; font-family:'Space Mono',monospace; font-size:9.5px; }
+  .cat-body .pcard .info .meta { color:#7B9A66; font-family:'Space Grotesk',sans-serif; font-size:11px; }
   .cat-body .join .card-j { background:linear-gradient(155deg,#A9C98C,#5B7C4E); box-shadow:0 22px 48px rgba(91,124,78,0.35), inset 0 2px 4px rgba(255,255,255,0.35); }
   .cat-body .empty, .cat-body footer { color:#7B9A66; }
 
@@ -343,12 +360,12 @@
   .cat-trend .hood h4 { color:#fff; }
   .cat-trend .hood p { color:#8E7BA6; }
   .cat-trend .cards.grid { counter-reset:su-rank; }
-  .cat-trend .pcard { padding:12px 14px; border-radius:16px; background:#231A2F; border:1px solid #34273F; box-shadow:none; }
-  .cat-trend .pcard::before { counter-increment:su-rank; content:counter(su-rank); font-family:'Space Mono',monospace; font-weight:700; font-size:19px; color:#FF5FA2; min-width:22px; text-align:center; flex-shrink:0; }
-  .cat-trend .pcard .bg { border-radius:14px; }
+  .cat-trend .pcard { padding:0; border-radius:16px; background:#231A2F; border:1px solid #34273F; box-shadow:none; overflow:hidden; }
+  .cat-trend .pcard::before { counter-increment:su-rank; content:counter(su-rank); position:absolute; top:10px; left:10px; z-index:2; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:#FF5FA2; background:rgba(26,19,34,0.85); padding:3px 10px; border-radius:999px; }
+  .cat-trend .pcard .bg { border-radius:0; }
   .cat-trend .pcard .info h3 { color:#fff; text-shadow:none; font-size:14px; }
   .cat-trend .pcard .info .loc { color:#B9A7CC; text-shadow:none; }
-  .cat-trend .pcard .info .meta { color:#8E7BA6; font-family:'Space Mono',monospace; font-size:9.5px; }
+  .cat-trend .pcard .info .meta { color:#8E7BA6; font-family:'Space Grotesk',sans-serif; font-size:11px; }
   .cat-trend .join .card-j { background:linear-gradient(155deg,#FF5FA2,#B23A78); box-shadow:0 22px 48px rgba(255,95,162,0.25), inset 0 2px 4px rgba(255,255,255,0.25); }
   .cat-trend .empty, .cat-trend footer { color:#8E7BA6; }
 
@@ -358,11 +375,11 @@
     border-top:1px solid var(--line); text-decoration:none; color:inherit;
   }
   .feed-item:last-of-type { border-bottom:1px solid var(--line); }
-  .feed-item .num { font-family:'Space Mono',monospace; font-weight:700; font-size:15px; color:var(--ink-soft); width:24px; flex-shrink:0; padding-top:3px; }
+  .feed-item .num { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--ink-soft); width:24px; flex-shrink:0; padding-top:3px; }
   .feed-item .txt { flex:1; }
   .feed-item .kicker-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
-  .feed-item .kicker { font-size:9.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
-  .feed-item .dist { font-size:9.5px; font-weight:700; color:var(--ink); background:var(--cream); border:1px solid var(--line); padding:2.5px 8px; border-radius:999px; }
+  .feed-item .kicker { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
+  .feed-item .dist { font-size:11px; font-weight:700; color:var(--ink); background:var(--cream); border:1px solid var(--line); padding:2.5px 8px; border-radius:999px; }
   .feed-item h3 { font-size:14.5px; font-weight:700; line-height:1.32; }
   .feed-item p { font-size:12px; color:var(--ink-mid); margin-top:3px; }
   .feed-item .fthumb {
@@ -391,10 +408,10 @@
     padding:13px 32px; border-radius:999px;
     box-shadow: 0 12px 26px rgba(168,48,92,0.28);
   }
-  .join .alt { display:block; margin-top:11px; font-size:11.5px; color:rgba(255,255,255,0.85); }
+  .join .alt { display:block; margin-top:11px; font-size:12.5px; color:rgba(255,255,255,0.85); }
   .join .alt a { color:#fff; }
 
-  footer { text-align:center; padding:14px 20px 40px; font-size:11px; color:var(--ink-mid); }
+  footer { text-align:center; padding:14px 20px 40px; font-size:12px; color:var(--ink-mid); }
   footer .row-f { display:flex; justify-content:center; gap:14px; margin-bottom:6px; flex-wrap:wrap; }
   footer a { color:var(--ink-mid); }
 
@@ -411,10 +428,10 @@
       rgba(0,0,0,0.78) 55%,
       rgba(0,0,0,0.92) 78%);
   }
-  .gate .g-brand { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+  .gate .g-brand { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   .gate h1 { font-family:'Instrument Serif',serif; font-weight:400; font-style:italic; font-size:clamp(56px,14vw,88px); line-height:1.02; color:#F8A5C6; text-shadow:0 2px 14px rgba(0,0,0,0.5); margin:14px 0 20px; }
   .gate .g-cred {
-    font-family:'Space Mono',monospace; font-size:10.5px; font-weight:700;
+    font-family:'Space Grotesk',sans-serif; font-size:11.5px; font-weight:700;
     letter-spacing:0.18em; text-transform:uppercase; line-height:1.8;
     color:rgba(255,255,255,0.9); text-shadow:0 1px 3px rgba(0,0,0,0.5);
     max-width:420px; margin:0 auto 28px;
@@ -431,11 +448,11 @@
   .gate .g-code { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:14px; max-width:400px; margin-left:auto; margin-right:auto; }
   .gate .g-code-in {
     flex:1; min-width:180px; padding:12px 16px; border-radius:20px; border:none; outline:none;
-    font-family:'Space Mono',monospace; font-size:16px; letter-spacing:0.12em; text-align:center; color:#111;
+    font-family:'Space Grotesk',sans-serif; font-size:16px; letter-spacing:0.12em; text-align:center; color:#111;
     background:rgba(255,255,255,0.95);
   }
   .gate .g-code-btn { padding:12px 20px; border:none; border-radius:20px; cursor:pointer; font-family:inherit; font-size:13px; font-weight:700; color:#111; background:linear-gradient(155deg,var(--g1),var(--g2)); }
-  .gate .g-code-err { display:none; width:100%; font-size:11.5px; color:#FFB3C1; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+  .gate .g-code-err { display:none; width:100%; font-size:12.5px; color:#FFB3C1; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   body.gated .topbar { visibility:hidden; }
   .gate .g-back { position:absolute; top:20px; left:20px; border:none; cursor:pointer; font-size:12px; font-weight:700; color:#111; background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px; }
 
@@ -447,7 +464,7 @@
   .pcard .lockpill {
     position:absolute; top:11px; right:11px; z-index:2;
     display:inline-flex; align-items:center; gap:4px;
-    font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    font-size:10.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
     color:#fff; background:rgba(122,26,58,0.72); backdrop-filter: blur(4px);
     padding:5px 10px; border-radius:999px;
   }
@@ -476,18 +493,18 @@
     display:flex; align-items:center; justify-content:center; font-size:52px;
   }
   .sheet .simg img { width:100%; height:100%; object-fit:cover; }
-  .sheet .scat { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
+  .sheet .scat { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
   .sheet h2 { font-family:'Instrument Serif',serif; font-weight:400; font-style:italic; font-size:31px; letter-spacing:0; line-height:1.1; margin:4px 0 10px; }
   .sheet .chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px; }
   .sheet .chip {
-    font-size:10.5px; font-weight:700; color:var(--ink);
+    font-size:11.5px; font-weight:700; color:var(--ink);
     background:var(--cream); border:1px solid var(--line);
     padding:5px 11px; border-radius:999px;
   }
   .sheet .sblock { border-radius:18px; padding:14px 16px; margin-bottom:10px; background:var(--cream); border:1px solid var(--line); }
   .sheet .sblock.trust { background:linear-gradient(155deg,#FDF0F5,#FBE3EC); border-color:#F5CFDE; }
   .sheet .sblock .lb {
-    display:block; font-size:9.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+    display:block; font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
     color:var(--ink-soft); margin-bottom:5px;
   }
   .sheet .sblock p { font-size:13px; line-height:1.55; color:var(--ink); }
@@ -528,7 +545,7 @@
     .entry h1 { font-size:clamp(44px,5.5vw,64px); }
     .hero { min-height:340px; padding-top:64px; padding-bottom:52px; }
     .hero h1 { font-size:clamp(34px,3.6vw,46px); }
-    .cat-hero { min-height:240px; }
+    .cat-hero { min-height:clamp(320px, 42vh, 460px); }
     .search { max-width:520px; }
     .catgrid { grid-template-columns:repeat(4, minmax(140px, 190px)); justify-content:center; }
     .hoods { justify-content:safe center; }
@@ -537,8 +554,8 @@
     .hood .tile { width:72px; height:72px; font-size:27px; }
     .hood h4 { font-size:12px; }
     .cards .pcard { flex:0 0 236px; height:290px; }
-    .cards.grid { grid-template-columns:repeat(auto-fill, minmax(232px, 1fr)); }
-    .cards.grid .pcard { height:250px; }
+    .cards.grid { grid-template-columns:repeat(4, 1fr); }
+    .cat-beauty .cards.grid .pcard { height:250px; }
     .feed-item .txt { max-width:680px; }
     .feed-item .fthumb { width:78px; height:78px; }
     .join .card-j { max-width:620px; margin:0 auto; }
@@ -656,10 +673,19 @@
 
   <!-- ═══════════ CATEGORY VIEW ═══════════ -->
   <section class="view" id="view-cat" style="display:none">
-    <div class="topbar">
-      <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
-      <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
-      <a class="join-sm" href="join.html">Join</a>
+    <div class="cat-stick">
+      <div class="topbar">
+        <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
+        <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
+        <a class="join-sm" href="join.html">Join</a>
+      </div>
+      <div class="cat-tabs" id="cat-tabs">
+        <button class="cat-tab" onclick="go('home')"><span class="em">🏠</span>Home</button>
+        <button class="cat-tab" data-cat="eat" onclick="go('cat','eat')"><span class="em">🍜</span>Eat</button>
+        <button class="cat-tab" data-cat="beauty" onclick="go('cat','beauty')"><span class="em">✨</span>Beauty</button>
+        <button class="cat-tab" data-cat="body" onclick="go('cat','body')"><span class="em">🌿</span>Body</button>
+        <button class="cat-tab" data-cat="trend" onclick="go('cat','trend')"><span class="em">📈</span>Trend</button>
+      </div>
     </div>
 
     <header class="cat-hero">
@@ -741,10 +767,10 @@
   ];
 
   var CATS = {
-    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  eyebrow:"Today's menu", desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://images.unsplash.com/photo-1635363638580-c2809d049eee?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D" },
-    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      eyebrow:"Skin · steam · scrub", desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://images.unsplash.com/photo-1515377905703-c4788e51af15?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c3BhfGVufDB8fDB8fHww" },
-    body:   { name:"Body",   em:"🌿", tag:"4-week programs",         eyebrow:"Programs, week by week", desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D" },
-    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", img:"https://images.unsplash.com/photo-1689770765550-3bbe196f3dd1?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGFlc3RoZXRpYyUyMGNhZmV8ZW58MHx8MHx8fDA%3D" }
+    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  eyebrow:"Today's menu", desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
+    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      eyebrow:"Skin · steam · scrub", desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://images.unsplash.com/photo-1526413232644-8a40f03cc03b?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
+    body:   { name:"Body",   em:"🌿", tag:"4-week programs",         eyebrow:"Programs, week by week", desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", img:"https://images.unsplash.com/photo-1631899477678-9d3c5aeded2d?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
+    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=2400&auto=format&fit=crop" }
   };
 
   var HOODS = [
@@ -760,7 +786,7 @@
   // tier: "free" = preview (안목 증명), "paid" = members only (blurred + unlock)
   // wt = why_trust, ot = order_tip, av = avoid_if, pr = price_range, bf = best_for, map = google maps link
   var PICKS = [
-    { cat:"eat", hood:"seongsu", tier:"free", t:"Perilla oil makguksu", loc:"Seongsu", meta:"6 min from Seongsu Stn · from ₩9,000", e:"🍜", img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)",
+    { cat:"eat", hood:"seongsu", tier:"free", t:"Perilla oil makguksu", loc:"Seongsu", meta:"6 min from Seongsu Stn · from ₩9,000", e:"🍜", img:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#FBD4D0,#F0AEC4)",
       pr:"$", bf:"solo · quick",
       wt:"No sponsored posts, no English menu, and the noon line is all local office workers — the most honest review there is.",
       ot:"Perilla oil makguksu + one mandu plate to share. Skip the bulgogi add-on.",
@@ -778,13 +804,132 @@
       ot:"Start at Jamwon exit 4, run toward Banpo bridge. Go before 8am in summer.",
       av:"Skip it if you want scenery variety — it's one river view the whole way.",
       map:"https://maps.google.com/?q=jamwon+hangang+park" },
-    { cat:"trend", hood:"apgujeong", tier:"paid", t:"Perfume cocktail bars", loc:"Apgujeong", meta:"reservation apps only", e:"🍸", img:"https://images.unsplash.com/photo-1616091216791-a5360b5fc78a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWVzdGhldGljJTIwY2FmZXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#E8AFC4,#C05A82)" },
-    { cat:"eat", hood:"mangwon", tier:"paid", t:"Temple food, no temple", loc:"Mangwon", meta:"vegan · under ₩12,000", e:"🥬", img:"https://images.unsplash.com/photo-1590301157890-4810ed352733?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#F8D8C8,#E095AE)" },
-    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Glass skin, the boring way", loc:"Gangnam", meta:"derm-approved clinic list", e:"💧", img:"https://images.unsplash.com/photo-1540555700478-4be289fbecef?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHNwYXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#FBE3EC,#E095AE)" },
-    { cat:"eat", hood:"yeonnam", tier:"paid", t:"Late-night gimbap done right", loc:"Yeonnam", meta:"open til 2am", e:"🍙", g:"linear-gradient(155deg,#FBE3EC,#F0AEC4)" },
-    { cat:"body", hood:"seongsu", tier:"paid", t:"Stretching cafés exist here", loc:"Seongsu", meta:"walk-in OK · from ₩15,000", e:"🧘‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)" },
-    { cat:"trend", hood:"seongsu", tier:"paid", t:"Wellness pop-ups of the month", loc:"Seongsu", meta:"what's open right now", e:"📍", g:"linear-gradient(155deg,#FBD4D0,#E095AE)" },
-    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Scalp care is the new skincare", loc:"Cheongdam", meta:"why every salon offers it", e:"💆‍♀️", g:"linear-gradient(155deg,#F0AEC4,#C05A82)" }
+    { cat:"trend", hood:"apgujeong", tier:"paid", t:"Perfume cocktail bars", loc:"Apgujeong", meta:"reservation apps only", e:"🍸", img:"https://images.unsplash.com/photo-1616091216791-a5360b5fc78a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWVzdGhldGljJTIwY2FmZXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#E8AFC4,#C05A82)",
+      pr:"$$$", bf:"date",
+      wt:"Two of these bars are run by ex-hotel bartenders I've worked events with — the scent-pairing menus are real craft, not a gimmick for reels.",
+      ot:"Order the seasonal pairing flight first; name a perfume you wear and let the bartender counter it.",
+      av:"Skip it if you're scent-sensitive or want a casual walk-in drink — it's booked out and precious about it.",
+      map:"https://maps.google.com/?q=apgujeong+cocktail+bar" },
+    { cat:"eat", hood:"mangwon", tier:"paid", t:"Temple food, no temple", loc:"Mangwon", meta:"vegan · under ₩12,000", e:"🥬", img:"https://images.unsplash.com/photo-1590301157890-4810ed352733?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#F8D8C8,#E095AE)",
+      pr:"$", bf:"solo · date",
+      wt:"The owner trained under a temple cook for six years — the seasoning restraint is the tell. Sponsored vegan spots over-sauce; this one doesn't.",
+      ot:"The daily set with lotus root jeon. Ask for extra perilla leaf kimchi.",
+      av:"Skip it if you're after a hearty, heavy meal — portions are monastic on purpose.",
+      map:"https://maps.google.com/?q=mangwon+vegan+korean" },
+    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Glass skin, the boring way", loc:"Gangnam", meta:"derm-approved clinic list", e:"💧", img:"https://images.unsplash.com/photo-1540555700478-4be289fbecef?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHNwYXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#FBE3EC,#E095AE)",
+      pr:"$$", bf:"solo",
+      wt:"These are the clinics beauty editors visit on their own money, not the ones paying for translated Instagram ads.",
+      ot:"Start with a basic hydration facial + skin scan; decline the package pitch on visit one.",
+      av:"Skip it if you expect dramatic one-visit results — the whole point is boring consistency.",
+      map:"https://maps.google.com/?q=gangnam+dermatology+clinic" },
+    { cat:"eat", hood:"yeonnam", tier:"paid", t:"Late-night gimbap done right", loc:"Yeonnam", meta:"open til 2am", e:"🍙", g:"linear-gradient(155deg,#FBE3EC,#F0AEC4)",
+      pr:"$", bf:"solo · quick",
+      wt:"It's where the neighborhood's bar staff eat after their shift ends — the crowd at 1am is the review.",
+      ot:"Tuna gimbap + a cup of odeng broth. One roll is a full late-night meal.",
+      av:"Skip it if you want to sit and linger — half the orders walk out the door.",
+      map:"https://maps.google.com/?q=yeonnam+gimbap" },
+    { cat:"body", hood:"seongsu", tier:"paid", t:"Stretching cafés exist here", loc:"Seongsu", meta:"walk-in OK · from ₩15,000", e:"🧘‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)",
+      pr:"$$", bf:"solo · date",
+      wt:"Assisted stretching went mainstream in Seoul before it hit your feed — these studios train staff properly instead of renting out a trend.",
+      ot:"Book the 30-min assisted session; tell them if you sit at a desk all day and they'll focus hips and neck.",
+      av:"Skip it if you dislike hands-on bodywork — assisted means assisted.",
+      map:"https://maps.google.com/?q=seongsu+stretching+studio" },
+    { cat:"trend", hood:"seongsu", tier:"paid", t:"Wellness pop-ups of the month", loc:"Seongsu", meta:"what's open right now", e:"📍", g:"linear-gradient(155deg,#FBD4D0,#E095AE)",
+      pr:"$$", bf:"group",
+      wt:"I walk Seongsu weekly for work — this list is what's actually open this month, not last year's viral post.",
+      ot:"Go on a weekday before noon; weekend queues eat your whole afternoon.",
+      av:"Skip it if pop-up hype annoys you — by definition, these are crowded and temporary.",
+      map:"https://maps.google.com/?q=seongsu+popup" },
+    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Scalp care is the new skincare", loc:"Cheongdam", meta:"why every salon offers it", e:"💆‍♀️", g:"linear-gradient(155deg,#F0AEC4,#C05A82)",
+      pr:"$$$", bf:"solo",
+      wt:"Cheongdam salons quietly built scalp menus for celebrity clients years before the export marketing caught up — I've sat in those chairs for work.",
+      ot:"The scalp scaling + massage combo. Skip the retail products they suggest after; buy the pharmacy version.",
+      av:"Skip it if ₩100,000+ for a scalp treatment sounds absurd to you — honestly, fair.",
+      map:"https://maps.google.com/?q=cheongdam+scalp+care+salon" },
+    { cat:"eat", hood:"gangnam", tier:"paid", t:"Soup rice for slow mornings", loc:"Gangnam", meta:"haejangguk · open 24h", e:"🍲", img:"https://images.unsplash.com/photo-1609501676725-7186f017a4b7?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#FFE3BF,#F7C398)",
+      pr:"$", bf:"solo",
+      wt:"It's open 24 hours and full of taxi drivers at 6am — the one crowd in Seoul that never eats at a mediocre soup place.",
+      ot:"Sundae-guk or ugeoji haejangguk. Add the rice straight in, season with saeujeot to taste.",
+      av:"Skip it if offal broth is a hard no — ask for ugeoji (cabbage) version instead, or pass entirely.",
+      map:"https://maps.google.com/?q=gangnam+haejangguk+24h" },
+    { cat:"eat", hood:"apgujeong", tier:"paid", t:"The tteokbokki worth a queue", loc:"Apgujeong", meta:"cash only · from ₩6,000", e:"🌶️", img:"https://images.unsplash.com/photo-1635363638580-c2809d049eee?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#F8D8C8,#E095AE)",
+      pr:"$", bf:"group · quick",
+      wt:"Same pot, same halmeoni, twenty years — the queue is high schoolers and office workers, never tour groups.",
+      ot:"Tteokbokki + fried mandu, dipped. Ask for 'less spicy' honestly — their base level is real.",
+      av:"Skip it if you can't do spice or standing-room dining. There are no chairs worth mentioning.",
+      map:"https://maps.google.com/?q=apgujeong+tteokbokki" },
+    { cat:"eat", hood:"hannam", tier:"paid", t:"One-table hanjeongsik", loc:"Hannam", meta:"reserve 2 weeks out", e:"🥢", img:"https://images.unsplash.com/photo-1661366394743-fe30fe478ef7?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#FFE3BF,#E4A26B)",
+      pr:"$$$", bf:"date · group",
+      wt:"One seating, one table, no menu photos online — it survives entirely on regulars, which is the strongest trust signal a restaurant can have.",
+      ot:"There's no ordering — it's a set course. Just tell them allergies when you book.",
+      av:"Skip it if you want flexibility or a quick meal — it's two hours, fixed course, fixed time.",
+      map:"https://maps.google.com/?q=hannam+hanjeongsik" },
+    { cat:"beauty", hood:"seongsu", tier:"paid", t:"Pharmacy haul, decoded", loc:"Seongsu", meta:"what to actually buy", e:"🧴", img:"https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#F6E3EF,#E7C6DD)",
+      pr:"$", bf:"solo · quick",
+      wt:"Half the 'K-beauty must-haves' on your feed are export-only SKUs locals don't buy. This is the shelf Koreans actually restock.",
+      ot:"Sunscreen, a cica cream, and one sheet-mask box. That's the real routine — ignore the 10-step mythology.",
+      av:"Skip it if you're loyal to your current routine — swapping everything at once is how skin freaks out mid-trip.",
+      map:"https://maps.google.com/?q=seongsu+olive+young" },
+    { cat:"beauty", hood:"apgujeong", tier:"paid", t:"Brow bars locals trust", loc:"Apgujeong", meta:"from ₩35,000 · book on Naver", e:"✏️", img:"https://images.unsplash.com/photo-1542833807-ad5af0977050?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#EFC9E2,#C48EB0)",
+      pr:"$$", bf:"solo",
+      wt:"Korean brow styling is conservative by design — these artists shape to your face, not to whatever's trending on foreign clients.",
+      ot:"Book 'brow styling + tint'. Bring a photo of your everyday makeup, not a celebrity reference.",
+      av:"Skip it if you want dramatic laminated brows — they'll politely talk you out of it.",
+      map:"https://maps.google.com/?q=apgujeong+brow+bar" },
+    { cat:"beauty", hood:"hannam", tier:"paid", t:"The 90-minute facial reset", loc:"Hannam", meta:"no upsells · ₩80,000", e:"🌸", img:"https://images.unsplash.com/photo-1552046122-03184de85e08?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#F6E3EF,#D8A8C6)",
+      pr:"$$", bf:"solo",
+      wt:"No membership pitch, no product table at checkout — in this industry, that alone puts it in the top 5%.",
+      ot:"The signature 90-min facial, nothing added. Go the day after you land; it fixes flight skin.",
+      av:"Skip it if you want extractions and visible peeling — this is the gentle school, results show in days not hours.",
+      map:"https://maps.google.com/?q=hannam+facial+esthetic" },
+    { cat:"body", hood:"hannam", tier:"paid", t:"Namsan stairs before breakfast", loc:"Hannam", meta:"40-min loop · go at sunrise", e:"⛰️", img:"https://images.unsplash.com/photo-1570191913384-7b4ff11716e7?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#E2EED4,#C6DCB2)",
+      pr:"$", bf:"solo · date",
+      wt:"The sunrise stair crowd is 60-year-old Seoul regulars who've done this daily for decades — you're borrowing their routine, not a tourist trail.",
+      ot:"Start from the Hannam side path, top before 7am, buy a sikhye from the vending machine at the summit.",
+      av:"Skip it if knees are a concern — it's stairs nearly the whole way up.",
+      map:"https://maps.google.com/?q=namsan+stairs+hannam" },
+    { cat:"body", hood:"gangnam", tier:"paid", t:"Pilates etiquette 101", loc:"Gangnam", meta:"first-timer friendly studios", e:"🤸‍♀️", g:"linear-gradient(155deg,#E2EED4,#A9C98C)",
+      pr:"$$", bf:"solo",
+      wt:"Seoul pilates studios have unspoken rules (grip socks, arrive 10 early, phone away) — these are the ones that welcome first-timers instead of freezing them out.",
+      ot:"Book a 1:1 intro session, not a group class, for your first visit. Buy grip socks at the front desk.",
+      av:"Skip it if you're only here a few days — single drop-ins exist but the pricing punishes them.",
+      map:"https://maps.google.com/?q=gangnam+pilates+studio" },
+    { cat:"body", hood:"mangwon", tier:"paid", t:"Riverside bike day", loc:"Mangwon", meta:"rent ₩3,000/hr · flat path", e:"🚲", g:"linear-gradient(155deg,#D7E8C4,#8FB474)",
+      pr:"$", bf:"date · group",
+      wt:"The public Ttareungi bikes and the river path are genuinely world-class civic infrastructure — no operator is paying anyone to say that.",
+      ot:"Rent at Mangwon Hangang Park, ride west toward the World Cup Park bridge, picnic on the return leg.",
+      av:"Skip it on fine-dust days — check the air quality app first, seriously.",
+      map:"https://maps.google.com/?q=mangwon+hangang+park+bike" },
+    { cat:"body", hood:"yeonnam", tier:"paid", t:"Forest park recovery walk", loc:"Yeonnam", meta:"Gyeongui line park · 30 min", e:"🧺", g:"linear-gradient(155deg,#E8F1DC,#B7D49C)",
+      pr:"$", bf:"solo · date",
+      wt:"An old rail line turned into a 6km park — it's where the neighborhood actually decompresses, dogs and all. Zero admission, zero catch.",
+      ot:"Walk the Yeonnam stretch at golden hour, grab a coffee to-go at the start, sit on the grass at the end.",
+      av:"Skip it on summer weekend afternoons — picnic crowds turn it into a festival.",
+      map:"https://maps.google.com/?q=gyeongui+line+forest+park+yeonnam" },
+    { cat:"trend", hood:"gangnam", tier:"paid", t:"Night market crawl, curated", loc:"Gangnam", meta:"3 stalls that matter", e:"🏮", img:"https://images.unsplash.com/photo-1590437084089-9f5ae1500176?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#E8AFC4,#C05A82)",
+      pr:"$", bf:"group",
+      wt:"Most market listicles copy each other. I eat here — three stalls carry the whole market and this list names them in order.",
+      ot:"Stall one for the grilled skewers, stall two for hotteok, finish with the fruit cup. Bring small bills.",
+      av:"Skip it if crowds and standing-while-eating drain you — that's the entire format.",
+      map:"https://maps.google.com/?q=gangnam+night+market" },
+    { cat:"trend", hood:"seongsu", tier:"paid", t:"The bakery everyone's posting", loc:"Seongsu", meta:"sells out by 1pm", e:"🥐", img:"https://images.unsplash.com/photo-1628532429788-c35922b5e6c1?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#FBD4D0,#E095AE)",
+      pr:"$$", bf:"solo · date",
+      wt:"For once the hype is load-bearing — the head baker's previous shop had a two-year cult following before this one opened.",
+      ot:"The salt bread and one seasonal pastry. Arrive before 11am or accept defeat gracefully.",
+      av:"Skip it if queueing 30 minutes for bread offends your principles. It kind of should, and yet.",
+      map:"https://maps.google.com/?q=seongsu+bakery" },
+    { cat:"trend", hood:"hannam", tier:"paid", t:"Gallery cafés taking over", loc:"Hannam", meta:"coffee + exhibitions", e:"🖼️", g:"linear-gradient(155deg,#E8AFC4,#9B5A82)",
+      pr:"$$", bf:"date · solo",
+      wt:"Hannam's galleries added serious coffee programs to survive — the result is free exhibitions with better espresso than most cafés.",
+      ot:"See the exhibition first, then order — a hand-drip and whatever cake is seasonal.",
+      av:"Skip it if you want lively café energy — these rooms run at library volume on purpose.",
+      map:"https://maps.google.com/?q=hannam+gallery+cafe" },
+    { cat:"trend", hood:"yeonnam", tier:"paid", t:"The matcha wave", loc:"Yeonnam", meta:"where it's actually good", e:"🍵", g:"linear-gradient(155deg,#D9C4E8,#8E5AA8)",
+      pr:"$$", bf:"solo · date",
+      wt:"Nine out of ten new matcha cafés here use bottom-grade powder behind pretty ceramics — this list is the ones that spend on the tea itself.",
+      ot:"Order it straight (usucha) before the latte — you'll taste the difference the trend is built on.",
+      av:"Skip it if matcha bitterness isn't your thing — the good stuff is more bitter, not less.",
+      map:"https://maps.google.com/?q=yeonnam+matcha+cafe" }
   ];
 
   var TRENDING = [
@@ -1057,6 +1202,10 @@
     var vc = document.getElementById('view-cat');
     vc.classList.remove('cat-eat', 'cat-beauty', 'cat-body', 'cat-trend');
     vc.classList.add('cat-' + state.curCat);
+    var tabBtns = document.querySelectorAll('#cat-tabs [data-cat]');
+    for (var ti = 0; ti < tabBtns.length; ti++) {
+      tabBtns[ti].classList.toggle('active', tabBtns[ti].getAttribute('data-cat') === state.curCat);
+    }
     document.getElementById('cat-eyebrow').textContent = c.eyebrow || '';
     var tk = document.getElementById('cat-ticker');
     if (state.curCat === 'trend') {
