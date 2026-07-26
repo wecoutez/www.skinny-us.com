@@ -355,7 +355,8 @@
   .sub-head span { font-family:'Paperlogy',sans-serif; font-size:12.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#A76F92; }
   .sub-head i { font-style:normal; font-size:11px; font-weight:700; color:#BB8AA8; background:#F6E3EF; border-radius:999px; padding:2px 9px; }
   .sub-head::after { content:""; flex:1; border-top:1px solid #EBD6E4; }
-  .mapblock { padding:28px var(--gx) 6px; }
+  .mapblock { padding:22px var(--gx) 2px; }
+  .mapblock h3 { text-align:center; }
   .mapblock h3 { font-family:'Paperlogy',sans-serif; font-size:12.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#8A8372; margin-bottom:10px; }
   .chat-fab {
     position:fixed; right:16px; bottom:calc(18px + env(safe-area-inset-bottom, 0px)); z-index:35;
@@ -425,10 +426,11 @@
   .ad-mem .st.paused { background:#F3E3E3; color:#A33; }
   .ad-mem .del { border:none; background:none; color:#C99; cursor:pointer; font-size:12px; }
   .ad-mem .nt { font-size:11.5px; color:#888; margin-top:4px; }
-  .mapcanvas { width:100%; border-radius:16px; overflow:hidden; background:#FBF9F3; border:1px solid #EFE8DB; }
+  .mapcanvas { width:100%; max-width:480px; margin:0 auto; border-radius:16px; overflow:hidden; background:#FBF8F1; border:1px solid #EFE8DB; box-shadow:0 8px 22px rgba(140,120,80,0.09); }
   .mapcanvas svg { display:block; width:100%; height:auto; }
-  .mapcanvas .dot { cursor:pointer; }
-  .map-legend { display:flex; flex-wrap:wrap; gap:6px 14px; margin:0 2px 8px; }
+  .mapcanvas .dot { cursor:pointer; transform-box:fill-box; transform-origin:center; transition:transform .12s; }
+  .mapcanvas .dot:hover { transform:scale(1.5); }
+  .map-legend { display:flex; flex-wrap:wrap; justify-content:center; gap:6px 14px; margin:0 auto 8px; max-width:480px; }
   .map-legend span { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9A937F; }
   .map-legend i { width:8px; height:8px; border-radius:50%; display:inline-block; }
   .mapblock .map-note { font-size:11.5px; color:#9A937F; margin-top:8px; text-align:center; }
@@ -1512,7 +1514,7 @@
   // 방법 0 (최우선, 추천): 자체 채팅 + 어드민 — skinnyus-backend.gs 를
   //   Apps Script 웹앱으로 배포한 URL을 넣으면 사이트 안 채팅창 + #/suadmin 어드민이 켜져요.
   //   예: "https://script.google.com/macros/s/AKfycb.../exec"
-  var CHAT_API = "";
+  var CHAT_API = "https://script.google.com/macros/s/AKfycby5pXNE46VaasQteyADucU2wbZLOyCBYziqXGtsYmps7q0kW2rERIh-s-73XKDjRMtk/exec";
   var CHAT_TAWK_SRC = "";
   // 방법 B (Tawk 미설정 시 폴백): 링크로 바로 연결
   //   문자 "sms:+8210...", WhatsApp "https://wa.me/8210...", 카카오 오픈채팅 URL 등
@@ -1711,8 +1713,8 @@
   }
 
   var MAP_POS = {
-    yeonnam:[96,80], mangwon:[68,116], hannam:[203,122], seongsu:[300,112],
-    apgujeong:[260,180], gangnam:[292,210], other:[356,226]
+    yeonnam:[96,60], mangwon:[64,92], hannam:[202,94], seongsu:[302,82],
+    apgujeong:[256,138], gangnam:[294,162], other:[352,172]
   };
   var MAP_COLOR = { eat:"#C05A2B", beauty:"#D06A9E", body:"#5E8C5A", trend:"#B02A2A" };
   function renderMap(elId, items, opts) {
@@ -1721,7 +1723,7 @@
     if (!box) return;
     var ko = state.lang === "ko";
     var hoodName = function (id) {
-      if (id === "other") return ko ? "그 외 지역" : "Beyond";
+      if (id === "other") return ko ? "그 외" : "Beyond";
       var h = HOODS.filter(function (x) { return x.id === id; })[0];
       return h ? h.name : id;
     };
@@ -1732,26 +1734,51 @@
       byHood[h].push(p);
     });
     var clickable = [];
-    var svg = '<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seoul map">';
-    svg += '<path d="M 400 106 C 332 128, 300 152, 238 152 C 176 152, 152 120, 92 132 C 52 140, 18 150, 0 148" fill="none" stroke="#DCE7ED" stroke-width="22" stroke-linecap="round"/>';
-    svg += '<text x="14" y="163" font-size="8" fill="#AFC4CF" letter-spacing="2" font-family="Paperlogy,sans-serif">HAN RIVER</text>';
+    var svg = '<svg viewBox="0 0 400 196" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seoul map">';
+    // paper + landmass tints
+    svg += '<rect x="0" y="0" width="400" height="196" fill="#FBF8F1"/>';
+    svg += '<path d="M0,0 H400 V78 C330,96 300,114 238,114 C176,114 152,88 92,98 C52,104 18,112 0,110 Z" fill="#F5F0E4"/>';
+    svg += '<path d="M0,120 C18,122 52,114 92,108 C152,98 176,124 238,124 C300,124 330,106 400,90 V196 H0 Z" fill="#F2ECDF"/>';
+    // han river: base + highlight
+    svg += '<path d="M 400 84 C 332 102, 300 119, 238 119 C 176 119, 152 93, 92 103 C 52 110, 18 117, 0 115" fill="none" stroke="#CFE0E8" stroke-width="17" stroke-linecap="round"/>';
+    svg += '<path d="M 400 84 C 332 102, 300 119, 238 119 C 176 119, 152 93, 92 103 C 52 110, 18 117, 0 115" fill="none" stroke="#E2EEF3" stroke-width="7" stroke-linecap="round" opacity="0.9"/>';
+    // yeouido islet + namsan
+    svg += '<ellipse cx="112" cy="101" rx="13" ry="4.5" fill="#EDE6D4" stroke="#E2D9C3" stroke-width="0.8"/>';
+    svg += '<g opacity="0.75"><path d="M182 66 L188 50 L194 66 Z" fill="#E3D9C2"/><line x1="188" y1="50" x2="188" y2="42" stroke="#D8CCB0" stroke-width="1.4"/><circle cx="188" cy="41" r="1.4" fill="#D8CCB0"/></g>';
+    // river label + compass + wordmark
+    svg += '<text x="16" y="127" font-size="6.5" fill="#A9BEC9" letter-spacing="2.4" font-family="Paperlogy,sans-serif">HAN RIVER</text>';
+    svg += '<g opacity="0.85"><text x="381" y="20" font-size="9" font-weight="700" fill="#C9BFA6" font-family="Paperlogy,sans-serif" text-anchor="middle">N</text><path d="M381 24 L381 32 M381 24 L378.4 27 M381 24 L383.6 27" stroke="#C9BFA6" stroke-width="1.1" fill="none"/></g>';
+    svg += '<text x="388" y="188" text-anchor="end" font-size="13" font-style="italic" fill="#E4DAC4" font-family="\'Instrument Serif\',serif">Seoul</text>';
+    // clusters
     order.forEach(function (h) {
       var ax = MAP_POS[h][0], ay = MAP_POS[h][1];
+      var n = byHood[h].length;
       var dim = opts.activeHood && opts.activeHood !== "all" && opts.activeHood !== h;
+      // dominant color halo
+      var cc = {};
+      byHood[h].forEach(function (p) { cc[p.cat] = (cc[p.cat] || 0) + 1; });
+      var domCat = Object.keys(cc).sort(function (a, b) { return cc[b] - cc[a]; })[0];
+      var halo = MAP_COLOR[domCat] || "#B7AB8E";
+      var hr = 9 + 4.6 * Math.sqrt(n);
+      svg += '<circle cx="' + ax + '" cy="' + ay + '" r="' + hr.toFixed(1) + '" fill="' + halo + '" opacity="' + (dim ? 0.04 : 0.09) + '"/>';
+      svg += '<circle cx="' + ax + '" cy="' + ay + '" r="' + hr.toFixed(1) + '" fill="none" stroke="' + halo + '" stroke-width="1" opacity="' + (dim ? 0.08 : 0.2) + '" stroke-dasharray="2.5 3"/>';
       byHood[h].forEach(function (p, i) {
-        var ang = i * 2.39996, r = i === 0 ? 0 : 5.5 * Math.sqrt(i) + 3;
-        var x = ax + r * Math.cos(ang), y = ay + r * Math.sin(ang) * 0.8;
+        var ang = i * 2.39996, r = i === 0 ? 0 : 4.6 * Math.sqrt(i) + 2.5;
+        var x = ax + r * Math.cos(ang), y = ay + r * Math.sin(ang) * 0.78;
         var col = MAP_COLOR[p.cat] || "#9A937F";
         var idx = clickable.length; clickable.push(p);
         svg += '<circle class="dot" data-i="' + idx + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) +
-          '" r="4.2" fill="' + col + '" stroke="#fff" stroke-width="1.4" opacity="' + (dim ? 0.22 : (isLocked(p) ? 0.55 : 1)) + '">' +
-          '<title>' + String(tr(p,'t') || '').replace(/[<&>]/g, '') + '</title></circle>';
+          '" r="3.6" fill="' + col + '" stroke="#fff" stroke-width="1.3" opacity="' + (dim ? 0.2 : (isLocked(p) ? 0.55 : 1)) + '">' +
+          '<title>' + String(tr(p, 't') || '').replace(/[<&>]/g, '') + '</title></circle>';
       });
-      var n = byHood[h].length;
-      var ly = ay + (h === "yeonnam" || h === "seongsu" ? -14 - 4 * Math.sqrt(n) : 15 + 4 * Math.sqrt(n));
-      svg += '<text x="' + ax + '" y="' + ly.toFixed(1) + '" text-anchor="middle" font-size="8.5" font-weight="700" letter-spacing="1.2" font-family="Paperlogy,sans-serif" fill="' + (dimHood(h) ? "#CFC9B8" : "#A79E88") + '">' +
-        hoodName(h).toUpperCase() + ' · ' + n + '</text>';
-      function dimHood(hh) { return opts.activeHood && opts.activeHood !== "all" && opts.activeHood !== hh; }
+      // label pill
+      var label = hoodName(h).toUpperCase() + ' ' + n;
+      var above = (h === "yeonnam" || h === "seongsu" || h === "hannam");
+      var ly = above ? ay - hr - 6 : ay + hr + 11;
+      var lw = label.length * 5.4 + 16;
+      svg += '<g opacity="' + (dim ? 0.35 : 1) + '">' +
+        '<rect x="' + (ax - lw / 2).toFixed(1) + '" y="' + (ly - 9).toFixed(1) + '" width="' + lw.toFixed(1) + '" height="13.5" rx="6.75" fill="#FFFFFF" stroke="#EDE5D3" stroke-width="0.8"/>' +
+        '<text x="' + ax + '" y="' + (ly + 0.8).toFixed(1) + '" text-anchor="middle" font-size="7.5" font-weight="700" letter-spacing="0.8" font-family="Paperlogy,sans-serif" fill="#8F866E">' + label + '</text></g>';
     });
     svg += '</svg>';
     var legend = "";
