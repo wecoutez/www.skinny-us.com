@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Skinny-us — Skinny Genius</title>
 <meta name="description" content="Wellness picks curated by locals. Korea live now — more countries coming.">
 <meta name="theme-color" content="#FFFFFF">
@@ -376,6 +376,11 @@
     display:none; flex-direction:column; background:#fff; border-radius:22px; overflow:hidden;
     box-shadow:0 24px 60px rgba(122,26,58,0.3); border:1px solid var(--line); }
   .chatpanel.on { display:flex; }
+  @media (max-width:640px){
+    .chatpanel { left:0; right:0; top:0; bottom:0; width:100%; max-height:none; height:100%; border-radius:0; border:none; box-shadow:none; }
+  }
+  body.chat-open { position:fixed; left:0; right:0; width:100%; overflow:hidden; }
+  body.chat-open .chat-fab { display:none; }
   .cp-head { position:relative; padding:14px 44px 12px 16px; background:linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3)); }
   .cp-head b { display:block; font-size:15px; color:#111; }
   .cp-head #cp-sub { font-size:11px; color:rgba(0,0,0,0.55); font-weight:600; }
@@ -1581,42 +1586,94 @@
   function getVid(){ try{ var v=localStorage.getItem("su_vid"); if(!v){ v="v"+Date.now().toString(36)+Math.random().toString(36).slice(2,8); localStorage.setItem("su_vid",v);} return v; }catch(e){ return "v-anon"; } }
   function fmtTs(t){ var d=new Date(t); if(isNaN(d)) return ""; return (d.getMonth()+1)+"/"+d.getDate()+" "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2); }
 
-  var cpTimer=null, cpLast=0;
+  var cpTimer=null, cpScrollY=0;
+  var CP_MQ = window.matchMedia ? window.matchMedia('(max-width:640px)') : null;
+  function cpIsMobile(){ return CP_MQ ? CP_MQ.matches : (window.innerWidth <= 640); }
+
   function cpAdjustForKeyboard(){
     var p=document.getElementById('chatpanel');
     if(!p || !p.classList.contains('on') || !window.visualViewport) return;
     var vv=window.visualViewport;
-    var kb=Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-    if(kb > 60){
-      p.style.bottom=(kb + 10) + "px";
-      p.style.maxHeight=Math.max(240, vv.height - 70) + "px";
+    if(cpIsMobile()){
+      // Fullscreen sheet: pin the panel to the *visual* viewport so the
+      // input row always sits right above the keyboard.
+      p.style.top = vv.offsetTop + "px";
+      p.style.height = vv.height + "px";
+      p.style.bottom = "auto";
+      p.style.maxHeight = "none";
     } else {
-      p.style.bottom=""; p.style.maxHeight="";
+      var kb=Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      if(kb > 60){
+        p.style.bottom=(kb + 10) + "px";
+        p.style.maxHeight=Math.max(240, vv.height - 70) + "px";
+      } else {
+        p.style.bottom=""; p.style.maxHeight="";
+      }
     }
+    var box=document.getElementById('cp-msgs');
+    if(box) box.scrollTop=box.scrollHeight;
   }
   if(window.visualViewport){
     visualViewport.addEventListener('resize', cpAdjustForKeyboard);
     visualViewport.addEventListener('scroll', cpAdjustForKeyboard);
   }
+
   function toggleChatPanel(open){
     var p=document.getElementById('chatpanel');
     p.classList.toggle('on', open);
     if(open){
+      if(cpIsMobile()){
+        cpScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+        document.body.style.top = (-cpScrollY) + "px";
+        document.body.classList.add('chat-open');
+      }
       try{ var nm=localStorage.getItem("su_name"); if(nm) document.getElementById('cp-name').value=nm; }catch(e){}
-      cpLoad(); if(cpTimer) clearInterval(cpTimer); cpTimer=setInterval(cpLoad, 9000);
+      cpRestoreLocal();      // show cached thread instantly (accumulated history)
+      cpRenderAll();
+      cpLoad();
+      if(cpTimer) clearInterval(cpTimer);
+      cpTimer=setInterval(cpLoad, 9000);
+      cpAdjustForKeyboard();
       setTimeout(cpAdjustForKeyboard, 300);
       setTimeout(function(){ try{document.getElementById('cp-text').focus();}catch(e){} },150);
-    } else { if(cpTimer){ clearInterval(cpTimer); cpTimer=null; } var pp=document.getElementById('chatpanel'); pp.style.bottom=""; pp.style.maxHeight=""; }
+    } else {
+      if(cpTimer){ clearInterval(cpTimer); cpTimer=null; }
+      p.style.top=""; p.style.height=""; p.style.bottom=""; p.style.maxHeight="";
+      if(document.body.classList.contains('chat-open')){
+        document.body.classList.remove('chat-open');
+        document.body.style.top="";
+        window.scrollTo(0, cpScrollY);
+      }
+    }
   }
-  var cpCache="", cpMaxCount=0;
-  function cpRender(msgs){
-    var box=document.getElementById('cp-msgs');
+
+  // ── message store: server messages + locally-pending messages, merged ──
+  // Nothing is ever wiped by a poll: pending bubbles stay until the server
+  // echoes them back, and the whole thread is cached in localStorage.
+  var cpServer=[], cpPending=[], cpLastHtml="";
+  function cpRestoreLocal(){
+    try{
+      var s=JSON.parse(localStorage.getItem('su_thread')||'null');
+      if(s){ cpServer=s.server||[]; cpPending=s.pending||[]; }
+    }catch(e){}
+  }
+  function cpSaveLocal(){
+    try{
+      localStorage.setItem('su_thread', JSON.stringify({ server:cpServer.slice(-200), pending:cpPending.slice(-30) }));
+    }catch(e){}
+  }
+  function cpAllMsgs(){ return cpServer.concat(cpPending); }
+  function cpRenderAll(){
+    var box=document.getElementById('cp-msgs'); if(!box) return;
+    var msgs=cpAllMsgs();
     var hello=document.getElementById('cp-hello');
     if(hello) hello.style.display = msgs.length ? "none" : "block";
     var htmlStr = msgs.map(function(m){
       var me = m.from==="visitor";
-      return '<div class="cp-b '+(me?'me':'them')+'">'+esc(m.text)+'<span class="ts">'+fmtTs(m.ts)+'</span></div>';
+      return '<div class="cp-b '+(me?'me':'them')+'">'+esc(m.text)+'<span class="ts">'+(m.pending?"\u2026":fmtTs(m.ts))+'</span></div>';
     }).join("");
+    if(htmlStr===cpLastHtml) return;               // no churn while typing
+    cpLastHtml=htmlStr;
     var keep = hello ? hello.outerHTML : "";
     box.innerHTML = keep + htmlStr;
     box.scrollTop = box.scrollHeight;
@@ -1626,11 +1683,18 @@
     apiGet({action:"thread", vid:getVid()}).then(function(r){
       if(!(r && r.ok)) return;
       var ms = r.messages || [];
-      if (ms.length < cpMaxCount) return;           // 스테일 응답이 기존 메시지를 지우지 않게
-      var ser = JSON.stringify(ms);
-      if (ser === cpCache) return;                   // 변화 없으면 재렌더 금지 (타이핑 중 흔들림 방지)
-      cpCache = ser; cpMaxCount = ms.length;
-      cpRender(ms);
+      if (ms.length < cpServer.length) return;      // stale response: never shrink the thread
+      cpServer = ms;
+      // Drop pending bubbles that the server has now confirmed (matched by text)
+      var counts={};
+      ms.forEach(function(m){ if(m.from==="visitor"){ var k=(m.text||"").trim(); counts[k]=(counts[k]||0)+1; } });
+      cpPending = cpPending.filter(function(pm){
+        var k=(pm.text||"").trim();
+        if(counts[k] > 0){ counts[k]--; return false; }
+        return true;
+      });
+      cpSaveLocal();
+      cpRenderAll();
     }).catch(function(){});
   }
   function cpSend(){
@@ -1640,17 +1704,20 @@
     var name=(nameEl.value||"").trim();
     if(!name){
       nameEl.classList.add('cp-name-err');
-      nameEl.placeholder = state.lang==='ko' ? "이름과 이메일을 먼저 입력해주세요" : "Please add your name & email first";
+      nameEl.placeholder = state.lang==='ko' ? "\uc774\ub984\uacfc \uc774\uba54\uc77c\uc744 \uba3c\uc800 \uc785\ub825\ud574\uc8fc\uc138\uc694" : "Please add your name & email first";
       nameEl.focus();
       setTimeout(function(){ nameEl.classList.remove('cp-name-err'); }, 1200);
       return;
     }
     try{ localStorage.setItem("su_name",name); }catch(e){}
     inp.value="";
-    var box=document.getElementById('cp-msgs');
-    box.insertAdjacentHTML('beforeend','<div class="cp-b me">'+esc(txt)+'<span class="ts">…</span></div>');
-    box.scrollTop=box.scrollHeight;
-    apiPost({action:"send", vid:getVid(), name:name, text:txt}).then(cpLoad).catch(function(){});
+    cpPending.push({ from:"visitor", text:txt, ts:Date.now(), pending:true });
+    cpSaveLocal();
+    cpRenderAll();
+    inp.focus();                                    // keep the keyboard up between messages
+    apiPost({action:"send", vid:getVid(), name:name, text:txt})
+      .then(function(){ setTimeout(cpLoad, 600); })
+      .catch(function(){});
     track('chat:send');
   }
   document.addEventListener('keydown', function(e){
