@@ -41,13 +41,13 @@
   .planlist { display:flex; flex-direction:column; gap:12px; padding:20px 20px 4px; max-width:520px; margin:0 auto; }
   .plan {
     position:relative; width:100%; text-align:left; cursor:pointer;
-    background:var(--white); border:2px solid var(--line); border-radius:22px; padding:18px 18px 16px;
+    background:var(--white); border:2px solid var(--line); border-radius:22px; padding:18px 48px 16px 18px;
     transition:border-color .15s, box-shadow .15s;
   }
   .plan.active { border-color:var(--ink); box-shadow:0 12px 28px rgba(200,120,140,0.2); }
-  .plan .p-top { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+  .plan .p-top { display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; }
   .plan .p-name { font-size:15px; font-weight:700; color:#111; }
-  .plan .p-price { font-family:'Space Mono',monospace; font-weight:700; font-size:18px; color:#111; white-space:nowrap; }
+  .plan .p-price { font-family:'Space Mono',monospace; font-weight:700; font-size:17px; color:#111; white-space:nowrap; }
   .plan .p-price span { font-family:'Inter',sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); }
   .plan .p-desc { font-size:12px; color:var(--ink-mid); margin-top:6px; line-height:1.5; }
   .plan .p-badge {
@@ -61,7 +61,6 @@
     font-size:11px; color:#fff; background:transparent;
   }
   .plan.active .p-check { background:var(--ink); border-color:var(--ink); }
-  .plan.active .p-price { margin-right:26px; }
   .pay-wrap { padding:18px 20px 8px; max-width:520px; margin:0 auto; text-align:center; }
   .pay-cta {
     display:block; width:100%; text-decoration:none; text-align:center;
@@ -121,11 +120,14 @@
     </div>
 
     <div class="pay-wrap">
-      <a class="pay-paypal" id="pay-paypal" href="https://www.paypal.com/ncp/payment/SYM2PFTGUDFBJ" target="_blank" rel="noopener">
+      <div id="paypal-sub" style="display:none"></div>
+      <a class="pay-paypal" id="pay-paypal" href="https://www.paypal.com/ncp/payment/7J7STNZ9GFH5N" target="_blank" rel="noopener" style="display:none">
         Pay with <b>Pay</b><i>Pal</i> →
       </a>
-      <div class="pay-note">Secure checkout by PayPal · cards accepted, no PayPal account needed<br>Instant access after payment</div>
+      <div class="pay-note">Secure checkout by PayPal · cards accepted, no PayPal account needed<br>Monthly renews automatically · cancel anytime in PayPal · instant access after payment</div>
     </div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=BAA1E9HIjTbEoenfNLX-VHnrhfM2BlheMWht6mJL-84-MjnHqUoTY8jGhGb6K5asYkDhvkPf-6dZeOkGPU&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 
 <script>
   function sGet(store, k){ try { return window[store].getItem(k); } catch(e){ return null; } }
@@ -140,25 +142,41 @@
   }
 
   track('view:join');
-  // 실제 PayPal 결제 링크로 교체하세요 (예: https://paypal.me/계정명/9.99USD 또는 PayPal 결제 버튼 링크)
-  var PAYPAL_LINKS = {
-    monthly: "https://www.paypal.com/ncp/payment/SYM2PFTGUDFBJ",
-    consult: "https://www.paypal.com/ncp/payment/7J7STNZ9GFH5N"
-  };
+  // monthly = PayPal 구독(자동결제) 버튼 · consult = 1회 결제 링크
+  var SUB_PLAN_ID = "P-7KN663317D418892GNJS66KA";
+  var CONSULT_LINK = "https://www.paypal.com/ncp/payment/7J7STNZ9GFH5N";
+  var WELCOME_PAGE = "welcome-sg26.html"; // 구독 완료 후 이동 (액세스 코드 안내 페이지)
+  var subRendered = false;
+  function renderSubButton() {
+    if (subRendered) return;
+    if (!window.paypal || !paypal.Buttons) return;
+    subRendered = true;
+    paypal.Buttons({
+      style: { shape: 'pill', color: 'gold', layout: 'vertical', label: 'subscribe' },
+      createSubscription: function (data, actions) {
+        return actions.subscription.create({ plan_id: SUB_PLAN_ID });
+      },
+      onApprove: function (data) {
+        track('paypal:subscribed');
+        window.location.href = WELCOME_PAGE;
+      }
+    }).render('#paypal-sub');
+  }
   function selectPlan(id) {
     track('plan:' + id);
     var plans = document.querySelectorAll('#planlist .plan');
     for (var i = 0; i < plans.length; i++) {
       plans[i].classList.toggle('active', plans[i].getAttribute('data-plan') === id);
     }
+    var sub = document.getElementById('paypal-sub');
     var pp = document.getElementById('pay-paypal');
-    var link = PAYPAL_LINKS[id] || '';
-    // 실제 링크가 설정되기 전(placeholder 상태)에는 PayPal 버튼을 숨긴다
-    if (link.indexOf('http') === 0) {
-      pp.setAttribute('href', link);
-      pp.style.display = 'block';
+    if (id === 'monthly') {
+      sub.style.display = 'block'; pp.style.display = 'none';
+      renderSubButton();
     } else {
-      pp.style.display = 'none';
+      sub.style.display = 'none';
+      pp.setAttribute('href', CONSULT_LINK);
+      pp.style.display = 'block';
     }
   }
   selectPlan(location.hash === '#consult' ? 'consult' : 'monthly');
