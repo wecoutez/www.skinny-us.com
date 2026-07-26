@@ -386,12 +386,8 @@
     font-size:11.5px; font-weight:700; padding:7px 12px; border-radius:999px; white-space:nowrap;
     transition:background .15s, color .15s; }
   .sub-tab i { font-style:normal; font-weight:700; opacity:0.5; margin-left:4px; font-size:10px; }
-  .sub-tab.active { color:#fff; border-color:transparent; }
-  .sub-tab.active i { opacity:0.8; }
-  .cat-eat .sub-tab.active { background:#B4451F; }
-  .cat-trend .sub-tab.active { background:#B02A2A; }
-  .cat-beauty .sub-tab.active { background:#A76F92; }
-  .cat-body .sub-tab.active { background:#5E8C5A; }
+  .sub-tab.active { background:#F6D9E4; color:var(--ink); border-color:transparent; }
+  .sub-tab.active i { opacity:0.65; }
   .cat-eat .sub-head span { color:#B4451F; }
   .cat-eat .sub-head i { color:#8A5A34; background:#F5E6D2; }
   .cat-eat .sub-head::after { border-top-color:#E9CBA2; }
@@ -1579,7 +1575,7 @@
       }
     },
     trend: {
-      order: ['popup','food','ip','moment','space','etc'],
+      order: ['popup','space','food','ip','moment','etc'],
       labels: {
         popup:{en:'Pop-ups now',ko:'지금 팝업'},
         food:{en:'Food & dessert waves',ko:'푸드 · 디저트'},
