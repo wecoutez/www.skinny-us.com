@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skinny-us 사진 수집 도구 (1회용)</title>
+<style>
+body{font-family:-apple-system,sans-serif;max-width:760px;margin:40px auto;padding:0 20px;color:#222}
+h1{font-size:20px} .step{background:#faf5f7;border:1px solid #eedde5;border-radius:12px;padding:14px 16px;margin:10px 0;font-size:14px;line-height:1.6}
+input{width:100%;padding:12px;font-size:14px;border:1px solid #ccc;border-radius:10px;box-sizing:border-box}
+button{margin-top:12px;padding:13px 26px;font-size:15px;font-weight:700;border:none;border-radius:999px;background:#A8305C;color:#fff;cursor:pointer}
+button:disabled{background:#ccc}
+#log{font-size:12px;white-space:pre-wrap;background:#111;color:#8f8;padding:12px;border-radius:10px;max-height:220px;overflow:auto;margin-top:14px;display:none}
+textarea{width:100%;height:200px;font-size:11px;margin-top:14px;box-sizing:border-box}
+#bar{height:8px;background:#eee;border-radius:99px;margin-top:14px;overflow:hidden;display:none}
+#fill{height:100%;width:0;background:#A8305C;transition:width .2s}
+</style></head><body>
+<h1>Skinny-us 사진 수집 도구</h1>
+<div class="step">이 페이지는 <b>1회용</b>입니다. 구글 API 키를 넣고 시작을 누르면 83곳의 구글맵 사진 주소를 수집합니다 (약 1~2분).<br>
+완료되면 아래 결과 상자의 내용을 전부 복사해서 Claude에게 붙여넣어 주세요. 이후 이 파일은 서버에서 삭제하세요.</div>
+<input id="key" type="text" placeholder="Google API 키 붙여넣기 (AIza로 시작)">
+<button id="go" onclick="run()">사진 수집 시작</button>
+<div id="bar"><div id="fill"></div></div>
+<div id="log"></div>
+<textarea id="out" placeholder="결과가 여기 나타납니다" style="display:none"></textarea>
+<script>
+var ENTRIES = [{"sid": "2039983018", "q": "토파 서울 도산대로68길 11"}, {"sid": "1195165519", "q": "돼지명가 방이동점 서울 오금로15길 10"}, {"sid": "759141120", "q": "소꿉 서울 도산대로81길 18"}, {"sid": "1960119730", "q": "옥경이네건생선 서울 퇴계로85길 7"}, {"sid": "11715055", "q": "한국의집 서울 퇴계로36길 10"}, {"sid": "1891297928", "q": "뜻한바 서울 백제고분로42길 6-9"}, {"sid": "36061778", "q": "솜씨 이촌 서울 이촌로65가길 78"}, {"sid": "2010645347", "q": "추수 서울 성미산로29안길 19-7"}, {"sid": "1037966057", "q": "피끄니크 서울 강남대로48길 6"}, {"sid": "36351814", "q": "가타쯔무리 서울 명지대길 72"}, {"sid": "1775906537", "q": "짝귀 한우 마곡발산점 서울 마곡중앙8로5길 11"}, {"sid": "1917236245", "q": "모던샤브하우스 GFC점 서울 테헤란로 152"}, {"sid": "2035632969", "q": "손정보쌈 종로점 서울 삼일대로15길 24"}, {"sid": "2047598159", "q": "문보 핫팟 서울 압구정로79길 48"}, {"sid": "17963199", "q": "초당 서울 율곡로30길 23-5"}, {"sid": "36241305", "q": "북천 서울 한강대로10길 17"}, {"sid": "1415293723", "q": "퍼멘츠 서울 한강대로7길 22"}, {"sid": "21259234", "q": "미우야 서울 강남대로23길 90"}, {"sid": "38264349", "q": "한양돈까스 서울 양재천로 107-19"}, {"sid": "19867370", "q": "볼라레 서울 사평대로20길 8"}, {"sid": "1393769185", "q": "육구공 서울 도산대로15길 16"}, {"sid": "13543908", "q": "소연 삼성점 서울 봉은사로84길 24-2"}, {"sid": "1857544000", "q": "Onyva 서울 도산대로75길 15"}, {"sid": "1341512171", "q": "탁사발두부공방 신사역점 서울 강남대로101길 17"}, {"sid": "1091992458", "q": "후제 서울 논현로24길 21"}, {"sid": "18690096", "q": "연길반점 서울 퇴계로 42-2"}, {"sid": "20451517", "q": "청담 마코토 서울 압구정로80길 37"}, {"sid": "1283188906", "q": "포노 부오노 서울 도산대로45길 8-7"}, {"sid": "11845608", "q": "강남면옥 본점 서울 논현로152길 34"}, {"sid": "1118332002", "q": "명동 숙희 서울 명동10길 7-9"}, {"sid": "954741961", "q": "오무사 서울 필운대로9길 1"}, {"sid": "1183777678", "q": "더기와 압구정본점 서울 선릉로155길 15"}, {"sid": "2048148587", "q": "선채 용산 서울 한강대로52길 29-10"}, {"sid": "1064965916", "q": "음 이터리 서울 논현로28길 47"}, {"sid": "1072261441", "q": "라이스포레스트 쌀빵 샌드위치 서울 봉은사로68길 11"}, {"sid": "1730319176", "q": "길산종합빵집 서울 바우뫼로43길 18"}, {"sid": "1282708431", "q": "로스터리선호 서울 동소문로26가길 28"}, {"sid": "2016629318", "q": "트웰브카페 하우스오브신세계 청담 서울 도산대로 442"}, {"sid": "2012376725", "q": "쿠라리에 서울 언주로 842"}, {"sid": "2096473457", "q": "늘해피 서울 학동로 342"}, {"sid": "1850375355", "q": "이웃집통통이 서울 선릉로161길 19"}, {"sid": "2079743182", "q": "로해 서울 영동대로129길 20"}, {"sid": "1094652805", "q": "밀도 강남역점 서울 강남대로 419"}, {"sid": "1031211390", "q": "우스블랑 청담 서울 학동로 415"}, {"sid": "37471718", "q": "파머스카페 서울 왕십리로6길 11"}, {"sid": "1876041058", "q": "로스토 서울 숭인동길 68"}, {"sid": "1730351149", "q": "센터커피 삼성점 서울 영동대로96길 26"}, {"sid": "1069477358", "q": "호서여성불한증막 서울 테헤란로70길 12"}, {"sid": "1048488274", "q": "보리여성불한증막 서울 선릉로130길 20"}, {"sid": "34259091", "q": "골드로즈사우나 서울 선릉로86길 31"}, {"sid": "884074632", "q": "선릉대중사우나 서울 테헤란로77길 8"}, {"sid": "11718253", "q": "숲속한방랜드 서울 봉원사길 75-7"}, {"sid": "1088579491", "q": "플로우스파 서울 사임당로 158"}, {"sid": "1165936424", "q": "스파고결 서울 선릉로132길 13"}, {"sid": "2072507600", "q": "시수하우스 서울 논현로155길 37"}, {"sid": "2019696810", "q": "탈라코스메틱스파 서울 강남대로110길 50"}, {"sid": "1340798005", "q": "면역공방스파 청담점 서울 학동로55길 12-11"}, {"sid": "1437840118", "q": "스파나무 청담점 서울 삼성로119길 8"}, {"sid": "1173562588", "q": "스파 세이지힐 서울 독서당로34길 6"}, {"sid": "38677155", "q": "성임헤드스파 서울 도산대로67길 19"}, {"sid": "31761177", "q": "벨라체스파 서울 도산대로55길 22"}, {"sid": "1219022815", "q": "해피니언 청담 서울 도산대로55길 45"}, {"sid": "1956119083", "q": "프헤 서울 언주로170길 26-3"}, {"sid": "1206613061", "q": "에이미어블 서울 도산대로 326"}, {"sid": "93777020", "q": "에이바이봄 서울 선릉로152길 40"}, {"sid": "1421741281", "q": "엘크레 서울 도산대로15길 41"}, {"sid": "2005080714", "q": "넋 서울 강남대로110길 6"}, {"sid": "152160039", "q": "S네일 서울 강남대로53길 12"}, {"sid": "35524475", "q": "네일유메 서울 도산대로27길 36"}, {"sid": "2075037792", "q": "옵티마웰니스뮤지엄약국 강남점 서울 강남대로102길 42"}, {"sid": "2015386541", "q": "올리브베러 강남역점 서울 강남대로 374"}, {"sid": "2032816657", "q": "올리브베러 광화문점 서울 종로3길 17"}, {"sid": "1165919995", "q": "아모레 용산 서울 한강대로 100"}, {"sid": "2086751749", "q": "온유재 서울 필운대로5가길 21"}, {"sid": "12219887", "q": "메이필드호텔 서울 방화대로 94"}, {"sid": "578893981", "q": "도미인 서울 강남 서울 봉은사로 134"}, {"sid": "1664357859", "q": "안토 서울 삼양로 689"}, {"sid": "1035412616", "q": "마이아트뮤지엄 서울 테헤란로 518"}, {"sid": "20757885", "q": "문화역서울284 서울 통일로 1"}, {"sid": "2070214067", "q": "하우스 노웨어 서울 서울 뚝섬로 433"}, {"sid": "1708513330", "q": "청담안즈피부과의원 서울 도산대로 220"}, {"sid": "1495121021", "q": "청담공드림피부과의원 서울 삼성로119길 8"}, {"sid": "1485384292", "q": "V&MJ피부과의원 서울 도산대로 303"}];
+function log(m){var l=document.getElementById('log');l.style.display='block';l.textContent+=m+"\n";l.scrollTop=l.scrollHeight;}
+async function run(){
+  var key=document.getElementById('key').value.trim();
+  if(!key){alert('API 키를 입력하세요');return;}
+  document.getElementById('go').disabled=true;
+  document.getElementById('bar').style.display='block';
+  if(!window.google||!google.maps){
+    log('구글 지도 SDK 로딩...');
+    await new Promise(function(res,rej){
+      var s=document.createElement('script');
+      s.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key)+'&v=weekly&loading=async&callback=__gm';
+      window.__gm=res; s.onerror=function(){rej(new Error('SDK 로딩 실패 — 키/API 활성화 확인'))};
+      document.head.appendChild(s);
+    });
+  }
+  var lib=await google.maps.importLibrary('places');
+  var Place=lib.Place;
+  var out={}, fail=[];
+  for(var i=0;i<ENTRIES.length;i++){
+    var it=ENTRIES[i];
+    try{
+      var r=await Place.searchByText({textQuery:it.q, fields:['photos','displayName'], maxResultCount:1,
+        locationBias:{lat:37.5279,lng:127.0276,radius:30000}});
+      var p=r.places&&r.places[0];
+      var uri=p&&p.photos&&p.photos[0]&&p.photos[0].getURI({maxWidth:1000});
+      if(uri){out[it.sid]=uri; log((i+1)+'/'+ENTRIES.length+' ✓ '+it.q.split(' ')[0]);}
+      else{fail.push(it.q); log((i+1)+'/'+ENTRIES.length+' ✗ 사진없음 '+it.q.split(' ')[0]);}
+    }catch(e){fail.push(it.q); log((i+1)+'/'+ENTRIES.length+' ✗ '+e.message);}
+    document.getElementById('fill').style.width=Math.round((i+1)/ENTRIES.length*100)+'%';
+    await new Promise(function(r){setTimeout(r,120)});
+  }
+  var ta=document.getElementById('out'); ta.style.display='block';
+  ta.value=JSON.stringify(out);
+  log('완료: 사진 '+Object.keys(out).length+'곳 / 실패 '+fail.length+'곳');
+  log('아래 상자 내용을 전체 복사해서 Claude에게 붙여넣으세요.');
+  ta.focus(); ta.select();
+}
+</script></body></html>
