@@ -233,7 +233,7 @@
     transition: transform .18s;
   }
   .cards.grid .pcard { flex:none; width:100%; height:auto; }
-  .cat-beauty .cards.grid .pcard { height:225px; }
+  .cat-beauty .cards.grid .pcard { height:258px; }
   .pcard:hover { transform:translateY(-4px); }
   .pcard .bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:56px; }
   .pcard .bg img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
@@ -312,7 +312,6 @@
   /* — EAT · 메뉴판 — */
   #view-cat.cat-eat { background:#FFF7EB; }
   .cat-eat .cat-hero .img::after { background:linear-gradient(180deg, rgba(112,32,6,0.32), rgba(70,18,2,0.74)); }
-  .cat-eat .cat-eyebrow { border:1.5px solid rgba(255,216,164,0.9); color:#FFD9A8; padding:5px 12px; border-radius:4px; transform:rotate(-2deg); }
   .cat-eat .cat-hero h1 { color:#FFE9CB; }
   .cat-eat .sec-head h2 { color:#B4451F; }
   .cat-eat .hood .tile { background:linear-gradient(155deg,#FFE3BF,#F7C398); box-shadow:0 8px 18px rgba(180,90,40,0.16); }
@@ -339,9 +338,15 @@
   .cat-beauty .pcard { border-radius:120px 120px 22px 22px; box-shadow:0 14px 30px rgba(167,111,146,0.24), inset 0 0 0 4px rgba(255,255,255,0.75); }
   .cat-beauty .pcard .cat { display:none; }
   .cat-beauty .pcard .lockpill { left:50%; right:auto; transform:translateX(-50%); top:16px; }
-  .cat-beauty .pcard .scrim { background:linear-gradient(180deg, rgba(60,25,48,0) 42%, rgba(60,25,48,0.72) 100%); }
-  .cat-beauty .pcard .info { text-align:center; padding-bottom:15px; }
-  .cat-beauty .pcard .info .loc { justify-content:center; }
+  .cat-beauty .pcard .scrim { background:linear-gradient(180deg, rgba(60,25,48,0) 62%, rgba(60,25,48,0.18) 100%); }
+  .cat-beauty .pcard .info {
+    text-align:center; padding:11px 12px 13px;
+    background:#FFFCF9; border-top:1px solid #F6E3EF;
+  }
+  .cat-beauty .pcard .info h3 { color:#4A2140; text-shadow:none; font-size:14px; }
+  .cat-beauty .pcard .info .loc { justify-content:center; color:#A76F92; text-shadow:none; }
+  .cat-beauty .pcard .info .meta { color:#BB8AA8; text-shadow:none; }
+  .cat-beauty .pcard .info .desc { color:#8A6580; text-shadow:none; margin-top:5px; }
   .cat-beauty .join .card-j { background:linear-gradient(155deg,#EFC9E2,#C48EB0); box-shadow:0 22px 48px rgba(196,142,176,0.4), inset 0 2px 4px rgba(255,255,255,0.5); }
   .cat-beauty .empty, .cat-beauty footer { color:#BB8AA8; }
   .beauty-groups { display:block; }
@@ -506,8 +511,13 @@
       rgba(0,0,0,0.4) 0%,
       rgba(0,0,0,0.55) 30%,
       rgba(0,0,0,0.78) 55%,
-      rgba(0,0,0,0.92) 78%);
+      rgba(0,0,0,0.94) 78%,
+      rgba(0,0,0,0.97) 100%);
+    min-height:100lvh;
+    overscroll-behavior:contain;
+    -webkit-transform:translateZ(0); transform:translateZ(0);
   }
+  body.gated { overflow:hidden; height:100dvh; }
   .gate .g-brand { font-family:'Paperlogy',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   .gate h1 { font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic; font-size:clamp(56px,14vw,88px); line-height:1.02; color:#F8A5C6; text-shadow:0 2px 14px rgba(0,0,0,0.5); margin:14px 0 20px; }
   .gate .g-cred {
@@ -862,7 +872,7 @@
   ];
 
   var CATS = {
-    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  eyebrow:"Today's menu", desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", ko:{ eyebrow:"오늘의 메뉴", desc:"국밥, 반찬, 심야 카운터 — 현지인이 진짜 먹는 것, 그리고 주문하는 법." }, img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
+    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", ko:{ desc:"국밥, 반찬, 심야 카운터 — 현지인이 진짜 먹는 것, 그리고 주문하는 법." }, img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
     beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      eyebrow:"Skin · steam · scrub", desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", ko:{ eyebrow:"피부 · 스팀 · 세신", desc:"사우나, 피부과, 약국 하울 — 수출 마케팅을 걷어낸 한국의 뷰티 루틴." }, img:"https://images.unsplash.com/photo-1526413232644-8a40f03cc03b?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
     body:   { name:"Body",   em:"🌿", tag:"move like a local",         eyebrow:"Programs, week by week", desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", ko:{ eyebrow:"주 단위 프로그램", desc:"한강 러닝, 필라테스 에티켓, 새벽 산 — 현지인처럼, 일주일씩 움직이기." }, img:"https://images.unsplash.com/photo-1631899477678-9d3c5aeded2d?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
     trend:  { name:"Trend",  em:"📰", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", ko:{ eyebrow:"지금 서울에서는", desc:"새로 여는 곳, 예약 마감된 곳, 다들 시키는 것 — 피드에 뜨기 전에." }, img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=2400&auto=format&fit=crop" }
@@ -1625,7 +1635,7 @@
       tabBtns[ti].classList.toggle('active', tabBtns[ti].getAttribute('data-cat') === state.curCat);
     }
     document.getElementById('cat-eyebrow').textContent = tr(c,'eyebrow') || '';
-    document.getElementById('cat-title').innerHTML = state.curCat === 'trend' ? '<em>' + (state.lang === 'ko' ? '트렌드' : 'The Trend') + '</em>' : c.em + ' <em>' + c.name + '</em>';
+    document.getElementById('cat-title').innerHTML = state.curCat === 'trend' ? '<em>' + (state.lang === 'ko' ? '트렌드' : 'The Trend') + '</em>' : '<em>' + c.name + '</em>';
     document.getElementById('cat-desc').textContent = tr(c,'desc');
     document.getElementById('cat-img').src = c.img;
     var wrap = document.getElementById('cat-cards');
