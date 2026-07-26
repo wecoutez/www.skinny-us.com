@@ -354,6 +354,12 @@
   .sub-head span { font-family:'Paperlogy',sans-serif; font-size:12.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#A76F92; }
   .sub-head i { font-style:normal; font-size:11px; font-weight:700; color:#BB8AA8; background:#F6E3EF; border-radius:999px; padding:2px 9px; }
   .sub-head::after { content:""; flex:1; border-top:1px solid #EBD6E4; }
+  .mapblock { padding:28px var(--gx) 6px; }
+  .mapblock h3 { font-family:'Paperlogy',sans-serif; font-size:12.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#8A8372; margin-bottom:10px; }
+  .mapblock iframe { width:100%; height:260px; border:0; border-radius:16px; display:block; box-shadow:0 8px 24px rgba(0,0,0,0.08); background:#EFECE3; }
+  .mapblock .map-note { font-size:11.5px; color:#9A937F; margin-top:8px; text-align:center; }
+  .cat-eat .mapblock h3 { color:#8A5A34; }
+  .cat-trend .mapblock h3 { color:#111; }
   .cat-eat .sub-head span { color:#B4451F; }
   .cat-eat .sub-head i { color:#8A5A34; background:#F5E6D2; }
   .cat-eat .sub-head::after { border-top-color:#E9CBA2; }
@@ -385,12 +391,10 @@
 
   /* — TREND · 페이퍼 매스트헤드 + 미디어 그리드 — */
   #view-cat.cat-trend { background:#FCFBF7; }
-  .cat-trend .cat-hero { min-height:0; padding:58px 22px 0; justify-content:flex-start; }
-  .cat-trend .cat-hero .img { display:none; }
-  .cat-trend .cat-eyebrow { color:#111; text-shadow:none; letter-spacing:0.3em; border-top:1px solid #111; border-bottom:1px solid #111; padding:6px 16px; margin-bottom:14px; }
-  .cat-trend .cat-hero h1 { color:#111; text-shadow:none; font-style:normal; font-size:clamp(44px,8vw,60px); letter-spacing:0.005em; -webkit-text-stroke:1px currentColor; }
-  .cat-trend .cat-hero p { color:#6B6559; text-shadow:none; font-size:13px; max-width:520px; }
-  .cat-trend .cat-hero::after { content:""; display:block; width:100%; border-top:3px double #111; margin-top:22px; }
+  .cat-trend .cat-hero .img::after { background:linear-gradient(180deg, rgba(24,22,16,0.35), rgba(24,22,16,0.78)); }
+  .cat-trend .cat-eyebrow { letter-spacing:0.3em; border-top:1px solid rgba(255,255,255,0.85); border-bottom:1px solid rgba(255,255,255,0.85); padding:6px 16px; margin-bottom:14px; }
+  .cat-trend .cat-hero h1 { font-style:normal; font-size:clamp(42px,8vw,58px); letter-spacing:0.005em; }
+  .cat-trend .cat-hero::after { content:""; display:block; width:100%; border-top:3px double rgba(255,255,255,0.9); margin-top:22px; position:relative; }
   .cat-trend .sec-head h2 { color:#111; }
   .cat-trend .hood .tile { background:#fff; border:1px solid #E4DFD3; border-radius:12px; box-shadow:none; }
   .cat-trend .hood.active .tile { border-color:#111; border-width:2px; }
@@ -714,6 +718,12 @@
       </div>
     </section>
 
+    <section class="mapblock" id="map-home">
+      <h3 id="map-home-title">On the map</h3>
+      <iframe id="map-home-frame" src="https://www.google.com/maps?q=Seoul&z=12&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Seoul map"></iframe>
+      <p class="map-note" id="map-home-note">Each pick's exact pin lives inside its card.</p>
+    </section>
+
     <footer>
       <div class="row-f">
         <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use</a>
@@ -753,6 +763,12 @@
     <div class="sec-head"><h2 id="cat-picks-title">All picks</h2></div>
     <div class="cards grid" id="cat-cards"></div>
     <div class="empty" id="cat-empty">Nothing here yet — more picks coming 🌸</div>
+
+    <section class="mapblock" id="map-cat">
+      <h3 id="map-cat-title">Area map</h3>
+      <iframe id="map-cat-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Area map"></iframe>
+      <p class="map-note" id="map-cat-note">Open a pick for its exact pin.</p>
+    </section>
 
     <section class="join" id="join-cat">
       <div class="card-j">
@@ -1041,7 +1057,7 @@
     { cat:"trend", hood:"apgujeong", tier:"paid", t:"Ice cream as a luxury accessory", sub:"food", img:TIMG.luxury, loc:"Cheongdam · dept. stores", meta:"chocolatier gelato bars", e:"🍦", g:"linear-gradient(155deg,#E8D5C4,#8E5AA8)", wt:"Luxury chocolatiers are entering the ice-cream bar market with cosmetics-case packaging — dessert as a visual object you carry, not just eat. Seoul department store basements are where it lands first.", ot:"Check the B1 dessert floors of Cheongdam-area department stores; buy one bar, photograph it before it melts.", av:"Skip it if paying perfume prices for ice cream offends you — it should, and yet.", ko:{ t:"아이스크림이 럭셔리 액세서리가 될 때", loc:"청담 · 백화점", meta:"쇼콜라티에 젤라또 바", wt:"럭셔리 쇼콜라티에들이 화장품 케이스 같은 패키징으로 아이스크림 바 시장에 들어오고 있다 — 먹는 게 아니라 들고 다니는 비주얼 오브제로서의 디저트. 서울에선 백화점 지하가 첫 착륙지다.", ot:"청담권 백화점 B1 디저트 층 체크. 바 하나 사서 녹기 전에 찍을 것.", av:"아이스크림에 향수 가격이 불쾌하다면 비추 — 불쾌한 게 맞는데, 그래도." } },
     { cat:"trend", hood:"hannam", tier:"paid", t:"The crepe comeback", sub:"food", img:TIMG.crepe, loc:"Seoul cafés", meta:"sculptural cones · premium visuals", e:"🍨", g:"linear-gradient(155deg,#F8C8DA,#C05A82)", wt:"Crepes are back as a visual format — gelato animal heads peeking out of cones, layered fruit walls. It is less about the pancake, more about what the cone lets you build vertically.", ot:"Pick the most sculptural one on the menu; this trend is eaten with the camera first.", av:"Skip it if queues for photogenic food drain you — this one is 70% camera.", ko:{ t:"크레페의 귀환", loc:"서울 카페들", meta:"조형적인 콘 · 프리미엄 비주얼", wt:"크레페가 비주얼 포맷으로 돌아왔다 — 콘 위로 고개 내민 동물 젤라또, 층층이 쌓인 과일 벽. 팬케이크 자체보다 콘이 세로로 쌓게 해주는 것들이 본질이다.", ot:"메뉴에서 제일 조형적인 걸 고를 것. 이 트렌드는 카메라로 먼저 먹는다.", av:"포토제닉 푸드 줄서기가 지치면 비추 — 이건 70%가 카메라다." } },
     { cat:"trend", hood:"seongsu", tier:"paid", t:"Autumn means pumpkin injeolmi", sub:"food", img:TIMG.hobak, loc:"Oct, bakeries & cafés", meta:"danhobak cream · rice-cake crumble", e:"🎃", g:"linear-gradient(155deg,#F6DFAE,#E0A040)", wt:"Korea's autumn pumpkin isn't spice-latte pumpkin — it's danhobak with injeolmi rice cake: chewy, nutty, dusted in bean powder. Whole cakes, bingsu, even sandwich bread carry it now.", ot:"Try a hobak-injeolmi cake slice or the yogurt-cup version; the chew is the point.", av:"Skip it if chewy rice-cake textures aren't for you — injeolmi is entirely about the chew.", ko:{ t:"가을은 호박인절미의 계절", loc:"10월, 베이커리·카페", meta:"단호박 크림 · 인절미 크럼블", wt:"한국의 가을 호박은 스파이스 라떼 호박이 아니다 — 단호박 + 인절미다: 쫀득하고 고소하고 콩가루를 뒤집어쓴. 홀케이크, 빙수, 심지어 식빵까지 이걸 얹는다.", ot:"호박인절미 케이크 한 조각이나 요거트컵 버전부터. 쫀득함이 핵심이다.", av:"쫀득한 떡 식감이 안 맞으면 비추 — 인절미는 처음부터 끝까지 쫀득함이다." } },
-    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Hwappu-ball: cosmetics as ASMR", img:TIMG.hwappu, loc:"Olive Young shelves", meta:"the packaging-stacking trend", e:"💄", g:"linear-gradient(155deg,#F6D5E5,#C48EB0)", wt:"Koreans are stacking cosmetics compacts into towers and pressing them for the click — beauty products consumed as tactile ASMR toys. Brands now design packaging for the sound. It explains why K-beauty packaging feels so good in hand.", ot:"In any Olive Young, pick up a cushion compact and click it shut. You'll understand immediately.", av:"Skip the trend videos if satisfying-sound content isn't your algorithm — but do notice the packaging.", ko:{ t:"화뿌볼: ASMR이 된 화장품", loc:"올리브영 진열대", meta:"패키지 쌓기 트렌드", wt:"화장품 팩트를 탑처럼 쌓아 누르고 그 딸깍 소리를 즐긴다 — 촉각 ASMR 장난감으로 소비되는 뷰티. 이제 브랜드들이 소리를 위해 패키지를 설계한다. K-뷰티 패키징이 왜 그렇게 손맛이 좋은지 설명해주는 트렌드다.", ot:"아무 올리브영에서 쿠션 팩트 하나 들고 딸깍 닫아볼 것. 바로 이해된다.", av:"사운드 영상이 알고리즘 취향이 아니면 영상은 패스 — 대신 패키징은 눈여겨볼 것." } },
+    { sub:"etc", cat:"trend", hood:"gangnam", tier:"paid", t:"Hwappu-ball: cosmetics as ASMR", img:TIMG.hwappu, loc:"Olive Young shelves", meta:"the packaging-stacking trend", e:"💄", g:"linear-gradient(155deg,#F6D5E5,#C48EB0)", wt:"Koreans are stacking cosmetics compacts into towers and pressing them for the click — beauty products consumed as tactile ASMR toys. Brands now design packaging for the sound. It explains why K-beauty packaging feels so good in hand.", ot:"In any Olive Young, pick up a cushion compact and click it shut. You'll understand immediately.", av:"Skip the trend videos if satisfying-sound content isn't your algorithm — but do notice the packaging.", ko:{ t:"화뿌볼: ASMR이 된 화장품", loc:"올리브영 진열대", meta:"패키지 쌓기 트렌드", wt:"화장품 팩트를 탑처럼 쌓아 누르고 그 딸깍 소리를 즐긴다 — 촉각 ASMR 장난감으로 소비되는 뷰티. 이제 브랜드들이 소리를 위해 패키지를 설계한다. K-뷰티 패키징이 왜 그렇게 손맛이 좋은지 설명해주는 트렌드다.", ot:"아무 올리브영에서 쿠션 팩트 하나 들고 딸깍 닫아볼 것. 바로 이해된다.", av:"사운드 영상이 알고리즘 취향이 아니면 영상은 패스 — 대신 패키징은 눈여겨볼 것." } },
     { cat:"trend", hood:"seongsu", tier:"free", t:"Chocolate-drenched chips broke the convenience store", sub:"food", img:TIMG.chocochip, loc:"GS25 · CU · everywhere", meta:"the 단짠 arms race", e:"🍫", g:"linear-gradient(155deg,#E8C8B0,#8B5E4A)", wt:"A classic corrugated chip got crushed, thick-coated in chocolate, and promptly sold out nationwide — while a TV clip sent everyone home to pile plain potato chips on tub ice cream. Salty-sweet-crunchy is a competitive sport here, and the convenience store is the arena.", ot:"Scan the snack aisle for anything labeled 초코범벅 ('chocolate-drenched'); an empty shelf means you found it. The DIY version — plain chips over a tub of vanilla — genuinely works.", av:"Skip it if salty-sweet isn't your palate. This is that combination at maximum volume.", ko:{ t:"편의점을 무너뜨린 초코범벅 감자칩", loc:"GS25 · CU · 어디서나", meta:"단짠 군비 경쟁", wt:"바삭한 감자칩을 부수고 초콜릿을 두껍게 입혔더니 전국 품귀 — 동시에 예능 한 장면이 포테토칩+아이스크림 조합을 부활시켰다. 단짠바삭은 한국에선 스포츠고, 경기장은 편의점이다.", ot:"과자 코너에서 '초코범벅'이라 적힌 걸 찾을 것. 빈 매대면 제대로 찾은 거다. DIY 버전 — 바닐라 아이스크림 위 포테토칩 — 은 진짜 된다.", av:"단짠이 취향이 아니면 비추. 이건 그 조합의 최대 볼륨이다." } },
     { cat:"trend", hood:"gangnam", tier:"paid", t:"The car company's joke ice cream is real", sub:"ip", img:TIMG.hyundai, loc:"GS25 nationwide", meta:"April Fools, four years later", e:"🚙", g:"linear-gradient(155deg,#CBD8E8,#7E96B4)", wt:"Hyundai posted a fake ice-cream sandwich as a 2022 April Fools gag; the comment section refused to let it die, and four years later it's an actual GS25 product with collectible car stickers inside. Korean brands treat comment sections as R&D — this is the receipt.", ot:"Grab one at any GS25 and check which car sticker you pulled. Locals are doing multi-store tours to finish the set; you only need the story.", av:"Skip it if you need the ice cream itself to be transcendent — it's fine. The sticker is the point.", ko:{ t:"자동차 회사의 만우절 아이스크림이 진짜가 됐다", loc:"전국 GS25", meta:"만우절, 4년 뒤", wt:"2022년 만우절 콘텐츠로 올린 가짜 아이스크림 샌드를 댓글창이 4년간 놓아주지 않았고, 결국 띠부씰까지 넣은 진짜 GS25 상품이 됐다. 한국 브랜드에게 댓글창은 R&D 부서다 — 이게 그 영수증.", ot:"아무 GS25에서 하나 집고 어떤 차 띠부씰이 나왔는지 확인할 것. 세트 완성하러 편의점 투어 도는 사람들도 있지만, 여행자에겐 스토리 하나면 충분하다.", av:"아이스크림 자체가 감동이길 바라면 비추 — 맛은 무난하다. 포인트는 띠부씰이다." } },
     { cat:"trend", hood:"yeonnam", tier:"paid", t:"Hangul Day turns brands into type foundries", sub:"moment", img:TIMG.hangul, loc:"Oct 9 · citywide", meta:"free fonts · museum typefaces", e:"✍️", g:"linear-gradient(155deg,#C8D8F0,#6E8AC0)", wt:"Every October 9th Korea celebrates its alphabet, and brands answer with typography: burger chains release free Hangul fonts, 15th-century typefaces from museum archives get reprinted on snack boxes, pizza chains swap loanwords for pure-Korean words on the packaging. 2026 is a centennial year for the holiday, so expect it louder than usual.", ot:"Early October, hit the National Hangeul Museum shop and any convenience store — the heritage-typeface snack collabs are the cheapest beautiful souvenir that fits in a carry-on.", av:"Skip the brand SNS quiz events unless you read Korean — they're initial-consonant wordplay, basically untranslatable.", ko:{ t:"한글날, 브랜드들이 서체 회사가 되는 날", loc:"10월 9일 · 도시 전체", meta:"무료 폰트 · 박물관 서체", wt:"매년 10월 9일, 브랜드들은 타이포그래피로 응답한다: 햄버거 체인이 무료 한글 폰트를 배포하고, 박물관 소장 15세기 판본체가 과자 상자에 다시 인쇄되고, 피자 박스의 외래어가 순우리말로 바뀐다. 2026년은 한글날 제정 100돌 — 평소보다 크게 온다.", ot:"10월 초라면 국립한글박물관 숍과 아무 편의점부터. 옛 서체 과자 콜라보는 캐리어에 들어가는 가장 싸고 예쁜 기념품이다.", av:"브랜드 SNS 퀴즈 이벤트는 한글을 못 읽으면 패스 — 초성 말장난이라 번역이 안 된다." } },
@@ -1107,6 +1123,14 @@
   };
   function L(k){ return UI[state.lang][k]; }
   function tr(o,k){ return (state.lang === "ko" && o && o.ko && o.ko[k] != null) ? o.ko[k] : o[k]; }
+  function updateMapLabels(){
+    var ko = state.lang === "ko";
+    var el;
+    if (el = document.getElementById('map-home-title')) el.textContent = ko ? "지도에서 보기" : "On the map";
+    if (el = document.getElementById('map-home-note')) el.textContent = ko ? "각 픽의 정확한 위치는 카드 안에서 확인하세요." : "Each pick's exact pin lives inside its card.";
+    if (el = document.getElementById('map-cat-title')) el.textContent = ko ? "이 동네 지도" : "Area map";
+    if (el = document.getElementById('map-cat-note')) el.textContent = ko ? "픽을 열면 정확한 핀이 나와요." : "Open a pick for its exact pin.";
+  }
   function oneLine(s){
     if (!s) return "";
     var i = s.indexOf('. ');
@@ -1118,6 +1142,7 @@
     state.lang = (state.lang === "ko") ? "en" : "ko";
     try { localStorage.setItem("su-lang", state.lang); } catch(e) {}
     applyLang();
+    updateMapLabels();
   }
   function applyLang(){
     document.documentElement.lang = state.lang;
@@ -1531,6 +1556,19 @@
     document.getElementById('cat-picks-title').textContent =
       state.catHood === "all" ? "All " + c.name.toLowerCase() + " picks" :
       c.name + " in " + HOODS.filter(function (x) { return x.id === state.catHood; })[0].name;
+    var mapFrame = document.getElementById('map-cat-frame');
+    if (mapFrame) {
+      var hoodQ = {
+        all:"Seoul", seongsu:"Seongsu-dong, Seoul", hannam:"Hannam-dong, Seoul",
+        apgujeong:"Apgujeong Rodeo, Seoul", gangnam:"Gangnam Station, Seoul",
+        yeonnam:"Yeonnam-dong, Seoul", mangwon:"Mangwon-dong, Seoul"
+      };
+      var mq = hoodQ[state.catHood] || "Seoul";
+      var msrc = "https://www.google.com/maps?q=" + encodeURIComponent(mq) +
+        "&z=" + (state.catHood === "all" ? 12 : 15) + "&output=embed";
+      if (mapFrame.getAttribute('src') !== msrc) mapFrame.src = msrc;
+    }
+    updateMapLabels();
   }
 
   document.getElementById('search-input').addEventListener('input', function (e) {
@@ -1637,6 +1675,7 @@
       if (window.caches) caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); }).catch(function(){});
     }
   } catch (e) {}
+  updateMapLabels();
 </script>
 </body>
 </html>
