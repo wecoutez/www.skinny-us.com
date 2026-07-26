@@ -113,15 +113,10 @@
         <div class="p-top"><span class="p-name">Monthly membership</span><span class="p-price">$9.99 <span>/mo</span></span></div>
         <div class="p-desc">Free first week · full list across all categories · weekly updates · cancel anytime.</div>
       </button>
-      <button class="plan" data-plan="single" onclick="selectPlan('single')">
-        <span class="p-check">✓</span>
-        <div class="p-top"><span class="p-name">One-trip access</span><span class="p-price">$12.00 <span>one-time</span></span></div>
-        <div class="p-desc">Full list unlocked for 30 days — perfect for a single visit to Seoul. No subscription.</div>
-      </button>
       <button class="plan" data-plan="consult" onclick="selectPlan('consult')">
         <span class="p-check">✓</span>
-        <div class="p-top"><span class="p-name">Personal consultation</span><span class="p-price">$49 <span>one-time</span></span></div>
-        <div class="p-desc">1:1 with the curator — a custom list built around your dates, tastes, and neighborhoods. Includes full list access for 30 days.</div>
+        <div class="p-top"><span class="p-name">1:1 personal consulting</span><span class="p-price">$49.99 <span>one-time</span></span></div>
+        <div class="p-desc">1:1 with the curator — a custom plan built around your dates, tastes, and neighborhoods. Members' only add-on · includes 30 days of full access if you're not a member yet.</div>
       </button>
     </div>
 
@@ -148,7 +143,6 @@
   // 실제 PayPal 결제 링크로 교체하세요 (예: https://paypal.me/계정명/9.99USD 또는 PayPal 결제 버튼 링크)
   var PAYPAL_LINKS = {
     monthly: "https://www.paypal.com/ncp/payment/SYM2PFTGUDFBJ",
-    single:  "https://www.paypal.com/ncp/payment/FUHPN6HG2PNZ8",
     consult: "https://www.paypal.com/ncp/payment/7J7STNZ9GFH5N"
   };
   function selectPlan(id) {
@@ -167,7 +161,7 @@
       pp.style.display = 'none';
     }
   }
-  selectPlan('monthly');
+  selectPlan(location.hash === '#consult' ? 'consult' : 'monthly');
   document.getElementById('pay-paypal').addEventListener('click', function () {
     var active = document.querySelector('#planlist .plan.active');
     track('paypal:' + (active ? active.getAttribute('data-plan') : 'unknown'));
