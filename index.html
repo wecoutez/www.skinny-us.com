@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Skinny-us — Skinny Genius</title>
 <meta name="description" content="Wellness picks curated by locals. Korea live now — more countries coming.">
 <meta name="theme-color" content="#FFFFFF">
@@ -376,11 +376,6 @@
     display:none; flex-direction:column; background:#fff; border-radius:22px; overflow:hidden;
     box-shadow:0 24px 60px rgba(122,26,58,0.3); border:1px solid var(--line); }
   .chatpanel.on { display:flex; }
-  @media (max-width:640px){
-    .chatpanel { left:0; right:0; top:0; bottom:0; width:100%; max-height:none; height:100%; border-radius:0; border:none; box-shadow:none; }
-  }
-  body.chat-open { position:fixed; left:0; right:0; width:100%; overflow:hidden; }
-  body.chat-open .chat-fab { display:none; }
   .cp-head { position:relative; padding:14px 44px 12px 16px; background:linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3)); }
   .cp-head b { display:block; font-size:15px; color:#111; }
   .cp-head #cp-sub { font-size:11px; color:rgba(0,0,0,0.55); font-weight:600; }
@@ -567,20 +562,22 @@
 
   /* ═══ MEMBERS GATE ═══ */
   .gate {
-    position:fixed; top:-70px; bottom:-90px; left:0; right:0; z-index:60;
+    position:fixed; top:-25vh; bottom:-35vh; left:0; right:0; z-index:60;
     display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
-    text-align:center; padding:110px 26px calc(142px + env(safe-area-inset-bottom));
+    text-align:center;
+    padding:calc(25vh + 40px) 26px calc(35vh + 52px + env(safe-area-inset-bottom));
     background: linear-gradient(180deg,
       rgba(0,0,0,0.4) 0%,
-      rgba(0,0,0,0.55) 30%,
-      rgba(0,0,0,0.78) 55%,
-      rgba(0,0,0,0.94) 78%,
-      rgba(0,0,0,0.97) 100%);
-    min-height:100lvh;
+      rgba(0,0,0,0.45) 16%,
+      rgba(0,0,0,0.6) 32%,
+      rgba(0,0,0,0.85) 48%,
+      rgba(0,0,0,0.97) 60%,
+      #000 70%);
     overscroll-behavior:contain;
     -webkit-transform:translateZ(0); transform:translateZ(0);
   }
-  body.gated { overflow:hidden; height:100dvh; overscroll-behavior:none; position:relative; }
+  body.gated { overflow:hidden; height:100dvh; overscroll-behavior:none; position:fixed; inset:0; width:100%; background:#000; }
+  body.gated #view-home, body.gated #view-cat, body.gated #view-entry { filter:brightness(0.34) saturate(0.85); }
   .gate .g-brand { font-family:'Paperlogy',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   .gate h1 { font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic; font-size:clamp(56px,14vw,88px); line-height:1.02; color:#F8A5C6; text-shadow:0 2px 14px rgba(0,0,0,0.5); margin:14px 0 20px; }
   .gate .g-cred {
@@ -607,7 +604,8 @@
   .gate .g-code-btn { padding:12px 20px; border:none; border-radius:20px; cursor:pointer; font-family:inherit; font-size:13px; font-weight:700; color:#111; background:linear-gradient(155deg,var(--g1),var(--g2)); }
   .gate .g-code-err { display:none; width:100%; font-size:12.5px; color:#FFB3C1; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   body.gated .topbar { visibility:hidden; }
-  .gate .g-back { position:absolute; top:20px; left:20px; border:none; cursor:pointer; font-size:12px; font-weight:700; color:#111; background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px; }
+  .gate .g-ver { position:absolute; bottom:calc(35vh + 8px); right:14px; font-size:9px; letter-spacing:0.1em; color:rgba(255,255,255,0.35); font-family:'Space Mono',monospace; }
+  .gate .g-back { position:absolute; top:calc(25vh + 20px); left:20px; border:none; cursor:pointer; font-size:12px; font-weight:700; color:#111; background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px; }
 
 
   /* ═══ LOCKED PICKS (members tier) ═══ */
@@ -754,7 +752,7 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v15</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v16</span></div>
     </div>
   </section>
 
@@ -938,7 +936,8 @@
   <section class="view gate" id="view-gate" style="display:none">
     <button class="g-back" onclick="go('entry')">← Back</button>
     <div>
-      <div class="g-brand">Skinny Genius · Seoul</div>
+      <div class="g-ver">v16</div>
+    <div class="g-brand">Skinny Genius · Seoul</div>
       <h1>The Real List</h1>
       <div class="g-cred">12 yrs on trend in Korea · 10 yrs living abroad</div>
       <a class="g-join" href="join.html">Join to unlock</a>
@@ -1586,70 +1585,37 @@
   function getVid(){ try{ var v=localStorage.getItem("su_vid"); if(!v){ v="v"+Date.now().toString(36)+Math.random().toString(36).slice(2,8); localStorage.setItem("su_vid",v);} return v; }catch(e){ return "v-anon"; } }
   function fmtTs(t){ var d=new Date(t); if(isNaN(d)) return ""; return (d.getMonth()+1)+"/"+d.getDate()+" "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2); }
 
-  var cpTimer=null, cpScrollY=0;
-  var CP_MQ = window.matchMedia ? window.matchMedia('(max-width:640px)') : null;
-  function cpIsMobile(){ return CP_MQ ? CP_MQ.matches : (window.innerWidth <= 640); }
-
+  var cpTimer=null, cpLast=0;
+  var cpKb = { b:"", h:"" };
   function cpAdjustForKeyboard(){
     var p=document.getElementById('chatpanel');
     if(!p || !p.classList.contains('on') || !window.visualViewport) return;
     var vv=window.visualViewport;
-    if(cpIsMobile()){
-      // Fullscreen sheet: pin the panel to the *visual* viewport so the
-      // input row always sits right above the keyboard.
-      p.style.top = vv.offsetTop + "px";
-      p.style.height = vv.height + "px";
-      p.style.bottom = "auto";
-      p.style.maxHeight = "none";
-    } else {
-      var kb=Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      if(kb > 60){
-        p.style.bottom=(kb + 10) + "px";
-        p.style.maxHeight=Math.max(240, vv.height - 70) + "px";
-      } else {
-        p.style.bottom=""; p.style.maxHeight="";
-      }
-    }
-    var box=document.getElementById('cp-msgs');
-    if(box) box.scrollTop=box.scrollHeight;
+    var kb=Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    // 키보드가 열려도 '작은 사이드 박스' 형태 유지: 키보드 위에 고정, 높이는 컴팩트하게 캡
+    var b = kb > 60 ? (kb + 10) + "px" : "";
+    var h = kb > 60 ? Math.min(340, Math.max(230, vv.height - 84)) + "px" : "";
+    if (b !== cpKb.b) { p.style.bottom = b; cpKb.b = b; }
+    if (h !== cpKb.h) { p.style.maxHeight = h; cpKb.h = h; }
   }
   if(window.visualViewport){
     visualViewport.addEventListener('resize', cpAdjustForKeyboard);
     visualViewport.addEventListener('scroll', cpAdjustForKeyboard);
   }
-
   function toggleChatPanel(open){
     var p=document.getElementById('chatpanel');
     p.classList.toggle('on', open);
     if(open){
-      if(cpIsMobile()){
-        cpScrollY = window.scrollY || document.documentElement.scrollTop || 0;
-        document.body.style.top = (-cpScrollY) + "px";
-        document.body.classList.add('chat-open');
-      }
       try{ var nm=localStorage.getItem("su_name"); if(nm) document.getElementById('cp-name').value=nm; }catch(e){}
-      cpRestoreLocal();      // show cached thread instantly (accumulated history)
-      cpRenderAll();
-      cpLoad();
-      if(cpTimer) clearInterval(cpTimer);
-      cpTimer=setInterval(cpLoad, 9000);
-      cpAdjustForKeyboard();
+      cpRestoreLocal(); cpRenderAll();             // 캐시된 대화 즉시 표시 (누적 히스토리)
+      cpLoad(); if(cpTimer) clearInterval(cpTimer); cpTimer=setInterval(cpLoad, 9000);
       setTimeout(cpAdjustForKeyboard, 300);
       setTimeout(function(){ try{document.getElementById('cp-text').focus();}catch(e){} },150);
-    } else {
-      if(cpTimer){ clearInterval(cpTimer); cpTimer=null; }
-      p.style.top=""; p.style.height=""; p.style.bottom=""; p.style.maxHeight="";
-      if(document.body.classList.contains('chat-open')){
-        document.body.classList.remove('chat-open');
-        document.body.style.top="";
-        window.scrollTo(0, cpScrollY);
-      }
-    }
+    } else { if(cpTimer){ clearInterval(cpTimer); cpTimer=null; } var pp=document.getElementById('chatpanel'); pp.style.bottom=""; pp.style.maxHeight=""; }
   }
-
-  // ── message store: server messages + locally-pending messages, merged ──
-  // Nothing is ever wiped by a poll: pending bubbles stay until the server
-  // echoes them back, and the whole thread is cached in localStorage.
+  // ── message store: server messages + locally-pending, merged ──
+  // A poll can never wipe or shrink the thread: pending bubbles stay until the
+  // server echoes them back, and the whole thread is cached in localStorage.
   var cpServer=[], cpPending=[], cpLastHtml="";
   function cpRestoreLocal(){
     try{
@@ -1662,17 +1628,16 @@
       localStorage.setItem('su_thread', JSON.stringify({ server:cpServer.slice(-200), pending:cpPending.slice(-30) }));
     }catch(e){}
   }
-  function cpAllMsgs(){ return cpServer.concat(cpPending); }
   function cpRenderAll(){
     var box=document.getElementById('cp-msgs'); if(!box) return;
-    var msgs=cpAllMsgs();
+    var msgs=cpServer.concat(cpPending);
     var hello=document.getElementById('cp-hello');
     if(hello) hello.style.display = msgs.length ? "none" : "block";
     var htmlStr = msgs.map(function(m){
       var me = m.from==="visitor";
       return '<div class="cp-b '+(me?'me':'them')+'">'+esc(m.text)+'<span class="ts">'+(m.pending?"\u2026":fmtTs(m.ts))+'</span></div>';
     }).join("");
-    if(htmlStr===cpLastHtml) return;               // no churn while typing
+    if(htmlStr===cpLastHtml) return;               // 변화 없으면 재렌더 금지 (타이핑 중 흔들림 방지)
     cpLastHtml=htmlStr;
     var keep = hello ? hello.outerHTML : "";
     box.innerHTML = keep + htmlStr;
@@ -1683,9 +1648,9 @@
     apiGet({action:"thread", vid:getVid()}).then(function(r){
       if(!(r && r.ok)) return;
       var ms = r.messages || [];
-      if (ms.length < cpServer.length) return;      // stale response: never shrink the thread
+      if (ms.length < cpServer.length) return;      // 스테일 응답이 기존 메시지를 지우지 않게
       cpServer = ms;
-      // Drop pending bubbles that the server has now confirmed (matched by text)
+      // 서버에 반영된 pending 버블 제거 (텍스트 매칭)
       var counts={};
       ms.forEach(function(m){ if(m.from==="visitor"){ var k=(m.text||"").trim(); counts[k]=(counts[k]||0)+1; } });
       cpPending = cpPending.filter(function(pm){
@@ -1714,7 +1679,7 @@
     cpPending.push({ from:"visitor", text:txt, ts:Date.now(), pending:true });
     cpSaveLocal();
     cpRenderAll();
-    inp.focus();                                    // keep the keyboard up between messages
+    inp.focus();                                    // 전송 후에도 키보드 유지
     apiPost({action:"send", vid:getVid(), name:name, text:txt})
       .then(function(){ setTimeout(cpLoad, 600); })
       .catch(function(){});
