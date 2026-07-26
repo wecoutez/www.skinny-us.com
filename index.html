@@ -306,9 +306,6 @@
      eat=메뉴판 리스트 · beauty=아치 카드 · body=프로그램 로그 · trend=다크 랭킹 차트 */
   .cat-eyebrow { display:inline-block; font-family:'Paperlogy',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.24em; text-transform:uppercase; color:rgba(255,255,255,0.92); margin-bottom:10px; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   .cat-eyebrow:empty { display:none; }
-  .cat-ticker { display:none; overflow:hidden; white-space:nowrap; background:#FF5FA2; color:#20101C; font-family:'Paperlogy',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; padding:9px 0; }
-  .cat-ticker span { display:inline-block; animation:su-tick 28s linear infinite; }
-  @keyframes su-tick { to { transform:translateX(-50%); } }
 
   /* row-list 공통 (eat / trend) */
   .cat-eat .pcard, .cat-trend .pcard { flex:none; width:100%; height:auto; display:block; overflow:hidden; }
@@ -351,6 +348,11 @@
   .cat-beauty .pcard .info .loc { justify-content:center; }
   .cat-beauty .join .card-j { background:linear-gradient(155deg,#EFC9E2,#C48EB0); box-shadow:0 22px 48px rgba(196,142,176,0.4), inset 0 2px 4px rgba(255,255,255,0.5); }
   .cat-beauty .empty, .cat-beauty footer { color:#BB8AA8; }
+  .beauty-groups { display:block; }
+  .sub-head { display:flex; align-items:center; gap:9px; padding:24px var(--gx) 10px; }
+  .sub-head span { font-family:'Paperlogy',sans-serif; font-size:12.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#A76F92; }
+  .sub-head i { font-style:normal; font-size:11px; font-weight:700; color:#BB8AA8; background:#F6E3EF; border-radius:999px; padding:2px 9px; }
+  .sub-head::after { content:""; flex:1; border-top:1px solid #EBD6E4; }
 
   /* — BODY · 프로그램 카드 (와이드 이미지 스트립) — */
   #view-cat.cat-body { background:#F4F8F0; }
@@ -373,26 +375,33 @@
   .cat-body .join .card-j { background:linear-gradient(155deg,#A9C98C,#5B7C4E); box-shadow:0 22px 48px rgba(91,124,78,0.35), inset 0 2px 4px rgba(255,255,255,0.35); }
   .cat-body .empty, .cat-body footer { color:#7B9A66; }
 
-  /* — TREND · 다크 랭킹 차트 — */
-  #view-cat.cat-trend { background:#1A1322; }
-  .cat-trend .cat-hero .img { filter:saturate(1.15); }
-  .cat-trend .cat-hero .img::after { background:linear-gradient(180deg, rgba(26,19,34,0.35), rgba(26,19,34,0.96)); }
-  .cat-trend .cat-eyebrow { color:#FF7DB4; }
-  .cat-trend .cat-ticker { display:block; }
-  .cat-trend .sec-head h2 { color:#FF7DB4; }
-  .cat-trend .hood .tile { background:#251B31; border:2px solid #372A47; box-shadow:none; }
-  .cat-trend .hood.active .tile { border-color:#FF5FA2; }
-  .cat-trend .hood h4 { color:#fff; }
-  .cat-trend .hood p { color:#8E7BA6; }
-  .cat-trend .cards.grid { counter-reset:su-rank; }
-  .cat-trend .pcard { padding:0; border-radius:16px; background:#231A2F; border:1px solid #34273F; box-shadow:none; overflow:hidden; }
-  .cat-trend .pcard::before { counter-increment:su-rank; content:counter(su-rank); position:absolute; top:10px; left:10px; z-index:2; font-family:'Paperlogy',sans-serif; font-weight:700; font-size:15px; color:#FF5FA2; background:rgba(26,19,34,0.85); padding:3px 10px; border-radius:999px; }
-  .cat-trend .pcard .bg { border-radius:0; }
-  .cat-trend .pcard .info h3 { color:#fff; text-shadow:none; font-size:14px; }
-  .cat-trend .pcard .info .loc { color:#B9A7CC; text-shadow:none; }
-  .cat-trend .pcard .info .meta { color:#8E7BA6; font-family:'Paperlogy',sans-serif; font-size:11px; }
-  .cat-trend .join .card-j { background:linear-gradient(155deg,#FF5FA2,#B23A78); box-shadow:0 22px 48px rgba(255,95,162,0.25), inset 0 2px 4px rgba(255,255,255,0.25); }
-  .cat-trend .empty, .cat-trend footer { color:#8E7BA6; }
+  /* — TREND · 신문 (paper edition) — */
+  #view-cat.cat-trend { background:#FCFBF7; }
+  .cat-trend .cat-hero { min-height:0; padding:58px 22px 0; justify-content:flex-start; }
+  .cat-trend .cat-hero .img { display:none; }
+  .cat-trend .cat-eyebrow { color:#111; text-shadow:none; letter-spacing:0.3em; border-top:1px solid #111; border-bottom:1px solid #111; padding:6px 16px; margin-bottom:14px; }
+  .cat-trend .cat-hero h1 { color:#111; text-shadow:none; font-style:normal; font-size:clamp(44px,8vw,60px); letter-spacing:0.005em; -webkit-text-stroke:1px currentColor; }
+  .cat-trend .cat-hero p { color:#6B6559; text-shadow:none; font-size:13px; max-width:520px; }
+  .cat-trend .cat-hero::after { content:""; display:block; width:100%; border-top:3px double #111; margin-top:22px; }
+  .cat-trend .sec-head h2 { color:#111; }
+  .cat-trend .sec-head::after { display:none; }
+  .cat-trend .hood .tile { background:#fff; border:1px solid #E4DFD3; border-radius:12px; box-shadow:none; }
+  .cat-trend .hood.active .tile { border-color:#111; border-width:2px; }
+  .cat-trend .hood h4 { color:#111; }
+  .cat-trend .hood p { color:#9A937F; }
+  .cat-trend .cards.grid { grid-template-columns:1fr; gap:0; max-width:820px; margin:0 auto; }
+  .cat-trend .pcard { display:flex; flex-direction:row-reverse; gap:16px; align-items:flex-start; width:100%; height:auto; padding:16px 0 17px; border-radius:0; background:transparent; border:none; border-bottom:1px solid #E4DFD3; box-shadow:none; overflow:visible; }
+  .cat-trend .cards.grid .pcard:first-child { border-top:1px solid #111; }
+  .cat-trend .pcard:hover { transform:none; background:#F5F1E8; }
+  .cat-trend .pcard .bg { position:relative; inset:auto; flex:0 0 86px; width:86px; aspect-ratio:1/1; height:auto; border-radius:5px; overflow:hidden; font-size:34px; display:flex; align-items:center; justify-content:center; }
+  .cat-trend .pcard .info { flex:1; padding:2px 0 0; display:flex; flex-direction:column; }
+  .cat-trend .pcard .info .meta { order:-1; margin:0 0 6px; font-family:'Paperlogy',sans-serif; font-size:10.5px; font-weight:800; letter-spacing:0.16em; text-transform:uppercase; color:#B02A2A; }
+  .cat-trend .pcard .info h3 { color:#111; text-shadow:none; font-size:16.5px; line-height:1.32; letter-spacing:-0.01em; }
+  .cat-trend .pcard .info .loc { color:#8A8372; text-shadow:none; margin-top:7px; font-size:11.5px; font-weight:600; }
+  .cat-trend .pcard .lockpill { top:20px; right:6px; }
+  .cat-trend .join .card-j { background:#111; border-radius:10px; box-shadow:0 18px 40px rgba(0,0,0,0.22); }
+  .cat-trend .join h2 { text-shadow:none; }
+  .cat-trend .empty, .cat-trend footer { color:#9A937F; }
 
   /* Trending */
   .feed-item {
@@ -644,10 +653,10 @@
       </div>
       <div class="cat-tabs">
         <button class="cat-tab active" data-cat="all" onclick="go('home')"><span class="em">🌸</span>All</button>
+        <button class="cat-tab" data-cat="trend" onclick="go('cat','trend')"><span class="em">📰</span>Trend</button>
         <button class="cat-tab" data-cat="eat" onclick="go('cat','eat')"><span class="em">🍜</span>Eat</button>
         <button class="cat-tab" data-cat="beauty" onclick="go('cat','beauty')"><span class="em">✨</span>Beauty</button>
         <button class="cat-tab" data-cat="body" onclick="go('cat','body')"><span class="em">🌿</span>Body</button>
-        <button class="cat-tab" data-cat="trend" onclick="go('cat','trend')"><span class="em">📈</span>Trend</button>
       </div>
     </div>
 
@@ -711,10 +720,10 @@
       </div>
       <div class="cat-tabs" id="cat-tabs">
         <button class="cat-tab" data-cat="all" onclick="go('home')"><span class="em">🌸</span>All</button>
+        <button class="cat-tab" data-cat="trend" onclick="go('cat','trend')"><span class="em">📰</span>Trend</button>
         <button class="cat-tab" data-cat="eat" onclick="go('cat','eat')"><span class="em">🍜</span>Eat</button>
         <button class="cat-tab" data-cat="beauty" onclick="go('cat','beauty')"><span class="em">✨</span>Beauty</button>
         <button class="cat-tab" data-cat="body" onclick="go('cat','body')"><span class="em">🌿</span>Body</button>
-        <button class="cat-tab" data-cat="trend" onclick="go('cat','trend')"><span class="em">📈</span>Trend</button>
       </div>
     </div>
 
@@ -725,7 +734,6 @@
       <h1 id="cat-title"></h1>
       <p id="cat-desc"></p>
     </header>
-    <div class="cat-ticker" id="cat-ticker" aria-hidden="true"></div>
 
     <div class="sec-head"><h2 id="cat-picks-title">All picks</h2></div>
     <div class="cards grid" id="cat-cards"></div>
@@ -797,7 +805,7 @@
     eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  eyebrow:"Today's menu", desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", ko:{ eyebrow:"오늘의 메뉴", desc:"국밥, 반찬, 심야 카운터 — 현지인이 진짜 먹는 것, 그리고 주문하는 법." }, img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
     beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      eyebrow:"Skin · steam · scrub", desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", ko:{ eyebrow:"피부 · 스팀 · 세신", desc:"사우나, 피부과, 약국 하울 — 수출 마케팅을 걷어낸 한국의 뷰티 루틴." }, img:"https://images.unsplash.com/photo-1526413232644-8a40f03cc03b?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
     body:   { name:"Body",   em:"🌿", tag:"move like a local",         eyebrow:"Programs, week by week", desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", ko:{ eyebrow:"주 단위 프로그램", desc:"한강 러닝, 필라테스 에티켓, 새벽 산 — 현지인처럼, 일주일씩 움직이기." }, img:"https://images.unsplash.com/photo-1631899477678-9d3c5aeded2d?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
-    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", ko:{ eyebrow:"지금 서울에서는", desc:"새로 여는 곳, 예약 마감된 곳, 다들 시키는 것 — 피드에 뜨기 전에." }, img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=2400&auto=format&fit=crop" }
+    trend:  { name:"Trend",  em:"📰", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", ko:{ eyebrow:"지금 서울에서는", desc:"새로 여는 곳, 예약 마감된 곳, 다들 시키는 것 — 피드에 뜨기 전에." }, img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=2400&auto=format&fit=crop" }
   };
 
   var HOODS = [
@@ -992,7 +1000,14 @@
     { cat:"trend", hood:"apgujeong", tier:"paid", t:"Ice cream as a luxury accessory", loc:"Cheongdam · dept. stores", meta:"chocolatier gelato bars", e:"🍦", g:"linear-gradient(155deg,#E8D5C4,#8E5AA8)", wt:"Luxury chocolatiers are entering the ice-cream bar market with cosmetics-case packaging — dessert as a visual object you carry, not just eat. Seoul department store basements are where it lands first.", ot:"Check the B1 dessert floors of Cheongdam-area department stores; buy one bar, photograph it before it melts.", av:"Skip it if paying perfume prices for ice cream offends you — it should, and yet.", ko:{ t:"아이스크림이 럭셔리 액세서리가 될 때", loc:"청담 · 백화점", meta:"쇼콜라티에 젤라또 바", wt:"럭셔리 쇼콜라티에들이 화장품 케이스 같은 패키징으로 아이스크림 바 시장에 들어오고 있다 — 먹는 게 아니라 들고 다니는 비주얼 오브제로서의 디저트. 서울에선 백화점 지하가 첫 착륙지다.", ot:"청담권 백화점 B1 디저트 층 체크. 바 하나 사서 녹기 전에 찍을 것.", av:"아이스크림에 향수 가격이 불쾌하다면 비추 — 불쾌한 게 맞는데, 그래도." } },
     { cat:"trend", hood:"hannam", tier:"paid", t:"The crepe comeback", loc:"Seoul cafés", meta:"sculptural cones · premium visuals", e:"🍨", g:"linear-gradient(155deg,#F8C8DA,#C05A82)", wt:"Crepes are back as a visual format — gelato animal heads peeking out of cones, layered fruit walls. It is less about the pancake, more about what the cone lets you build vertically.", ot:"Pick the most sculptural one on the menu; this trend is eaten with the camera first.", av:"Skip it if queues for photogenic food drain you — this one is 70% camera.", ko:{ t:"크레페의 귀환", loc:"서울 카페들", meta:"조형적인 콘 · 프리미엄 비주얼", wt:"크레페가 비주얼 포맷으로 돌아왔다 — 콘 위로 고개 내민 동물 젤라또, 층층이 쌓인 과일 벽. 팬케이크 자체보다 콘이 세로로 쌓게 해주는 것들이 본질이다.", ot:"메뉴에서 제일 조형적인 걸 고를 것. 이 트렌드는 카메라로 먼저 먹는다.", av:"포토제닉 푸드 줄서기가 지치면 비추 — 이건 70%가 카메라다." } },
     { cat:"trend", hood:"seongsu", tier:"paid", t:"Autumn means pumpkin injeolmi", loc:"Oct, bakeries & cafés", meta:"danhobak cream · rice-cake crumble", e:"🎃", g:"linear-gradient(155deg,#F6DFAE,#E0A040)", wt:"Korea's autumn pumpkin isn't spice-latte pumpkin — it's danhobak with injeolmi rice cake: chewy, nutty, dusted in bean powder. Whole cakes, bingsu, even sandwich bread carry it now.", ot:"Try a hobak-injeolmi cake slice or the yogurt-cup version; the chew is the point.", av:"Skip it if chewy rice-cake textures aren't for you — injeolmi is entirely about the chew.", ko:{ t:"가을은 호박인절미의 계절", loc:"10월, 베이커리·카페", meta:"단호박 크림 · 인절미 크럼블", wt:"한국의 가을 호박은 스파이스 라떼 호박이 아니다 — 단호박 + 인절미다: 쫀득하고 고소하고 콩가루를 뒤집어쓴. 홀케이크, 빙수, 심지어 식빵까지 이걸 얹는다.", ot:"호박인절미 케이크 한 조각이나 요거트컵 버전부터. 쫀득함이 핵심이다.", av:"쫀득한 떡 식감이 안 맞으면 비추 — 인절미는 처음부터 끝까지 쫀득함이다." } },
-    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Hwappu-ball: cosmetics as ASMR", loc:"Olive Young shelves", meta:"the packaging-stacking trend", e:"💄", g:"linear-gradient(155deg,#F6D5E5,#C48EB0)", wt:"Koreans are stacking cosmetics compacts into towers and pressing them for the click — beauty products consumed as tactile ASMR toys. Brands now design packaging for the sound. It explains why K-beauty packaging feels so good in hand.", ot:"In any Olive Young, pick up a cushion compact and click it shut. You'll understand immediately.", av:"Skip the trend videos if satisfying-sound content isn't your algorithm — but do notice the packaging.", ko:{ t:"화뿌볼: ASMR이 된 화장품", loc:"올리브영 진열대", meta:"패키지 쌓기 트렌드", wt:"화장품 팩트를 탑처럼 쌓아 누르고 그 딸깍 소리를 즐긴다 — 촉각 ASMR 장난감으로 소비되는 뷰티. 이제 브랜드들이 소리를 위해 패키지를 설계한다. K-뷰티 패키징이 왜 그렇게 손맛이 좋은지 설명해주는 트렌드다.", ot:"아무 올리브영에서 쿠션 팩트 하나 들고 딸깍 닫아볼 것. 바로 이해된다.", av:"사운드 영상이 알고리즘 취향이 아니면 영상은 패스 — 대신 패키징은 눈여겨볼 것." } }
+    { cat:"beauty", hood:"gangnam", tier:"paid", t:"Hwappu-ball: cosmetics as ASMR", loc:"Olive Young shelves", meta:"the packaging-stacking trend", e:"💄", g:"linear-gradient(155deg,#F6D5E5,#C48EB0)", wt:"Koreans are stacking cosmetics compacts into towers and pressing them for the click — beauty products consumed as tactile ASMR toys. Brands now design packaging for the sound. It explains why K-beauty packaging feels so good in hand.", ot:"In any Olive Young, pick up a cushion compact and click it shut. You'll understand immediately.", av:"Skip the trend videos if satisfying-sound content isn't your algorithm — but do notice the packaging.", ko:{ t:"화뿌볼: ASMR이 된 화장품", loc:"올리브영 진열대", meta:"패키지 쌓기 트렌드", wt:"화장품 팩트를 탑처럼 쌓아 누르고 그 딸깍 소리를 즐긴다 — 촉각 ASMR 장난감으로 소비되는 뷰티. 이제 브랜드들이 소리를 위해 패키지를 설계한다. K-뷰티 패키징이 왜 그렇게 손맛이 좋은지 설명해주는 트렌드다.", ot:"아무 올리브영에서 쿠션 팩트 하나 들고 딸깍 닫아볼 것. 바로 이해된다.", av:"사운드 영상이 알고리즘 취향이 아니면 영상은 패스 — 대신 패키징은 눈여겨볼 것." } },
+    { cat:"trend", hood:"seongsu", tier:"free", t:"Chocolate-drenched chips broke the convenience store", loc:"GS25 · CU · everywhere", meta:"the 단짠 arms race", e:"🍫", g:"linear-gradient(155deg,#E8C8B0,#8B5E4A)", wt:"A classic corrugated chip got crushed, thick-coated in chocolate, and promptly sold out nationwide — while a TV clip sent everyone home to pile plain potato chips on tub ice cream. Salty-sweet-crunchy is a competitive sport here, and the convenience store is the arena.", ot:"Scan the snack aisle for anything labeled 초코범벅 ('chocolate-drenched'); an empty shelf means you found it. The DIY version — plain chips over a tub of vanilla — genuinely works.", av:"Skip it if salty-sweet isn't your palate. This is that combination at maximum volume.", ko:{ t:"편의점을 무너뜨린 초코범벅 감자칩", loc:"GS25 · CU · 어디서나", meta:"단짠 군비 경쟁", wt:"바삭한 감자칩을 부수고 초콜릿을 두껍게 입혔더니 전국 품귀 — 동시에 예능 한 장면이 포테토칩+아이스크림 조합을 부활시켰다. 단짠바삭은 한국에선 스포츠고, 경기장은 편의점이다.", ot:"과자 코너에서 '초코범벅'이라 적힌 걸 찾을 것. 빈 매대면 제대로 찾은 거다. DIY 버전 — 바닐라 아이스크림 위 포테토칩 — 은 진짜 된다.", av:"단짠이 취향이 아니면 비추. 이건 그 조합의 최대 볼륨이다." } },
+    { cat:"trend", hood:"gangnam", tier:"paid", t:"The car company's joke ice cream is real", loc:"GS25 nationwide", meta:"April Fools, four years later", e:"🚙", g:"linear-gradient(155deg,#CBD8E8,#7E96B4)", wt:"Hyundai posted a fake ice-cream sandwich as a 2022 April Fools gag; the comment section refused to let it die, and four years later it's an actual GS25 product with collectible car stickers inside. Korean brands treat comment sections as R&D — this is the receipt.", ot:"Grab one at any GS25 and check which car sticker you pulled. Locals are doing multi-store tours to finish the set; you only need the story.", av:"Skip it if you need the ice cream itself to be transcendent — it's fine. The sticker is the point.", ko:{ t:"자동차 회사의 만우절 아이스크림이 진짜가 됐다", loc:"전국 GS25", meta:"만우절, 4년 뒤", wt:"2022년 만우절 콘텐츠로 올린 가짜 아이스크림 샌드를 댓글창이 4년간 놓아주지 않았고, 결국 띠부씰까지 넣은 진짜 GS25 상품이 됐다. 한국 브랜드에게 댓글창은 R&D 부서다 — 이게 그 영수증.", ot:"아무 GS25에서 하나 집고 어떤 차 띠부씰이 나왔는지 확인할 것. 세트 완성하러 편의점 투어 도는 사람들도 있지만, 여행자에겐 스토리 하나면 충분하다.", av:"아이스크림 자체가 감동이길 바라면 비추 — 맛은 무난하다. 포인트는 띠부씰이다." } },
+    { cat:"trend", hood:"yeonnam", tier:"paid", t:"Hangul Day turns brands into type foundries", loc:"Oct 9 · citywide", meta:"free fonts · museum typefaces", e:"✍️", g:"linear-gradient(155deg,#C8D8F0,#6E8AC0)", wt:"Every October 9th Korea celebrates its alphabet, and brands answer with typography: burger chains release free Hangul fonts, 15th-century typefaces from museum archives get reprinted on snack boxes, pizza chains swap loanwords for pure-Korean words on the packaging. 2026 is a centennial year for the holiday, so expect it louder than usual.", ot:"Early October, hit the National Hangeul Museum shop and any convenience store — the heritage-typeface snack collabs are the cheapest beautiful souvenir that fits in a carry-on.", av:"Skip the brand SNS quiz events unless you read Korean — they're initial-consonant wordplay, basically untranslatable.", ko:{ t:"한글날, 브랜드들이 서체 회사가 되는 날", loc:"10월 9일 · 도시 전체", meta:"무료 폰트 · 박물관 서체", wt:"매년 10월 9일, 브랜드들은 타이포그래피로 응답한다: 햄버거 체인이 무료 한글 폰트를 배포하고, 박물관 소장 15세기 판본체가 과자 상자에 다시 인쇄되고, 피자 박스의 외래어가 순우리말로 바뀐다. 2026년은 한글날 제정 100돌 — 평소보다 크게 온다.", ot:"10월 초라면 국립한글박물관 숍과 아무 편의점부터. 옛 서체 과자 콜라보는 캐리어에 들어가는 가장 싸고 예쁜 기념품이다.", av:"브랜드 SNS 퀴즈 이벤트는 한글을 못 읽으면 패스 — 초성 말장난이라 번역이 안 된다." } },
+    { cat:"trend", hood:"gangnam", tier:"paid", t:"Halloween here is a black cat now", loc:"Oct · cafés & theme parks", meta:"cute over creepy", e:"🐈‍⬛", g:"linear-gradient(155deg,#C9B8D8,#4A3A5E)", wt:"Korea's Halloween has gone deliberately soft: black-sesame cakes shaped like cats, ghost-type Pokémon fronting Lotte World's autumn season, black ceramics standing in for fake blood. The register is moody-cute rather than scary — and it photographs better.", ot:"Order anything black in October — black sesame, black cocoa, charcoal buns — and hit Lotte World if a ghost-Pokémon soft serve sounds like your kind of haunted.", av:"Skip it if you're chasing haunted-house, gore-forward Halloween — that's not the register here.", ko:{ t:"이곳의 할로윈은 이제 검은 고양이다", loc:"10월 · 카페와 테마파크", meta:"오싹함보다 귀여움", wt:"한국의 할로윈은 의도적으로 부드러워졌다: 검은깨 고양이 케이크, 롯데월드 가을 시즌을 이끄는 고스트 포켓몬, 가짜 피 대신 블랙 세라믹. 무섭다기보다 무디-큐트 — 그리고 솔직히 사진이 더 잘 나온다.", ot:"10월엔 검은 걸 시킬 것 — 흑임자, 블랙 코코아, 먹물빵. 고스트 포켓몬 소프트콘이 당기면 롯데월드로.", av:"귀신의 집, 고어 스타일 할로윈을 원하면 비추 — 여긴 그 결이 아니다." } },
+    { cat:"trend", hood:"hannam", tier:"paid", t:"October is tarte tatin season", loc:"patisseries citywide", meta:"cooked apple > raw apple", e:"🍎", g:"linear-gradient(155deg,#F5D5C0,#C06848)", wt:"Seoul patisseries treat autumn apples the French way — slow-cooked, glossy, concentrated. Plated tarte tatin, apple crumble under melting vanilla: comfort-food nostalgia in fine-dining clothes, peaking in October right alongside the apple harvest festivals.", ot:"Look for 타르트 타탱 (tarte tatin) or crumble à la mode on café menus; the warm-pastry-cold-ice-cream versions are the ones worth the calories.", av:"Skip it if you want fresh fruit — this season is entirely about the caramelized register.", ko:{ t:"10월은 타르트 타탱의 계절", loc:"시내 파티세리", meta:"생사과보다 조린 사과", wt:"서울 파티세리들은 가을 사과를 프렌치식으로 다룬다 — 천천히 조려 윤기 나게, 농축되게. 접시 위 타르트 타탱, 녹는 바닐라 아래 애플 크럼블. 사과 축제가 열리는 10월에 정점을 찍는, 파인다이닝 옷을 입은 컴포트 푸드다.", ot:"카페 메뉴에서 타르트 타탱이나 크럼블+아이스크림 조합을 찾을 것. 따뜻한 파이와 차가운 아이스크림 버전이 칼로리 값을 한다.", av:"생과일 디저트를 원하면 비추 — 이 시즌은 처음부터 끝까지 카라멜라이즈다." } },
+    { cat:"trend", hood:"seongsu", tier:"paid", t:"A sweet potato is an idol now", loc:"Kakao Friends stores", meta:"the character-industrial complex", e:"🍠", g:"linear-gradient(155deg,#E5C8E8,#9C5AB0)", wt:"Kakao spun a literal sweet potato into a character — Chunguma — and within a year it had plushes, emoticons, a tiramisu collab and a skincare line. Watching Korea turn a root vegetable into a celebrity with a merchandise pipeline is the fastest crash course in the character-industrial complex.", ot:"Any Kakao Friends flagship (Gangnam, Hongdae) carries the seasonal displays; the sweet-potato drops cluster in autumn, right on top of goguma dessert season.", av:"Skip weekends at the flagships — the lines are real, and mostly not tourists.", ko:{ t:"고구마가 아이돌이 되는 나라", loc:"카카오프렌즈 스토어", meta:"캐릭터 산업 복합체", wt:"카카오가 말 그대로 고구마를 캐릭터로 만들었다 — 춘구마. 1년 만에 인형, 이모티콘, 티라미수 콜라보, 스킨케어 라인까지 생겼다. 뿌리채소가 굿즈 파이프라인을 가진 셀럽이 되는 과정은 캐릭터 산업 복합체의 가장 빠른 속성 과외다.", ot:"강남·홍대 카카오프렌즈 플래그십에 시즌 진열이 있다. 고구마 드롭은 고구마 디저트 시즌과 함께 가을에 몰린다.", av:"주말 플래그십은 비추 — 줄이 진짜고, 대부분 관광객도 아니다." } },
+    { cat:"trend", hood:"apgujeong", tier:"paid", t:"Cafés keep getting taken over by characters", loc:"Hongdae · dept stores", meta:"limited runs · figure drops", e:"🧸", g:"linear-gradient(155deg,#F8D0C8,#B05A6E)", wt:"Seoul's café scene runs a rotating cast of character takeovers — a cartoon monkey in a Starbucks barista apron, chain cafés rebuilt into dollhouse dioramas, limited figures drip-released every ten days to engineer revisits. The scarcity choreography is half the show.", ot:"Check what takeover is running the week you land; they turn over monthly, and the good merch is gone by noon on day one.", av:"Skip it if queueing for a themed latte sounds miserable — the photos are the product.", ko:{ t:"캐릭터에게 점령당하는 서울의 카페들", loc:"홍대 · 백화점", meta:"기간 한정 · 피규어 드롭", wt:"서울 카페 신은 캐릭터 점령의 회전 무대다 — 스타벅스 바리스타 앞치마를 입은 원숭이, 돌하우스 디오라마로 개조된 체인 카페, 재방문을 설계하려 열흘 간격으로 푸는 한정 피규어. 희소성의 안무가 쇼의 절반이다.", ot:"도착하는 주에 어떤 점령이 진행 중인지 확인할 것. 매달 바뀌고, 좋은 굿즈는 첫날 정오면 없다.", av:"테마 라떼에 줄서기가 괴로우면 비추 — 이 상품의 본체는 사진이다." } }
   ];
 
   var TRENDING = [
@@ -1000,7 +1015,9 @@
     { k:"BEAUTY · HANNAM", dist:"Hangangjin Stn 650m", t:"The women-only sauna that isn't in any guidebook", p:"The seshin scrub: 30 minutes, one layer newer.", e:"🧖‍♀️", img:"https://images.unsplash.com/photo-1583417267826-aebc4d1542e1?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"뷰티 · 한남", dist:"한강진역 650m", t:"어떤 가이드북에도 없는 여성 전용 사우나", p:"세신 스크럽: 30분, 한 겹 새로워진다." } },
     { k:"EAT · SEONGSU", dist:"Seongsu Stn 350m", t:"Perilla oil makguksu — grandma approved", p:"Go before 11:30. The noon line is office workers.", e:"🍜", img:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"잇 · 성수", dist:"성수역 350m", t:"들기름 막국수 — 할머니 인증", p:"11:30 전에 갈 것. 정오 줄은 직장인들이다." } },
     { k:"BODY · HAN RIVER", dist:"Jamwon exit 4", t:"The 7am Jamwon–Banpo loop", p:"Flat, shaded, ends in banana milk.", e:"🏃‍♀️", img:"https://images.unsplash.com/photo-1637073760127-1c914f00d3e1?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"바디 · 한강", dist:"잠원 4번 출구", t:"아침 7시 잠원–반포 루프", p:"평지, 그늘, 마무리는 바나나우유." } },
-    { k:"BEAUTY · GANGNAM", dist:"Sinnonhyeon Stn 300m", t:"Glass skin, according to actual dermatologists", p:"Sunscreen, sleep, one active. The rest is export.", e:"💧", img:"https://images.unsplash.com/photo-1573461160327-b450ce3d8e7f?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"뷰티 · 강남", dist:"신논현역 300m", t:"진짜 피부과 의사들의 글래스 스킨", p:"선크림, 수면, 액티브 하나. 나머지는 수출용." } }
+    { k:"BEAUTY · GANGNAM", dist:"Sinnonhyeon Stn 300m", t:"Glass skin, according to actual dermatologists", p:"Sunscreen, sleep, one active. The rest is export.", e:"💧", img:"https://images.unsplash.com/photo-1573461160327-b450ce3d8e7f?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"뷰티 · 강남", dist:"신논현역 300m", t:"진짜 피부과 의사들의 글래스 스킨", p:"선크림, 수면, 액티브 하나. 나머지는 수출용." } },
+    { k:"TREND · CONVENIENCE", dist:"any GS25", t:"Hyundai's April Fools ice cream is real now", p:"Four years of comments made it a product. The car sticker is the point.", e:"🚙", ko:{ k:"트렌드 · 편의점", dist:"아무 GS25", t:"현대차 만우절 아이스크림이 진짜가 됐다", p:"4년치 댓글이 상품을 만들었다. 포인트는 띠부씰." } },
+    { k:"TREND · OCT 9", dist:"citywide", t:"Hangul Day: brands become type foundries", p:"Free fonts, 15th-century typefaces on snack boxes.", e:"✍️", ko:{ k:"트렌드 · 10월 9일", dist:"도시 전체", t:"한글날: 브랜드가 서체 회사가 되는 날", p:"무료 폰트, 과자 상자 위 15세기 서체." } }
   ];
 
   function track(ev){
@@ -1339,33 +1356,63 @@
       tabBtns[ti].classList.toggle('active', tabBtns[ti].getAttribute('data-cat') === state.curCat);
     }
     document.getElementById('cat-eyebrow').textContent = tr(c,'eyebrow') || '';
-    var tk = document.getElementById('cat-ticker');
-    if (state.curCat === 'trend') {
-      var names = [];
-      PICKS.forEach(function (p) { if (p.cat === 'trend') names.push(tr(p,'t')); });
-      if (!names.length) names = ["Seongsu pop-ups", "Booked-out counters", "New in Hannam", "What everyone's ordering"];
-      var line = names.join('  ✦  ') + '  ✦  ';
-      tk.textContent = '';
-      var sp = document.createElement('span');
-      sp.textContent = line + line;
-      tk.appendChild(sp);
-    }
-    document.getElementById('cat-title').innerHTML = c.em + ' <em>' + c.name + '</em>';
+    document.getElementById('cat-title').innerHTML = state.curCat === 'trend' ? '<em>' + (state.lang === 'ko' ? '트렌드' : 'The Trend') + '</em>' : c.em + ' <em>' + c.name + '</em>';
     document.getElementById('cat-desc').textContent = tr(c,'desc');
     document.getElementById('cat-img').src = c.img;
     var wrap = document.getElementById('cat-cards');
     var empty = document.getElementById('cat-empty');
     wrap.innerHTML = ""; var shown = 0;
-    PICKS.forEach(function (p) {
-      if (p.cat !== state.curCat) return;
-      if (state.catHood !== "all" && p.hood !== state.catHood) return;
-      shown++;
+    var list = PICKS.filter(function (p) {
+      if (p.cat !== state.curCat) return false;
+      if (state.catHood !== "all" && p.hood !== state.catHood) return false;
+      return true;
+    });
+    function makeCard(p) {
       var el = document.createElement('div');
       el.className = "pcard" + (isLocked(p) ? " locked" : "");
       el.innerHTML = pcardHTML(p);
       el.addEventListener('click', function () { openSheet(p); });
-      wrap.appendChild(el);
-    });
+      return el;
+    }
+    if (state.curCat === 'beauty') {
+      wrap.className = "beauty-groups";
+      var subOrder = ['sauna','spa','esthe','derm','nail','shop','etc'];
+      var subLabels = {
+        sauna:{en:'Sauna & jjimjil',ko:'사우나 · 찜질'},
+        spa:{en:'Spa & massage',ko:'스파 · 마사지'},
+        esthe:{en:'Aesthetic',ko:'에스테틱'},
+        derm:{en:'Dermatology',ko:'피부과'},
+        nail:{en:'Nail',ko:'네일'},
+        shop:{en:'Beauty shopping',ko:'뷰티 쇼핑'},
+        etc:{en:'Beauty culture & more',ko:'뷰티 컬처 · 그 외'}
+      };
+      function beautySub(p) {
+        var m = ((p.meta || '') + ' ' + (p.t || '')).toLowerCase();
+        if (m.indexOf('sauna') > -1 || m.indexOf('jjimjil') > -1 || m.indexOf('찜질') > -1) return 'sauna';
+        if (m.indexOf('derm') > -1 || m.indexOf('피부과') > -1) return 'derm';
+        if (m.indexOf('nail') > -1 || m.indexOf('네일') > -1) return 'nail';
+        if (m.indexOf('aesthetic') > -1 || m.indexOf('에스테틱') > -1) return 'esthe';
+        if (m.indexOf('spa') > -1 || m.indexOf('massage') > -1 || m.indexOf('body care') > -1 || m.indexOf('마사지') > -1) return 'spa';
+        if (m.indexOf('pharmacy') > -1 || m.indexOf('shopping') > -1 || m.indexOf('flagship') > -1 || m.indexOf('쇼핑') > -1 || m.indexOf('약국') > -1) return 'shop';
+        return 'etc';
+      }
+      var groups = {};
+      list.forEach(function (p) { var s = beautySub(p); (groups[s] = groups[s] || []).push(p); });
+      subOrder.forEach(function (s) {
+        if (!groups[s]) return;
+        var h = document.createElement('div');
+        h.className = 'sub-head';
+        h.innerHTML = '<span>' + (state.lang === 'ko' ? subLabels[s].ko : subLabels[s].en) + '</span><i>' + groups[s].length + '</i>';
+        wrap.appendChild(h);
+        var g = document.createElement('div');
+        g.className = 'cards grid';
+        groups[s].forEach(function (p) { g.appendChild(makeCard(p)); shown++; });
+        wrap.appendChild(g);
+      });
+    } else {
+      wrap.className = "cards grid";
+      list.forEach(function (p) { wrap.appendChild(makeCard(p)); shown++; });
+    }
     empty.style.display = shown ? "none" : "block";
     document.getElementById('cat-picks-title').textContent =
       state.catHood === "all" ? "All " + c.name.toLowerCase() + " picks" :
