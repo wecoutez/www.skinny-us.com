@@ -449,6 +449,14 @@
     transition:background .15s, color .15s; }
   .sub-tab i { font-style:normal; font-weight:700; opacity:0.5; margin-left:4px; font-size:10px; }
   .sub-tab.active { background:#F6D9E4; color:var(--ink); border-color:transparent; }
+  .sub-tab.lockch { opacity:0.8; }
+  .pcard.joincard { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px;
+    background:linear-gradient(155deg,var(--g1),var(--g3)); min-height:180px; text-align:center; padding:18px;
+    text-decoration:none; cursor:pointer; }
+  .pcard.joincard i { font-style:normal; font-size:26px; }
+  .pcard.joincard b { font-size:15px; color:#5A1B36; line-height:1.3; }
+  .pcard.joincard span { font-size:12px; font-weight:700; color:rgba(90,27,54,0.8); }
+  .join .mem-link { display:block; margin-top:12px; font-size:12px; font-weight:700; color:rgba(255,255,255,0.85); text-decoration:underline; text-underline-offset:3px; }
   .sub-tab.active i { opacity:0.65; }
   .cat-eat .sub-head span { color:#B4451F; }
   .cat-eat .sub-head i { color:#8A5A34; background:#F5E6D2; }
@@ -752,7 +760,7 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v16</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v17</span></div>
     </div>
   </section>
 
@@ -811,6 +819,7 @@
         <h2 id="join-home-h">Less but better.<br><em>Every day.</em></h2>
         <div class="sub" id="join-home-sub">All picks · monthly food trends + eat-place list<br>$9.99/mo · free week · cancel anytime</div>
         <a class="cta" id="join-home-cta" href="join.html">Join Skinny-us</a>
+        <a class="mem-link" id="join-home-mem" href="#/gate">Already a member? Enter code →</a>
       </div>
     </section>
 
@@ -871,6 +880,7 @@
         <h2 id="join-cat-h">Want the full list?</h2>
         <div class="sub" id="join-cat-sub">Every pick · maps &amp; booking notes · updated weekly<br>$9.99/mo · free week · cancel anytime</div>
         <a class="cta" id="join-cat-cta" href="join.html">Join Skinny-us</a>
+        <a class="mem-link" id="join-cat-mem" href="#/gate">Already a member? Enter code →</a>
       </div>
     </section>
 
@@ -934,7 +944,7 @@
 
   <!-- ═══════════ MEMBERS GATE ═══════════ -->
   <section class="view gate" id="view-gate" style="display:none">
-    <button class="g-back" onclick="go('entry')">← Back</button>
+    <button class="g-back" onclick="go('cat','trend')">← Back</button>
     <div>
       <div class="g-ver">v16</div>
     <div class="g-brand">Skinny Genius · Seoul</div>
@@ -1027,7 +1037,7 @@
   var PICKS = [
     { sub:"popup", cat:"trend", hood:"seongsu", tier:"free", t:"The Snickers ice truck is loose in the city", loc:"Seongsu · Hongdae", meta:"moving popup · Jul 2026", img:TIMG.snickers, e:"🚚", g:"linear-gradient(155deg,#CBD8E8,#6E4A32)", d:"A free ice-bar truck roaming Seoul's busiest districts — the popup comes to you.", wt:"To launch the Snickers ice bar in Korea, the brand skipped renting one address and sent a wrapped truck through foot-traffic districts instead, handing out bars with mini games — a curling 'Chill Shot', an ice-freezer photo zone — and merch for anyone who clears a mission. The guerrilla moving-popup format is the trend itself: cooling you down on the spot instead of asking you to queue.", ot:"Check the brand's Korean socials for the day's stop and go early — the truck moves, and the cooler bags go first.", av:"Skip it if you need a guaranteed location and time — the chase is part of the format.", ko:{ t:"도심을 떠도는 스니커즈 아이스트럭", loc:"성수 · 홍대", meta:"무빙 팝업 · 2026.7", d:"서울 번화가를 돌아다니는 무료 아이스바 트럭 — 팝업이 나를 찾아온다.", wt:"스니커즈 아이스바 국내 출시를 알리며 브랜드는 한 곳에 매장을 여는 대신 랩핑 트럭을 유동인구 많은 동네로 보냈다. 미니 컬링 '칠샷', 아이스 냉동고 포토존 같은 가벼운 게임에 미션 성공 시 아이스바와 보냉백·초콜릿 굿즈까지. 줄 서게 하는 대신 그 자리에서 식혀주는 게릴라 무빙 팝업, 그 포맷 자체가 트렌드다.", ot:"브랜드 공식 SNS에서 오늘의 정차 지점을 확인하고 일찍 갈 것 — 트럭은 움직이고, 보냉백은 먼저 없어진다.", av:"장소와 시간이 보장돼야 마음이 편하면 비추 — 쫓아다니는 게 포맷의 일부다." } },
     { sub:"popup", cat:"trend", hood:"seongsu", tier:"free", t:"A creator bakery meets the yogurt empire", loc:"Seongsu · dept. stores", meta:"limited popup · Jul 2026", img:TIMG.parkddugi, e:"🍦", g:"linear-gradient(155deg,#D6E4F0,#7E96B4)", d:"Churros salt bread piled with honeycomb and choco shell — two Korean obsessions in one cone.", wt:"Parkddugi, a cult creator bakery, joined Yoajung — the yogurt-ice-cream topping franchise Koreans are currently obsessed with — for a limited run: their bestselling churros salt bread turned into an ice-cream cone under honeycomb and choco-shell toppings, sold only at popup counters in Seongsu and department stores. It's the salt-bread-as-canvas trend and the topping economy colliding in one product.", ot:"Go at opening — limited daily runs are the point, and the honeycomb version goes first.", av:"Skip it if sweet-on-sweet isn't your palate; there is no restrained version.", ko:{ t:"크리에이터 베이커리와 요거트 제국의 만남", loc:"성수 · 백화점", meta:"한정 팝업 · 2026.7", d:"벌집꿀과 초코쉘을 얹은 츄러스 소금빵 — 한국의 두 집착이 콘 하나에.", wt:"컬트 크리에이터 베이커리 박뚜기가 토핑 요거트 아이스크림의 제국 요아정과 만났다. 베스트셀러 츄러스 소금빵이 벌집꿀·초코쉘 토핑을 얹은 아이스크림 콘이 되어 성수동과 백화점 팝업에서만 한정 판매. '캔버스가 된 소금빵' 트렌드와 토핑 경제가 한 제품에서 충돌하는 장면이다.", ot:"오픈 시간에 맞춰 갈 것 — 하루 한정 수량이 포인트고, 벌집꿀 버전이 먼저 없어진다.", av:"단 것 위에 단 것이 부담이면 비추. 절제된 버전은 없다." } },
-    { sub:"popup", cat:"trend", hood:"other", tier:"paid", t:"A museum's AI joke became a real gacha toy", loc:"Nat'l Agricultural Museum · online", meta:"gacha drop · Jul 2026", img:TIMG.clicker, e:"🌽", g:"linear-gradient(155deg,#E2EED4,#8FB474)", d:"Fake AI-rendered crop-crate keyrings got so many 'make it real' comments the museum actually did.", wt:"The National Agricultural Museum posted AI and 3D renders of tiny fruit-crate 'crop clicker' keyrings as a gag; the comment section demanded them for real, so the museum partnered with NoPlasticSunday — a studio that works in recycled plastic — and released actual gacha keyrings at the museum and online. It's the fansumer pipeline in one clean arc: brand joke, audience demand, real product.", ot:"The gacha machine at the museum is the full experience; online drops sell through fast.", av:"Skip it if a keyring can't justify a trip — this one is about the story as much as the object.", ko:{ t:"박물관의 AI 농담이 진짜 가챠가 됐다", loc:"국립농업박물관 · 온라인", meta:"가챠 드롭 · 2026.7", d:"AI로 만든 가짜 농작물 키링에 '실물로 내달라'는 댓글이 쌓이자 박물관이 진짜로 만들었다.", wt:"국립농업박물관이 재미로 올린 AI·3D 렌더링 '농작물 클리커' 키링 이미지에 출시 요청 댓글이 쏟아졌고, 박물관은 재활용 플라스틱 스튜디오 노플라스틱선데이와 손잡고 실제 가챠 키링을 박물관과 온라인에 출시했다. 브랜드의 농담 → 팬덤의 요구 → 실물 출시로 이어지는 팬슈머 파이프라인의 가장 깔끔한 사례.", ot:"박물관 가챠 머신이 완전체 경험 — 온라인 드롭은 금방 소진된다.", av:"키링 하나로 나들이를 정당화 못 하겠으면 비추 — 이건 물건만큼 스토리가 본체다." } },
+    { sub:"popup", cat:"trend", hood:"other", tier:"free", t:"A museum's AI joke became a real gacha toy", loc:"Nat'l Agricultural Museum · online", meta:"gacha drop · Jul 2026", img:TIMG.clicker, e:"🌽", g:"linear-gradient(155deg,#E2EED4,#8FB474)", d:"Fake AI-rendered crop-crate keyrings got so many 'make it real' comments the museum actually did.", wt:"The National Agricultural Museum posted AI and 3D renders of tiny fruit-crate 'crop clicker' keyrings as a gag; the comment section demanded them for real, so the museum partnered with NoPlasticSunday — a studio that works in recycled plastic — and released actual gacha keyrings at the museum and online. It's the fansumer pipeline in one clean arc: brand joke, audience demand, real product.", ot:"The gacha machine at the museum is the full experience; online drops sell through fast.", av:"Skip it if a keyring can't justify a trip — this one is about the story as much as the object.", ko:{ t:"박물관의 AI 농담이 진짜 가챠가 됐다", loc:"국립농업박물관 · 온라인", meta:"가챠 드롭 · 2026.7", d:"AI로 만든 가짜 농작물 키링에 '실물로 내달라'는 댓글이 쌓이자 박물관이 진짜로 만들었다.", wt:"국립농업박물관이 재미로 올린 AI·3D 렌더링 '농작물 클리커' 키링 이미지에 출시 요청 댓글이 쏟아졌고, 박물관은 재활용 플라스틱 스튜디오 노플라스틱선데이와 손잡고 실제 가챠 키링을 박물관과 온라인에 출시했다. 브랜드의 농담 → 팬덤의 요구 → 실물 출시로 이어지는 팬슈머 파이프라인의 가장 깔끔한 사례.", ot:"박물관 가챠 머신이 완전체 경험 — 온라인 드롭은 금방 소진된다.", av:"키링 하나로 나들이를 정당화 못 하겠으면 비추 — 이건 물건만큼 스토리가 본체다." } },
     { sub:"popup", cat:"trend", hood:"other", tier:"paid", t:"The BAPE monkey wears a barista apron", loc:"Starbucks nationwide", meta:"rolling collab · since Jan 2026", img:TIMG.babymilo, e:"🐵", g:"linear-gradient(155deg,#E2EED4,#5B7C4E)", d:"Baby Milo's second Starbucks Korea run — a collab designed to keep going, not sell out once.", wt:"After a first coaster-and-keychain run, Starbucks Korea brought BAPE's Baby Milo back for round two: foldable bags, neck pillows, reusable-cup events, even tumblers you redeem with loyalty stars. The design is the point — a rolling collab engineered for repeat visits over months instead of a one-week frenzy, which is where Korean café collabs are heading.", ot:"MD drops sell out the morning they land — watch the app, and the star-redemption tumblers are the quiet good deal.", av:"Skip it if queueing for merch drains you; the coffee is the same coffee.", ko:{ t:"바리스타 앞치마를 입은 BAPE 원숭이", loc:"전국 스타벅스", meta:"연속형 콜라보 · 2026.1~", d:"베이비 마일로의 스타벅스 코리아 2차전 — 한 번 완판이 아니라 계속 이어지게 설계된 콜라보.", wt:"코스터·키체인으로 시작한 1차의 인기에 힘입어 스타벅스 코리아가 베이비 마일로를 다시 불렀다. 폴더블 백, 넥필로우, 리유저블 컵 이벤트, 별 150개로 교환하는 텀블러까지 — 일주일짜리 광풍이 아니라 몇 달에 걸친 재방문을 설계한 '연속형 콜라보'다. 한국 카페 콜라보가 향하는 방향이 여기 있다.", ot:"MD는 뜨는 날 오전에 사라진다 — 앱을 볼 것. 별 교환 텀블러가 조용한 이득이다.", av:"굿즈 줄서기가 지치는 타입이면 비추. 커피는 늘 마시던 그 커피다." } },
 
     { d:"Neighborhood Italian done the Cheongdam way — quiet room, pasta that takes itself seriously.", cat:"eat", hood:"apgujeong", tier:"free", t:"Topa", loc:"Cheongdam", meta:"Italian", e:"🍝", img:"https://places.googleapis.com/v1/places/ChIJYR53A12ZfDURuzI0m5R_K2Y/photos/AWCwydjZtZSFcd9Pc_dkajG8lUBGrlAKH3lsopYbMav9OFBZsPtpHAPXI0BSWqCHSWfn3ZOh7gwaQKR6Qh1eK1TQPgrEUt6MB3jHNys8ubQkZZB6uQBJpA0YtAiAs3XcZXsEm7z7RGFb54Szhse46WBvqrA6u7XBFKiGhYCAxmdOfS2nNSTfDlYHMkeTGa5XCd6PFSkW-EOjA77gNBOAIGOK6via4QLruzQX7y-z6JLu7Gxm-0Kg1CDwdI260_fhM4H5ZKia3KTNZGZ7EXwbVGakRDVyYpWc0wjD2GSvaoWiBAOA_yu_VZp5560lhmni6yYHRoNuWJqnL84VK0Xv22ql8FON4v0MVwPDGbarQwAKTQLZLY4WI8FReEr6hTJjwiKSLQa-uGUia0EObv5WFv2FnVSGgwskeS7sMjmlQB7MOpKXFk149uJZvmj1CGiLtq0m/media?maxWidthPx=1000&key=AIzaSyBuYiJ0F3Z_oGGiAvGutcGK7LgAVadX8TE", g:"linear-gradient(155deg,#FFE3BF,#F7C398)", map:"https://map.naver.com/p/entry/place/2039983018", gmap:"https://www.google.com/maps/search/?api=1&query=Topa%2C%20Cheongdam%2C%20Seoul&query_place_id=ChIJYR53A12ZfDURuzI0m5R_K2Y",
@@ -1094,7 +1104,7 @@
       ko:{ d:"느린 술과 낮은 조도의 송파 바.", t:"뜻한바", loc:"송파", meta:"바" } },
     { d:"Natural wine in Yongsan — funky bottles, staff who can steer you.", gmap:"https://www.google.com/maps/search/?api=1&query=Ferments%2C%20Yongsan%2C%20Seoul&query_place_id=ChIJD7OMudyZfDURn3lxOBM9f_c", cat:"eat", hood:"hannam", tier:"paid", t:"Ferments", loc:"Yongsan", meta:"Natural wine bar", e:"🍷", img:"https://places.googleapis.com/v1/places/ChIJD7OMudyZfDURn3lxOBM9f_c/photos/AWCwydhN8KbFHzJTyYxutcTrk554XNskzTqO_UIohW63Vdz6CKyQ6zK_za7fwSEIsfKS4CcyiZD1GYpxduoL8ShMn-modCRxbJhLF2R66opm24ztQrFwnKKXS9s9wEhNPPw3KY7BUttS-old8jIg35eKYd0RFc0DC2kv8Up4MaaEMrWxYmbgqkrbvknom96qe03jAX55Vk2jn06-lP3xRdNlPs4An7Kk59KTQ7R3hI-zDO8UNPDhuENGUrf-PuGeNZd7lzyxFukA3LYbvLeTQDBncpWid8CTZbYo-vuIiLjm6o3DJ6sM4K04upf9a9U83iZc1QeYqjhZy_XOBQ4BVujbgxx36uBJonHDKRkgviiLNWLUUoIx2f7R42ux6w0sUTFmhfejJpEzTO1aBudf6XEjSTMLMpCz28SYpIQVT4tBOaIw6Q/media?maxWidthPx=1000&key=AIzaSyBuYiJ0F3Z_oGGiAvGutcGK7LgAVadX8TE", g:"linear-gradient(155deg,#FFE3BF,#E4A26B)", map:"https://map.naver.com/p/entry/place/1415293723",
       ko:{ d:"용산 내추럴 와인 — 개성 있는 병들, 길을 잡아주는 스태프.", t:"퍼멘츠", loc:"용산", meta:"내추럴 와인 바" } },
-    { d:"A Seochon bar tucked into the old alleys — the neighborhood is half the reason to go.", gmap:"https://www.google.com/maps/search/?api=1&query=Omusa%2C%20Seochon%2C%20Seoul&query_place_id=ChIJt_YfVryifDUR3CuwsLQ88KY", cat:"eat", hood:"yeonnam", tier:"paid", t:"Omusa", loc:"Seochon", meta:"Bar", e:"🥃", img:"https://places.googleapis.com/v1/places/ChIJt_YfVryifDUR3CuwsLQ88KY/photos/AWCwydgY7GpL3b9V2F4nySas9oh90cvq-inZ-I4r6E5JIMyZg2PfxhLAw8ogwNsxx6fWECtzEbkPyfQxa8HqW8u8gk3vScGGlY1XdTah0XSb6o14NhPtXzh_s6zmtphg4EznJK47-zu6qFvmIUlXlkepU4Tf8LLEi5TsMxClo38oc6c8lg63yPeSx4vC4MvaSKmB48_nFt7fTtmeYaZco1puFhuCUMT023rpj-zWGNQsipT_CyiUsCeeMmgA6ViCqWjggO6nE4komM3zLCAuHT3Cgj0vDnQFRdH01lpQK9yzvX_lyKK3wq6y_6JIcZnlFw7rshMasO95tntOC2nQ_3QmbD1ocE6ZztEikYOSTEzgXFlR4BHDWNLR2OpgShVCtEGD5SBPg7OZd7RRcPjFMn1x9aK25irReC2XIc5dOuHway0/media?maxWidthPx=1000&key=AIzaSyBuYiJ0F3Z_oGGiAvGutcGK7LgAVadX8TE", g:"linear-gradient(155deg,#FFE3BF,#F7C398)", map:"https://map.naver.com/p/entry/place/954741961",
+    { d:"A Seochon bar tucked into the old alleys — the neighborhood is half the reason to go.", gmap:"https://www.google.com/maps/search/?api=1&query=Omusa%2C%20Seochon%2C%20Seoul&query_place_id=ChIJt_YfVryifDUR3CuwsLQ88KY", cat:"eat", hood:"yeonnam", tier:"free", t:"Omusa", loc:"Seochon", meta:"Bar", e:"🥃", img:"https://places.googleapis.com/v1/places/ChIJt_YfVryifDUR3CuwsLQ88KY/photos/AWCwydgY7GpL3b9V2F4nySas9oh90cvq-inZ-I4r6E5JIMyZg2PfxhLAw8ogwNsxx6fWECtzEbkPyfQxa8HqW8u8gk3vScGGlY1XdTah0XSb6o14NhPtXzh_s6zmtphg4EznJK47-zu6qFvmIUlXlkepU4Tf8LLEi5TsMxClo38oc6c8lg63yPeSx4vC4MvaSKmB48_nFt7fTtmeYaZco1puFhuCUMT023rpj-zWGNQsipT_CyiUsCeeMmgA6ViCqWjggO6nE4komM3zLCAuHT3Cgj0vDnQFRdH01lpQK9yzvX_lyKK3wq6y_6JIcZnlFw7rshMasO95tntOC2nQ_3QmbD1ocE6ZztEikYOSTEzgXFlR4BHDWNLR2OpgShVCtEGD5SBPg7OZd7RRcPjFMn1x9aK25irReC2XIc5dOuHway0/media?maxWidthPx=1000&key=AIzaSyBuYiJ0F3Z_oGGiAvGutcGK7LgAVadX8TE", g:"linear-gradient(155deg,#FFE3BF,#F7C398)", map:"https://map.naver.com/p/entry/place/954741961",
       ko:{ d:"서촌 골목의 바 — 술만큼 동네가 목적.", t:"오무사", loc:"서촌", meta:"바" } },
     { d:"A hidden drinking room in tourist-heavy Myeongdong — the contrast is the point.", gmap:"https://www.google.com/maps/search/?api=1&query=Myeongdong%20Sukhui%2C%20Myeongdong%2C%20Seoul&query_place_id=ChIJPUOxk0mjfDURopz1MoTC4tk", cat:"eat", hood:"gangnam", tier:"paid", t:"Myeongdong Sukhui", loc:"Myeongdong", meta:"Bar", e:"🍸", img:"https://places.googleapis.com/v1/places/ChIJPUOxk0mjfDURopz1MoTC4tk/photos/AWCwydiuICkm9TB1Pn8vMU5rlPNw7418kivAmvV0m02Jnjxmke-twTwjXure20DTsNv4vTnURWZG5BSJfN90W1wAN-V0UoE8tDahe0wzL-65LRhxuSE_acZHYduGZIuOo0fOv-f2DSJG0ECYQTv7DlDi_NPVAw0udZE6LuHsCbuDgO7z_2MyZIZhZFsd9P4CZiXf7sv4K0aR016FqF8h2Nj-KrUtQ9yReMbUpJLXRpA2yI1naMfaBSAFAqW3rgv_LPzMK_FLnstiOq-y35xChz9jHaXUaA09i7UlhtGmhTACxKUpM6INnfXCxKfYcATIx2m7ZeOpH0TjXifvqIz9wLg3UYCQBd1LOPGdHiaY7iOop6aXnKD297prp5R6fItzDeII9uEPLQp5P9wBzwazUnedrsrRR4aMFYHP2FR61UpTi3uCkiY/media?maxWidthPx=1000&key=AIzaSyBuYiJ0F3Z_oGGiAvGutcGK7LgAVadX8TE", g:"linear-gradient(155deg,#F8D8C8,#E095AE)", map:"https://map.naver.com/p/entry/place/1118332002",
       ko:{ d:"관광지 명동 속 숨은 술집 — 그 반전이 포인트.", t:"명동 숙희", loc:"명동", meta:"바" } },
@@ -1176,7 +1186,7 @@
       ko:{ d:"압구정 네일 — 레퍼런스 사진을 들고 가면 더 나은 걸로 나온다.", t:"네일유메", loc:"압구정", meta:"네일" } },
     { d:"The pharmacy-haul destination — vitamins and K-pharmacy staples in one sweep.", gmap:"https://www.google.com/maps/search/?api=1&query=Optima%20Wellness%20Museum%20Pharmacy%2C%20Gangnam%2C%20Seoul&query_place_id=ChIJtW63UwujfDURXCJXSks7qhc", cat:"beauty", hood:"gangnam", tier:"paid", t:"Optima Wellness Museum Pharmacy", loc:"Gangnam", meta:"Pharmacy haul spot", e:"💊", img:"https://places.googleapis.com/v1/places/ChIJtW63UwujfDURXCJXSks7qhc/photos/AWCwydjsYDh9FXSG2UJxOu87tqXtPmsZhjKw3IAneTuddrQVoRKV6IZimCpvq3fVGU1ml0rUjjjA-cmN9iEA5X_YRsBE-mcY8FtkIqO8IFN9LTXFBuKB8O7_OLjJaDnmVCXA5qFJeGVEAMSv0oTQGTyT20MV1TZ-y_lGwFlqTIh83Ge2m2YXzFJHOFyVmbmT9OxmbEyma1lKxDofjKnLDbfno4Oj23Owb0i7u3biBoHqY9yaUIpgL8NdZBZUfRRFUtaljc0cJsHHP-wCRYdk7AUn4VeZoNNB4iOcm1mcdWwerApr5zGZnMXZhHk4NwRTdLC7jr9CFSeZbC41p_MwpEVYkcBpL-TepzhzoBvYq79eWpN_4rwKHPzIJunbTUObjIdMto31hokk2ytOZPkwrrA5aYvUh8Lb-kQRgvdaezeNWyZt6R9SBmAX6zTfOexIClTo/media?maxWidthPx=1000&key=AIzaSyBuYiJ0F3Z_oGGiAvGutcGK7LgAVadX8TE", g:"linear-gradient(155deg,#F8C8DA,#E095AE)", map:"https://map.naver.com/p/entry/place/2075037792",
       ko:{ d:"약국 하울 성지 — 영양제와 국민템을 한 번에.", t:"옵티마웰니스뮤지엄약국", loc:"강남", meta:"약국" } },
-    { d:"K-beauty shopping in upgraded format — test, compare, haul.", gmap:"https://www.google.com/maps/search/?api=1&query=Olive%20Better%20Gangnam%2C%20Gangnam%2C%20Seoul&query_place_id=ChIJ7c_XVAChfDURr6mw6PHGMag", cat:"beauty", hood:"gangnam", tier:"paid", t:"Olive Better Gangnam", loc:"Gangnam", meta:"K-beauty shopping", e:"🧴", img:"https://places.googleapis.com/v1/places/ChIJ7c_XVAChfDURr6mw6PHGMag/photos/AWCwydjqjYfA4QXnjjI7lzIdEgtAgEQD5Rxm_9tMLZ8yIUjSo6bF22hwxlSvlBp7eP8A4PGGavPA76NwBlivnP674ptu6IJ0-Lkp4lHOQyJNdkEE3ybQv6jr2oNlI3wSYMjQY-62WAUOqX5pe82pYojICT7TENBrL4I6tPiqYF58v3K-vsTwvbmr6r2c16elLS51jnNP_KIhssO3IMfK0o35AHQrAd14CkfNpNizdYjeKKraFFloBQTdgW-x2EXfqPbsXVVSTPQYVn2pl9eBvylLOjMgRYMbLCKaO4zFx1cNMBXm_tGw3plFaDHJXhSA1fAloB_M0UWJowcIQ7xVCcUXyx92lwEsSjRJ5SzFN1nHGMAVtNbXcGMuOszjJrzXs8MgOiTFwht_yZnewXCFgk-Syzb4vWmoU_ckR-Hs7qN7SepYNgws4aWiZvSxYYTqqF-e/media?maxWidthPx=1000&key=AIzaSyBuYiJ0F3Z_oGGiAvGutcGK7LgAVadX8TE", g:"linear-gradient(155deg,#EFC9E2,#C48EB0)", map:"https://map.naver.com/p/entry/place/2015386541",
+    { d:"K-beauty shopping in upgraded format — test, compare, haul.", gmap:"https://www.google.com/maps/search/?api=1&query=Olive%20Better%20Gangnam%2C%20Gangnam%2C%20Seoul&query_place_id=ChIJ7c_XVAChfDURr6mw6PHGMag", cat:"beauty", hood:"gangnam", tier:"free", t:"Olive Better Gangnam", loc:"Gangnam", meta:"K-beauty shopping", e:"🧴", img:"https://places.googleapis.com/v1/places/ChIJ7c_XVAChfDURr6mw6PHGMag/photos/AWCwydjqjYfA4QXnjjI7lzIdEgtAgEQD5Rxm_9tMLZ8yIUjSo6bF22hwxlSvlBp7eP8A4PGGavPA76NwBlivnP674ptu6IJ0-Lkp4lHOQyJNdkEE3ybQv6jr2oNlI3wSYMjQY-62WAUOqX5pe82pYojICT7TENBrL4I6tPiqYF58v3K-vsTwvbmr6r2c16elLS51jnNP_KIhssO3IMfK0o35AHQrAd14CkfNpNizdYjeKKraFFloBQTdgW-x2EXfqPbsXVVSTPQYVn2pl9eBvylLOjMgRYMbLCKaO4zFx1cNMBXm_tGw3plFaDHJXhSA1fAloB_M0UWJowcIQ7xVCcUXyx92lwEsSjRJ5SzFN1nHGMAVtNbXcGMuOszjJrzXs8MgOiTFwht_yZnewXCFgk-Syzb4vWmoU_ckR-Hs7qN7SepYNgws4aWiZvSxYYTqqF-e/media?maxWidthPx=1000&key=AIzaSyBuYiJ0F3Z_oGGiAvGutcGK7LgAVadX8TE", g:"linear-gradient(155deg,#EFC9E2,#C48EB0)", map:"https://map.naver.com/p/entry/place/2015386541",
       ko:{ d:"K-뷰티 쇼핑 업그레이드판 — 테스트하고 비교하고 쓸어 담기.", t:"올리브베러 강남역점", loc:"강남", meta:"뷰티 쇼핑" } },
     { d:"The Gwanghwamun stop on the K-beauty haul ritual.", gmap:"https://www.google.com/maps/search/?api=1&query=Olive%20Better%20Gwanghwamun%2C%20Jongno%2C%20Seoul&query_place_id=ChIJlWSxdY6jfDUResGGH9Bfrak", cat:"beauty", hood:"yeonnam", tier:"paid", t:"Olive Better Gwanghwamun", loc:"Jongno", meta:"K-beauty shopping", e:"🧴", img:"https://places.googleapis.com/v1/places/ChIJlWSxdY6jfDUResGGH9Bfrak/photos/AWCwydgz2-VEtpsz27uxH8y73URvW4_4yJ_tm3pMJw5FtuR3VPSXf9SEMeL8-aGjUY8r42-GQx9g9KLoAjiAZPgkJlN3SSkJvL184-pX2y0L8fY83um9OHG1MfaiaTTcjmGd3qrgQi7c2XgxaEk4rnWIb-JPXWpn-h7uzhvJdhBUCzaLOL5s9nWP-8nT2SFeBz-X76-TiDBvbOfuup-PpHUZ65h-ZDmGKctZJAUFvTLTVbn0bXmn0R-TccAEdduhJzAzpYZU9lJNv3I_-D1g8coKpU5ySBxrSMupOJD_qv2QiaeAALYSTpsG-HcdfbMMHC2WfKKW4wuDlSnX6OWQsxU3mEJptQjt5M0hmW8MmwllgwTl_pOHXh2ACkg15O0snBYVT_x03lScxc7EETHD8OhRW72G8PYyaI7s6KSD5ek3C9uMZEGRPEnDtHF3FIYVYA/media?maxWidthPx=1000&key=AIzaSyBuYiJ0F3Z_oGGiAvGutcGK7LgAVadX8TE", g:"linear-gradient(155deg,#FBE3EC,#E095AE)", map:"https://map.naver.com/p/entry/place/2032816657",
       ko:{ d:"K-뷰티 하울 의식의 광화문 지점.", t:"올리브베러 광화문점", loc:"종로", meta:"뷰티 쇼핑" } },
@@ -1313,9 +1323,14 @@
       set("join-cat-h", d.consultH); set("join-cat-sub", d.consultSub); set("join-cat-cta", d.consultCta);
       var jh = document.getElementById('join-home-cta'); if (jh) jh.setAttribute('href', CONSULT_LINK);
       var jc = document.getElementById('join-cat-cta'); if (jc) jc.setAttribute('href', CONSULT_LINK);
+      var m1 = document.getElementById('join-home-mem'); if (m1) m1.style.display = 'none';
+      var m2 = document.getElementById('join-cat-mem'); if (m2) m2.style.display = 'none';
     } else {
       set("join-home-h", d.joinH); set("join-home-sub", d.joinSub); set("join-home-cta", d.joinCta);
       set("join-cat-h", d.joinCatH); set("join-cat-sub", d.joinCatSub); set("join-cat-cta", d.joinCta);
+      var ml = state.lang === 'ko' ? '이미 멤버라면? 코드 입력 →' : 'Already a member? Enter code →';
+      var m3 = document.getElementById('join-home-mem'); if (m3) { m3.textContent = ml; m3.style.display = ''; }
+      var m4 = document.getElementById('join-cat-mem'); if (m4) { m4.textContent = ml; m4.style.display = ''; }
     }
     var si = document.getElementById("search-input"); if (si) si.placeholder = d.searchPh;
     var bb = document.querySelector("#view-cat .back"); if (bb) bb.textContent = d.back;
@@ -1352,6 +1367,15 @@
   var IS_MEMBER = /[?&]member=1/.test(location.search) || validMemberPass();
   if (/[?&]member=1/.test(location.search)) saveMemberPass();
   function isLocked(p) { return p.tier === "paid" && !IS_MEMBER; }
+  function joinCard(n) {
+    var el = document.createElement('a');
+    el.className = "pcard joincard";
+    el.href = "join.html";
+    el.innerHTML = '<i>🔒</i><b>+' + n + (state.lang === 'ko' ? '개 픽 잠김' : ' more picks') + '</b>' +
+      '<span>' + (state.lang === 'ko' ? '멤버 가입하고 전체 리스트 열기 →' : 'Join to unlock the full list →') + '</span>';
+    el.addEventListener('click', function () { track('lock:morecard'); });
+    return el;
+  }
 
   function showView(key) {
     // 게이트는 오버레이: 뒤에 실제 홈 화면을 깔고 그 위에 그라데이션을 덮는다
@@ -1376,11 +1400,6 @@
   // 클릭 → 즉시 화면 전환. 해시는 뒤로가기/공유용으로만 갱신.
   // home/cat은 멤버 전용: 비멤버는 게이트로 보낸다.
   function go(view, arg) {
-    if ((view === 'home' || view === 'cat') && !IS_MEMBER) {
-      showView('gate');
-      try { location.hash = '#/gate'; } catch (e) {}
-      return;
-    }
     if (view === 'cat') {
       state.curCat = arg; state.catHood = "all"; state.catSub = "all";
       renderCatPage();
@@ -1418,9 +1437,7 @@
   function route() {
     var h = location.hash || '#/';
     var mCat = h.match(/^#\/c\/(\w+)/);
-    if ((mCat || h === '#/home') && !IS_MEMBER) {
-      showView('gate');
-    } else if (mCat && CATS[mCat[1]]) {
+    if (mCat && CATS[mCat[1]]) {
       state.curCat = mCat[1]; state.catHood = "all"; state.catSub = "all";
       renderCatPage();
       showView('cat');
@@ -1514,6 +1531,11 @@
           var gm = gHref.match(/maps\/place\/\?q=place_id:([^&"]+)/);
           if (gm) gHref = "https://www.google.com/maps/search/?api=1&query=" +
             encodeURIComponent((p.t || "") + (p.loc ? ", " + p.loc : "") + ", Seoul") + "&query_place_id=" + gm[1];
+          // 장소 카테고리인데 구글맵 링크가 없으면(주로 시트에서 온 body 아이템) 이름+동네 검색 링크를 자동 생성
+          if (!gHref && (p.cat === "eat" || p.cat === "beauty" || p.cat === "body")) {
+            gHref = "https://www.google.com/maps/search/?api=1&query=" +
+              encodeURIComponent((p.t || "") + (p.loc ? ", " + p.loc : "") + ", Seoul");
+          }
           var gBtn = gHref ? '<a class="mapbtn gmap" href="' + gHref + '" target="_blank" rel="noopener">' + L('gmapBtn') + '</a>' : '';
           if (!nBtn && !gBtn) return '';
           return '<div class="maprow">' + (state.lang === 'ko' ? nBtn + gBtn : gBtn + nBtn) + '</div>';
@@ -1921,13 +1943,14 @@
   function renderHome() {
     var wrap = document.getElementById('cards');
     var empty = document.getElementById('cards-empty');
-    wrap.innerHTML = ""; var shown = 0;
+    wrap.innerHTML = ""; var shown = 0; var lockedN = 0;
     PICKS.forEach(function (p) {
       if (state.hood !== "all" && p.hood !== state.hood) return;
       if (state.q) {
         var hay = (p.t + " " + p.loc + " " + (p.meta || "") + " " + p.cat).toLowerCase();
         if (hay.indexOf(state.q) === -1) return;
       }
+      if (!IS_MEMBER && p.tier !== "free") { lockedN++; return; }
       shown++;
       var el = document.createElement('div');
       el.className = "pcard";
@@ -1936,6 +1959,7 @@
       el.addEventListener('click', function () { openSheet(p); });
       wrap.appendChild(el);
     });
+    if (!IS_MEMBER && lockedN > 0) { wrap.appendChild(joinCard(lockedN)); shown++; }
     empty.style.display = shown ? "none" : "block";
     var title = document.getElementById('picks-title');
     if (state.hood !== "all") {
@@ -2049,17 +2073,20 @@
       avail = conf.order.filter(function (s) { return counts[s]; });
       if (avail.length < 2) avail = [];
     }
-    var sel = (state.catSub !== "all" && avail.indexOf(state.catSub) > -1) ? state.catSub : "all";
-    function chip(id, label, n) {
+    var sel = IS_MEMBER ? ((state.catSub !== "all" && avail.indexOf(state.catSub) > -1) ? state.catSub : "all") : "all";
+    function chip(id, label, n, locked) {
       var b = document.createElement('button');
-      b.className = "sub-tab" + (sel === id ? " active" : "");
-      b.innerHTML = label + (n != null ? '<i>' + n + '</i>' : '');
-      b.addEventListener('click', function () { state.catSub = id; renderCatPage(); });
+      b.className = "sub-tab" + (sel === id ? " active" : "") + (locked ? " lockch" : "");
+      b.innerHTML = (locked ? '🔒 ' : '') + label + (n != null ? '<i>' + n + '</i>' : '');
+      b.addEventListener('click', function () {
+        if (locked) { track('lock:sub:' + id); window.location.href = 'join.html'; return; }
+        state.catSub = id; renderCatPage();
+      });
       bar.appendChild(b);
     }
-    chip("all", state.lang === 'ko' ? '전체' : 'All', list.length);
+    chip("all", state.lang === 'ko' ? '전체' : 'All', list.length, false);
     avail.forEach(function (s) {
-      chip(s, state.lang === 'ko' ? conf.labels[s].ko : conf.labels[s].en, counts[s]);
+      chip(s, state.lang === 'ko' ? conf.labels[s].ko : conf.labels[s].en, counts[s], !IS_MEMBER);
     });
   }
 
@@ -2094,7 +2121,14 @@
     }
     var conf = GROUP_CONF[state.curCat];
     renderSubTabs(conf, list);
-    if (conf) {
+    if (!IS_MEMBER) {
+      wrap.className = "cards grid";
+      var freeL = list.filter(function (p) { return p.tier === "free"; }).slice(0, 3);
+      var padL = list.filter(function (p) { return p.tier !== "free"; }).slice(0, Math.max(0, 3 - freeL.length));
+      freeL.concat(padL).forEach(function (p) { wrap.appendChild(makeCard(p)); shown++; });
+      var moreN = list.length - freeL.length - padL.length;
+      if (moreN > 0) { wrap.appendChild(joinCard(moreN)); shown++; }
+    } else if (conf) {
       wrap.className = "beauty-groups";
       var groups = {};
       list.forEach(function (p) { var s = conf.subOf(p); (groups[s] = groups[s] || []).push(p); });
