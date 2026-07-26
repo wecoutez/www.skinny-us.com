@@ -128,7 +128,7 @@
     font-size:12.5px; font-weight:700; color:#111;
     background:var(--cream); border:1px solid var(--line); border-radius:999px; padding:7px 13px;
   }
-  .topbar .lang-sm { font-size:12px; font-weight:700; color:var(--ink); background:#fff; border:1px solid var(--line); padding:8px 12px; border-radius:999px; text-decoration:none; flex-shrink:0; }
+  .topbar .lang-sm { cursor:pointer; font-size:12px; font-weight:700; color:var(--ink); background:#fff; border:1px solid var(--line); padding:8px 12px; border-radius:999px; text-decoration:none; flex-shrink:0; }
   .topbar .join-sm {
     font-size:12px; font-weight:700; color:#111; text-decoration:none;
     padding:8px 16px; border-radius:999px;
@@ -621,7 +621,7 @@
           <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
         </span>
         <button class="where" onclick="go('entry')">🇰🇷 Seoul, Korea ▾</button>
-        <a class="lang-sm" href="https://skinny--us-com.translate.goog/?_x_tr_sl=en&_x_tr_tl=ko&_x_tr_hl=ko" target="_blank" rel="noopener">한국어</a>
+        <button class="lang-sm" onclick="toggleLang()">한국어</button>
         <a class="join-sm" href="join.html">Join</a>
       </div>
       <div class="cat-tabs">
@@ -635,7 +635,7 @@
 
     <header class="hero">
       <div class="img" id="hero-img"><img onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1612150139260-09745e8a1d55?fm=jpg&q=60&w=2400&auto=format&fit=crop" alt=""></div>
-      <h1>Where in Seoul<br>today?</h1>
+      <h1 id="hero-title">Where in Seoul<br>today?</h1>
       <div class="search">
         <span class="icon">🔍</span>
         <input id="search-input" type="text" placeholder="Try “sauna”, “makguksu”, “Seongsu”…" aria-label="Search picks">
@@ -649,7 +649,7 @@
     <div class="cards" id="cards"></div>
     <div class="empty" id="cards-empty">No picks match — try another search 🌸</div>
 
-    <div class="sec-head"><h2>Trending now</h2></div>
+    <div class="sec-head"><h2 id="trending-title">Trending now</h2></div>
     <div id="feed"></div>
 
     <div class="quote-strip">
@@ -662,9 +662,9 @@
 
     <section class="join" id="join-home">
       <div class="card-j">
-        <h2>Less but better.<br><em>Every day.</em></h2>
-        <div class="sub">All picks · 4-week programs · monthly insight<br>$9.99/mo · free week · cancel anytime</div>
-        <a class="cta" href="join.html">Join Skinny-us</a>
+        <h2 id="join-home-h">Less but better.<br><em>Every day.</em></h2>
+        <div class="sub" id="join-home-sub">All picks · 4-week programs · monthly insight<br>$9.99/mo · free week · cancel anytime</div>
+        <a class="cta" id="join-home-cta" href="join.html">Join Skinny-us</a>
       </div>
     </section>
 
@@ -684,7 +684,7 @@
       <div class="topbar">
         <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
         <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
-        <a class="lang-sm" href="https://skinny--us-com.translate.goog/?_x_tr_sl=en&_x_tr_tl=ko&_x_tr_hl=ko" target="_blank" rel="noopener">한국어</a>
+        <button class="lang-sm" onclick="toggleLang()">한국어</button>
         <a class="join-sm" href="join.html">Join</a>
       </div>
       <div class="cat-tabs" id="cat-tabs">
@@ -711,9 +711,9 @@
 
     <section class="join" id="join-cat">
       <div class="card-j">
-        <h2>Want the full list?</h2>
-        <div class="sub">Every pick · maps &amp; booking notes · updated weekly<br>$9.99/mo · free week · cancel anytime</div>
-        <a class="cta" href="join.html">Join Skinny-us</a>
+        <h2 id="join-cat-h">Want the full list?</h2>
+        <div class="sub" id="join-cat-sub">Every pick · maps &amp; booking notes · updated weekly<br>$9.99/mo · free week · cancel anytime</div>
+        <a class="cta" id="join-cat-cta" href="join.html">Join Skinny-us</a>
       </div>
     </section>
 
@@ -772,10 +772,10 @@
   ];
 
   var CATS = {
-    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  eyebrow:"Today's menu", desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
-    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      eyebrow:"Skin · steam · scrub", desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", img:"https://images.unsplash.com/photo-1526413232644-8a40f03cc03b?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
-    body:   { name:"Body",   em:"🌿", tag:"4-week programs",         eyebrow:"Programs, week by week", desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", img:"https://images.unsplash.com/photo-1631899477678-9d3c5aeded2d?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
-    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=2400&auto=format&fit=crop" }
+    eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  eyebrow:"Today's menu", desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", ko:{ eyebrow:"오늘의 메뉴", desc:"국밥, 반찬, 심야 카운터 — 현지인이 진짜 먹는 것, 그리고 주문하는 법." }, img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
+    beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      eyebrow:"Skin · steam · scrub", desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", ko:{ eyebrow:"피부 · 스팀 · 세신", desc:"사우나, 피부과, 약국 하울 — 수출 마케팅을 걷어낸 한국의 뷰티 루틴." }, img:"https://images.unsplash.com/photo-1526413232644-8a40f03cc03b?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
+    body:   { name:"Body",   em:"🌿", tag:"4-week programs",         eyebrow:"Programs, week by week", desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", ko:{ eyebrow:"주 단위 프로그램", desc:"한강 러닝, 필라테스 에티켓, 새벽 산 — 현지인처럼, 일주일씩 움직이기." }, img:"https://images.unsplash.com/photo-1631899477678-9d3c5aeded2d?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
+    trend:  { name:"Trend",  em:"📈", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", ko:{ eyebrow:"지금 서울에서는", desc:"새로 여는 곳, 예약 마감된 곳, 다들 시키는 것 — 피드에 뜨기 전에." }, img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=2400&auto=format&fit=crop" }
   };
 
   var HOODS = [
@@ -796,153 +796,177 @@
       wt:"No sponsored posts, no English menu, and the noon line is all local office workers — the most honest review there is.",
       ot:"Perilla oil makguksu + one mandu plate to share. Skip the bulgogi add-on.",
       av:"Skip it if you need AC comfort and space — it's tight, fast, and you'll be out in 25 minutes.",
-      map:"https://maps.google.com/?q=perilla+oil+makguksu+seongsu" },
+      map:"https://maps.google.com/?q=perilla+oil+makguksu+seongsu",
+      ko:{ t:"들기름 막국수", loc:"성수", meta:"성수역 6분 · ₩9,000부터", wt:"협찬 없음, 영어 메뉴 없음, 점심 줄은 전부 동네 직장인 — 이보다 정직한 리뷰는 없다.", ot:"들기름 막국수 + 만두 한 접시 나눠 먹기. 불고기 추가는 패스.", av:"넓고 시원한 좌석을 원하면 비추 — 좁고 빠르고, 25분이면 나온다." } },
     { cat:"beauty", hood:"hannam", tier:"free", t:"The quiet sauna", loc:"Hannam", meta:"women-only · cash · scrub ₩25,000", e:"🧖‍♀️", img:"https://images.unsplash.com/photo-1583417267826-aebc4d1542e1?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNwYXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#F8C8DA,#E095AE)",
       pr:"$$", bf:"solo",
       wt:"20 years in beauty and this is where industry people actually go — no tourist pricing, no upsell scripts.",
       ot:"Book the 30-min seshin scrub. Bring cash; cards not accepted for scrubs.",
       av:"Skip it if full nudity in a shared bath isn't your thing — there's no private option.",
-      map:"https://maps.google.com/?q=hannam+women+sauna" },
+      map:"https://maps.google.com/?q=hannam+women+sauna",
+      ko:{ t:"조용한 여성 전용 사우나", loc:"한남", meta:"여성 전용 · 현금 · 세신 ₩25,000", wt:"뷰티 업계 20년, 업계 사람들이 실제로 가는 곳 — 관광객 가격도, 업셀 멘트도 없다.", ot:"30분 세신 예약. 세신은 카드가 안 되니 현금 지참.", av:"공용탕 전신 노출이 불편하면 비추 — 프라이빗 옵션이 없다." } },
     { cat:"body", hood:"gangnam", tier:"free", t:"Han River 5k that doesn't feel like one", loc:"Jamwon", meta:"7am start · flat & shaded", e:"🏃‍♀️", img:"https://images.unsplash.com/photo-1637073760127-1c914f00d3e1?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHNlb3VsJTIwbmlnaHR8ZW58MHx8MHx8fDA%3D", g:"linear-gradient(155deg,#F0AEC4,#D0739A)",
       pr:"$", bf:"solo · group",
       wt:"This is the loop Seoul runners default to — flat, shaded, and it ends at a convenience store for banana milk.",
       ot:"Start at Jamwon exit 4, run toward Banpo bridge. Go before 8am in summer.",
       av:"Skip it if you want scenery variety — it's one river view the whole way.",
-      map:"https://maps.google.com/?q=jamwon+hangang+park" },
+      map:"https://maps.google.com/?q=jamwon+hangang+park",
+      ko:{ t:"5km 같지 않은 한강 5km", loc:"잠원", meta:"아침 7시 출발 · 평지·그늘", wt:"서울 러너들이 기본으로 도는 코스 — 평지에 그늘, 끝나면 편의점 바나나우유.", ot:"잠원 4번 출구에서 반포대교 방향으로. 여름엔 8시 전에.", av:"다양한 풍경을 원하면 비추 — 처음부터 끝까지 강뷰 하나다." } },
     { cat:"trend", hood:"apgujeong", tier:"paid", t:"Perfume cocktail bars", loc:"Apgujeong", meta:"reservation apps only", e:"🍸", img:"https://images.unsplash.com/photo-1616091216791-a5360b5fc78a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWVzdGhldGljJTIwY2FmZXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#E8AFC4,#C05A82)",
       pr:"$$$", bf:"date",
       wt:"Two of these bars are run by ex-hotel bartenders I've worked events with — the scent-pairing menus are real craft, not a gimmick for reels.",
       ot:"Order the seasonal pairing flight first; name a perfume you wear and let the bartender counter it.",
       av:"Skip it if you're scent-sensitive or want a casual walk-in drink — it's booked out and precious about it.",
-      map:"https://maps.google.com/?q=apgujeong+cocktail+bar" },
+      map:"https://maps.google.com/?q=apgujeong+cocktail+bar",
+      ko:{ t:"퍼퓸 칵테일 바", loc:"압구정", meta:"예약 앱으로만", wt:"두 곳은 행사에서 함께 일해본 전직 호텔 바텐더가 운영 — 향 페어링 메뉴가 릴스용 기믹이 아니라 진짜 크래프트다.", ot:"시즌 페어링 플라이트 먼저. 쓰는 향수를 말하고 바텐더의 카운터를 받아볼 것.", av:"향에 민감하거나 캐주얼한 워크인을 원하면 비추 — 예약이 꽉 차 있고 꽤 까다롭다." } },
     { cat:"eat", hood:"mangwon", tier:"paid", t:"Temple food, no temple", loc:"Mangwon", meta:"vegan · under ₩12,000", e:"🥬", img:"https://images.unsplash.com/photo-1590301157890-4810ed352733?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8a29yZWFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#F8D8C8,#E095AE)",
       pr:"$", bf:"solo · date",
       wt:"The owner trained under a temple cook for six years — the seasoning restraint is the tell. Sponsored vegan spots over-sauce; this one doesn't.",
       ot:"The daily set with lotus root jeon. Ask for extra perilla leaf kimchi.",
       av:"Skip it if you're after a hearty, heavy meal — portions are monastic on purpose.",
-      map:"https://maps.google.com/?q=mangwon+vegan+korean" },
+      map:"https://maps.google.com/?q=mangwon+vegan+korean",
+      ko:{ t:"절밥, 절 없이", loc:"망원", meta:"비건 · ₩12,000 이하", wt:"사찰 요리사 밑에서 6년 수련한 오너 — 절제된 간이 그 증거다. 협찬 비건집은 소스를 들이붓는데 여긴 아니다.", ot:"연근전 나오는 오늘의 정식. 깻잎김치 추가 요청.", av:"든든하고 묵직한 한 끼를 원하면 비추 — 양이 일부러 수도승급이다." } },
     { cat:"beauty", hood:"gangnam", tier:"paid", t:"Glass skin, the boring way", loc:"Gangnam", meta:"derm-approved clinic list", e:"💧", img:"https://images.unsplash.com/photo-1540555700478-4be289fbecef?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHNwYXxlbnwwfHwwfHx8MA%3D%3D", g:"linear-gradient(155deg,#FBE3EC,#E095AE)",
       pr:"$$", bf:"solo",
       wt:"These are the clinics beauty editors visit on their own money, not the ones paying for translated Instagram ads.",
       ot:"Start with a basic hydration facial + skin scan; decline the package pitch on visit one.",
       av:"Skip it if you expect dramatic one-visit results — the whole point is boring consistency.",
-      map:"https://maps.google.com/?q=gangnam+dermatology+clinic" },
+      map:"https://maps.google.com/?q=gangnam+dermatology+clinic",
+      ko:{ t:"글래스 스킨, 지루한 정석대로", loc:"강남", meta:"피부과 검증 클리닉 리스트", wt:"번역 광고 돌리는 곳 말고, 뷰티 에디터들이 자기 돈 내고 가는 클리닉들.", ot:"기본 수분 관리 + 피부 스캔부터. 첫 방문에 패키지 권유는 거절.", av:"한 번에 드라마틱한 변화를 기대하면 비추 — 핵심은 지루한 꾸준함이다." } },
     { cat:"eat", hood:"yeonnam", tier:"paid", t:"Late-night gimbap done right", loc:"Yeonnam", meta:"open til 2am", e:"🍙", g:"linear-gradient(155deg,#FBE3EC,#F0AEC4)",
       pr:"$", bf:"solo · quick",
       wt:"It's where the neighborhood's bar staff eat after their shift ends — the crowd at 1am is the review.",
       ot:"Tuna gimbap + a cup of odeng broth. One roll is a full late-night meal.",
       av:"Skip it if you want to sit and linger — half the orders walk out the door.",
-      map:"https://maps.google.com/?q=yeonnam+gimbap" },
+      map:"https://maps.google.com/?q=yeonnam+gimbap",
+      ko:{ t:"제대로 하는 심야 김밥", loc:"연남", meta:"새벽 2시까지", wt:"동네 바 직원들이 퇴근하고 먹는 곳 — 새벽 1시의 손님 구성이 곧 리뷰다.", ot:"참치김밥 + 어묵 국물 한 컵. 한 줄이면 야식으로 충분.", av:"앉아서 여유 있게 먹고 싶다면 비추 — 주문 절반이 포장이다." } },
     { cat:"body", hood:"seongsu", tier:"paid", t:"Stretching cafés exist here", loc:"Seongsu", meta:"walk-in OK · from ₩15,000", e:"🧘‍♀️", g:"linear-gradient(155deg,#F0AEC4,#D0739A)",
       pr:"$$", bf:"solo · date",
       wt:"Assisted stretching went mainstream in Seoul before it hit your feed — these studios train staff properly instead of renting out a trend.",
       ot:"Book the 30-min assisted session; tell them if you sit at a desk all day and they'll focus hips and neck.",
       av:"Skip it if you dislike hands-on bodywork — assisted means assisted.",
-      map:"https://maps.google.com/?q=seongsu+stretching+studio" },
+      map:"https://maps.google.com/?q=seongsu+stretching+studio",
+      ko:{ t:"스트레칭 카페라는 게 있다", loc:"성수", meta:"워크인 가능 · ₩15,000부터", wt:"어시스트 스트레칭은 피드에 뜨기 전부터 서울 주류였다 — 트렌드에 얹힌 곳 말고 직원 교육 제대로 하는 스튜디오들.", ot:"30분 어시스트 세션 예약. 하루 종일 앉아 있다고 말하면 골반·목 위주로 봐준다.", av:"핸즈온 바디워크가 싫으면 비추 — 어시스트는 말 그대로다." } },
     { cat:"trend", hood:"seongsu", tier:"paid", t:"Wellness pop-ups of the month", loc:"Seongsu", meta:"what's open right now", e:"📍", g:"linear-gradient(155deg,#FBD4D0,#E095AE)",
       pr:"$$", bf:"group",
       wt:"I walk Seongsu weekly for work — this list is what's actually open this month, not last year's viral post.",
       ot:"Go on a weekday before noon; weekend queues eat your whole afternoon.",
       av:"Skip it if pop-up hype annoys you — by definition, these are crowded and temporary.",
-      map:"https://maps.google.com/?q=seongsu+popup" },
+      map:"https://maps.google.com/?q=seongsu+popup",
+      ko:{ t:"이달의 웰니스 팝업", loc:"성수", meta:"지금 열려 있는 곳만", wt:"일 때문에 매주 성수를 걷는다 — 작년 바이럴 포스트가 아니라 이번 달 실제로 열린 리스트.", ot:"평일 정오 전에. 주말 줄은 오후를 통째로 잡아먹는다.", av:"팝업 하이프가 피곤하면 비추 — 정의상 붐비고 한시적이다." } },
     { cat:"beauty", hood:"gangnam", tier:"paid", t:"Scalp care is the new skincare", loc:"Cheongdam", meta:"why every salon offers it", e:"💆‍♀️", g:"linear-gradient(155deg,#F0AEC4,#C05A82)",
       pr:"$$$", bf:"solo",
       wt:"Cheongdam salons quietly built scalp menus for celebrity clients years before the export marketing caught up — I've sat in those chairs for work.",
       ot:"The scalp scaling + massage combo. Skip the retail products they suggest after; buy the pharmacy version.",
       av:"Skip it if ₩100,000+ for a scalp treatment sounds absurd to you — honestly, fair.",
-      map:"https://maps.google.com/?q=cheongdam+scalp+care+salon" },
+      map:"https://maps.google.com/?q=cheongdam+scalp+care+salon",
+      ko:{ t:"두피 케어가 새로운 스킨케어", loc:"청담", meta:"모든 살롱이 두피 메뉴를 파는 이유", wt:"청담 살롱들은 수출 마케팅보다 몇 년 앞서 연예인 고객용 두피 메뉴를 조용히 만들었다 — 일로 그 의자에 앉아봤다.", ot:"스케일링 + 마사지 콤보. 살롱 추천 제품은 패스, 약국 버전으로.", av:"두피 관리에 ₩100,000+가 터무니없다면 비추 — 솔직히 맞는 말이다." } },
     { cat:"eat", hood:"gangnam", tier:"paid", t:"Soup rice for slow mornings", loc:"Gangnam", meta:"haejangguk · open 24h", e:"🍲", img:"https://images.unsplash.com/photo-1609501676725-7186f017a4b7?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#FFE3BF,#F7C398)",
       pr:"$", bf:"solo",
       wt:"It's open 24 hours and full of taxi drivers at 6am — the one crowd in Seoul that never eats at a mediocre soup place.",
       ot:"Sundae-guk or ugeoji haejangguk. Add the rice straight in, season with saeujeot to taste.",
       av:"Skip it if offal broth is a hard no — ask for ugeoji (cabbage) version instead, or pass entirely.",
-      map:"https://maps.google.com/?q=gangnam+haejangguk+24h" },
+      map:"https://maps.google.com/?q=gangnam+haejangguk+24h",
+      ko:{ t:"느린 아침의 국밥", loc:"강남", meta:"해장국 · 24시간", wt:"24시간 영업에 새벽 6시 손님이 전부 택시기사 — 서울에서 어중간한 국밥집엔 절대 안 가는 유일한 사람들.", ot:"순대국 또는 우거지 해장국. 밥 말고, 새우젓으로 간 맞추기.", av:"내장 육수가 절대 안 되면 우거지 버전으로 — 아니면 패스." } },
     { cat:"eat", hood:"apgujeong", tier:"paid", t:"The tteokbokki worth a queue", loc:"Apgujeong", meta:"cash only · from ₩6,000", e:"🌶️", img:"https://images.unsplash.com/photo-1635363638580-c2809d049eee?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#F8D8C8,#E095AE)",
       pr:"$", bf:"group · quick",
       wt:"Same pot, same halmeoni, twenty years — the queue is high schoolers and office workers, never tour groups.",
       ot:"Tteokbokki + fried mandu, dipped. Ask for 'less spicy' honestly — their base level is real.",
       av:"Skip it if you can't do spice or standing-room dining. There are no chairs worth mentioning.",
-      map:"https://maps.google.com/?q=apgujeong+tteokbokki" },
+      map:"https://maps.google.com/?q=apgujeong+tteokbokki",
+      ko:{ t:"줄 설 가치가 있는 떡볶이", loc:"압구정", meta:"현금만 · ₩6,000부터", wt:"같은 솥, 같은 할머니, 20년 — 줄은 고등학생과 직장인, 투어 그룹은 없다.", ot:"떡볶이 + 튀김만두 찍어 먹기. 덜 맵게는 진심으로 요청 — 기본 맵기가 진짜다.", av:"매운 걸 못 먹거나 서서 먹는 게 싫으면 비추. 의자라 할 만한 게 없다." } },
     { cat:"eat", hood:"hannam", tier:"paid", t:"One-table hanjeongsik", loc:"Hannam", meta:"reserve 2 weeks out", e:"🥢", img:"https://images.unsplash.com/photo-1661366394743-fe30fe478ef7?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#FFE3BF,#E4A26B)",
       pr:"$$$", bf:"date · group",
       wt:"One seating, one table, no menu photos online — it survives entirely on regulars, which is the strongest trust signal a restaurant can have.",
       ot:"There's no ordering — it's a set course. Just tell them allergies when you book.",
       av:"Skip it if you want flexibility or a quick meal — it's two hours, fixed course, fixed time.",
-      map:"https://maps.google.com/?q=hannam+hanjeongsik" },
+      map:"https://maps.google.com/?q=hannam+hanjeongsik",
+      ko:{ t:"하루 한 테이블 한정식", loc:"한남", meta:"2주 전 예약", wt:"하루 한 팀, 온라인 메뉴 사진 없음 — 단골만으로 살아남는 집. 식당이 가질 수 있는 가장 강한 신뢰 신호다.", ot:"주문이랄 게 없다 — 코스 고정. 예약할 때 알레르기만 알려주면 된다.", av:"유연함이나 빠른 식사를 원하면 비추 — 2시간, 고정 코스, 고정 시간." } },
     { cat:"beauty", hood:"seongsu", tier:"paid", t:"Pharmacy haul, decoded", loc:"Seongsu", meta:"what to actually buy", e:"🧴", img:"https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#F6E3EF,#E7C6DD)",
       pr:"$", bf:"solo · quick",
       wt:"Half the 'K-beauty must-haves' on your feed are export-only SKUs locals don't buy. This is the shelf Koreans actually restock.",
       ot:"Sunscreen, a cica cream, and one sheet-mask box. That's the real routine — ignore the 10-step mythology.",
       av:"Skip it if you're loyal to your current routine — swapping everything at once is how skin freaks out mid-trip.",
-      map:"https://maps.google.com/?q=seongsu+olive+young" },
+      map:"https://maps.google.com/?q=seongsu+olive+young",
+      ko:{ t:"약국 하울, 해석본", loc:"성수", meta:"진짜 살 것만", wt:"피드의 K-뷰티 필수템 절반은 현지인은 안 사는 수출 전용 — 이건 한국인이 실제로 재구매하는 선반이다.", ot:"선크림, 시카 크림, 시트 마스크 한 박스. 그게 진짜 루틴 — 10단계 신화는 무시.", av:"지금 루틴에 만족한다면 비추 — 여행 중에 한꺼번에 다 바꾸면 피부가 뒤집힌다." } },
     { cat:"beauty", hood:"apgujeong", tier:"paid", t:"Brow bars locals trust", loc:"Apgujeong", meta:"from ₩35,000 · book on Naver", e:"✏️", img:"https://images.unsplash.com/photo-1542833807-ad5af0977050?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#EFC9E2,#C48EB0)",
       pr:"$$", bf:"solo",
       wt:"Korean brow styling is conservative by design — these artists shape to your face, not to whatever's trending on foreign clients.",
       ot:"Book 'brow styling + tint'. Bring a photo of your everyday makeup, not a celebrity reference.",
       av:"Skip it if you want dramatic laminated brows — they'll politely talk you out of it.",
-      map:"https://maps.google.com/?q=apgujeong+brow+bar" },
+      map:"https://maps.google.com/?q=apgujeong+brow+bar",
+      ko:{ t:"현지인이 믿는 브로우 바", loc:"압구정", meta:"₩35,000부터 · 네이버 예약", wt:"한국 눈썹 스타일링은 의도적으로 보수적 — 외국인 손님용 유행이 아니라 얼굴에 맞춰 잡아준다.", ot:"브로우 스타일링 + 틴트로 예약. 연예인 사진 말고 평소 메이크업 사진을 들고 갈 것.", av:"드라마틱한 라미네이션 브로우를 원하면 비추 — 정중하게 말릴 거다." } },
     { cat:"beauty", hood:"hannam", tier:"paid", t:"The 90-minute facial reset", loc:"Hannam", meta:"no upsells · ₩80,000", e:"🌸", img:"https://images.unsplash.com/photo-1552046122-03184de85e08?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#F6E3EF,#D8A8C6)",
       pr:"$$", bf:"solo",
       wt:"No membership pitch, no product table at checkout — in this industry, that alone puts it in the top 5%.",
       ot:"The signature 90-min facial, nothing added. Go the day after you land; it fixes flight skin.",
       av:"Skip it if you want extractions and visible peeling — this is the gentle school, results show in days not hours.",
-      map:"https://maps.google.com/?q=hannam+facial+esthetic" },
+      map:"https://maps.google.com/?q=hannam+facial+esthetic",
+      ko:{ t:"90분 페이셜 리셋", loc:"한남", meta:"업셀 없음 · ₩80,000", wt:"멤버십 권유도, 계산대 옆 제품 테이블도 없다 — 이 업계에서 그것만으로 상위 5%다.", ot:"시그니처 90분 페이셜 그대로. 착륙 다음 날 가면 비행기 피부가 돌아온다.", av:"압출과 눈에 보이는 필링을 원하면 비추 — 순한 학파라 결과는 몇 시간이 아니라 며칠 뒤에 온다." } },
     { cat:"body", hood:"hannam", tier:"paid", t:"Namsan stairs before breakfast", loc:"Hannam", meta:"40-min loop · go at sunrise", e:"⛰️", img:"https://images.unsplash.com/photo-1570191913384-7b4ff11716e7?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#E2EED4,#C6DCB2)",
       pr:"$", bf:"solo · date",
       wt:"The sunrise stair crowd is 60-year-old Seoul regulars who've done this daily for decades — you're borrowing their routine, not a tourist trail.",
       ot:"Start from the Hannam side path, top before 7am, buy a sikhye from the vending machine at the summit.",
       av:"Skip it if knees are a concern — it's stairs nearly the whole way up.",
-      map:"https://maps.google.com/?q=namsan+stairs+hannam" },
+      map:"https://maps.google.com/?q=namsan+stairs+hannam",
+      ko:{ t:"아침 먹기 전 남산 계단", loc:"한남", meta:"40분 루프 · 일출에", wt:"일출 계단의 주인공은 수십 년째 매일 오르는 서울 어르신들 — 관광 코스가 아니라 그들의 루틴을 빌리는 거다.", ot:"한남 쪽 길로 시작, 7시 전 정상, 정상 자판기에서 식혜 하나.", av:"무릎이 걱정이면 비추 — 거의 끝까지 계단이다." } },
     { cat:"body", hood:"gangnam", tier:"paid", t:"Pilates etiquette 101", loc:"Gangnam", meta:"first-timer friendly studios", e:"🤸‍♀️", g:"linear-gradient(155deg,#E2EED4,#A9C98C)",
       pr:"$$", bf:"solo",
       wt:"Seoul pilates studios have unspoken rules (grip socks, arrive 10 early, phone away) — these are the ones that welcome first-timers instead of freezing them out.",
       ot:"Book a 1:1 intro session, not a group class, for your first visit. Buy grip socks at the front desk.",
       av:"Skip it if you're only here a few days — single drop-ins exist but the pricing punishes them.",
-      map:"https://maps.google.com/?q=gangnam+pilates+studio" },
+      map:"https://maps.google.com/?q=gangnam+pilates+studio",
+      ko:{ t:"필라테스 에티켓 101", loc:"강남", meta:"첫 방문 환영 스튜디오", wt:"서울 필라테스엔 암묵적 룰이 있다(그립삭스, 10분 일찍, 폰 금지) — 첫 방문자를 얼리는 곳 말고 반기는 곳들.", ot:"첫 방문은 그룹 말고 1:1 인트로로. 그립삭스는 데스크에서 구매.", av:"며칠만 머문다면 비추 — 드롭인은 있지만 가격이 벌칙 수준이다." } },
     { cat:"body", hood:"mangwon", tier:"paid", t:"Riverside bike day", loc:"Mangwon", meta:"rent ₩3,000/hr · flat path", e:"🚲", g:"linear-gradient(155deg,#D7E8C4,#8FB474)",
       pr:"$", bf:"date · group",
       wt:"The public Ttareungi bikes and the river path are genuinely world-class civic infrastructure — no operator is paying anyone to say that.",
       ot:"Rent at Mangwon Hangang Park, ride west toward the World Cup Park bridge, picnic on the return leg.",
       av:"Skip it on fine-dust days — check the air quality app first, seriously.",
-      map:"https://maps.google.com/?q=mangwon+hangang+park+bike" },
+      map:"https://maps.google.com/?q=mangwon+hangang+park+bike",
+      ko:{ t:"강변 자전거 하루", loc:"망원", meta:"대여 ₩3,000/시간 · 평지", wt:"따릉이와 한강 자전거길은 진심으로 세계급 공공 인프라 — 누가 돈 줘서 하는 말이 아니다.", ot:"망원한강공원에서 대여, 월드컵공원 다리 방향 서쪽으로, 돌아오는 길에 피크닉.", av:"미세먼지 나쁜 날은 비추 — 진지하게, 공기질 앱부터 확인." } },
     { cat:"body", hood:"yeonnam", tier:"paid", t:"Forest park recovery walk", loc:"Yeonnam", meta:"Gyeongui line park · 30 min", e:"🧺", g:"linear-gradient(155deg,#E8F1DC,#B7D49C)",
       pr:"$", bf:"solo · date",
       wt:"An old rail line turned into a 6km park — it's where the neighborhood actually decompresses, dogs and all. Zero admission, zero catch.",
       ot:"Walk the Yeonnam stretch at golden hour, grab a coffee to-go at the start, sit on the grass at the end.",
       av:"Skip it on summer weekend afternoons — picnic crowds turn it into a festival.",
-      map:"https://maps.google.com/?q=gyeongui+line+forest+park+yeonnam" },
+      map:"https://maps.google.com/?q=gyeongui+line+forest+park+yeonnam",
+      ko:{ t:"숲길 회복 산책", loc:"연남", meta:"경의선숲길 · 30분", wt:"옛 철길이 6km 공원이 됐다 — 강아지까지 온 동네가 여기서 숨을 돌린다. 입장료 0, 함정 0.", ot:"골든아워에 연남 구간 걷기, 초입에서 테이크아웃 커피, 끝에서 잔디에 앉기.", av:"여름 주말 오후는 비추 — 피크닉 인파로 축제가 된다." } },
     { cat:"trend", hood:"gangnam", tier:"paid", t:"Night market crawl, curated", loc:"Gangnam", meta:"3 stalls that matter", e:"🏮", img:"https://images.unsplash.com/photo-1590437084089-9f5ae1500176?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#E8AFC4,#C05A82)",
       pr:"$", bf:"group",
       wt:"Most market listicles copy each other. I eat here — three stalls carry the whole market and this list names them in order.",
       ot:"Stall one for the grilled skewers, stall two for hotteok, finish with the fruit cup. Bring small bills.",
       av:"Skip it if crowds and standing-while-eating drain you — that's the entire format.",
-      map:"https://maps.google.com/?q=gangnam+night+market" },
+      map:"https://maps.google.com/?q=gangnam+night+market",
+      ko:{ t:"야시장 크롤, 큐레이션 완료", loc:"강남", meta:"중요한 건 3개 노점뿐", wt:"시장 리스티클은 서로 베낀다. 나는 여기서 먹는다 — 시장 전체를 캐리하는 세 노점을 순서대로 짚어준다.", ot:"첫 노점 꼬치, 둘째 호떡, 마무리는 과일컵. 잔돈 지참.", av:"인파와 서서 먹기가 힘들면 비추 — 그게 포맷의 전부다." } },
     { cat:"trend", hood:"seongsu", tier:"paid", t:"The bakery everyone's posting", loc:"Seongsu", meta:"sells out by 1pm", e:"🥐", img:"https://images.unsplash.com/photo-1628532429788-c35922b5e6c1?fm=jpg&q=60&w=1600&auto=format&fit=crop", g:"linear-gradient(155deg,#FBD4D0,#E095AE)",
       pr:"$$", bf:"solo · date",
       wt:"For once the hype is load-bearing — the head baker's previous shop had a two-year cult following before this one opened.",
       ot:"The salt bread and one seasonal pastry. Arrive before 11am or accept defeat gracefully.",
       av:"Skip it if queueing 30 minutes for bread offends your principles. It kind of should, and yet.",
-      map:"https://maps.google.com/?q=seongsu+bakery" },
+      map:"https://maps.google.com/?q=seongsu+bakery",
+      ko:{ t:"다들 올리는 그 베이커리", loc:"성수", meta:"오후 1시면 매진", wt:"이번만큼은 하이프가 실체다 — 헤드 베이커의 전 가게가 2년짜리 컬트 팬덤을 갖고 있었다.", ot:"소금빵 + 시즌 페이스트리 하나. 11시 전에 도착하거나, 우아하게 패배를 인정하거나.", av:"빵 때문에 30분 줄서기가 원칙에 어긋난다면 비추. 어긋나는 게 맞는데, 그래도." } },
     { cat:"trend", hood:"hannam", tier:"paid", t:"Gallery cafés taking over", loc:"Hannam", meta:"coffee + exhibitions", e:"🖼️", g:"linear-gradient(155deg,#E8AFC4,#9B5A82)",
       pr:"$$", bf:"date · solo",
       wt:"Hannam's galleries added serious coffee programs to survive — the result is free exhibitions with better espresso than most cafés.",
       ot:"See the exhibition first, then order — a hand-drip and whatever cake is seasonal.",
       av:"Skip it if you want lively café energy — these rooms run at library volume on purpose.",
-      map:"https://maps.google.com/?q=hannam+gallery+cafe" },
+      map:"https://maps.google.com/?q=hannam+gallery+cafe",
+      ko:{ t:"갤러리 카페의 점령", loc:"한남", meta:"커피 + 전시", wt:"한남 갤러리들이 살아남으려 진지한 커피 프로그램을 붙였다 — 결과는 웬만한 카페보다 나은 에스프레소가 딸린 무료 전시.", ot:"전시 먼저, 주문은 나중 — 핸드드립과 시즌 케이크.", av:"활기찬 카페 분위기를 원하면 비추 — 일부러 도서관 볼륨으로 돌아간다." } },
     { cat:"trend", hood:"yeonnam", tier:"paid", t:"The matcha wave", loc:"Yeonnam", meta:"where it's actually good", e:"🍵", g:"linear-gradient(155deg,#D9C4E8,#8E5AA8)",
       pr:"$$", bf:"solo · date",
       wt:"Nine out of ten new matcha cafés here use bottom-grade powder behind pretty ceramics — this list is the ones that spend on the tea itself.",
       ot:"Order it straight (usucha) before the latte — you'll taste the difference the trend is built on.",
       av:"Skip it if matcha bitterness isn't your thing — the good stuff is more bitter, not less.",
-      map:"https://maps.google.com/?q=yeonnam+matcha+cafe" }
+      map:"https://maps.google.com/?q=yeonnam+matcha+cafe",
+      ko:{ t:"말차 웨이브", loc:"연남", meta:"진짜 잘하는 곳만", wt:"새 말차 카페 열에 아홉은 예쁜 도자기 뒤에 최하등급 가루 — 이 리스트는 차 자체에 돈을 쓰는 곳들이다.", ot:"라떼 전에 우스차(스트레이트)부터 — 트렌드의 근거를 맛으로 알게 된다.", av:"말차의 쓴맛이 싫으면 비추 — 좋은 말차일수록 더 쓰다, 덜 쓴 게 아니라." } }
   ];
 
   var TRENDING = [
-    { k:"TREND · APGUJEONG", dist:"Apgujeong Rodeo Stn 400m", t:"Perfume cocktail bars are spreading across Asia", p:"Top, heart, base notes. You smell it before you sip it.", e:"🍸", img:"https://images.unsplash.com/photo-1616091216791-a5360b5fc78a?fm=jpg&q=60&w=800&auto=format&fit=crop" },
-    { k:"BEAUTY · HANNAM", dist:"Hangangjin Stn 650m", t:"The women-only sauna that isn't in any guidebook", p:"The seshin scrub: 30 minutes, one layer newer.", e:"🧖‍♀️", img:"https://images.unsplash.com/photo-1583417267826-aebc4d1542e1?fm=jpg&q=60&w=800&auto=format&fit=crop" },
-    { k:"EAT · SEONGSU", dist:"Seongsu Stn 350m", t:"Perilla oil makguksu — grandma approved", p:"Go before 11:30. The noon line is office workers.", e:"🍜", img:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?fm=jpg&q=60&w=800&auto=format&fit=crop" },
-    { k:"BODY · HAN RIVER", dist:"Jamwon exit 4", t:"The 7am Jamwon–Banpo loop", p:"Flat, shaded, ends in banana milk.", e:"🏃‍♀️", img:"https://images.unsplash.com/photo-1637073760127-1c914f00d3e1?fm=jpg&q=60&w=800&auto=format&fit=crop" },
-    { k:"BEAUTY · GANGNAM", dist:"Sinnonhyeon Stn 300m", t:"Glass skin, according to actual dermatologists", p:"Sunscreen, sleep, one active. The rest is export.", e:"💧", img:"https://images.unsplash.com/photo-1573461160327-b450ce3d8e7f?fm=jpg&q=60&w=800&auto=format&fit=crop" }
+    { k:"TREND · APGUJEONG", dist:"Apgujeong Rodeo Stn 400m", t:"Perfume cocktail bars are spreading across Asia", p:"Top, heart, base notes. You smell it before you sip it.", e:"🍸", img:"https://images.unsplash.com/photo-1616091216791-a5360b5fc78a?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"트렌드 · 압구정", dist:"압구정로데오역 400m", t:"퍼퓸 칵테일 바가 아시아로 번지는 중", p:"톱·하트·베이스 노트. 마시기 전에 향으로 먼저 만난다." } },
+    { k:"BEAUTY · HANNAM", dist:"Hangangjin Stn 650m", t:"The women-only sauna that isn't in any guidebook", p:"The seshin scrub: 30 minutes, one layer newer.", e:"🧖‍♀️", img:"https://images.unsplash.com/photo-1583417267826-aebc4d1542e1?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"뷰티 · 한남", dist:"한강진역 650m", t:"어떤 가이드북에도 없는 여성 전용 사우나", p:"세신 스크럽: 30분, 한 겹 새로워진다." } },
+    { k:"EAT · SEONGSU", dist:"Seongsu Stn 350m", t:"Perilla oil makguksu — grandma approved", p:"Go before 11:30. The noon line is office workers.", e:"🍜", img:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"잇 · 성수", dist:"성수역 350m", t:"들기름 막국수 — 할머니 인증", p:"11:30 전에 갈 것. 정오 줄은 직장인들이다." } },
+    { k:"BODY · HAN RIVER", dist:"Jamwon exit 4", t:"The 7am Jamwon–Banpo loop", p:"Flat, shaded, ends in banana milk.", e:"🏃‍♀️", img:"https://images.unsplash.com/photo-1637073760127-1c914f00d3e1?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"바디 · 한강", dist:"잠원 4번 출구", t:"아침 7시 잠원–반포 루프", p:"평지, 그늘, 마무리는 바나나우유." } },
+    { k:"BEAUTY · GANGNAM", dist:"Sinnonhyeon Stn 300m", t:"Glass skin, according to actual dermatologists", p:"Sunscreen, sleep, one active. The rest is export.", e:"💧", img:"https://images.unsplash.com/photo-1573461160327-b450ce3d8e7f?fm=jpg&q=60&w=800&auto=format&fit=crop", ko:{ k:"뷰티 · 강남", dist:"신논현역 300m", t:"진짜 피부과 의사들의 글래스 스킨", p:"선크림, 수면, 액티브 하나. 나머지는 수출용." } }
   ];
 
   function track(ev){
@@ -955,7 +979,60 @@
   }
 
   // ═══ ROUTER ═════════════════════════════════════════════════════
-  var state = { hood:"all", q:"", catHood:"all", curCat:null };
+  var state = { hood:"all", q:"", catHood:"all", curCat:null, lang:"en" };
+
+  // ═══ LANGUAGE (EN/KO) ═══════════════════════════════════════════
+  var UI = {
+    en: { picksTitle:"This week's picks", trendingTitle:"Trending now", allPicks:"All picks",
+      searchPh:"Try \u201csauna\u201d, \u201cmakguksu\u201d, \u201cSeongsu\u201d\u2026",
+      emptyHome:"No picks match — try another search 🌸", emptyCat:"Nothing here yet — more picks coming 🌸",
+      back:"← Home", heroH:"Where in Seoul<br>today?", seoul:", Seoul",
+      joinH:"Less but better.<br><em>Every day.</em>",
+      joinSub:"All picks · 4-week programs · monthly insight<br>$9.99/mo · free week · cancel anytime",
+      joinCatH:"Want the full list?",
+      joinCatSub:"Every pick · maps &amp; booking notes · updated weekly<br>$9.99/mo · free week · cancel anytime",
+      joinCta:"Join Skinny-us", bestFor:"Best for: ", why:"Why we trust it", order:"What to order",
+      skip:"Skip it if", mapBtn:"📍 Open in Google Maps", lockedTitle:"A members-only pick",
+      unlock:"Unlock the full list",
+      lockP:"Why we trust it, what to order, and who should skip it —<br>the parts a sponsored blog can\u2019t write.",
+      members:"🔒 Members", langBtn:"한국어" },
+    ko: { picksTitle:"이번 주 픽", trendingTitle:"지금 뜨는 것", allPicks:"전체 픽",
+      searchPh:"'사우나', '막국수', '성수'로 검색\u2026",
+      emptyHome:"검색 결과가 없어요 — 다른 검색어로 🌸", emptyCat:"아직 준비 중 — 픽이 더 올라올 거예요 🌸",
+      back:"← 홈", heroH:"오늘 서울,<br>어디 갈까?", seoul:", 서울",
+      joinH:"덜, 그러나 낫게.<br><em>매일.</em>",
+      joinSub:"전체 픽 · 4주 프로그램 · 월간 인사이트<br>월 $9.99 · 첫 주 무료 · 언제든 해지",
+      joinCatH:"전체 리스트가 궁금하다면?",
+      joinCatSub:"모든 픽 · 지도 &amp; 예약 팁 · 매주 업데이트<br>월 $9.99 · 첫 주 무료 · 언제든 해지",
+      joinCta:"Skinny-us 가입하기", bestFor:"이런 사람에게: ", why:"믿는 이유", order:"뭘 시킬까",
+      skip:"이런 사람은 패스", mapBtn:"📍 구글맵에서 열기", lockedTitle:"멤버 전용 픽",
+      unlock:"전체 리스트 잠금 해제",
+      lockP:"믿는 이유, 주문 팁, 누구는 피해야 하는지 —<br>협찬 블로그가 못 쓰는 부분들.",
+      members:"🔒 멤버 전용", langBtn:"English" }
+  };
+  function L(k){ return UI[state.lang][k]; }
+  function tr(o,k){ return (state.lang === "ko" && o && o.ko && o.ko[k] != null) ? o.ko[k] : o[k]; }
+  function toggleLang(){
+    state.lang = (state.lang === "ko") ? "en" : "ko";
+    try { localStorage.setItem("su-lang", state.lang); } catch(e) {}
+    applyLang();
+  }
+  function applyLang(){
+    document.documentElement.lang = state.lang;
+    var d = UI[state.lang];
+    function set(id, html){ var el = document.getElementById(id); if (el) el.innerHTML = html; }
+    set("picks-title", d.picksTitle); set("trending-title", d.trendingTitle);
+    set("cat-picks-title", d.allPicks); set("cards-empty", d.emptyHome); set("cat-empty", d.emptyCat);
+    set("hero-title", d.heroH);
+    set("join-home-h", d.joinH); set("join-home-sub", d.joinSub); set("join-home-cta", d.joinCta);
+    set("join-cat-h", d.joinCatH); set("join-cat-sub", d.joinCatSub); set("join-cat-cta", d.joinCta);
+    var si = document.getElementById("search-input"); if (si) si.placeholder = d.searchPh;
+    var bb = document.querySelector("#view-cat .back"); if (bb) bb.textContent = d.back;
+    var ls = document.querySelectorAll(".lang-sm");
+    for (var i = 0; i < ls.length; i++) ls[i].textContent = d.langBtn;
+    renderHome(); if (typeof renderFeed === "function") renderFeed();
+    if (state.curCat) renderCatPage();
+  }
 
   // 스토리지 접근이 차단된 환경(샌드박스 미리보기 등)에서도 죽지 않게 감싼다
   function sGet(store, k) { try { return window[store].getItem(k); } catch (e) { return null; } }
@@ -1089,13 +1166,13 @@
   function pcardHTML(p) {
     var locked = isLocked(p);
     return '<div class="bg" style="background:' + p.g + '">' +
-      (p.img ? '<img src="' + p.img + '" alt="' + (locked ? 'Members pick' : p.t) + '" loading="lazy" onerror="this.remove()">' : p.e) +
+      (p.img ? '<img src="' + p.img + '" alt="' + (locked ? 'Members pick' : tr(p,'t')) + '" loading="lazy" onerror="this.remove()">' : p.e) +
       '</div><div class="scrim"></div>' +
       '<span class="cat">' + p.cat + '</span>' +
-      (locked ? '<span class="lockpill">🔒 Members</span>' : '') +
-      '<div class="info"><h3>' + p.t + '</h3>' +
-      '<div class="loc">📍 ' + p.loc + ', Seoul</div>' +
-      (p.meta ? '<div class="meta">' + p.meta + '</div>' : '') + '</div>';
+      (locked ? '<span class="lockpill">' + L('members') + '</span>' : '') +
+      '<div class="info"><h3>' + tr(p,'t') + '</h3>' +
+      '<div class="loc">📍 ' + tr(p,'loc') + L('seoul') + '</div>' +
+      (p.meta ? '<div class="meta">' + tr(p,'meta') + '</div>' : '') + '</div>';
   }
 
 
@@ -1108,28 +1185,28 @@
       (p.img ? '<img src="' + p.img + '" alt="" onerror="this.remove()">' : p.e) + '</div>';
 
     if (isLocked(p)) {
-      html += '<div class="scat">' + catName + ' · ' + p.loc + '</div>' +
-        '<h2>A members-only pick</h2>' +
+      html += '<div class="scat">' + catName + ' · ' + tr(p,'loc') + '</div>' +
+        '<h2>' + L('lockedTitle') + '</h2>' +
         '<div class="blurline" style="width:82%"></div>' +
         '<div class="blurline" style="width:64%"></div>' +
         '<div class="lockpanel">' +
           '<div class="big">🔒</div>' +
-          '<h3>Unlock the full list</h3>' +
-          '<p>Why we trust it, what to order, and who should skip it —<br>the parts a sponsored blog can\u2019t write.</p>' +
-          '<button class="cta" style="border:none;cursor:pointer;font-family:inherit" onclick="location.href=\'join.html\'">Unlock the full list</button>' +
+          '<h3>' + L('unlock') + '</h3>' +
+          '<p>' + L('lockP') + '</p>' +
+          '<button class="cta" style="border:none;cursor:pointer;font-family:inherit" onclick="location.href=\'join.html\'">' + L('unlock') + '</button>' +
         '</div>';
     } else {
-      html += '<div class="scat">' + catName + ' · ' + p.loc + ', Seoul</div>' +
-        '<h2>' + p.t + '</h2>' +
+      html += '<div class="scat">' + catName + ' · ' + tr(p,'loc') + L('seoul') + '</div>' +
+        '<h2>' + tr(p,'t') + '</h2>' +
         '<div class="chips">' +
           (p.pr ? '<span class="chip">' + p.pr + '</span>' : '') +
-          (p.bf ? '<span class="chip">Best for: ' + p.bf + '</span>' : '') +
-          (p.meta ? '<span class="chip">' + p.meta + '</span>' : '') +
+          (p.bf ? '<span class="chip">' + L('bestFor') + p.bf + '</span>' : '') +
+          (p.meta ? '<span class="chip">' + tr(p,'meta') + '</span>' : '') +
         '</div>' +
-        (p.wt ? '<div class="sblock trust"><span class="lb">Why we trust it</span><p>' + p.wt + '</p></div>' : '') +
-        (p.ot ? '<div class="sblock"><span class="lb">What to order</span><p>' + p.ot + '</p></div>' : '') +
-        (p.av ? '<div class="sblock avoid"><span class="lb">Skip it if</span><p>' + p.av + '</p></div>' : '') +
-        (p.map ? '<a class="mapbtn" href="' + p.map + '" target="_blank" rel="noopener">📍 Open in Google Maps</a>' : '');
+        (p.wt ? '<div class="sblock trust"><span class="lb">' + L('why') + '</span><p>' + tr(p,'wt') + '</p></div>' : '') +
+        (p.ot ? '<div class="sblock"><span class="lb">' + L('order') + '</span><p>' + tr(p,'ot') + '</p></div>' : '') +
+        (p.av ? '<div class="sblock avoid"><span class="lb">' + L('skip') + '</span><p>' + tr(p,'av') + '</p></div>' : '') +
+        (p.map ? '<a class="mapbtn" href="' + p.map + '" target="_blank" rel="noopener">' + L('mapBtn') + '</a>' : '');
     }
     body.innerHTML = html;
     var veil = document.getElementById('veil'), sheet = document.getElementById('sheet');
@@ -1192,9 +1269,9 @@
       var el = document.createElement('a');
       el.className = "feed-item"; el.href = "join.html";
       el.innerHTML = '<div class="num">' + (i + 1) + '</div>' +
-        '<div class="txt"><div class="kicker-row"><span class="kicker">' + f.k + '</span>' +
-        (f.dist ? '<span class="dist">📍 ' + f.dist + '</span>' : '') + '</div>' +
-        '<h3>' + f.t + '</h3><p>' + f.p + '</p></div>' +
+        '<div class="txt"><div class="kicker-row"><span class="kicker">' + tr(f,'k') + '</span>' +
+        (f.dist ? '<span class="dist">📍 ' + tr(f,'dist') + '</span>' : '') + '</div>' +
+        '<h3>' + tr(f,'t') + '</h3><p>' + tr(f,'p') + '</p></div>' +
         '<div class="fthumb">' + (f.img ? '<img src="' + f.img + '" alt="" loading="lazy">' : f.e) + '</div>';
       wrap.appendChild(el);
     });
@@ -1210,11 +1287,11 @@
     for (var ti = 0; ti < tabBtns.length; ti++) {
       tabBtns[ti].classList.toggle('active', tabBtns[ti].getAttribute('data-cat') === state.curCat);
     }
-    document.getElementById('cat-eyebrow').textContent = c.eyebrow || '';
+    document.getElementById('cat-eyebrow').textContent = tr(c,'eyebrow') || '';
     var tk = document.getElementById('cat-ticker');
     if (state.curCat === 'trend') {
       var names = [];
-      PICKS.forEach(function (p) { if (p.cat === 'trend') names.push(p.t); });
+      PICKS.forEach(function (p) { if (p.cat === 'trend') names.push(tr(p,'t')); });
       if (!names.length) names = ["Seongsu pop-ups", "Booked-out counters", "New in Hannam", "What everyone's ordering"];
       var line = names.join('  ✦  ') + '  ✦  ';
       tk.textContent = '';
@@ -1223,7 +1300,7 @@
       tk.appendChild(sp);
     }
     document.getElementById('cat-title').innerHTML = c.em + ' <em>' + c.name + '</em>';
-    document.getElementById('cat-desc').textContent = c.desc;
+    document.getElementById('cat-desc').textContent = tr(c,'desc');
     document.getElementById('cat-img').src = c.img;
     var wrap = document.getElementById('cat-cards');
     var empty = document.getElementById('cat-empty');
@@ -1324,7 +1401,9 @@
     .catch(function () { /* 시트를 못 읽으면 기본 콘텐츠 유지 */ });
 
   // ═══ INIT ═══════════════════════════════════════════════════════
+  try { if (localStorage.getItem("su-lang") === "ko") state.lang = "ko"; } catch(e) {}
   renderHome(); renderFeed(); route();
+  applyLang();
 
   // Old PWA cleanup
   try {
