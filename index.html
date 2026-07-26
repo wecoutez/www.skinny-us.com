@@ -768,6 +768,7 @@
         <button class="cat-tab" data-cat="body" onclick="go('cat','body')">Body</button>
         <button class="cat-tab active" data-cat="all" onclick="go('home')">Search</button>
       </div>
+      <div class="sub-tabs" id="sub-tabs-home"></div>
     </div>
 
     <header class="hero">
@@ -1306,6 +1307,7 @@
     for (var i = 0; i < ls.length; i++) ls[i].textContent = d.langBtn;
     renderHome(); if (typeof renderFeed === "function") renderFeed();
     if (typeof renderHomeMap === "function") renderHomeMap();
+    if (typeof renderHomeSubBar === "function") renderHomeSubBar();
     if (state.curCat) renderCatPage();
   }
 
@@ -1818,6 +1820,12 @@
     }
   }
   function renderHomeMap() { renderMap('map-home-svg', PICKS, { legend: true }); }
+  function renderHomeSubBar() {
+    var bar = document.getElementById('sub-tabs-home');
+    if (!bar) return;
+    bar.innerHTML = '<button class="sub-tab active">' +
+      (state.lang === 'ko' ? '전체 픽' : 'All picks') + '<i>' + PICKS.length + '</i></button>';
+  }
 
   function renderHoods(elId, activeKey, onPick) {
     var wrap = document.getElementById(elId);
@@ -1956,11 +1964,12 @@
     var bar = document.getElementById('sub-tabs');
     if (!bar) return;
     bar.innerHTML = "";
-    if (!conf || !list.length) return;
-    var counts = {};
-    list.forEach(function (p) { var s = conf.subOf(p); counts[s] = (counts[s] || 0) + 1; });
-    var avail = conf.order.filter(function (s) { return counts[s]; });
-    if (avail.length < 2) return;
+    var counts = {}, avail = [];
+    if (conf) {
+      list.forEach(function (p) { var s = conf.subOf(p); counts[s] = (counts[s] || 0) + 1; });
+      avail = conf.order.filter(function (s) { return counts[s]; });
+      if (avail.length < 2) avail = [];
+    }
     var sel = (state.catSub !== "all" && avail.indexOf(state.catSub) > -1) ? state.catSub : "all";
     function chip(id, label, n) {
       var b = document.createElement('button');
@@ -2125,7 +2134,7 @@
       if (newPicks.length) { newPicks.sort(function (a, b) { return a._o - b._o; }); inheritImg(newPicks, PICKS); PICKS = newPicks; }
       if (newTrending.length) { newTrending.sort(function (a, b) { return a._o - b._o; }); inheritImg(newTrending, TRENDING); TRENDING = newTrending; }
       if (heroImg) document.getElementById('hero-img').innerHTML = '<img src="' + heroImg + '" alt="">';
-      renderHome(); renderFeed(); renderHomeMap();
+      renderHome(); renderFeed(); renderHomeMap(); renderHomeSubBar();
       if (state.curCat) renderCatPage();
     })
     .catch(function () { /* 시트를 못 읽으면 기본 콘텐츠 유지 */ });
@@ -2133,7 +2142,7 @@
   // ═══ INIT ═══════════════════════════════════════════════════════
   try { if (localStorage.getItem("su-lang") === "ko") state.lang = "ko"; } catch(e) {}
   if (!CHAT_API && !CHAT_TAWK_SRC) document.getElementById('chat-fab').setAttribute('href', CHAT_LINK);
-  renderHome(); renderFeed(); renderHomeMap(); route();
+  renderHome(); renderFeed(); renderHomeMap(); renderHomeSubBar(); route();
   applyLang();
 
   // Old PWA cleanup
