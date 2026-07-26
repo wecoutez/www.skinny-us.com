@@ -80,6 +80,14 @@
   }
   .pay-paypal b { color:#253B80; font-weight:800; }
   .pay-paypal i { color:#179BD7; font-style:italic; font-weight:800; }
+  .joinid { max-width:520px; margin:16px auto 0; padding:0 20px; }
+  .joinid input { width:100%; border:2px solid var(--line); border-radius:16px; padding:14px 16px;
+    font-family:'Inter',sans-serif; font-size:16px; color:#111; outline:none; margin-bottom:9px; background:#fff;
+    transition:border-color .15s; }
+  .joinid input:focus { border-color:var(--ink-soft); }
+  .joinid input.err { border-color:#D98A8A; background:#FDF3F3; }
+  .joinid .ji-note { font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.6; }
+  #pay-area.locked { opacity:0.45; pointer-events:none; filter:saturate(0.6); }
   .join-feat { max-width:520px; margin:10px auto 0; padding:0 20px; }
   .join-feat li { list-style:none; font-size:12.5px; color:var(--ink-mid); padding:7px 0; border-bottom:1px solid var(--line); text-align:center; }
   .join-feat li:last-child { border-bottom:none; }
@@ -119,11 +127,19 @@
       </button>
     </div>
 
+    <div class="joinid">
+      <input id="ji-name" placeholder="Your name" autocomplete="name">
+      <input id="ji-email" type="email" placeholder="Email address" autocomplete="email" inputmode="email">
+      <p class="ji-note" id="ji-note">Your access code arrives at this email after payment.</p>
+    </div>
+
     <div class="pay-wrap">
+      <div id="pay-area" class="locked">
       <div id="paypal-sub" style="display:none"></div>
       <a class="pay-paypal" id="pay-paypal" href="https://www.paypal.com/ncp/payment/7J7STNZ9GFH5N" target="_blank" rel="noopener" style="display:none">
         Pay with <b>Pay</b><i>Pal</i> →
       </a>
+      </div>
       <div class="pay-note">Secure checkout by PayPal · cards accepted, no PayPal account needed<br>Monthly renews automatically · cancel anytime in PayPal · instant access after payment</div>
     </div>
 
@@ -146,6 +162,36 @@
   var SUB_PLAN_ID = "P-7KN663317D418892GNJS66KA";
   var CONSULT_LINK = "https://www.paypal.com/ncp/payment/7J7STNZ9GFH5N";
   var WELCOME_PAGE = "welcome-sg26.html"; // 구독 완료 후 이동 (액세스 코드 안내 페이지)
+  var CHAT_API = "https://script.google.com/macros/s/AKfycby5pXNE46VaasQteyADucU2wbZLOyCBYziqXGtsYmps7q0kW2rERIh-s-73XKDjRMtk/exec";
+  function idName(){ return (document.getElementById('ji-name').value || "").trim(); }
+  function idEmail(){ return (document.getElementById('ji-email').value || "").trim(); }
+  function idValid(){ return idName().length > 0 && /\S+@\S+\.\S+/.test(idEmail()); }
+  var lastLogged = "";
+  function logJoin(planId, extra){
+    if (!idValid() || !CHAT_API) return;
+    var key = idEmail() + "|" + planId;
+    if (key === lastLogged && !extra) return;
+    lastLogged = key;
+    try {
+      fetch(CHAT_API, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify({ action:"join", name:idName(), email:idEmail(),
+          note:"plan: " + planId + (extra ? " · " + extra : "") }) });
+    } catch(e){}
+  }
+  function refreshGate(){
+    var ok = idValid();
+    document.getElementById('pay-area').classList.toggle('locked', !ok);
+    var em = document.getElementById('ji-email');
+    em.classList.toggle('err', idEmail().length > 0 && !/\S+@\S+\.\S+/.test(idEmail()));
+    if (ok) {
+      try { localStorage.setItem('su_name', idName() + ' · ' + idEmail()); } catch(e){}
+      var active = document.querySelector('#planlist .plan.active');
+      logJoin(active ? active.getAttribute('data-plan') : '?');
+    }
+  }
+  document.getElementById('ji-name').addEventListener('input', refreshGate);
+  document.getElementById('ji-email').addEventListener('input', refreshGate);
+
   var subRendered = false;
   function renderSubButton() {
     if (subRendered) return;
@@ -158,7 +204,8 @@
       },
       onApprove: function (data) {
         track('paypal:subscribed');
-        window.location.href = WELCOME_PAGE;
+        logJoin('monthly', 'subscribed: ' + (data && data.subscriptionID || ''));
+        setTimeout(function(){ window.location.href = WELCOME_PAGE; }, 400);
       }
     }).render('#paypal-sub');
   }
@@ -183,7 +230,9 @@
   document.getElementById('pay-paypal').addEventListener('click', function () {
     var active = document.querySelector('#planlist .plan.active');
     track('paypal:' + (active ? active.getAttribute('data-plan') : 'unknown'));
+    logJoin(active ? active.getAttribute('data-plan') : '?', 'clicked pay');
   });
+  refreshGate();
 </script>
 </body>
 </html>
