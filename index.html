@@ -826,7 +826,7 @@
         <a href="https://wecoutez.github.io/skinny-us-legal/privacy">Privacy Policy</a>
         <a href="mailto:awonspc@gmail.com">Contact</a>
       </div>
-      © 2026 Skinny-us · Made in Seoul 🌸
+      <span class="ftap" onclick="adminTap()">© 2026 Skinny-us · Made in Seoul 🌸</span>
     </footer>
   </section>
 
@@ -874,7 +874,7 @@
       </div>
     </section>
 
-    <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
+    <footer><span class="ftap" onclick="adminTap()">© 2026 Skinny-us · Made in Seoul 🌸</span></footer>
   </section>
 
   <div class="chatpanel" id="chatpanel">
@@ -1693,6 +1693,14 @@
   });
 
   // ── admin ──
+  // 숨은 어드민 버튼: 푸터 © 문구를 2초 안에 3번 탭하면 어드민이 열린다
+  var adTapN=0, adTapT=0;
+  function adminTap(){
+    var now=Date.now();
+    if(now - adTapT > 2000) adTapN=0;
+    adTapT=now; adTapN++;
+    if(adTapN>=3){ adTapN=0; try{ location.hash='#/suadmin'; }catch(e){} openAdmin(); }
+  }
   var AD={ key:null, data:null, vid:null };
   function openAdmin(){
     document.getElementById('adminwrap').classList.add('on');
