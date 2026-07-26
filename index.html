@@ -835,7 +835,7 @@
         <a href="https://wecoutez.github.io/skinny-us-legal/privacy">Privacy Policy</a>
         <a href="mailto:awonspc@gmail.com">Contact</a>
       </div>
-      <span class="ftap" onclick="adminTap()">© 2026 Skinny-us · Made in Seoul 🌸</span>
+      © 2026 Skinny-us · Made in Seoul 🌸
     </footer>
   </section>
 
@@ -884,7 +884,7 @@
       </div>
     </section>
 
-    <footer><span class="ftap" onclick="adminTap()">© 2026 Skinny-us · Made in Seoul 🌸</span></footer>
+    <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
   </section>
 
   <div class="chatpanel" id="chatpanel">
@@ -1629,38 +1629,20 @@
     p.classList.toggle('on', open);
     if(open){
       try{ var nm=localStorage.getItem("su_name"); if(nm) document.getElementById('cp-name').value=nm; }catch(e){}
-      cpRestoreLocal(); cpRenderAll();             // 캐시된 대화 즉시 표시 (누적 히스토리)
       cpLoad(); if(cpTimer) clearInterval(cpTimer); cpTimer=setInterval(cpLoad, 9000);
       setTimeout(cpAdjustForKeyboard, 300);
       setTimeout(function(){ try{document.getElementById('cp-text').focus();}catch(e){} },150);
     } else { if(cpTimer){ clearInterval(cpTimer); cpTimer=null; } var pp=document.getElementById('chatpanel'); pp.style.bottom=""; pp.style.maxHeight=""; }
   }
-  // ── message store: server messages + locally-pending, merged ──
-  // A poll can never wipe or shrink the thread: pending bubbles stay until the
-  // server echoes them back, and the whole thread is cached in localStorage.
-  var cpServer=[], cpPending=[], cpLastHtml="";
-  function cpRestoreLocal(){
-    try{
-      var s=JSON.parse(localStorage.getItem('su_thread')||'null');
-      if(s){ cpServer=s.server||[]; cpPending=s.pending||[]; }
-    }catch(e){}
-  }
-  function cpSaveLocal(){
-    try{
-      localStorage.setItem('su_thread', JSON.stringify({ server:cpServer.slice(-200), pending:cpPending.slice(-30) }));
-    }catch(e){}
-  }
-  function cpRenderAll(){
-    var box=document.getElementById('cp-msgs'); if(!box) return;
-    var msgs=cpServer.concat(cpPending);
+  var cpCache="", cpMaxCount=0;
+  function cpRender(msgs){
+    var box=document.getElementById('cp-msgs');
     var hello=document.getElementById('cp-hello');
     if(hello) hello.style.display = msgs.length ? "none" : "block";
     var htmlStr = msgs.map(function(m){
       var me = m.from==="visitor";
-      return '<div class="cp-b '+(me?'me':'them')+'">'+esc(m.text)+'<span class="ts">'+(m.pending?"\u2026":fmtTs(m.ts))+'</span></div>';
+      return '<div class="cp-b '+(me?'me':'them')+'">'+esc(m.text)+'<span class="ts">'+fmtTs(m.ts)+'</span></div>';
     }).join("");
-    if(htmlStr===cpLastHtml) return;               // 변화 없으면 재렌더 금지 (타이핑 중 흔들림 방지)
-    cpLastHtml=htmlStr;
     var keep = hello ? hello.outerHTML : "";
     box.innerHTML = keep + htmlStr;
     box.scrollTop = box.scrollHeight;
@@ -1670,18 +1652,11 @@
     apiGet({action:"thread", vid:getVid()}).then(function(r){
       if(!(r && r.ok)) return;
       var ms = r.messages || [];
-      if (ms.length < cpServer.length) return;      // 스테일 응답이 기존 메시지를 지우지 않게
-      cpServer = ms;
-      // 서버에 반영된 pending 버블 제거 (텍스트 매칭)
-      var counts={};
-      ms.forEach(function(m){ if(m.from==="visitor"){ var k=(m.text||"").trim(); counts[k]=(counts[k]||0)+1; } });
-      cpPending = cpPending.filter(function(pm){
-        var k=(pm.text||"").trim();
-        if(counts[k] > 0){ counts[k]--; return false; }
-        return true;
-      });
-      cpSaveLocal();
-      cpRenderAll();
+      if (ms.length < cpMaxCount) return;           // 스테일 응답이 기존 메시지를 지우지 않게
+      var ser = JSON.stringify(ms);
+      if (ser === cpCache) return;                   // 변화 없으면 재렌더 금지 (타이핑 중 흔들림 방지)
+      cpCache = ser; cpMaxCount = ms.length;
+      cpRender(ms);
     }).catch(function(){});
   }
   function cpSend(){
@@ -1691,20 +1666,17 @@
     var name=(nameEl.value||"").trim();
     if(!name){
       nameEl.classList.add('cp-name-err');
-      nameEl.placeholder = state.lang==='ko' ? "\uc774\ub984\uacfc \uc774\uba54\uc77c\uc744 \uba3c\uc800 \uc785\ub825\ud574\uc8fc\uc138\uc694" : "Please add your name & email first";
+      nameEl.placeholder = state.lang==='ko' ? "이름과 이메일을 먼저 입력해주세요" : "Please add your name & email first";
       nameEl.focus();
       setTimeout(function(){ nameEl.classList.remove('cp-name-err'); }, 1200);
       return;
     }
     try{ localStorage.setItem("su_name",name); }catch(e){}
     inp.value="";
-    cpPending.push({ from:"visitor", text:txt, ts:Date.now(), pending:true });
-    cpSaveLocal();
-    cpRenderAll();
-    inp.focus();                                    // 전송 후에도 키보드 유지
-    apiPost({action:"send", vid:getVid(), name:name, text:txt})
-      .then(function(){ setTimeout(cpLoad, 600); })
-      .catch(function(){});
+    var box=document.getElementById('cp-msgs');
+    box.insertAdjacentHTML('beforeend','<div class="cp-b me">'+esc(txt)+'<span class="ts">…</span></div>');
+    box.scrollTop=box.scrollHeight;
+    apiPost({action:"send", vid:getVid(), name:name, text:txt}).then(cpLoad).catch(function(){});
     track('chat:send');
   }
   document.addEventListener('keydown', function(e){
@@ -1715,14 +1687,6 @@
   });
 
   // ── admin ──
-  // 숨은 어드민 버튼: 푸터 © 문구를 2초 안에 3번 탭하면 어드민이 열린다
-  var adTapN=0, adTapT=0;
-  function adminTap(){
-    var now=Date.now();
-    if(now - adTapT > 2000) adTapN=0;
-    adTapT=now; adTapN++;
-    if(adTapN>=3){ adTapN=0; try{ location.hash='#/suadmin'; }catch(e){} openAdmin(); }
-  }
   var AD={ key:null, data:null, vid:null };
   function openAdmin(){
     document.getElementById('adminwrap').classList.add('on');
