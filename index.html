@@ -1486,7 +1486,12 @@
         (p.ot ? '<div class="sblock"><span class="lb">' + L('order') + '</span><p>' + tr(p,'ot') + '</p></div>' : '') +
         (p.av ? '<div class="sblock avoid"><span class="lb">' + L('skip') + '</span><p>' + tr(p,'av') + '</p></div>' : '') +
         (function(){
-          var nBtn = p.map ? '<a class="mapbtn" href="' + p.map + '" target="_blank" rel="noopener">' + L('mapBtn') + '</a>' : '';
+          var nHref = p.map || "";
+          var nm = nHref.match(/map\.naver\.com\/p\/entry\/place\/(\d+)/);
+          if (nm && /iPhone|iPad|Android/i.test(navigator.userAgent)) {
+            nHref = "https://m.place.naver.com/place/" + nm[1] + "/home";
+          }
+          var nBtn = nHref ? '<a class="mapbtn" href="' + nHref + '" target="_blank" rel="noopener">' + L('mapBtn') + '</a>' : '';
           var gHref = p.gmap || "";
           var gm = gHref.match(/maps\/place\/\?q=place_id:([^&"]+)/);
           if (gm) gHref = "https://www.google.com/maps/search/?api=1&query=" +
