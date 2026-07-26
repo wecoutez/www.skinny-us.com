@@ -6,7 +6,8 @@
 <title>Skinny-us — Skinny Genius</title>
 <meta name="description" content="Wellness picks curated by locals. Korea live now — more countries coming.">
 <meta name="theme-color" content="#FFFFFF">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/subsets/Paperlogy-dynamic-subset.css" type="text/css"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,7 +24,7 @@
 
   html { scroll-behavior: smooth; }
   body {
-    font-family:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-family:'Paperlogy',-apple-system,BlinkMacSystemFont,sans-serif;
     background: var(--white); color: var(--ink); line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
@@ -54,7 +55,7 @@
     text-shadow:0 2px 16px rgba(0,0,0,0.4);
     margin:0;
   }
-  .entry .lede { font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; line-height:1.7; color:rgba(255,255,255,0.94); margin:12px auto 22px; max-width:420px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
+  .entry .lede { font-family:'Paperlogy',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; line-height:1.7; color:rgba(255,255,255,0.94); margin:12px auto 22px; max-width:420px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
 
   .countries { display:flex; flex-direction:column; gap:10px; margin:0 auto 22px; width:100%; max-width:460px; }
   .country {
@@ -127,6 +128,7 @@
     font-size:12.5px; font-weight:700; color:#111;
     background:var(--cream); border:1px solid var(--line); border-radius:999px; padding:7px 13px;
   }
+  .topbar .lang-sm { font-size:12px; font-weight:700; color:var(--ink); background:#fff; border:1px solid var(--line); padding:8px 12px; border-radius:999px; text-decoration:none; flex-shrink:0; }
   .topbar .join-sm {
     font-size:12px; font-weight:700; color:#111; text-decoration:none;
     padding:8px 16px; border-radius:999px;
@@ -150,7 +152,7 @@
     background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.62));
   }
   .hero > *:not(.img) { position: relative; }
-  .hero .greet { font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.92); text-shadow:0 1px 3px rgba(0,0,0,0.45); }
+  .hero .greet { font-family:'Paperlogy',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.92); text-shadow:0 1px 3px rgba(0,0,0,0.45); }
   .hero h1 {
     font-family:'Instrument Serif',serif; font-weight:400; font-style:italic;
     font-size: clamp(38px,10vw,54px); line-height:1.08; color:#fff;
@@ -178,7 +180,7 @@
 
   /* Sections */
   .sec-head { display:flex; align-items:baseline; justify-content:space-between; padding:0 20px; margin:30px 0 14px; }
-  .sec-head h2 { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.16em; text-transform:uppercase; }
+  .sec-head h2 { font-family:'Paperlogy',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.16em; text-transform:uppercase; }
   .sec-head .more { font-size:12px; font-weight:600; color:var(--ink-soft); text-decoration:none; background:none; border:none; cursor:pointer; }
 
   /* Category tiles (home) */
@@ -235,6 +237,11 @@
   .pcard .info .loc { display:flex; align-items:center; gap:4px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.92); margin-top:4px; text-shadow:0 1px 3px rgba(0,0,0,0.45); }
   .pcard .info .meta { font-size:11px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px; }
 
+  /* Display serif: add weight (Instrument Serif ships only 400) */
+  .entry .big-title { -webkit-text-stroke:1.1px currentColor; }
+  .hero h1, .cat-hero h1, .join h2, .gate h1 { -webkit-text-stroke:0.7px currentColor; }
+  .topbar .wordmark, .sheet h2, .sheet .lockpanel h3 { -webkit-text-stroke:0.5px currentColor; }
+
   /* Category tab bar (always visible on category pages) */
   .cat-stick { position:sticky; top:0; z-index:20; }
   .cat-stick .topbar { position:relative; top:auto; }
@@ -245,12 +252,10 @@
     border-bottom:1px solid var(--line);
   }
   .cat-tabs::-webkit-scrollbar { display:none; }
-  .cat-tab:first-child { margin-left:auto; }
-  .cat-tab:last-child { margin-right:auto; }
   .cat-tab {
-    flex:0 0 auto; display:inline-flex; align-items:center; gap:6px;
+    flex:1 1 0; min-width:0; display:inline-flex; align-items:center; justify-content:center; gap:5px; white-space:nowrap;
     border:1px solid var(--line); background:#fff; color:#111; cursor:pointer;
-    font-size:13px; font-weight:700; padding:12px 18px; border-radius:999px;
+    font-size:12.5px; font-weight:700; padding:12px 4px; border-radius:999px;
     transition:transform .15s, background .15s;
   }
   .cat-tab .em { font-size:14px; line-height:1; }
@@ -282,9 +287,9 @@
   /* ═══ CATEGORY THEMES ═══════════════════════════════════════════
      각 카테고리는 성격에 맞는 팔레트 + 레이아웃을 가진다.
      eat=메뉴판 리스트 · beauty=아치 카드 · body=프로그램 로그 · trend=다크 랭킹 차트 */
-  .cat-eyebrow { display:inline-block; font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.24em; text-transform:uppercase; color:rgba(255,255,255,0.92); margin-bottom:10px; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+  .cat-eyebrow { display:inline-block; font-family:'Paperlogy',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.24em; text-transform:uppercase; color:rgba(255,255,255,0.92); margin-bottom:10px; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   .cat-eyebrow:empty { display:none; }
-  .cat-ticker { display:none; overflow:hidden; white-space:nowrap; background:#FF5FA2; color:#20101C; font-family:'Space Grotesk',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; padding:9px 0; }
+  .cat-ticker { display:none; overflow:hidden; white-space:nowrap; background:#FF5FA2; color:#20101C; font-family:'Paperlogy',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; padding:9px 0; }
   .cat-ticker span { display:inline-block; animation:su-tick 28s linear infinite; }
   @keyframes su-tick { to { transform:translateX(-50%); } }
 
@@ -308,7 +313,7 @@
   .cat-eat .pcard .bg { border-radius:0; }
   .cat-eat .pcard .info h3 { color:#2E1608; text-shadow:none; font-size:14px; padding-bottom:7px; border-bottom:2px dotted #E9CBA2; }
   .cat-eat .pcard .info .loc { color:#8A5A34; text-shadow:none; margin-top:6px; }
-  .cat-eat .pcard .info .meta { color:#B4451F; font-family:'Space Grotesk',sans-serif; font-size:11px; }
+  .cat-eat .pcard .info .meta { color:#B4451F; font-family:'Paperlogy',sans-serif; font-size:11px; }
   .cat-eat .join .card-j { background:linear-gradient(155deg,#F7B267,#E4572E); box-shadow:0 22px 48px rgba(228,87,46,0.35), inset 0 2px 4px rgba(255,255,255,0.4); }
   .cat-eat .empty, .cat-eat footer { color:#C07A4C; }
 
@@ -347,7 +352,7 @@
   .cat-body .pcard .info h3 { color:#1E2E16; text-shadow:none; font-size:15px; display:flex; align-items:center; gap:8px; }
   .cat-body .pcard .info h3::before { content:""; flex:0 0 15px; width:15px; height:15px; border-radius:50%; border:2.5px solid #5B7C4E; }
   .cat-body .pcard .info .loc { color:#5E7A4C; text-shadow:none; margin-top:5px; }
-  .cat-body .pcard .info .meta { color:#7B9A66; font-family:'Space Grotesk',sans-serif; font-size:11px; }
+  .cat-body .pcard .info .meta { color:#7B9A66; font-family:'Paperlogy',sans-serif; font-size:11px; }
   .cat-body .join .card-j { background:linear-gradient(155deg,#A9C98C,#5B7C4E); box-shadow:0 22px 48px rgba(91,124,78,0.35), inset 0 2px 4px rgba(255,255,255,0.35); }
   .cat-body .empty, .cat-body footer { color:#7B9A66; }
 
@@ -364,11 +369,11 @@
   .cat-trend .hood p { color:#8E7BA6; }
   .cat-trend .cards.grid { counter-reset:su-rank; }
   .cat-trend .pcard { padding:0; border-radius:16px; background:#231A2F; border:1px solid #34273F; box-shadow:none; overflow:hidden; }
-  .cat-trend .pcard::before { counter-increment:su-rank; content:counter(su-rank); position:absolute; top:10px; left:10px; z-index:2; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:#FF5FA2; background:rgba(26,19,34,0.85); padding:3px 10px; border-radius:999px; }
+  .cat-trend .pcard::before { counter-increment:su-rank; content:counter(su-rank); position:absolute; top:10px; left:10px; z-index:2; font-family:'Paperlogy',sans-serif; font-weight:700; font-size:15px; color:#FF5FA2; background:rgba(26,19,34,0.85); padding:3px 10px; border-radius:999px; }
   .cat-trend .pcard .bg { border-radius:0; }
   .cat-trend .pcard .info h3 { color:#fff; text-shadow:none; font-size:14px; }
   .cat-trend .pcard .info .loc { color:#B9A7CC; text-shadow:none; }
-  .cat-trend .pcard .info .meta { color:#8E7BA6; font-family:'Space Grotesk',sans-serif; font-size:11px; }
+  .cat-trend .pcard .info .meta { color:#8E7BA6; font-family:'Paperlogy',sans-serif; font-size:11px; }
   .cat-trend .join .card-j { background:linear-gradient(155deg,#FF5FA2,#B23A78); box-shadow:0 22px 48px rgba(255,95,162,0.25), inset 0 2px 4px rgba(255,255,255,0.25); }
   .cat-trend .empty, .cat-trend footer { color:#8E7BA6; }
 
@@ -378,7 +383,7 @@
     border-top:1px solid var(--line); text-decoration:none; color:inherit;
   }
   .feed-item:last-of-type { border-bottom:1px solid var(--line); }
-  .feed-item .num { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--ink-soft); width:24px; flex-shrink:0; padding-top:3px; }
+  .feed-item .num { font-family:'Paperlogy',sans-serif; font-weight:700; font-size:15px; color:var(--ink-soft); width:24px; flex-shrink:0; padding-top:3px; }
   .feed-item .txt { flex:1; }
   .feed-item .kicker-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
   .feed-item .kicker { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
@@ -386,8 +391,8 @@
   .feed-item h3 { font-size:14.5px; font-weight:700; line-height:1.32; }
   .feed-item p { font-size:12px; color:var(--ink-mid); margin-top:3px; }
   .feed-item .fthumb {
-    width:66px; height:66px; border-radius:16px; flex-shrink:0; overflow:hidden;
-    display:flex; align-items:center; justify-content:center; font-size:27px;
+    width:96px; height:96px; border-radius:18px; flex-shrink:0; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; font-size:34px;
     background: linear-gradient(155deg,var(--g1),var(--g3));
     box-shadow: 0 8px 18px rgba(200,120,140,0.16);
   }
@@ -431,10 +436,10 @@
       rgba(0,0,0,0.78) 55%,
       rgba(0,0,0,0.92) 78%);
   }
-  .gate .g-brand { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+  .gate .g-brand { font-family:'Paperlogy',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   .gate h1 { font-family:'Instrument Serif',serif; font-weight:400; font-style:italic; font-size:clamp(56px,14vw,88px); line-height:1.02; color:#F8A5C6; text-shadow:0 2px 14px rgba(0,0,0,0.5); margin:14px 0 20px; }
   .gate .g-cred {
-    font-family:'Space Grotesk',sans-serif; font-size:11.5px; font-weight:700;
+    font-family:'Paperlogy',sans-serif; font-size:11.5px; font-weight:700;
     letter-spacing:0.18em; text-transform:uppercase; line-height:1.8;
     color:rgba(255,255,255,0.9); text-shadow:0 1px 3px rgba(0,0,0,0.5);
     max-width:420px; margin:0 auto 28px;
@@ -451,7 +456,7 @@
   .gate .g-code { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:14px; max-width:400px; margin-left:auto; margin-right:auto; }
   .gate .g-code-in {
     flex:1; min-width:180px; padding:12px 16px; border-radius:20px; border:none; outline:none;
-    font-family:'Space Grotesk',sans-serif; font-size:16px; letter-spacing:0.12em; text-align:center; color:#111;
+    font-family:'Paperlogy',sans-serif; font-size:16px; letter-spacing:0.12em; text-align:center; color:#111;
     background:rgba(255,255,255,0.95);
   }
   .gate .g-code-btn { padding:12px 20px; border:none; border-radius:20px; cursor:pointer; font-family:inherit; font-size:13px; font-weight:700; color:#111; background:linear-gradient(155deg,var(--g1),var(--g2)); }
@@ -616,6 +621,7 @@
           <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
         </span>
         <button class="where" onclick="go('entry')">🇰🇷 Seoul, Korea ▾</button>
+        <a class="lang-sm" href="https://skinny--us-com.translate.goog/?_x_tr_sl=en&_x_tr_tl=ko&_x_tr_hl=ko" target="_blank" rel="noopener">한국어</a>
         <a class="join-sm" href="join.html">Join</a>
       </div>
       <div class="cat-tabs">
@@ -678,6 +684,7 @@
       <div class="topbar">
         <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
         <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
+        <a class="lang-sm" href="https://skinny--us-com.translate.goog/?_x_tr_sl=en&_x_tr_tl=ko&_x_tr_hl=ko" target="_blank" rel="noopener">한국어</a>
         <a class="join-sm" href="join.html">Join</a>
       </div>
       <div class="cat-tabs" id="cat-tabs">
