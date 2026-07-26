@@ -264,19 +264,20 @@
   .cat-stick { position:sticky; top:0; z-index:20; }
   .cat-stick .topbar { position:relative; top:auto; }
   .cat-tabs {
-    display:flex; gap:9px; align-items:center;
-    padding:10px var(--gx) 12px; overflow-x:auto; scrollbar-width:none;
+    display:flex; gap:7px; align-items:stretch;
+    padding:10px var(--gx) 12px; overflow:hidden;
     background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
     border-bottom:1px solid var(--line);
   }
   .cat-tabs::-webkit-scrollbar { display:none; }
   .cat-tab {
-    flex:1 1 0; min-width:0; display:inline-flex; align-items:center; justify-content:center; gap:5px; white-space:nowrap;
+    flex:1 1 0; min-width:0; display:inline-flex; align-items:center; justify-content:center; white-space:nowrap;
     border:1px solid var(--line); background:#fff; color:#111; cursor:pointer;
-    font-size:12.5px; font-weight:700; padding:12px 4px; border-radius:999px;
+    font-size:12px; font-weight:700; letter-spacing:0.02em; padding:11px 2px; border-radius:999px;
+    overflow:hidden; text-overflow:ellipsis;
     transition:transform .15s, background .15s;
   }
-  .cat-tab .em { font-size:14px; line-height:1; }
+  @media (max-width:380px) { .cat-tab { font-size:11px; padding:10px 1px; letter-spacing:0; } }
   .cat-tab:hover { transform:translateY(-1px); }
   .cat-tab.active { background:var(--ink); border-color:var(--ink); color:#fff; }
 
@@ -356,7 +357,24 @@
   .sub-head::after { content:""; flex:1; border-top:1px solid #EBD6E4; }
   .mapblock { padding:28px var(--gx) 6px; }
   .mapblock h3 { font-family:'Paperlogy',sans-serif; font-size:12.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#8A8372; margin-bottom:10px; }
-  .mapblock iframe { width:100%; height:260px; border:0; border-radius:16px; display:block; box-shadow:0 8px 24px rgba(0,0,0,0.08); background:#EFECE3; }
+  .chat-fab {
+    position:fixed; right:16px; bottom:calc(18px + env(safe-area-inset-bottom, 0px)); z-index:35;
+    display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+    font-size:13px; font-weight:800; color:#111;
+    background:linear-gradient(155deg,var(--g1),var(--g2) 50%,var(--g3));
+    padding:13px 17px; border-radius:999px;
+    box-shadow:0 12px 28px rgba(224,149,174,0.55);
+    transition:transform .15s;
+  }
+  .chat-fab:active { transform:scale(0.95); }
+  .chat-fab .ic { font-size:15px; line-height:1; }
+  body.gated .chat-fab { display:none; }
+  .mapcanvas { width:100%; border-radius:16px; overflow:hidden; background:#FBF9F3; border:1px solid #EFE8DB; }
+  .mapcanvas svg { display:block; width:100%; height:auto; }
+  .mapcanvas .dot { cursor:pointer; }
+  .map-legend { display:flex; flex-wrap:wrap; gap:6px 14px; margin:0 2px 8px; }
+  .map-legend span { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9A937F; }
+  .map-legend i { width:8px; height:8px; border-radius:50%; display:inline-block; }
   .mapblock .map-note { font-size:11.5px; color:#9A937F; margin-top:8px; text-align:center; }
   .cat-eat .mapblock h3 { color:#8A5A34; }
   .cat-trend .mapblock h3 { color:#111; }
@@ -632,7 +650,7 @@
     </div>
     <div>
       <div class="countries">
-        <button class="country" onclick="go('home')">
+        <button class="country" onclick="go('cat','trend')">
           <span class="flag">🇰🇷</span>
           <span class="txt"><b>Seoul</b><span>2.4K+ picks · 7 neighborhoods</span></span>
           <span class="go">→</span>
@@ -664,18 +682,18 @@
       <div class="topbar">
         <span class="tb-left">
           <button class="backchip" onclick="go('entry')" aria-label="Back to country select">←</button>
-          <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
+          <div class="wordmark" onclick="go('cat','trend')">skinny-<em>us</em></div>
         </span>
         <button class="where" onclick="go('entry')">🇰🇷 Seoul, Korea ▾</button>
         <button class="lang-sm" onclick="toggleLang()">한국어</button>
         <a class="join-sm" href="join.html">Join</a>
       </div>
       <div class="cat-tabs">
-        <button class="cat-tab active" data-cat="all" onclick="go('home')"><span class="em">🌸</span>All</button>
-        <button class="cat-tab" data-cat="trend" onclick="go('cat','trend')"><span class="em">📰</span>Trend</button>
-        <button class="cat-tab" data-cat="eat" onclick="go('cat','eat')"><span class="em">🍜</span>Eat</button>
-        <button class="cat-tab" data-cat="beauty" onclick="go('cat','beauty')"><span class="em">✨</span>Beauty</button>
-        <button class="cat-tab" data-cat="body" onclick="go('cat','body')"><span class="em">🌿</span>Body</button>
+        <button class="cat-tab" data-cat="trend" onclick="go('cat','trend')">Trend</button>
+        <button class="cat-tab" data-cat="eat" onclick="go('cat','eat')">Eat</button>
+        <button class="cat-tab" data-cat="beauty" onclick="go('cat','beauty')">Beauty</button>
+        <button class="cat-tab" data-cat="body" onclick="go('cat','body')">Body</button>
+        <button class="cat-tab active" data-cat="all" onclick="go('home')">Search</button>
       </div>
     </div>
 
@@ -720,7 +738,7 @@
 
     <section class="mapblock" id="map-home">
       <h3 id="map-home-title">On the map</h3>
-      <iframe id="map-home-frame" src="https://www.google.com/maps?q=Seoul&z=12&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Seoul map"></iframe>
+      <div class="mapcanvas" id="map-home-svg"></div>
       <p class="map-note" id="map-home-note">Each pick's exact pin lives inside its card.</p>
     </section>
 
@@ -738,23 +756,23 @@
   <section class="view" id="view-cat" style="display:none">
     <div class="cat-stick">
       <div class="topbar">
-        <div class="wordmark" onclick="go('home')">skinny-<em>us</em></div>
+        <div class="wordmark" onclick="go('cat','trend')">skinny-<em>us</em></div>
         <button class="where" onclick="go('entry')">🇰🇷 Seoul ▾</button>
         <button class="lang-sm" onclick="toggleLang()">한국어</button>
         <a class="join-sm" href="join.html">Join</a>
       </div>
       <div class="cat-tabs" id="cat-tabs">
-        <button class="cat-tab" data-cat="all" onclick="go('home')"><span class="em">🌸</span>All</button>
-        <button class="cat-tab" data-cat="trend" onclick="go('cat','trend')"><span class="em">📰</span>Trend</button>
-        <button class="cat-tab" data-cat="eat" onclick="go('cat','eat')"><span class="em">🍜</span>Eat</button>
-        <button class="cat-tab" data-cat="beauty" onclick="go('cat','beauty')"><span class="em">✨</span>Beauty</button>
-        <button class="cat-tab" data-cat="body" onclick="go('cat','body')"><span class="em">🌿</span>Body</button>
+        <button class="cat-tab" data-cat="trend" onclick="go('cat','trend')">Trend</button>
+        <button class="cat-tab" data-cat="eat" onclick="go('cat','eat')">Eat</button>
+        <button class="cat-tab" data-cat="beauty" onclick="go('cat','beauty')">Beauty</button>
+        <button class="cat-tab" data-cat="body" onclick="go('cat','body')">Body</button>
+        <button class="cat-tab" data-cat="all" onclick="go('home')">Search</button>
       </div>
     </div>
 
     <header class="cat-hero">
       <div class="img"><img id="cat-img" src="" alt="" onerror="this.style.display='none'" onload="this.style.display=''"></div>
-      <button class="back" onclick="go('home')">← Home</button>
+      <button class="back" onclick="go('home')">← All</button>
       <div class="cat-eyebrow" id="cat-eyebrow"></div>
       <h1 id="cat-title"></h1>
       <p id="cat-desc"></p>
@@ -766,7 +784,7 @@
 
     <section class="mapblock" id="map-cat">
       <h3 id="map-cat-title">Area map</h3>
-      <iframe id="map-cat-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Area map"></iframe>
+      <div class="mapcanvas" id="map-cat-svg"></div>
       <p class="map-note" id="map-cat-note">Open a pick for its exact pin.</p>
     </section>
 
@@ -780,6 +798,8 @@
 
     <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
   </section>
+
+  <a class="chat-fab" id="chat-fab" href="#" aria-label="1:1 chat with the curator"><span class="ic">💬</span><span id="chat-fab-label">1:1 Chat</span></a>
 
   <!-- ═══════════ MEMBERS GATE ═══════════ -->
   <section class="view gate" id="view-gate" style="display:none">
@@ -1127,9 +1147,10 @@
     var ko = state.lang === "ko";
     var el;
     if (el = document.getElementById('map-home-title')) el.textContent = ko ? "지도에서 보기" : "On the map";
-    if (el = document.getElementById('map-home-note')) el.textContent = ko ? "각 픽의 정확한 위치는 카드 안에서 확인하세요." : "Each pick's exact pin lives inside its card.";
+    if (el = document.getElementById('map-home-note')) el.textContent = ko ? "점 하나가 픽 하나 — 눌러서 열어보세요. 정확한 주소는 카드 안에." : "One dot, one pick — tap to open. Exact address inside each card.";
     if (el = document.getElementById('map-cat-title')) el.textContent = ko ? "이 동네 지도" : "Area map";
-    if (el = document.getElementById('map-cat-note')) el.textContent = ko ? "픽을 열면 정확한 핀이 나와요." : "Open a pick for its exact pin.";
+    if (el = document.getElementById('chat-fab-label')) el.textContent = ko ? "1:1 문자" : "1:1 Chat";
+    if (el = document.getElementById('map-cat-note')) el.textContent = ko ? "점을 누르면 픽이 열려요. 동네를 고르면 지도도 따라와요." : "Tap a dot to open its pick. Pick a neighborhood to focus the map.";
   }
   function oneLine(s){
     if (!s) return "";
@@ -1158,6 +1179,7 @@
     var ls = document.querySelectorAll(".lang-sm");
     for (var i = 0; i < ls.length; i++) ls[i].textContent = d.langBtn;
     renderHome(); if (typeof renderFeed === "function") renderFeed();
+    if (typeof renderHomeMap === "function") renderHomeMap();
     if (state.curCat) renderCatPage();
   }
 
@@ -1243,7 +1265,7 @@
       track('member:enter');
       IS_MEMBER = true;
       saveMemberPass();
-      go('home');
+      go('cat','trend');
     } else {
       document.getElementById('g-code-err').style.display = 'block';
     }
@@ -1357,6 +1379,75 @@
     document.body.style.overflow = '';
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
+
+  // ── 1:1 채팅 연결처: 아래 한 줄만 본인 연락처로 교체 ──
+  // 문자(SMS):        "sms:+821012345678"
+  // WhatsApp:         "https://wa.me/821012345678"
+  // 카카오 오픈채팅:   "https://open.kakao.com/o/XXXXXXX"  (번호 노출 없이 추천)
+  var CHAT_LINK = "sms:+821000000000";
+
+  var MAP_POS = {
+    yeonnam:[96,80], mangwon:[68,116], hannam:[203,122], seongsu:[300,112],
+    apgujeong:[260,180], gangnam:[292,210], other:[356,226]
+  };
+  var MAP_COLOR = { eat:"#C05A2B", beauty:"#D06A9E", body:"#5E8C5A", trend:"#B02A2A" };
+  function renderMap(elId, items, opts) {
+    opts = opts || {};
+    var box = document.getElementById(elId);
+    if (!box) return;
+    var ko = state.lang === "ko";
+    var hoodName = function (id) {
+      if (id === "other") return ko ? "그 외 지역" : "Beyond";
+      var h = HOODS.filter(function (x) { return x.id === id; })[0];
+      return h ? h.name : id;
+    };
+    var byHood = {}, order = [];
+    items.forEach(function (p) {
+      var h = MAP_POS[p.hood] ? p.hood : "other";
+      if (!byHood[h]) { byHood[h] = []; order.push(h); }
+      byHood[h].push(p);
+    });
+    var clickable = [];
+    var svg = '<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seoul map">';
+    svg += '<path d="M 400 106 C 332 128, 300 152, 238 152 C 176 152, 152 120, 92 132 C 52 140, 18 150, 0 148" fill="none" stroke="#DCE7ED" stroke-width="22" stroke-linecap="round"/>';
+    svg += '<text x="14" y="163" font-size="8" fill="#AFC4CF" letter-spacing="2" font-family="Paperlogy,sans-serif">HAN RIVER</text>';
+    order.forEach(function (h) {
+      var ax = MAP_POS[h][0], ay = MAP_POS[h][1];
+      var dim = opts.activeHood && opts.activeHood !== "all" && opts.activeHood !== h;
+      byHood[h].forEach(function (p, i) {
+        var ang = i * 2.39996, r = i === 0 ? 0 : 5.5 * Math.sqrt(i) + 3;
+        var x = ax + r * Math.cos(ang), y = ay + r * Math.sin(ang) * 0.8;
+        var col = MAP_COLOR[p.cat] || "#9A937F";
+        var idx = clickable.length; clickable.push(p);
+        svg += '<circle class="dot" data-i="' + idx + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) +
+          '" r="4.2" fill="' + col + '" stroke="#fff" stroke-width="1.4" opacity="' + (dim ? 0.22 : (isLocked(p) ? 0.55 : 1)) + '">' +
+          '<title>' + String(tr(p,'t') || '').replace(/[<&>]/g, '') + '</title></circle>';
+      });
+      var n = byHood[h].length;
+      var ly = ay + (h === "yeonnam" || h === "seongsu" ? -14 - 4 * Math.sqrt(n) : 15 + 4 * Math.sqrt(n));
+      svg += '<text x="' + ax + '" y="' + ly.toFixed(1) + '" text-anchor="middle" font-size="8.5" font-weight="700" letter-spacing="1.2" font-family="Paperlogy,sans-serif" fill="' + (dimHood(h) ? "#CFC9B8" : "#A79E88") + '">' +
+        hoodName(h).toUpperCase() + ' · ' + n + '</text>';
+      function dimHood(hh) { return opts.activeHood && opts.activeHood !== "all" && opts.activeHood !== hh; }
+    });
+    svg += '</svg>';
+    var legend = "";
+    if (opts.legend) {
+      var seen = {};
+      items.forEach(function (p) { seen[p.cat] = true; });
+      var names = { trend:"Trend", eat:"Eat", beauty:"Beauty", body:"Body" };
+      legend = '<div class="map-legend">' + Object.keys(names).filter(function (c) { return seen[c]; })
+        .map(function (c) { return '<span><i style="background:' + MAP_COLOR[c] + '"></i>' + names[c] + '</span>'; })
+        .join('') + '</div>';
+    }
+    box.innerHTML = legend + svg;
+    var dots = box.querySelectorAll('.dot');
+    for (var di = 0; di < dots.length; di++) {
+      (function (el) {
+        el.addEventListener('click', function () { openSheet(clickable[+el.getAttribute('data-i')]); });
+      })(dots[di]);
+    }
+  }
+  function renderHomeMap() { renderMap('map-home-svg', PICKS, { legend: true }); }
 
   function renderHoods(elId, activeKey, onPick) {
     var wrap = document.getElementById(elId);
@@ -1556,18 +1647,9 @@
     document.getElementById('cat-picks-title').textContent =
       state.catHood === "all" ? "All " + c.name.toLowerCase() + " picks" :
       c.name + " in " + HOODS.filter(function (x) { return x.id === state.catHood; })[0].name;
-    var mapFrame = document.getElementById('map-cat-frame');
-    if (mapFrame) {
-      var hoodQ = {
-        all:"Seoul", seongsu:"Seongsu-dong, Seoul", hannam:"Hannam-dong, Seoul",
-        apgujeong:"Apgujeong Rodeo, Seoul", gangnam:"Gangnam Station, Seoul",
-        yeonnam:"Yeonnam-dong, Seoul", mangwon:"Mangwon-dong, Seoul"
-      };
-      var mq = hoodQ[state.catHood] || "Seoul";
-      var msrc = "https://www.google.com/maps?q=" + encodeURIComponent(mq) +
-        "&z=" + (state.catHood === "all" ? 12 : 15) + "&output=embed";
-      if (mapFrame.getAttribute('src') !== msrc) mapFrame.src = msrc;
-    }
+    renderMap('map-cat-svg',
+      PICKS.filter(function (p) { return p.cat === state.curCat; }),
+      { activeHood: state.catHood, legend: false });
     updateMapLabels();
   }
 
@@ -1658,14 +1740,15 @@
       if (newPicks.length) { newPicks.sort(function (a, b) { return a._o - b._o; }); inheritImg(newPicks, PICKS); PICKS = newPicks; }
       if (newTrending.length) { newTrending.sort(function (a, b) { return a._o - b._o; }); inheritImg(newTrending, TRENDING); TRENDING = newTrending; }
       if (heroImg) document.getElementById('hero-img').innerHTML = '<img src="' + heroImg + '" alt="">';
-      renderHome(); renderFeed();
+      renderHome(); renderFeed(); renderHomeMap();
       if (state.curCat) renderCatPage();
     })
     .catch(function () { /* 시트를 못 읽으면 기본 콘텐츠 유지 */ });
 
   // ═══ INIT ═══════════════════════════════════════════════════════
   try { if (localStorage.getItem("su-lang") === "ko") state.lang = "ko"; } catch(e) {}
-  renderHome(); renderFeed(); route();
+  document.getElementById('chat-fab').setAttribute('href', CHAT_LINK);
+  renderHome(); renderFeed(); renderHomeMap(); route();
   applyLang();
 
   // Old PWA cleanup
