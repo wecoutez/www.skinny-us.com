@@ -748,7 +748,7 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v13</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v14</span></div>
     </div>
   </section>
 
@@ -1487,7 +1487,11 @@
         (p.av ? '<div class="sblock avoid"><span class="lb">' + L('skip') + '</span><p>' + tr(p,'av') + '</p></div>' : '') +
         (function(){
           var nBtn = p.map ? '<a class="mapbtn" href="' + p.map + '" target="_blank" rel="noopener">' + L('mapBtn') + '</a>' : '';
-          var gBtn = p.gmap ? '<a class="mapbtn gmap" href="' + p.gmap + '" target="_blank" rel="noopener">' + L('gmapBtn') + '</a>' : '';
+          var gHref = p.gmap || "";
+          var gm = gHref.match(/maps\/place\/\?q=place_id:([^&"]+)/);
+          if (gm) gHref = "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent((p.t || "") + (p.loc ? ", " + p.loc : "") + ", Seoul") + "&query_place_id=" + gm[1];
+          var gBtn = gHref ? '<a class="mapbtn gmap" href="' + gHref + '" target="_blank" rel="noopener">' + L('gmapBtn') + '</a>' : '';
           if (!nBtn && !gBtn) return '';
           return '<div class="maprow">' + (state.lang === 'ko' ? nBtn + gBtn : gBtn + nBtn) + '</div>';
         })();
@@ -2075,7 +2079,7 @@
           iShow = h.indexOf("show"), iOrder = h.indexOf("order"),
           iTier = h.indexOf("tier"), iWt = h.indexOf("why_trust"), iOt = h.indexOf("order_tip"),
           iAv = h.indexOf("avoid_if"), iPr = h.indexOf("price_range"), iBf = h.indexOf("best_for"),
-          iMap = h.indexOf("map_link");
+          iMap = h.indexOf("map_link"), iGmap = h.indexOf("gmap_link");
       if (iType < 0 || iTitle < 0) return;
       var newPicks = [], newTrending = [], heroImg = "";
       rows.slice(1).forEach(function (r) {
@@ -2092,7 +2096,7 @@
           newPicks.push({ cat: cat, hood: g(iArea).toLowerCase().replace(/[^a-z]/g, ""),
             t: g(iTitle), loc: g(iArea), meta: g(iSub),
             tier: tier, wt: g(iWt), ot: g(iOt), av: g(iAv),
-            pr: g(iPr), bf: g(iBf), map: g(iMap),
+            pr: g(iPr), bf: g(iBf), map: g(iMap), gmap: g(iGmap),
             e: EMOJIS[cat] || "🌸", g: GRADS[cat] || GRADS.eat, img: img || null, _o: order });
         } else if (type === "trending") {
           newTrending.push({ k: g(iArea).toUpperCase(), t: g(iTitle), p: g(iSub), e: "🌸", img: img || null, _o: order });
@@ -2104,6 +2108,8 @@
             var b = base[i];
             if (b.t === n.t || (b.ko && n.t && b.ko.t === n.t)) {
               if (!n.img && b.img) n.img = b.img;
+              if (!n.gmap && b.gmap) n.gmap = b.gmap;
+              if (!n.map && b.map) n.map = b.map;
               if (!n.sub && b.sub) n.sub = b.sub;
               if (!n.d && b.d) { n.d = b.d; if (b.ko && b.ko.d) { n.ko = n.ko || {}; if (n.ko.d == null) n.ko.d = b.ko.d; } }
               break;
