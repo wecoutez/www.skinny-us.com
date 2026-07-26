@@ -293,12 +293,6 @@
   .cat-hero .img img { width:100%; height:100%; object-fit:cover; }
   .cat-hero .img::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.6)); }
   .cat-hero > *:not(.img) { position:relative; }
-  .cat-hero .back {
-    position:absolute; top:14px; left:var(--gx); z-index:2;
-    display:inline-flex; align-items:center; gap:6px; border:none; cursor:pointer;
-    font-size:12px; font-weight:700; color:#111;
-    background:rgba(255,255,255,0.94); border:1px solid var(--line); padding:8px 15px; border-radius:999px;
-  }
   .cat-hero h1 { font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic; font-size:46px; line-height:1.05; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,0.5); }
   .cat-hero h1 em { font-style:normal; }
   .cat-hero p { font-size:14.5px; font-weight:500; color:rgba(255,255,255,0.92); margin-top:6px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
@@ -378,6 +372,21 @@
   .mapblock .map-note { font-size:11.5px; color:#9A937F; margin-top:8px; text-align:center; }
   .cat-eat .mapblock h3 { color:#8A5A34; }
   .cat-trend .mapblock h3 { color:#111; }
+  .sub-tabs { display:flex; gap:6px; padding:9px var(--gx) 10px; overflow-x:auto; scrollbar-width:none;
+    background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line); }
+  .sub-tabs::-webkit-scrollbar { display:none; }
+  .sub-tabs:empty { display:none; }
+  .sub-tab { flex:0 0 auto; border:1px solid var(--line); background:#fff; color:#666; cursor:pointer;
+    font-size:11.5px; font-weight:700; padding:7px 12px; border-radius:999px; white-space:nowrap;
+    transition:background .15s, color .15s; }
+  .sub-tab i { font-style:normal; font-weight:700; opacity:0.5; margin-left:4px; font-size:10px; }
+  .sub-tab.active { color:#fff; border-color:transparent; }
+  .sub-tab.active i { opacity:0.8; }
+  .cat-eat .sub-tab.active { background:#B4451F; }
+  .cat-trend .sub-tab.active { background:#B02A2A; }
+  .cat-beauty .sub-tab.active { background:#A76F92; }
+  .cat-body .sub-tab.active { background:#5E8C5A; }
   .cat-eat .sub-head span { color:#B4451F; }
   .cat-eat .sub-head i { color:#8A5A34; background:#F5E6D2; }
   .cat-eat .sub-head::after { border-top-color:#E9CBA2; }
@@ -768,11 +777,11 @@
         <button class="cat-tab" data-cat="body" onclick="go('cat','body')">Body</button>
         <button class="cat-tab" data-cat="all" onclick="go('home')">Search</button>
       </div>
+      <div class="sub-tabs" id="sub-tabs"></div>
     </div>
 
     <header class="cat-hero">
       <div class="img"><img id="cat-img" src="" alt="" onerror="this.style.display='none'" onload="this.style.display=''"></div>
-      <button class="back" onclick="go('home')">← All</button>
       <div class="cat-eyebrow" id="cat-eyebrow"></div>
       <h1 id="cat-title"></h1>
       <p id="cat-desc"></p>
@@ -1110,7 +1119,7 @@
   }
 
   // ═══ ROUTER ═════════════════════════════════════════════════════
-  var state = { hood:"all", q:"", catHood:"all", curCat:null, lang:"en" };
+  var state = { hood:"all", q:"", catHood:"all", catSub:"all", curCat:null, lang:"en" };
 
   // ═══ LANGUAGE (EN/KO) ═══════════════════════════════════════════
   var UI = {
@@ -1238,7 +1247,7 @@
       return;
     }
     if (view === 'cat') {
-      state.curCat = arg; state.catHood = "all";
+      state.curCat = arg; state.catHood = "all"; state.catSub = "all";
       renderCatPage();
       showView('cat');
       try { location.hash = '#/c/' + arg; } catch (e) {}
@@ -1277,7 +1286,7 @@
     if ((mCat || h === '#/home') && !IS_MEMBER) {
       showView('gate');
     } else if (mCat && CATS[mCat[1]]) {
-      state.curCat = mCat[1]; state.catHood = "all";
+      state.curCat = mCat[1]; state.catHood = "all"; state.catSub = "all";
       renderCatPage();
       showView('cat');
     } else if (h === '#/home') {
@@ -1514,6 +1523,97 @@
     });
   }
 
+  var GROUP_CONF = {
+    beauty: {
+      order: ['sauna','spa','esthe','derm','nail','shop','etc'],
+      labels: {
+        sauna:{en:'Sauna & jjimjil',ko:'사우나 · 찜질'},
+        spa:{en:'Spa & massage',ko:'스파 · 마사지'},
+        esthe:{en:'Aesthetic',ko:'에스테틱'},
+        derm:{en:'Dermatology',ko:'피부과'},
+        nail:{en:'Nail',ko:'네일'},
+        shop:{en:'Beauty shopping',ko:'뷰티 쇼핑'},
+        etc:{en:'Beauty culture & more',ko:'뷰티 컬처 · 그 외'}
+      },
+      subOf: function (p) {
+        if (p.sub) return p.sub;
+        var m = ((p.meta || '') + ' ' + (p.t || '')).toLowerCase();
+        if (m.indexOf('sauna') > -1 || m.indexOf('jjimjil') > -1 || m.indexOf('찜질') > -1) return 'sauna';
+        if (m.indexOf('derm') > -1 || m.indexOf('피부과') > -1) return 'derm';
+        if (m.indexOf('nail') > -1 || m.indexOf('네일') > -1) return 'nail';
+        if (m.indexOf('aesthetic') > -1 || m.indexOf('에스테틱') > -1) return 'esthe';
+        if (m.indexOf('spa') > -1 || m.indexOf('massage') > -1 || m.indexOf('body care') > -1 || m.indexOf('마사지') > -1) return 'spa';
+        if (m.indexOf('pharmacy') > -1 || m.indexOf('shopping') > -1 || m.indexOf('flagship') > -1 || m.indexOf('쇼핑') > -1 || m.indexOf('약국') > -1) return 'shop';
+        return 'etc';
+      }
+    },
+    eat: {
+      order: ['kr','intl','cafe','bakery','bar','etc'],
+      labels: {
+        kr:{en:'Korean tables',ko:'한식'},
+        intl:{en:'Global tables',ko:'인터내셔널'},
+        cafe:{en:'Cafés & dessert',ko:'카페 · 디저트'},
+        bakery:{en:'Bakeries',ko:'베이커리'},
+        bar:{en:'Bars & drinks',ko:'바 · 술'},
+        etc:{en:'More to eat',ko:'그 외'}
+      },
+      subOf: function (p) {
+        if (p.sub) return p.sub;
+        var m = ((p.meta || '') + ' ' + (p.t || '')).toLowerCase();
+        if (/\bbar\b|wine|natural wine|pocha/.test(m)) return 'bar';
+        if (/bakery|bread|loaf|toast|donut|빵/.test(m)) return 'bakery';
+        if (/cafe|coffee|roastery|specialty|dessert|gelato|카페/.test(m)) return 'cafe';
+        if (/italian|french|japanese|chinese|shabu|hot pot|pizza|pasta|sushi/.test(m)) return 'intl';
+        if (/korean|naengmyeon|bossam|hanwoo|bbq|donkatsu|tofu|set meal|royal|home-style|noodle|makguksu|dried fish|한식/.test(m)) return 'kr';
+        return 'etc';
+      }
+    },
+    trend: {
+      order: ['popup','food','ip','moment','space','etc'],
+      labels: {
+        popup:{en:'Pop-ups now',ko:'지금 팝업'},
+        food:{en:'Food & dessert waves',ko:'푸드 · 디저트'},
+        ip:{en:'Characters & collabs',ko:'캐릭터 · 콜라보'},
+        moment:{en:'Seasonal moments',ko:'시즌 모먼트'},
+        space:{en:'Spaces & stays',ko:'공간 · 스테이'},
+        etc:{en:'More trends',ko:'그 외'}
+      },
+      subOf: function (p) {
+        if (p.sub) return p.sub;
+        var m = ((p.meta || '') + ' ' + (p.t || '')).toLowerCase();
+        if (/popup|pop-up|truck|gacha|팝업/.test(m)) return 'popup';
+        if (/hangul|halloween|day\b|seasonal moment/.test(m)) return 'moment';
+        if (/character|collab|figure|april fools|ip\b|캐릭터|콜라보/.test(m)) return 'ip';
+        if (/stay|hotel|museum|exhibition|select shop|hanok|gallery|스테이|전시/.test(m)) return 'space';
+        if (/ice cream|dessert|bread|chip|crepe|matcha|mugwort|potato|pumpkin|apple|watermelon|cafe|latte|디저트/.test(m)) return 'food';
+        return 'etc';
+      }
+    }
+  };
+
+  function renderSubTabs(conf, list) {
+    var bar = document.getElementById('sub-tabs');
+    if (!bar) return;
+    bar.innerHTML = "";
+    if (!conf || !list.length) return;
+    var counts = {};
+    list.forEach(function (p) { var s = conf.subOf(p); counts[s] = (counts[s] || 0) + 1; });
+    var avail = conf.order.filter(function (s) { return counts[s]; });
+    if (avail.length < 2) return;
+    var sel = (state.catSub !== "all" && avail.indexOf(state.catSub) > -1) ? state.catSub : "all";
+    function chip(id, label, n) {
+      var b = document.createElement('button');
+      b.className = "sub-tab" + (sel === id ? " active" : "");
+      b.innerHTML = label + (n != null ? '<i>' + n + '</i>' : '');
+      b.addEventListener('click', function () { state.catSub = id; renderCatPage(); });
+      bar.appendChild(b);
+    }
+    chip("all", state.lang === 'ko' ? '전체' : 'All', list.length);
+    avail.forEach(function (s) {
+      chip(s, state.lang === 'ko' ? conf.labels[s].ko : conf.labels[s].en, counts[s]);
+    });
+  }
+
   function renderCatPage() {
     var c = CATS[state.curCat];
     if (!c) return;
@@ -1543,100 +1643,22 @@
       el.addEventListener('click', function () { openSheet(p); });
       return el;
     }
-    if (state.curCat === 'beauty') {
+    var conf = GROUP_CONF[state.curCat];
+    renderSubTabs(conf, list);
+    if (conf) {
       wrap.className = "beauty-groups";
-      var subOrder = ['sauna','spa','esthe','derm','nail','shop','etc'];
-      var subLabels = {
-        sauna:{en:'Sauna & jjimjil',ko:'사우나 · 찜질'},
-        spa:{en:'Spa & massage',ko:'스파 · 마사지'},
-        esthe:{en:'Aesthetic',ko:'에스테틱'},
-        derm:{en:'Dermatology',ko:'피부과'},
-        nail:{en:'Nail',ko:'네일'},
-        shop:{en:'Beauty shopping',ko:'뷰티 쇼핑'},
-        etc:{en:'Beauty culture & more',ko:'뷰티 컬처 · 그 외'}
-      };
-      function beautySub(p) {
-        var m = ((p.meta || '') + ' ' + (p.t || '')).toLowerCase();
-        if (m.indexOf('sauna') > -1 || m.indexOf('jjimjil') > -1 || m.indexOf('찜질') > -1) return 'sauna';
-        if (m.indexOf('derm') > -1 || m.indexOf('피부과') > -1) return 'derm';
-        if (m.indexOf('nail') > -1 || m.indexOf('네일') > -1) return 'nail';
-        if (m.indexOf('aesthetic') > -1 || m.indexOf('에스테틱') > -1) return 'esthe';
-        if (m.indexOf('spa') > -1 || m.indexOf('massage') > -1 || m.indexOf('body care') > -1 || m.indexOf('마사지') > -1) return 'spa';
-        if (m.indexOf('pharmacy') > -1 || m.indexOf('shopping') > -1 || m.indexOf('flagship') > -1 || m.indexOf('쇼핑') > -1 || m.indexOf('약국') > -1) return 'shop';
-        return 'etc';
-      }
       var groups = {};
-      list.forEach(function (p) { var s = beautySub(p); (groups[s] = groups[s] || []).push(p); });
-      subOrder.forEach(function (s) {
-        if (!groups[s]) return;
+      list.forEach(function (p) { var s = conf.subOf(p); (groups[s] = groups[s] || []).push(p); });
+      var avail = conf.order.filter(function (s) { return groups[s]; });
+      var sel = (state.catSub !== "all" && avail.indexOf(state.catSub) > -1) ? state.catSub : "all";
+      (sel === "all" ? avail : [sel]).forEach(function (s) {
         var h = document.createElement('div');
         h.className = 'sub-head';
-        h.innerHTML = '<span>' + (state.lang === 'ko' ? subLabels[s].ko : subLabels[s].en) + '</span><i>' + groups[s].length + '</i>';
+        h.innerHTML = '<span>' + (state.lang === 'ko' ? conf.labels[s].ko : conf.labels[s].en) + '</span><i>' + groups[s].length + '</i>';
         wrap.appendChild(h);
         var g = document.createElement('div');
         g.className = 'cards grid';
         groups[s].forEach(function (p) { g.appendChild(makeCard(p)); shown++; });
-        wrap.appendChild(g);
-      });
-    } else if (state.curCat === 'eat' || state.curCat === 'trend') {
-      wrap.className = "beauty-groups";
-      var conf;
-      if (state.curCat === 'eat') {
-        conf = {
-          order: ['kr','intl','cafe','bakery','bar','etc'],
-          labels: {
-            kr:{en:'Korean tables',ko:'한식'},
-            intl:{en:'Global tables',ko:'인터내셔널'},
-            cafe:{en:'Cafés & dessert',ko:'카페 · 디저트'},
-            bakery:{en:'Bakeries',ko:'베이커리'},
-            bar:{en:'Bars & drinks',ko:'바 · 술'},
-            etc:{en:'More to eat',ko:'그 외'}
-          },
-          subOf: function (p) {
-            if (p.sub) return p.sub;
-            var m = ((p.meta || '') + ' ' + (p.t || '')).toLowerCase();
-            if (/\bbar\b|wine|natural wine|pocha/.test(m)) return 'bar';
-            if (/bakery|bread|loaf|toast|donut|빵/.test(m)) return 'bakery';
-            if (/cafe|coffee|roastery|specialty|dessert|gelato|카페/.test(m)) return 'cafe';
-            if (/italian|french|japanese|chinese|shabu|hot pot|pizza|pasta|sushi/.test(m)) return 'intl';
-            if (/korean|naengmyeon|bossam|hanwoo|bbq|donkatsu|tofu|set meal|royal|home-style|noodle|makguksu|dried fish|한식/.test(m)) return 'kr';
-            return 'etc';
-          }
-        };
-      } else {
-        conf = {
-          order: ['popup','food','ip','moment','space','etc'],
-          labels: {
-            popup:{en:'Pop-ups now',ko:'지금 팝업'},
-            food:{en:'Food & dessert waves',ko:'푸드 · 디저트'},
-            ip:{en:'Characters & collabs',ko:'캐릭터 · 콜라보'},
-            moment:{en:'Seasonal moments',ko:'시즌 모먼트'},
-            space:{en:'Spaces & stays',ko:'공간 · 스테이'},
-            etc:{en:'More trends',ko:'그 외'}
-          },
-          subOf: function (p) {
-            if (p.sub) return p.sub;
-            var m = ((p.meta || '') + ' ' + (p.t || '')).toLowerCase();
-            if (/popup|pop-up|truck|gacha|팝업/.test(m)) return 'popup';
-            if (/hangul|halloween|day\b|seasonal moment/.test(m)) return 'moment';
-            if (/character|collab|figure|april fools|ip\b|캐릭터|콜라보/.test(m)) return 'ip';
-            if (/stay|hotel|museum|exhibition|select shop|hanok|gallery|스테이|전시/.test(m)) return 'space';
-            if (/ice cream|dessert|bread|chip|crepe|matcha|mugwort|potato|pumpkin|apple|watermelon|cafe|latte|디저트/.test(m)) return 'food';
-            return 'etc';
-          }
-        };
-      }
-      var groups2 = {};
-      list.forEach(function (p) { var s = conf.subOf(p); (groups2[s] = groups2[s] || []).push(p); });
-      conf.order.forEach(function (s) {
-        if (!groups2[s]) return;
-        var h = document.createElement('div');
-        h.className = 'sub-head';
-        h.innerHTML = '<span>' + (state.lang === 'ko' ? conf.labels[s].ko : conf.labels[s].en) + '</span><i>' + groups2[s].length + '</i>';
-        wrap.appendChild(h);
-        var g = document.createElement('div');
-        g.className = 'cards grid';
-        groups2[s].forEach(function (p) { g.appendChild(makeCard(p)); shown++; });
         wrap.appendChild(g);
       });
     } else {
