@@ -369,6 +369,62 @@
   .chat-fab:active { transform:scale(0.95); }
   .chat-fab .ic { font-size:15px; line-height:1; }
   body.gated .chat-fab { display:none; }
+  /* ── 1:1 chat panel ── */
+  .chatpanel { position:fixed; right:14px; bottom:calc(76px + env(safe-area-inset-bottom,0px)); z-index:55;
+    width:min(360px, calc(100vw - 28px)); max-height:min(540px, 72vh);
+    display:none; flex-direction:column; background:#fff; border-radius:22px; overflow:hidden;
+    box-shadow:0 24px 60px rgba(122,26,58,0.3); border:1px solid var(--line); }
+  .chatpanel.on { display:flex; }
+  .cp-head { position:relative; padding:14px 44px 12px 16px; background:linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3)); }
+  .cp-head b { display:block; font-size:15px; color:#111; }
+  .cp-head #cp-sub { font-size:11px; color:rgba(0,0,0,0.55); font-weight:600; }
+  .cp-x { position:absolute; top:10px; right:10px; width:28px; height:28px; border-radius:50%;
+    border:none; cursor:pointer; background:rgba(255,255,255,0.7); color:#111; font-size:13px; }
+  .cp-name { border:none; border-bottom:1px solid var(--line); padding:9px 16px; font-family:inherit; font-size:12px; outline:none; color:#444; background:#FFFCF9; }
+  .cp-msgs { flex:1; overflow-y:auto; padding:12px 12px 6px; background:#FDFBF7; min-height:160px; }
+  .cp-hello { font-size:12px; color:#B78CA4; text-align:center; padding:10px 16px; }
+  .cp-b { max-width:82%; margin:0 0 8px; padding:9px 12px; border-radius:16px; font-size:13px; line-height:1.45; white-space:pre-wrap; word-break:break-word; }
+  .cp-b.me { margin-left:auto; background:linear-gradient(155deg,var(--g1),var(--g2)); color:#111; border-bottom-right-radius:5px; }
+  .cp-b.them { margin-right:auto; background:#fff; border:1px solid var(--line); color:#333; border-bottom-left-radius:5px; }
+  .cp-b .ts { display:block; font-size:9.5px; opacity:0.5; margin-top:3px; }
+  .cp-inputrow { display:flex; gap:8px; padding:10px 12px; border-top:1px solid var(--line); background:#fff; }
+  .cp-inputrow input { flex:1; border:1px solid var(--line); border-radius:999px; padding:10px 14px; font-family:inherit; font-size:13px; outline:none; }
+  .cp-inputrow button { width:40px; height:40px; border-radius:50%; border:none; cursor:pointer;
+    background:linear-gradient(155deg,var(--g2),var(--g3)); color:#111; font-size:15px; flex-shrink:0; }
+  /* ── admin ── */
+  .adminwrap { position:fixed; inset:0; z-index:70; display:none; flex-direction:column; background:#FDFBF7; }
+  .adminwrap.on { display:flex; }
+  .ad-top { display:flex; align-items:center; gap:10px; padding:14px 16px; background:#fff; border-bottom:1px solid var(--line); }
+  .ad-top b { flex:1; font-size:15px; color:var(--ink); }
+  .ad-top button { border:1px solid var(--line); background:#fff; border-radius:999px; padding:7px 13px; font-size:12px; font-weight:700; cursor:pointer; color:#333; }
+  .ad-gate { display:flex; gap:8px; padding:26px 18px; flex-wrap:wrap; }
+  .ad-gate input { flex:1; min-width:180px; border:1px solid var(--line); border-radius:12px; padding:11px 14px; font-family:inherit; font-size:14px; }
+  .ad-gate button { border:none; border-radius:12px; padding:11px 20px; font-weight:700; cursor:pointer; background:linear-gradient(155deg,var(--g1),var(--g3)); }
+  .ad-gate p { width:100%; color:#B02A2A; font-size:12px; }
+  .ad-body { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+  .ad-tabs { display:flex; gap:8px; padding:12px 16px 4px; }
+  .ad-tab { border:1px solid var(--line); background:#fff; border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:700; cursor:pointer; color:#666; }
+  .ad-tab.active { background:#F6D9E4; color:var(--ink); border-color:transparent; }
+  .ad-tab i { font-style:normal; font-size:10.5px; opacity:0.7; margin-left:3px; }
+  #ad-msgs, #ad-mems { flex:1; overflow-y:auto; padding:10px 16px 30px; }
+  .ad-row { display:block; width:100%; text-align:left; background:#fff; border:1px solid var(--line); border-radius:14px; padding:11px 13px; margin-bottom:8px; cursor:pointer; font-family:inherit; }
+  .ad-row .who { font-size:12.5px; font-weight:800; color:#333; }
+  .ad-row .who .badge { display:inline-block; min-width:17px; text-align:center; background:#B02A2A; color:#fff; border-radius:999px; font-size:10px; padding:1px 5px; margin-left:6px; }
+  .ad-row .last { font-size:12px; color:#777; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ad-row .when { font-size:10px; color:#AAA; margin-top:2px; }
+  .ad-back { border:none; background:none; color:var(--ink); font-weight:700; font-size:12.5px; cursor:pointer; padding:4px 0 10px; }
+  .ad-convo { background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px; max-height:52vh; overflow-y:auto; margin-bottom:10px; }
+  .ad-addrow { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  .ad-addrow input { flex:1; min-width:110px; border:1px solid var(--line); border-radius:10px; padding:9px 11px; font-family:inherit; font-size:12.5px; }
+  .ad-addrow button { border:none; border-radius:10px; padding:9px 14px; font-weight:700; cursor:pointer; background:#F6D9E4; color:var(--ink); }
+  .ad-mem { background:#fff; border:1px solid var(--line); border-radius:14px; padding:11px 13px; margin-bottom:8px; }
+  .ad-mem .l1 { display:flex; align-items:center; gap:8px; }
+  .ad-mem .l1 b { flex:1; font-size:12.5px; color:#333; word-break:break-all; }
+  .ad-mem .st { font-size:10px; font-weight:800; border-radius:999px; padding:3px 9px; cursor:pointer; border:none; }
+  .ad-mem .st.active { background:#E4F1DC; color:#4A7A3C; }
+  .ad-mem .st.paused { background:#F3E3E3; color:#A33; }
+  .ad-mem .del { border:none; background:none; color:#C99; cursor:pointer; font-size:12px; }
+  .ad-mem .nt { font-size:11.5px; color:#888; margin-top:4px; }
   .mapcanvas { width:100%; border-radius:16px; overflow:hidden; background:#FBF9F3; border:1px solid #EFE8DB; }
   .mapcanvas svg { display:block; width:100%; height:auto; }
   .mapcanvas .dot { cursor:pointer; }
@@ -811,6 +867,59 @@
 
     <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
   </section>
+
+  <div class="chatpanel" id="chatpanel">
+    <div class="cp-head">
+      <b id="cp-title">1:1 Chat</b>
+      <span id="cp-sub">Seoul curator · replies within a day</span>
+      <button class="cp-x" onclick="toggleChatPanel(false)" aria-label="Close">✕</button>
+    </div>
+    <input class="cp-name" id="cp-name" placeholder="Name or email (optional)">
+    <div class="cp-msgs" id="cp-msgs"><div class="cp-hello" id="cp-hello">Ask anything about Seoul — I read every message. 🌸</div></div>
+    <div class="cp-inputrow">
+      <input id="cp-text" placeholder="Type your question…" autocomplete="off">
+      <button id="cp-send" onclick="cpSend()">➤</button>
+    </div>
+  </div>
+
+  <div class="adminwrap" id="adminwrap">
+    <div class="ad-top">
+      <b>Skinny-us Admin</b>
+      <button onclick="adRefresh()" id="ad-refresh">↻ Refresh</button>
+      <button onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="ad-gate" id="ad-gate">
+      <input id="ad-key" type="password" placeholder="Admin key">
+      <button onclick="adLogin()">Enter</button>
+      <p id="ad-err" style="display:none">Wrong key.</p>
+    </div>
+    <div class="ad-body" id="ad-body" style="display:none">
+      <div class="ad-tabs">
+        <button class="ad-tab active" data-t="msgs" onclick="adTab('msgs')">Messages <i id="ad-unread"></i></button>
+        <button class="ad-tab" data-t="mems" onclick="adTab('mems')">Members <i id="ad-memcount"></i></button>
+      </div>
+      <div id="ad-msgs">
+        <div id="ad-threadlist"></div>
+        <div id="ad-thread" style="display:none">
+          <button class="ad-back" onclick="adBackToList()">← All conversations</button>
+          <div class="ad-convo" id="ad-convo"></div>
+          <div class="cp-inputrow">
+            <input id="ad-reply" placeholder="Reply…" autocomplete="off">
+            <button id="ad-reply-send" onclick="adSendReply()">➤</button>
+          </div>
+        </div>
+      </div>
+      <div id="ad-mems" style="display:none">
+        <div class="ad-addrow">
+          <input id="am-email" placeholder="email">
+          <input id="am-name" placeholder="name">
+          <input id="am-note" placeholder="note">
+          <button onclick="adAddMember()">＋ Add</button>
+        </div>
+        <div id="ad-memlist"></div>
+      </div>
+    </div>
+  </div>
 
   <a class="chat-fab" id="chat-fab" href="#" onclick="return openChat(event)" aria-label="1:1 chat with the curator"><span class="ic">💬</span><span id="chat-fab-label">1:1 Chat</span></a>
 
@@ -1295,6 +1404,8 @@
       showView('cat');
     } else if (h === '#/home') {
       showView('home');
+    } else if (h === '#/suadmin') {
+      showView('entry'); openAdmin();
     } else if (h === '#/gate') {
       showView('gate');
     } else {
@@ -1398,6 +1509,10 @@
   //   나는 Tawk 아이폰 앱 푸시로 받아서 문자하듯 답장 (2분 설정: tawk.to 가입
   //   → Administration → Chat Widget → "Direct Chat Link"의 embed 주소 복사)
   //   예: "https://embed.tawk.to/65a1b2c3d4e5f6a7b8c9d0e1/1hkabcdef"
+  // 방법 0 (최우선, 추천): 자체 채팅 + 어드민 — skinnyus-backend.gs 를
+  //   Apps Script 웹앱으로 배포한 URL을 넣으면 사이트 안 채팅창 + #/suadmin 어드민이 켜져요.
+  //   예: "https://script.google.com/macros/s/AKfycb.../exec"
+  var CHAT_API = "";
   var CHAT_TAWK_SRC = "";
   // 방법 B (Tawk 미설정 시 폴백): 링크로 바로 연결
   //   문자 "sms:+8210...", WhatsApp "https://wa.me/8210...", 카카오 오픈채팅 URL 등
@@ -1405,6 +1520,7 @@
 
   var tawkLoaded = false;
   function openChat(ev) {
+    if (CHAT_API) { if (ev && ev.preventDefault) ev.preventDefault(); toggleChatPanel(true); return false; }
     if (!CHAT_TAWK_SRC) return true; // 폴백: href(CHAT_LINK)로 그냥 이동
     if (ev && ev.preventDefault) ev.preventDefault();
     if (tawkLoaded) {
@@ -1425,6 +1541,173 @@
     s.setAttribute("crossorigin", "*");
     document.body.appendChild(s);
     return false;
+  }
+
+  // ═══ 1:1 CHAT PANEL + ADMIN (CHAT_API = Apps Script) ═══════════
+  function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function apiGet(p){ var q=Object.keys(p).map(function(k){return k+"="+encodeURIComponent(p[k]);}).join("&");
+    return fetch(CHAT_API+"?"+q).then(function(r){return r.json();}); }
+  function apiPost(b){ return fetch(CHAT_API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(b)}).then(function(r){return r.json();}); }
+  function getVid(){ try{ var v=localStorage.getItem("su_vid"); if(!v){ v="v"+Date.now().toString(36)+Math.random().toString(36).slice(2,8); localStorage.setItem("su_vid",v);} return v; }catch(e){ return "v-anon"; } }
+  function fmtTs(t){ var d=new Date(t); if(isNaN(d)) return ""; return (d.getMonth()+1)+"/"+d.getDate()+" "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2); }
+
+  var cpTimer=null, cpLast=0;
+  function toggleChatPanel(open){
+    var p=document.getElementById('chatpanel');
+    p.classList.toggle('on', open);
+    if(open){
+      try{ var nm=localStorage.getItem("su_name"); if(nm) document.getElementById('cp-name').value=nm; }catch(e){}
+      cpLoad(); if(cpTimer) clearInterval(cpTimer); cpTimer=setInterval(cpLoad, 9000);
+      setTimeout(function(){ try{document.getElementById('cp-text').focus();}catch(e){} },150);
+    } else if(cpTimer){ clearInterval(cpTimer); cpTimer=null; }
+  }
+  function cpRender(msgs){
+    var box=document.getElementById('cp-msgs');
+    var hello=document.getElementById('cp-hello');
+    if(hello) hello.style.display = msgs.length ? "none" : "block";
+    var htmlStr = msgs.map(function(m){
+      var me = m.from==="visitor";
+      return '<div class="cp-b '+(me?'me':'them')+'">'+esc(m.text)+'<span class="ts">'+fmtTs(m.ts)+'</span></div>';
+    }).join("");
+    var keep = hello ? hello.outerHTML : "";
+    box.innerHTML = keep + htmlStr;
+    box.scrollTop = box.scrollHeight;
+  }
+  function cpLoad(){
+    if(!CHAT_API) return;
+    apiGet({action:"thread", vid:getVid()}).then(function(r){
+      if(r && r.ok){ cpRender(r.messages||[]); }
+    }).catch(function(){});
+  }
+  function cpSend(){
+    var inp=document.getElementById('cp-text');
+    var txt=(inp.value||"").trim(); if(!txt) return;
+    var name=(document.getElementById('cp-name').value||"").trim();
+    try{ if(name) localStorage.setItem("su_name",name); }catch(e){}
+    inp.value="";
+    var box=document.getElementById('cp-msgs');
+    box.insertAdjacentHTML('beforeend','<div class="cp-b me">'+esc(txt)+'<span class="ts">…</span></div>');
+    box.scrollTop=box.scrollHeight;
+    apiPost({action:"send", vid:getVid(), name:name, text:txt}).then(cpLoad).catch(function(){});
+    track('chat:send');
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key!=="Enter") return;
+    if(document.activeElement && document.activeElement.id==="cp-text") cpSend();
+    if(document.activeElement && document.activeElement.id==="ad-reply") adSendReply();
+    if(document.activeElement && document.activeElement.id==="ad-key") adLogin();
+  });
+
+  // ── admin ──
+  var AD={ key:null, data:null, vid:null };
+  function openAdmin(){
+    document.getElementById('adminwrap').classList.add('on');
+    document.body.style.overflow='hidden';
+    try{ AD.key = localStorage.getItem("su_adkey"); }catch(e){}
+    if(AD.key){ adShowBody(); adRefresh(); }
+  }
+  function closeAdmin(){
+    document.getElementById('adminwrap').classList.remove('on');
+    document.body.style.overflow='';
+    try{ location.hash="#/"; }catch(e){}
+  }
+  function adShowBody(){ document.getElementById('ad-gate').style.display='none'; document.getElementById('ad-body').style.display='flex'; }
+  function adLogin(){
+    var k=(document.getElementById('ad-key').value||"").trim(); if(!k) return;
+    AD.key=k;
+    adRefresh(function(ok){
+      if(ok){ try{localStorage.setItem("su_adkey",k);}catch(e){} adShowBody(); }
+      else { document.getElementById('ad-err').style.display='block'; AD.key=null; }
+    });
+  }
+  function adRefresh(cb){
+    if(!CHAT_API||!AD.key){ if(cb) cb(false); return; }
+    var btn=document.getElementById('ad-refresh'); if(btn) btn.textContent="…";
+    apiGet({action:"admin", key:AD.key}).then(function(r){
+      if(btn) btn.textContent="↻ Refresh";
+      if(!(r&&r.ok)){ if(cb) cb(false); return; }
+      AD.data=r; if(cb) cb(true);
+      adRenderThreads(); adRenderMembers();
+      if(AD.vid) adRenderConvo();
+    }).catch(function(){ if(btn) btn.textContent="↻ Refresh"; if(cb) cb(false); });
+  }
+  function adThreads(){
+    var map={}, order=[];
+    (AD.data.messages||[]).forEach(function(m){
+      if(!map[m.vid]){ map[m.vid]={vid:m.vid,name:"",last:"",ts:0,unread:0}; order.push(m.vid); }
+      var t=map[m.vid];
+      if(m.name) t.name=m.name;
+      t.last=(m.from==="admin"?"↩ ":"")+m.text; t.ts=m.ts;
+      if(m.from==="visitor" && !m.read) t.unread++;
+    });
+    return order.map(function(v){return map[v];}).sort(function(a,b){ return new Date(b.ts)-new Date(a.ts); });
+  }
+  function adRenderThreads(){
+    var ths=adThreads();
+    var un=ths.reduce(function(s,t){return s+t.unread;},0);
+    document.getElementById('ad-unread').textContent = un? "("+un+")" : "";
+    document.getElementById('ad-threadlist').innerHTML = ths.length ? ths.map(function(t){
+      return '<button class="ad-row" onclick="adOpenThread(\''+esc(t.vid)+'\')">'+
+        '<div class="who">'+esc(t.name||t.vid)+(t.unread?'<span class="badge">'+t.unread+'</span>':'')+'</div>'+
+        '<div class="last">'+esc(t.last)+'</div><div class="when">'+fmtTs(t.ts)+'</div></button>';
+    }).join("") : '<p style="color:#AAA;font-size:12.5px;padding:10px 2px">No messages yet.</p>';
+  }
+  function adOpenThread(vid){
+    AD.vid=vid;
+    document.getElementById('ad-threadlist').style.display='none';
+    document.getElementById('ad-thread').style.display='block';
+    adRenderConvo();
+  }
+  function adBackToList(){
+    AD.vid=null;
+    document.getElementById('ad-thread').style.display='none';
+    document.getElementById('ad-threadlist').style.display='block';
+  }
+  function adRenderConvo(){
+    var msgs=(AD.data.messages||[]).filter(function(m){return m.vid===AD.vid;});
+    document.getElementById('ad-convo').innerHTML = msgs.map(function(m){
+      var mine = m.from==="admin";
+      return '<div class="cp-b '+(mine?'me':'them')+'">'+esc(m.text)+'<span class="ts">'+(mine?'me':'visitor')+' · '+fmtTs(m.ts)+'</span></div>';
+    }).join("");
+    var c=document.getElementById('ad-convo'); c.scrollTop=c.scrollHeight;
+  }
+  function adSendReply(){
+    var inp=document.getElementById('ad-reply');
+    var txt=(inp.value||"").trim(); if(!txt||!AD.vid) return;
+    inp.value="";
+    apiPost({action:"reply", key:AD.key, vid:AD.vid, text:txt}).then(function(){ adRefresh(); });
+  }
+  function adTab(t){
+    var tabs=document.querySelectorAll('.ad-tab');
+    for(var i=0;i<tabs.length;i++) tabs[i].classList.toggle('active', tabs[i].getAttribute('data-t')===t);
+    document.getElementById('ad-msgs').style.display = t==='msgs'?'block':'none';
+    document.getElementById('ad-mems').style.display = t==='mems'?'block':'none';
+  }
+  function adRenderMembers(){
+    var ms=AD.data.members||[];
+    document.getElementById('ad-memcount').textContent = ms.length? "("+ms.length+")" : "";
+    document.getElementById('ad-memlist').innerHTML = ms.length ? ms.map(function(m){
+      var st = (m.status||"active");
+      return '<div class="ad-mem"><div class="l1"><b>'+esc(m.email)+(m.name?' · '+esc(m.name):'')+'</b>'+
+        '<button class="st '+esc(st)+'" onclick="adToggleStatus(\''+esc(m.email)+'\',\''+esc(st)+'\')">'+esc(st)+'</button>'+
+        '<button class="del" onclick="adDelMember(\''+esc(m.email)+'\')">delete</button></div>'+
+        (m.note?'<div class="nt">'+esc(m.note)+'</div>':'')+
+        '<div class="when" style="font-size:10px;color:#BBB;margin-top:3px">joined '+fmtTs(m.ts)+'</div></div>';
+    }).join("") : '<p style="color:#AAA;font-size:12.5px;padding:6px 2px">No members yet — add from Stripe emails.</p>';
+  }
+  function adAddMember(){
+    var em=(document.getElementById('am-email').value||"").trim(); if(!em) return;
+    var nm=(document.getElementById('am-name').value||"").trim();
+    var nt=(document.getElementById('am-note').value||"").trim();
+    document.getElementById('am-email').value=""; document.getElementById('am-name').value=""; document.getElementById('am-note').value="";
+    apiPost({action:"member", key:AD.key, email:em, name:nm, note:nt, status:"active"}).then(function(){ adRefresh(); });
+  }
+  function adToggleStatus(email, cur){
+    apiPost({action:"member", key:AD.key, email:email, status: cur==="active"?"paused":"active"}).then(function(){ adRefresh(); });
+  }
+  function adDelMember(email){
+    if(!confirm("Delete "+email+"?")) return;
+    apiPost({action:"memberDel", key:AD.key, email:email}).then(function(){ adRefresh(); });
   }
 
   var MAP_POS = {
@@ -1801,7 +2084,7 @@
 
   // ═══ INIT ═══════════════════════════════════════════════════════
   try { if (localStorage.getItem("su-lang") === "ko") state.lang = "ko"; } catch(e) {}
-  if (!CHAT_TAWK_SRC) document.getElementById('chat-fab').setAttribute('href', CHAT_LINK);
+  if (!CHAT_API && !CHAT_TAWK_SRC) document.getElementById('chat-fab').setAttribute('href', CHAT_LINK);
   renderHome(); renderFeed(); renderHomeMap(); route();
   applyLang();
 
