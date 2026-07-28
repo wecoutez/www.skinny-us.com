@@ -173,9 +173,11 @@
     if (key === lastLogged && !extra) return;
     lastLogged = key;
     try {
+      // .catch() 필수 — 네트워크가 막히면 unhandled rejection 이 떠서 결제 화면에 에러가 남는다
       fetch(CHAT_API, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" },
         body: JSON.stringify({ action:"join", name:idName(), email:idEmail(),
-          note:"plan: " + planId + (extra ? " · " + extra : "") }) });
+          note:"plan: " + planId + (extra ? " · " + extra : "") }) })
+        .catch(function(){});
     } catch(e){}
   }
   function refreshGate(){
