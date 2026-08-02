@@ -1407,23 +1407,77 @@
   // Member 판별: 실제 배포 시 Members 로직으로 교체.
   // 테스트: ?member=1 로 접속하면 전체 열람 상태를 시뮬레이션.
   // ── 멤버 입장권 검증 ──
-  // 저장된 입장권은 (1) 현재 MEMBER_CODE와 일치하고 (2) 30일 이내일 때만 유효.
-  // → 코드를 교체하면 기존 기기들도 전부 재입력 필요. 30일 지나면 자동 만료.
-  var MEMBER_CODE = "SEOUL26";
-  var MEMBER_DAYS = 30;
+  // 저장된 입장권은 코드 안의 만료일이 지나지 않았을 때만 유효.
+  // ── 결제자별 개별 코드 (SG-XXXXXX-XXXXX) ──
+  // 코드 안에 만료일과 서명이 들어 있다. 서버 없이 이 자리에서 판별한다.
+  // SK_SECRET 은 code-maker.html · SkinnyCode.swift 와 반드시 같아야 한다.
+  var SK_AB = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  var SK_SECRET = "sknyus-2026-Wc7pQ1zR";
+  var SK_EPOCH = 1767225600;
+  var SK_REVOKED = [];   // revoked.json 을 불러와 채운다
+
+  function skDec(s) {
+    var v = 0;
+    for (var i = 0; i < s.length; i++) {
+      var k = SK_AB.indexOf(s[i]); if (k < 0) return null; v = v * 32 + k;
+    }
+    return v;
+  }
+  function skClean(raw) {
+    return (raw || '').toUpperCase().split('').filter(function (c) {
+      return SK_AB.indexOf(c) > -1;
+    }).join('');
+  }
+  function skSign(payload) {
+    return crypto.subtle.importKey('raw', new TextEncoder().encode(SK_SECRET),
+      { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+      .then(function (key) {
+        return crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
+      })
+      .then(function (buf) {
+        var m = new Uint8Array(buf), o = '';
+        for (var i = 0; i < 5; i++) o += SK_AB[m[i] % 32];
+        return o;
+      });
+  }
+  // 유효하면 만료 시각(ms)을, 아니면 0 을 돌려준다
+  function skCheck(raw) {
+    var c = skClean(raw);
+    if (c.length !== 13 || c.slice(0, 2) !== 'SG') return Promise.resolve(0);
+    if (SK_REVOKED.indexOf(c) > -1) return Promise.resolve(0);
+    var payload = c.slice(2, 8), sig = c.slice(8);
+    return skSign(payload).then(function (mine) {
+      if (mine !== sig) return 0;
+      var d = skDec(payload.slice(0, 3));
+      if (d === null) return 0;
+      var ms = (SK_EPOCH + d * 86400) * 1000;
+      return ms > Date.now() ? ms : 0;
+    }).catch(function () { return 0; });
+  }
+
   function validMemberPass() {
     try {
       var raw = sGet('localStorage', 'su_member');
       if (!raw) return false;
       var p = JSON.parse(raw);
-      if (p.c !== MEMBER_CODE) return false;
-      if (Date.now() - p.t > MEMBER_DAYS * 24 * 60 * 60 * 1000) return false;
-      return true;
+      if (!p.c || !p.e) return false;
+      if (SK_REVOKED.indexOf(skClean(p.c)) > -1) return false;
+      return Date.now() < p.e;
     } catch (e) { return false; }
   }
-  function saveMemberPass() { sSet('localStorage', 'su_member', JSON.stringify({ c: MEMBER_CODE, t: Date.now() })); }
+  function saveMemberPass(code, expiry) {
+    sSet('localStorage', 'su_member', JSON.stringify({ c: skClean(code), e: expiry }));
+  }
+
+  // 유출 코드 목록은 있으면 쓰고 없으면 그냥 넘어간다
+  try {
+    fetch('revoked.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (a) { SK_REVOKED = (a || []).map(skClean); })
+      .catch(function () {});
+  } catch (e) {}
   var IS_MEMBER = /[?&]member=1/.test(location.search) || validMemberPass();
-  if (/[?&]member=1/.test(location.search)) saveMemberPass();
+  if (/[?&]member=1/.test(location.search)) saveMemberPass('TESTTESTTESTX', Date.now() + 86400000);
   function isLocked(p) { return p.tier === "paid" && !IS_MEMBER; }
   function joinCard(n) {
     var el = document.createElement('a');
@@ -1485,15 +1539,17 @@
     setTimeout(function () { try { document.getElementById('g-code-in').focus(); } catch (e) {} }, 60);
   }
   function memberLogin() {
-    var v = (document.getElementById('g-code-in').value || '').trim().toUpperCase();
-    if (v === MEMBER_CODE.toUpperCase()) {
-      track('member:enter');
-      IS_MEMBER = true;
-      saveMemberPass();
-      go('cat','trend');
-    } else {
-      document.getElementById('g-code-err').style.display = 'block';
-    }
+    var v = (document.getElementById('g-code-in').value || '');
+    skCheck(v).then(function (expiry) {
+      if (expiry) {
+        track('member:enter');
+        IS_MEMBER = true;
+        saveMemberPass(v, expiry);
+        go('cat','trend');
+      } else {
+        document.getElementById('g-code-err').style.display = 'block';
+      }
+    });
   }
 
   function route() {
