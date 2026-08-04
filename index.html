@@ -725,6 +725,7 @@
     display:flex; align-items:center; justify-content:center; font-size:52px;
   }
   .sheet .simg img { width:100%; height:100%; object-fit:cover; }
+  .sheet .simg.lockimg { font-size:40px; opacity:.9; }
   .sheet .scat { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
   .sheet h2 { font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic; font-size:31px; letter-spacing:0; line-height:1.1; margin:4px 0 10px; }
   .sheet .chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px; }
@@ -1618,11 +1619,11 @@
   function openSheet(p) {
     var body = document.getElementById('sheet-body');
     var catName = (CATS[p.cat] ? CATS[p.cat].name : p.cat);
-    var html = '<div class="simg" style="background:' + p.g + '">' +
-      (p.img ? '<img src="' + p.img + '" alt="" onerror="this.remove()">' : p.e) + '</div>';
+    var html = '';
 
     if (isLocked(p)) {
-      html += '<div class="scat">' + catName + ' · ' + tr(p,'loc') + '</div>' +
+      html += '<div class="simg lockimg" style="background:' + p.g + '">\uD83D\uDD12</div>' +
+        '<div class="scat">' + catName + ' · ' + tr(p,'loc') + '</div>' +
         '<h2>' + L('lockedTitle') + '</h2>' +
         '<div class="blurline" style="width:82%"></div>' +
         '<div class="blurline" style="width:64%"></div>' +
@@ -1633,7 +1634,9 @@
           '<button class="cta" style="border:none;cursor:pointer;font-family:inherit" onclick="location.href=\'join.html\'">' + L('unlock') + '</button>' +
         '</div>';
     } else {
-      html += '<div class="scat">' + catName + ' · ' + tr(p,'loc') + L('seoul') + '</div>' +
+      html += '<div class="simg" style="background:' + p.g + '">' +
+          (p.img ? '<img src="' + p.img + '" alt="" onerror="this.remove()">' : p.e) + '</div>' +
+        '<div class="scat">' + catName + ' · ' + tr(p,'loc') + L('seoul') + '</div>' +
         '<h2>' + tr(p,'t') + '</h2>' +
         '<div class="chips">' +
           (p.pr ? '<span class="chip">' + p.pr + '</span>' : '') +
