@@ -6,14 +6,13 @@
 <title>Skinny-us — Skinny Genius</title>
 <meta name="description" content="Wellness picks curated by locals. Korea live now — more countries coming.">
 <meta name="theme-color" content="#FFFFFF">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/subsets/Paperlogy-dynamic-subset.css" type="text/css"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
     --white:#FFFFFF; --cream:#FDFBF7; --line:#F1E9E0;
-    --ink:#A8305C; --ink-mid:#C05A82; --ink-soft:#D0739A;
+    --ink:#111111; --ink-mid:#4A4A4A; --ink-soft:#8A8A8A;
     --g1:#F8C8DA; --g2:#F0AEC4; --g3:#E095AE;
     --gx:20px;  /* section side padding */
     --gm:14px;  /* hero side margin */
@@ -115,7 +114,7 @@
     background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
   }
-  .topbar .wordmark { font-family:'Instrument Serif','Paperlogy',sans-serif; font-style:italic; font-weight:400; font-size:24px; letter-spacing:0.01em; color:var(--ink); cursor:pointer; white-space:nowrap; flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; margin-right:auto; }
+  .topbar .wordmark { font-family:'Paperlogy',sans-serif; font-style:normal; font-weight:800; font-size:22px; letter-spacing:-0.02em; color:var(--ink); cursor:pointer; white-space:nowrap; flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; margin-right:auto; }
   .topbar .wordmark em { font-style:normal; color:var(--ink-soft); }
   .topbar .where {
     display:flex; align-items:center; gap:5px; cursor:pointer; border:none; white-space:nowrap; flex-shrink:0;
@@ -127,7 +126,7 @@
     font-size:12px; font-weight:700; color:#111; text-decoration:none; white-space:nowrap; flex-shrink:0;
     padding:8px 14px; border-radius:999px;
     background: linear-gradient(155deg,var(--g1),var(--g2) 50%,var(--g3));
-    box-shadow: 0 8px 18px rgba(224,149,174,0.4);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
   }
 
   /* ═══ HOME HERO ═══ */
@@ -148,14 +147,14 @@
   .hero > *:not(.img) { position: relative; }
   .hero .greet { font-family:'Paperlogy',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.92); text-shadow:0 1px 3px rgba(0,0,0,0.45); }
   .hero h1 {
-    font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic;
-    font-size: clamp(38px,10vw,54px); line-height:1.08; color:#fff;
+    font-family:'Paperlogy',sans-serif; font-weight:800; font-style:normal;
+    font-size: clamp(33px,8.6vw,46px); line-height:1.1; color:#fff;
     text-shadow: 0 2px 10px rgba(0,0,0,0.5); margin:5px 0 16px;
   }
   .search {
     display:flex; align-items:center; gap:10px; width:100%; max-width:520px; margin:0 auto;
     background: rgba(255,255,255,0.97); border-radius:999px; padding:13px 17px;
-    box-shadow: 0 14px 32px rgba(122,26,58,0.3);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.15);
   }
   .search input { text-align:center; }
   .search .icon { font-size:14px; opacity:0.75; }
@@ -164,7 +163,7 @@
   /* ═══ SEARCH TAB — 검색창만 있는 가벼운 헤더 (사진 히어로 없음) ═══ */
   .searchhead { padding:26px var(--gx) 4px; text-align:center; background:var(--white); }
   .searchhead h1 {
-    font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic;
+    font-family:'Paperlogy',sans-serif; font-weight:800; font-style:normal;
     font-size:clamp(30px,8vw,40px); line-height:1.1; color:var(--ink); margin-bottom:14px;
   }
   .searchhead .search { margin:0 auto; }
@@ -182,10 +181,10 @@
   .quote-strip {
     display:flex; align-items:flex-start; gap:11px;
     margin:30px 20px 6px; padding:0;
-    background:none; border:none; border-left:2px solid var(--g2); padding-left:15px; border-radius:0;
+    background:none; border:none; border-left:2px solid #111; padding-left:15px; border-radius:0;
   }
   .quote-strip .mark { display:none; }
-  .quote-strip .q { font-family:'Instrument Serif','Paperlogy',sans-serif; font-style:italic; font-weight:400; font-size:20px; line-height:1.5; color:var(--ink-mid); }
+  .quote-strip .q { font-family:'Paperlogy',sans-serif; font-style:normal; font-weight:600; font-size:17px; line-height:1.5; color:var(--ink-mid); }
   .quote-strip .a { font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:4px; }
 
   /* Sections */
@@ -197,7 +196,7 @@
     width:38px; height:38px; border-radius:50%; border:1px solid var(--line);
     background:rgba(255,255,255,0.95); color:var(--ink); font-size:17px; font-weight:700;
     cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;
-    box-shadow:0 4px 14px rgba(160,80,110,0.22);
+    box-shadow:0 4px 14px rgba(0,0,0,0.11);
   }
   .car-arrow.left { left:8px; }
   .car-arrow.right { right:8px; }
@@ -211,7 +210,7 @@
     background:var(--white); border:1px solid var(--line); border-radius:20px;
     transition: transform .15s, box-shadow .15s;
   }
-  .cattile:hover { transform:translateY(-3px); box-shadow:0 12px 26px rgba(200,120,140,0.16); }
+  .cattile:hover { transform:translateY(-3px); box-shadow:0 12px 26px rgba(0,0,0,0.08); }
   .cattile .em { font-size:24px; display:block; margin-bottom:7px; line-height:1; }
   .cattile b { font-size:12.5px; color:#111; display:block; }
   .cattile span { font-size:11px; color:var(--ink-soft); font-weight:600; }
@@ -224,7 +223,7 @@
     width:64px; height:64px; margin:0 auto; border-radius:20px;
     display:flex; align-items:center; justify-content:center; font-size:24px;
     background: linear-gradient(155deg,var(--g1),var(--g2));
-    box-shadow:0 8px 18px rgba(200,120,140,0.18);
+    box-shadow:0 8px 18px rgba(0,0,0,0.09);
     border:2px solid transparent; transition:border-color .15s, transform .15s;
   }
   .hood.active .tile { border-color: var(--ink); transform: translateY(-2px); }
@@ -238,7 +237,7 @@
   .pcard {
     position:relative; flex:0 0 208px; height:262px; border-radius:24px; overflow:hidden;
     scroll-snap-align:start; cursor:pointer;
-    box-shadow: 0 14px 30px rgba(200,120,140,0.22);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.11);
     display:flex; align-items:flex-end;
     transition: transform .18s;
   }
@@ -259,15 +258,12 @@
   .pcard .info .meta { font-size:11px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px; }
   .pcard .info .desc { font-size:11.5px; line-height:1.45; font-weight:400; color:rgba(255,255,255,0.9); margin-top:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-shadow:0 1px 3px rgba(0,0,0,0.45); }
 
-  /* Korean mode: hangul renders in Paperlogy — no faux italic, real weight instead */
-  html[lang="ko"] .hero h1, html[lang="ko"] .cat-hero h1, html[lang="ko"] .join h2,
-  html[lang="ko"] .gate h1, html[lang="ko"] .sheet h2, html[lang="ko"] .entry .big-title {
-    font-style:normal; font-weight:800; letter-spacing:-0.02em; -webkit-text-stroke:0;
-  }
+  /* 영/한 모두 Paperlogy 하나로 통일 — 언어별 예외 없음 */
 
-  /* Display serif: add weight (Instrument Serif ships only 400) */
-  .hero h1, .cat-hero h1, .join h2, .gate h1 { -webkit-text-stroke:0.7px currentColor; }
-  .topbar .wordmark, .sheet h2, .sheet .lockpanel h3 { -webkit-text-stroke:0.5px currentColor; }
+  /* 산세리프 디스플레이: 굵은 그대로 쓰고 자간만 조인다 */
+  .hero h1, .cat-hero h1, .join h2, .gate h1,
+  .topbar .wordmark, .sheet h2, .sheet .lockpanel h3,
+  .searchhead h1, .cat-trend .sub-head-food span { -webkit-text-stroke:0; letter-spacing:-0.025em; }
 
   /* Category tab bar (always visible on category pages) */
   .cat-stick { position:sticky; top:0; z-index:20; }
@@ -309,7 +305,7 @@
   .cat-hero .img img { width:100%; height:100%; object-fit:cover; }
   .cat-hero .img::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.6)); }
   .cat-hero > *:not(.img) { position:relative; }
-  .cat-hero h1 { font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic; font-size:46px; line-height:1.05; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,0.5); }
+  .cat-hero h1 { font-family:'Paperlogy',sans-serif; font-weight:800; font-style:normal; font-size:39px; line-height:1.05; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,0.5); }
   .cat-hero h1 em { font-style:normal; }
   .cat-hero p { font-size:14.5px; font-weight:500; color:rgba(255,255,255,0.92); margin-top:6px; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
 
@@ -367,9 +363,9 @@
   .cat-beauty .empty, .cat-beauty footer { color:#BB8AA8; }
   .beauty-groups { display:block; }
   .sub-head { display:flex; align-items:center; gap:9px; padding:24px var(--gx) 10px; }
-  .sub-head span { font-family:'Paperlogy',sans-serif; font-size:12.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#A76F92; }
-  .sub-head i { font-style:normal; font-size:11px; font-weight:700; color:#BB8AA8; background:#F6E3EF; border-radius:999px; padding:2px 9px; }
-  .sub-head::after { content:""; flex:1; border-top:1px solid #EBD6E4; }
+  .sub-head span { font-family:'Paperlogy',sans-serif; font-size:12.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#111; }
+  .sub-head i { font-style:normal; font-size:11px; font-weight:700; color:#666; background:#F0F0F0; border-radius:999px; padding:2px 9px; }
+  .sub-head::after { content:""; flex:1; border-top:1px solid #E6E6E6; }
   .mapblock { padding:22px var(--gx) 2px; }
   .mapblock h3 { text-align:center; }
   .mapblock h3 { font-family:'Paperlogy',sans-serif; font-size:12.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#8A8372; margin-bottom:10px; }
@@ -379,17 +375,19 @@
     font-size:13px; font-weight:800; color:#111;
     background:linear-gradient(155deg,var(--g1),var(--g2) 50%,var(--g3));
     padding:13px 17px; border-radius:999px;
-    box-shadow:0 12px 28px rgba(224,149,174,0.55);
+    box-shadow:0 12px 28px rgba(0,0,0,0.275);
     transition:transform .15s;
   }
   .chat-fab:active { transform:scale(0.95); }
   .chat-fab .ic { font-size:15px; line-height:1; }
   body.gated .chat-fab { display:none; }
+  .chat-fab .dot { position:absolute; top:8px; right:10px; width:9px; height:9px; border-radius:50%;
+    background:#C0392B; border:2px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,0.06); }
   /* ── 1:1 chat panel ── */
   .chatpanel { position:fixed; right:14px; bottom:calc(76px + env(safe-area-inset-bottom,0px)); z-index:55;
     width:min(360px, calc(100vw - 28px)); max-height:min(540px, 72vh);
     display:none; flex-direction:column; background:#fff; border-radius:22px; overflow:hidden;
-    box-shadow:0 24px 60px rgba(122,26,58,0.3); border:1px solid var(--line); }
+    box-shadow:0 24px 60px rgba(0,0,0,0.15); border:1px solid var(--line); }
   .chatpanel.on { display:flex; }
   .cp-head { position:relative; padding:14px 44px 12px 16px; background:linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3)); }
   .cp-head b { display:block; font-size:15px; color:#111; }
@@ -405,9 +403,9 @@
   .cp-name:focus, .cp-email:focus { background:#fff; box-shadow:inset 0 -2px 0 var(--ink-soft); }
   .cp-name-err { background:#FBEAEA !important; box-shadow:inset 0 -2px 0 #D98A8A; }
   .cp-name-err::placeholder { color:#B05555; }
-  .cp-idnote { font-size:10.5px; color:#B78CA4; padding:6px 16px 0; background:#FFFCF9; }
+  .cp-idnote { font-size:10.5px; color:#8A8A8A; padding:6px 16px 0; background:#FFFCF9; }
   .cp-msgs { flex:1; overflow-y:auto; padding:12px 12px 6px; background:#FDFBF7; min-height:160px; }
-  .cp-hello { font-size:12px; color:#B78CA4; text-align:center; padding:10px 16px; }
+  .cp-hello { font-size:12px; color:#8A8A8A; text-align:center; padding:10px 16px; }
   .cp-b { max-width:82%; margin:0 0 8px; padding:9px 12px; border-radius:16px; font-size:13px; line-height:1.45; white-space:pre-wrap; word-break:break-word; }
   .cp-b.me { margin-left:auto; background:linear-gradient(155deg,var(--g1),var(--g2)); color:#111; border-bottom-right-radius:5px; }
   .cp-b.them { margin-right:auto; background:#fff; border:1px solid var(--line); color:#333; border-bottom-left-radius:5px; }
@@ -419,6 +417,8 @@
   .cp-warn { margin:0 0 8px; padding:9px 11px; border-radius:12px; background:#FFF6E5; border:1px solid #EFD9A8;
     font-size:11.5px; line-height:1.5; color:#7A5B12; }
   .cp-warn a { color:#7A5B12; font-weight:700; }
+  .cp-stale { margin:0 0 8px; padding:8px 11px; border-radius:12px; background:#F7F7F7; border:1px dashed #D6D6D6;
+    font-size:11.5px; line-height:1.45; color:#444; text-align:center; cursor:pointer; }
   .cp-inputrow { display:flex; gap:8px; padding:10px 12px; border-top:1px solid var(--line); background:#fff; }
   .cp-inputrow input { flex:1; min-width:0; border:1px solid var(--line); border-radius:999px; padding:10px 14px; font-family:inherit; font-size:16px; outline:none; }
   .cp-inputrow button { width:40px; height:40px; border-radius:50%; border:none; cursor:pointer;
@@ -436,7 +436,7 @@
   .ad-body { flex:1; display:flex; flex-direction:column; overflow:hidden; }
   .ad-tabs { display:flex; gap:8px; padding:12px 16px 4px; }
   .ad-tab { border:1px solid var(--line); background:#fff; border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:700; cursor:pointer; color:#666; }
-  .ad-tab.active { background:#F6D9E4; color:var(--ink); border-color:transparent; }
+  .ad-tab.active { background:#111; color:#fff; border-color:transparent; }
   .ad-tab i { font-style:normal; font-size:10.5px; opacity:0.7; margin-left:3px; }
   #ad-msgs, #ad-mems { flex:1; overflow-y:auto; padding:10px 16px 30px; }
   .ad-row { display:block; width:100%; text-align:left; background:#fff; border:1px solid var(--line); border-radius:14px; padding:11px 13px; margin-bottom:8px; cursor:pointer; font-family:inherit; }
@@ -448,7 +448,7 @@
   .ad-convo { background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px; max-height:52vh; overflow-y:auto; margin-bottom:10px; }
   .ad-addrow { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
   .ad-addrow input { flex:1; min-width:110px; border:1px solid var(--line); border-radius:10px; padding:9px 11px; font-family:inherit; font-size:16px; }
-  .ad-addrow button { border:none; border-radius:10px; padding:9px 14px; font-weight:700; cursor:pointer; background:#F6D9E4; color:var(--ink); }
+  .ad-addrow button { border:none; border-radius:10px; padding:9px 14px; font-weight:700; cursor:pointer; background:#111; color:#fff; }
   .ad-mem { background:#fff; border:1px solid var(--line); border-radius:14px; padding:11px 13px; margin-bottom:8px; }
   .ad-mem .l1 { display:flex; align-items:center; gap:8px; }
   .ad-mem .l1 b { flex:1; font-size:12.5px; color:#333; word-break:break-all; }
@@ -477,7 +477,7 @@
     font-size:11.5px; font-weight:700; padding:7px 12px; border-radius:999px; white-space:nowrap;
     transition:background .15s, color .15s; }
   .sub-tab i { font-style:normal; font-weight:700; opacity:0.5; margin-left:4px; font-size:10px; }
-  .sub-tab.active { background:#F6D9E4; color:var(--ink); border-color:transparent; }
+  .sub-tab.active { background:#111; color:#fff; border-color:transparent; }
   .sub-tab.lockch { opacity:0.8; }
   .pcard.joincard { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px;
     background:linear-gradient(155deg,var(--g1),var(--g3)); min-height:180px; text-align:center; padding:18px;
@@ -485,8 +485,8 @@
   /* 리스트 끝의 잠금 해제 카드는 한 칸만 차지하면 옆이 비어 보인다 — 전체 폭으로 편다 */
   .cards.grid .pcard.joincard { grid-column:1 / -1; min-height:150px; }
   .pcard.joincard i { font-style:normal; font-size:26px; }
-  .pcard.joincard b { font-size:15px; color:#5A1B36; line-height:1.3; }
-  .pcard.joincard span { font-size:12px; font-weight:700; color:rgba(90,27,54,0.8); }
+  .pcard.joincard b { font-size:15px; color:#111; line-height:1.3; }
+  .pcard.joincard span { font-size:12px; font-weight:700; color:rgba(0,0,0,0.6); }
   .join .mem-link { display:block; margin-top:12px; font-size:12px; font-weight:700; color:rgba(255,255,255,0.85); text-decoration:underline; text-underline-offset:3px; }
   .sub-tab.active i { opacity:0.65; }
   .cat-eat .sub-head span { color:#B4451F; }
@@ -506,9 +506,9 @@
   .cat-trend .sub-head-food { flex-wrap:wrap; align-items:baseline; padding-top:34px; padding-bottom:4px; }
   .cat-trend .sub-head-food::after { display:none; }
   .cat-trend .sub-head-food span {
-    font-family:'Instrument Serif','Paperlogy',sans-serif;
-    font-weight:400; font-style:italic;
-    font-size:clamp(30px,7.6vw,42px); line-height:1.08;
+    font-family:'Paperlogy',sans-serif;
+    font-weight:800; font-style:normal;
+    font-size:clamp(26px,6.4vw,34px); line-height:1.12;
     letter-spacing:-0.01em; text-transform:none; color:#B02A2A;
   }
   .cat-trend .sub-head-food i { align-self:center; font-size:11.5px; }
@@ -590,7 +590,7 @@
     width:96px; height:96px; border-radius:18px; flex-shrink:0; overflow:hidden;
     display:flex; align-items:center; justify-content:center; font-size:34px;
     background: linear-gradient(155deg,var(--g1),var(--g3));
-    box-shadow: 0 8px 18px rgba(200,120,140,0.16);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
   }
   .feed-item .fthumb img { width:100%; height:100%; object-fit:cover; }
 
@@ -601,16 +601,16 @@
   .join .card-j {
     text-align:center; padding:32px 26px; border-radius:28px;
     background: linear-gradient(155deg,var(--g1),var(--g2) 55%,var(--g3));
-    box-shadow: 0 22px 48px rgba(224,149,174,0.45), inset 0 2px 4px rgba(255,255,255,0.5);
+    box-shadow: 0 22px 48px rgba(0,0,0,0.225), inset 0 2px 4px rgba(255,255,255,0.5);
   }
-  .join h2 { font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic; font-size:34px; color:#fff; text-shadow:0 2px 6px rgba(168,48,92,0.35); line-height:1.12; }
+  .join h2 { font-family:'Paperlogy',sans-serif; font-weight:800; font-style:normal; font-size:28px; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,0.175); line-height:1.12; }
   .join h2 em { font-style:normal; }
-  .join .sub { font-size:12.5px; color:rgba(255,255,255,0.92); margin:10px 0 18px; text-shadow:0 1px 3px rgba(168,48,92,0.3); }
+  .join .sub { font-size:12.5px; color:rgba(255,255,255,0.92); margin:10px 0 18px; text-shadow:0 1px 3px rgba(0,0,0,0.15); }
   .join .cta {
     display:inline-block; text-decoration:none;
     background:#fff; color:#111; font-weight:700; font-size:14px;
     padding:13px 32px; border-radius:999px;
-    box-shadow: 0 12px 26px rgba(168,48,92,0.28);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.14);
   }
   .join .alt { display:block; margin-top:11px; font-size:12.5px; color:rgba(255,255,255,0.85); }
   .join .alt a { color:#fff; }
@@ -640,7 +640,7 @@
   body.gated { overflow:hidden; height:100dvh; overscroll-behavior:none; position:fixed; inset:0; width:100%; background:#000; }
   body.gated #view-home, body.gated #view-cat, body.gated #view-entry { filter:brightness(0.34) saturate(0.85); }
   .gate .g-brand { font-family:'Paperlogy',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.95); text-shadow:0 1px 3px rgba(0,0,0,0.5); }
-  .gate h1 { font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic; font-size:clamp(56px,14vw,88px); line-height:1.02; color:#F8A5C6; text-shadow:0 2px 14px rgba(0,0,0,0.5); margin:14px 0 20px; }
+  .gate h1 { font-family:'Paperlogy',sans-serif; font-weight:800; font-style:normal; font-size:clamp(44px,11vw,68px); line-height:1.04; color:#FFFFFF; text-shadow:0 2px 14px rgba(0,0,0,0.5); margin:14px 0 20px; }
   .gate .g-cred {
     font-family:'Paperlogy',sans-serif; font-size:11.5px; font-weight:700;
     letter-spacing:0.18em; text-transform:uppercase; line-height:1.8;
@@ -663,7 +663,7 @@
     background:rgba(255,255,255,0.95);
   }
   .gate .g-code-btn { padding:12px 20px; border:none; border-radius:20px; cursor:pointer; font-family:inherit; font-size:13px; font-weight:700; color:#111; background:linear-gradient(155deg,var(--g1),var(--g2)); }
-  .gate .g-code-err { display:none; width:100%; font-size:12.5px; color:#FFB3C1; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+  .gate .g-code-err { display:none; width:100%; font-size:12.5px; color:#FF9A9A; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
   body.gated .topbar { visibility:hidden; }
   .gate .g-ver { position:absolute; bottom:calc(35vh + 8px); right:14px; font-size:9px; letter-spacing:0.1em; color:rgba(255,255,255,0.35); font-family:'Space Mono',monospace; }
   .gate .g-back { position:absolute; top:calc(25vh + 20px); left:20px; border:none; cursor:pointer; font-size:12px; font-weight:700; color:#111; background:rgba(255,255,255,0.94); padding:8px 15px; border-radius:999px; }
@@ -687,14 +687,14 @@
     position:absolute; top:11px; right:11px; z-index:2;
     display:inline-flex; align-items:center; gap:4px;
     font-size:10.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
-    color:#fff; background:rgba(122,26,58,0.72); backdrop-filter: blur(4px);
+    color:#fff; background:rgba(0,0,0,0.36); backdrop-filter: blur(4px);
     padding:5px 10px; border-radius:999px;
   }
 
   /* ═══ PICK DETAIL SHEET ═══ */
   .veil {
     position:fixed; inset:0; z-index:40;
-    background:rgba(122,26,58,0.45); backdrop-filter:blur(2px);
+    background:rgba(0,0,0,0.225); backdrop-filter:blur(2px);
     opacity:0; pointer-events:none; transition:opacity .2s;
   }
   .veil.on { opacity:1; pointer-events:auto; }
@@ -705,7 +705,7 @@
     background:var(--white); border-radius:28px 28px 0 0;
     padding:10px 22px calc(28px + env(safe-area-inset-bottom));
     max-height:88dvh; overflow-y:auto;
-    box-shadow:0 -18px 50px rgba(122,26,58,0.3);
+    box-shadow:0 -18px 50px rgba(0,0,0,0.15);
     transition:transform .28s cubic-bezier(.2,.8,.2,1);
   }
   .sheet.on { transform:translate(-50%,0); }
@@ -717,7 +717,7 @@
     display:flex; align-items:center; justify-content:center;
     font-family:inherit; font-size:15px; line-height:1; color:#111;
     background:rgba(255,255,255,0.92); border:1px solid var(--line);
-    box-shadow:0 4px 12px rgba(122,26,58,0.18);
+    box-shadow:0 4px 12px rgba(0,0,0,0.09);
     -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
   }
   .sheet .simg {
@@ -727,7 +727,7 @@
   .sheet .simg img { width:100%; height:100%; object-fit:cover; }
   .sheet .simg.lockimg { font-size:40px; opacity:.9; }
   .sheet .scat { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
-  .sheet h2 { font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic; font-size:31px; letter-spacing:0; line-height:1.1; margin:4px 0 10px; }
+  .sheet h2 { font-family:'Paperlogy',sans-serif; font-weight:800; font-style:normal; font-size:26px; letter-spacing:-0.025em; line-height:1.12; margin:4px 0 10px; }
   .sheet .chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px; }
   .sheet .chip {
     font-size:11.5px; font-weight:700; color:var(--ink);
@@ -735,7 +735,7 @@
     padding:5px 11px; border-radius:999px;
   }
   .sheet .sblock { border-radius:18px; padding:14px 16px; margin-bottom:10px; background:var(--cream); border:1px solid var(--line); }
-  .sheet .sblock.trust { background:linear-gradient(155deg,#FDF0F5,#FBE3EC); border-color:#F5CFDE; }
+  .sheet .sblock.trust { background:linear-gradient(155deg,#FAFAFA,#F2F2F2); border-color:#E4E4E4; }
   .sheet .sblock .lb {
     display:block; font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
     color:var(--ink-soft); margin-bottom:5px;
@@ -751,14 +751,14 @@
   }
   .sheet .lockpanel { text-align:center; padding:26px 18px 8px; }
   .sheet .lockpanel .big { font-size:34px; }
-  .sheet .lockpanel h3 { font-family:'Instrument Serif','Paperlogy',sans-serif; font-weight:400; font-style:italic; font-size:25px; margin:8px 0 6px; }
+  .sheet .lockpanel h3 { font-family:'Paperlogy',sans-serif; font-weight:800; font-style:normal; font-size:21px; margin:8px 0 6px; }
   .sheet .lockpanel p { font-size:12.5px; color:var(--ink-mid); line-height:1.5; margin-bottom:18px; }
   .sheet .lockpanel .cta {
     display:inline-block; text-decoration:none;
     color:#111; font-weight:700; font-size:14px;
     padding:13px 32px; border-radius:999px;
     background:linear-gradient(155deg,var(--g2),var(--g3));
-    box-shadow:0 12px 26px rgba(224,149,174,0.5);
+    box-shadow:0 12px 26px rgba(0,0,0,0.25);
   }
   .sheet .blurline { height:12px; border-radius:6px; background:var(--line); margin:8px auto; filter:blur(2px); }
 
@@ -834,7 +834,7 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v17</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v19</span></div>
     </div>
   </section>
 
@@ -1731,7 +1731,31 @@
   function apiGet(p){ var q=Object.keys(p).map(function(k){return k+"="+encodeURIComponent(p[k]);}).join("&");
     return fetch(CHAT_API+"?"+q).then(function(r){return r.json();}); }
   function apiPost(b){ return fetch(CHAT_API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(b)}).then(function(r){return r.json();}); }
-  function getVid(){ try{ var v=localStorage.getItem("su_vid"); if(!v){ v="v"+Date.now().toString(36)+Math.random().toString(36).slice(2,8); localStorage.setItem("su_vid",v);} return v; }catch(e){ return "v-anon"; } }
+  // 방문자 ID — localStorage 가 비워져도(사파리 ITP·시크릿 모드) 쿠키로 복구해서
+  // 서버의 기존 스레드를 계속 이어 받는다. 이게 깨지면 재접속 시 대화가 사라진다.
+  function cpCookie(name, val, days){
+    try{
+      if(val===undefined){
+        var m = document.cookie.match(new RegExp('(?:^|; )'+name+'=([^;]*)'));
+        return m ? decodeURIComponent(m[1]) : "";
+      }
+      var d=new Date(); d.setTime(d.getTime()+(days||400)*86400000);
+      document.cookie = name+"="+encodeURIComponent(val)+";expires="+d.toUTCString()+";path=/;SameSite=Lax";
+    }catch(e){}
+    return "";
+  }
+  var cpVid = null;
+  function getVid(){
+    if(cpVid) return cpVid;
+    var v="";
+    try{ v = localStorage.getItem("su_vid")||""; }catch(e){}
+    if(!v) v = cpCookie("su_vid");
+    if(!v) v = "v"+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+    try{ localStorage.setItem("su_vid", v); }catch(e){}
+    cpCookie("su_vid", v, 400);
+    cpVid = v;
+    return v;
+  }
   function fmtTs(t){ var d=new Date(t); if(isNaN(d)) return ""; return (d.getMonth()+1)+"/"+d.getDate()+" "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2); }
 
   var cpTimer=null, cpLast=0;
@@ -1762,15 +1786,70 @@
         if(nm) document.getElementById('cp-name').value=nm;
         if(em) document.getElementById('cp-email').value=em;
       }catch(e){}
-      cpLoad(); if(cpTimer) clearInterval(cpTimer); cpTimer=setInterval(cpLoad, 9000);
+      cpBoot();
+      cpRender(cpLastMsgs);          // 로컬 사본을 먼저 그린다 — 네트워크를 기다리지 않는다
+      cpMarkSeen();
+      cpLoad(); if(cpTimer) clearInterval(cpTimer); cpTimer=setInterval(function(){ if(document.visibilityState!=='hidden') cpLoad(true); }, 9000);
       setTimeout(cpAdjustForKeyboard, 300);
       setTimeout(function(){ try{document.getElementById('cp-text').focus();}catch(e){} },150);
-    } else { if(cpTimer){ clearInterval(cpTimer); cpTimer=null; } var pp=document.getElementById('chatpanel'); pp.style.bottom=""; pp.style.maxHeight=""; }
+    } else { if(cpTimer){ clearInterval(cpTimer); cpTimer=null; } var pp=document.getElementById('chatpanel'); pp.style.bottom=""; pp.style.maxHeight=""; cpMarkSeen(); }
   }
+  // ─────────────────────────────────────────────────────────────
+  // 대화 지속(persistence) — 재접속해도 스레드가 그대로 이어지게
+  //   1) vid: localStorage + 쿠키 이중 저장 (사파리가 localStorage 를 비워도 복구)
+  //   2) 스레드 로컬 사본: 패널 열자마자 즉시 표시 → 서버 응답은 그 위에 덮어씀
+  //   3) 서버가 더 적게 주면(스테일/배포 오류) 로컬 기록을 지우지 않음
+  //   4) 불러오기 실패를 조용히 넘기지 않고 "다시 시도" 줄로 노출
+  // ─────────────────────────────────────────────────────────────
   var cpCache="", cpMaxCount=0;
   var cpPending=[];   // 아직 서버 확인이 안 된 / 실패한 내 메시지
   var cpPendId=0;
-  var cpLastMsgs=[];  // 마지막으로 서버에서 받은 스레드 (재렌더용)
+  var cpLastMsgs=[];  // 마지막으로 알고 있는 스레드 (서버 or 로컬 사본)
+  var cpLoadFail=false;
+  var cpSeenAdmin=0;  // 방문자가 이미 본 큐레이터 답장 수
+  var cpBooted=false;
+
+  function cpIsOpen(){ var p=document.getElementById('chatpanel'); return !!(p && p.classList.contains('on')); }
+  function cpKey(){ return "su_thread_"+getVid(); }
+  function cpAdminCount(ms){ var n=0; for(var i=0;i<ms.length;i++){ if(ms[i].from==="admin") n++; } return n; }
+
+  function cpSaveLocal(){
+    try{
+      localStorage.setItem(cpKey(), JSON.stringify({
+        msgs: cpLastMsgs.slice(-100),
+        pending: cpPending.slice(-20),
+        seen: cpSeenAdmin
+      }));
+    }catch(e){}
+  }
+  function cpRestoreLocal(){
+    var o=null;
+    try{ o = JSON.parse(localStorage.getItem(cpKey())||"null"); }catch(e){}
+    if(!o || !o.msgs) return false;
+    cpLastMsgs = o.msgs || [];
+    cpPending  = (o.pending || []).map(function(q){
+      if(q.state==="sending") q.state="failed";   // 새로고침으로 끊긴 건 재시도 대상
+      if(q.id > cpPendId) cpPendId = q.id;
+      return q;
+    });
+    cpSeenAdmin = o.seen || 0;
+    cpCache = JSON.stringify(cpLastMsgs);
+    cpMaxCount = cpLastMsgs.length;
+    return true;
+  }
+  function cpMarkSeen(){
+    cpSeenAdmin = cpAdminCount(cpLastMsgs);
+    cpSaveLocal(); cpPaintDot();
+  }
+  function cpPaintDot(){
+    var fab=document.getElementById('chat-fab'); if(!fab) return;
+    var dot=document.getElementById('chat-fab-dot');
+    var unread = Math.max(0, cpAdminCount(cpLastMsgs) - cpSeenAdmin);
+    if(unread && !cpIsOpen()){
+      if(!dot){ dot=document.createElement('span'); dot.id='chat-fab-dot'; dot.className='dot'; fab.appendChild(dot); }
+      dot.style.display='block';
+    } else if(dot){ dot.style.display='none'; }
+  }
 
   function cpRender(msgs){
     var box=document.getElementById('cp-msgs');
@@ -1788,6 +1867,12 @@
       }
       return '<div class="cp-b me pending">'+esc(q.text)+'<span class="ts">…</span></div>';
     }).join("");
+    // 이전 대화를 못 불러왔으면 빈 화면 대신 사실대로 알린다
+    if(cpLoadFail){
+      htmlStr = '<div class="cp-stale" id="cp-stale">'+(state.lang==='ko'
+        ? '이전 대화를 불러오지 못했어요 · 눌러서 다시 시도'
+        : "Couldn't load earlier messages · tap to retry")+'</div>' + htmlStr;
+    }
     if(cpPending.some(function(q){return q.state==="failed";})){
       htmlStr += '<div class="cp-warn">'+(state.lang==='ko'
         ? '메시지가 전달되지 않았어요. 연결을 확인하고 다시 눌러주세요 — 계속 안 되면 <a href="mailto:erinaranwon@gmail.com">erinaranwon@gmail.com</a> 으로 보내주세요.'
@@ -1795,28 +1880,61 @@
     }
     var keep = hello ? hello.outerHTML : "";
     box.innerHTML = keep + htmlStr;
+    var stale = document.getElementById('cp-stale');
+    if(stale) stale.addEventListener('click', function(){ cpLoadFail=false; cpRender(cpLastMsgs); cpLoad(); });
     var fails = box.querySelectorAll('.cp-b.failed');
     for(var i=0;i<fails.length;i++){
       (function(el){ el.addEventListener('click', function(){ cpRetry(+el.getAttribute('data-retry')); }); })(fails[i]);
     }
     box.scrollTop = box.scrollHeight;
   }
-  function cpLoad(){
+
+  function cpLoad(silent){
     if(!CHAT_API) return;
     apiGet({action:"thread", vid:getVid()}).then(function(r){
-      if(!(r && r.ok)) return;
+      if(!(r && r.ok)) throw new Error("not ok");
       var ms = r.messages || [];
-      if (ms.length < cpMaxCount) return;           // 스테일 응답이 기존 메시지를 지우지 않게
+      cpLoadFail = false;
+      // 서버가 알고 있는 것보다 적게 주면(스테일 응답·배포 사고) 기존 기록을 지우지 않는다
+      if (ms.length < cpLastMsgs.length){
+        if(!silent && cpIsOpen()) cpRender(cpLastMsgs);
+        return;
+      }
       var ser = JSON.stringify(ms);
-      if (ser === cpCache && !cpPending.length) return;  // 변화 없으면 재렌더 금지 (타이핑 중 흔들림 방지)
+      var changed = (ser !== cpCache);
       cpCache = ser; cpMaxCount = ms.length; cpLastMsgs = ms;
       // 서버가 받아준 메시지는 대기열에서 뺀다
+      var before = cpPending.length;
       cpPending = cpPending.filter(function(q){
         return !ms.some(function(m){ return m.from==="visitor" && m.text===q.text; });
       });
-      cpRender(ms);
-    }).catch(function(){});
+      cpSaveLocal();
+      if(cpIsOpen()){
+        if(changed || before !== cpPending.length || !silent) cpRender(ms);
+        cpMarkSeen();
+      } else {
+        cpPaintDot();
+      }
+    }).catch(function(){
+      cpLoadFail = true;
+      if(!silent && cpIsOpen()) cpRender(cpLastMsgs);
+    });
   }
+
+  // 첫 로드: 로컬 사본을 복구해두고, 대화 기록이 있으면 조용히 서버와 맞춘다
+  function cpBoot(){
+    if(cpBooted) return; cpBooted=true;
+    var had = cpRestoreLocal();
+    cpPaintDot();
+    if(CHAT_API && had) cpLoad(true);
+  }
+  // 탭으로 돌아왔을 때도 갱신 (숨어 있을 땐 폴링 낭비 안 함)
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState !== 'visible') return;
+    if(!CHAT_API) return;
+    if(cpIsOpen() || cpLastMsgs.length) cpLoad(!cpIsOpen());
+  });
+
   // 이름·이메일 검증 — 이메일이 없으면 답장할 방법이 없다
   function cpIdOk(){
     var n=(document.getElementById('cp-name').value||"").trim();
@@ -1829,13 +1947,13 @@
     setTimeout(function(){ el.classList.remove('cp-name-err'); el.placeholder = old; }, 2200);
   }
   function cpDeliver(q){
-    q.state="sending"; cpRender(cpLastMsgs);
+    q.state="sending"; cpSaveLocal(); cpRender(cpLastMsgs);
     apiPost({action:"send", vid:getVid(), name:q.name, email:q.email, text:q.text})
       .then(function(r){
         if(r && r.ok){ cpLoad(); }
-        else { q.state="failed"; cpRender(cpLastMsgs); }
+        else { q.state="failed"; cpSaveLocal(); cpRender(cpLastMsgs); }
       })
-      .catch(function(){ q.state="failed"; cpRender(cpLastMsgs); });
+      .catch(function(){ q.state="failed"; cpSaveLocal(); cpRender(cpLastMsgs); });
   }
   function cpRetry(id){
     var q = cpPending.filter(function(x){return x.id===id;})[0];
@@ -2012,7 +2130,7 @@
     // river label + compass + wordmark
     svg += '<text x="16" y="127" font-size="6.5" fill="#A9BEC9" letter-spacing="2.4" font-family="Paperlogy,sans-serif">HAN RIVER</text>';
     svg += '<g opacity="0.85"><text x="381" y="20" font-size="9" font-weight="700" fill="#C9BFA6" font-family="Paperlogy,sans-serif" text-anchor="middle">N</text><path d="M381 24 L381 32 M381 24 L378.4 27 M381 24 L383.6 27" stroke="#C9BFA6" stroke-width="1.1" fill="none"/></g>';
-    svg += '<text x="388" y="188" text-anchor="end" font-size="13" font-style="italic" fill="#E4DAC4" font-family="\'Instrument Serif\',serif">Seoul</text>';
+    svg += '<text x="388" y="188" text-anchor="end" font-size="12" font-weight="700" letter-spacing="1" fill="#E4DAC4" font-family="\'Paperlogy\',sans-serif">Seoul</text>';
     // clusters
     order.forEach(function (h) {
       var ax = MAP_POS[h][0], ay = MAP_POS[h][1];
@@ -2441,6 +2559,7 @@
   // ═══ INIT ═══════════════════════════════════════════════════════
   try { if (localStorage.getItem("su-lang") === "ko") state.lang = "ko"; } catch(e) {}
   if (!CHAT_API && !CHAT_TAWK_SRC) document.getElementById('chat-fab').setAttribute('href', CHAT_LINK);
+  cpBoot();                       // 재접속 시 이전 대화 복구 + 새 답장 배지
   renderHome(); renderFeed(); renderHomeMap(); renderHomeSubBar(); route();
   applyLang();
 
