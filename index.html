@@ -542,9 +542,19 @@
   /* — TREND · 페이퍼 매스트헤드 + 미디어 그리드 — */
   #view-cat.cat-trend { background:#FCFBF7; }
   .cat-trend .cat-hero .img::after { background:linear-gradient(180deg, rgba(24,22,16,0.35), rgba(24,22,16,0.78)); }
-  .cat-trend .cat-eyebrow { letter-spacing:0.3em; border-top:1px solid rgba(255,255,255,0.85); border-bottom:1px solid rgba(255,255,255,0.85); padding:6px 16px; margin-bottom:14px; }
-  .cat-trend .cat-hero h1 { font-style:normal; font-size:clamp(40px,7.5vw,52px); letter-spacing:0.005em; }
-  .cat-trend .cat-hero::after { content:""; display:block; width:100%; border-top:3px double rgba(255,255,255,0.9); margin-top:16px; position:relative; }
+  /* 신문 마스트헤드(겹선·괘선 이브로우·넓은 자간) 대신 잡지 커버 인상으로 */
+  .cat-trend .cat-eyebrow {
+    letter-spacing:0.14em; font-size:10.5px; font-weight:800;
+    border:none; padding:5px 12px; margin-bottom:12px; border-radius:999px;
+    background:rgba(255,255,255,0.16); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    color:#fff; text-shadow:none;
+  }
+  .cat-trend .cat-hero h1 {
+    font-size:clamp(46px,10.5vw,68px); line-height:0.98; letter-spacing:-0.035em;
+    text-transform:none; text-shadow:0 3px 18px rgba(0,0,0,0.45);
+  }
+  .cat-trend .cat-hero h1 em { color:#FF5A3C; font-style:normal; }
+  .cat-trend .cat-hero p { max-width:34ch; }
   .cat-trend .sec-head h2 { color:#111; }
   .cat-trend .hood .tile { background:#fff; border:1px solid #E4DFD3; border-radius:12px; box-shadow:none; }
   .cat-trend .hood.active .tile { border-color:#111; border-width:2px; }
@@ -586,6 +596,14 @@
   .feed-item .dist { font-size:11px; font-weight:700; color:var(--ink); background:var(--cream); border:1px solid var(--line); padding:2.5px 8px; border-radius:999px; }
   .feed-item h3 { font-size:14.5px; font-weight:700; line-height:1.32; }
   .feed-item p { font-size:12px; color:var(--ink-mid); margin-top:3px; }
+  /* 트렌드는 멤버 전용 — 줄 수는 보이되 내용은 안 읽히게 */
+  .feed-item.locked .txt, .feed-item.locked .fthumb { filter:blur(5px); user-select:none; -webkit-user-select:none; }
+  .feed-item.locked { position:relative; }
+  .feed-item.locked::after {
+    content:"🔒 MEMBERS"; position:absolute; top:50%; right:0; transform:translateY(-50%);
+    font-size:9.5px; font-weight:800; letter-spacing:0.12em; color:#fff;
+    background:rgba(17,17,17,0.82); padding:4px 9px; border-radius:999px; white-space:nowrap;
+  }
   .feed-item .fthumb {
     width:96px; height:96px; border-radius:18px; flex-shrink:0; overflow:hidden;
     display:flex; align-items:center; justify-content:center; font-size:34px;
@@ -834,7 +852,7 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v19</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="admin.html" style="color:inherit">Admin</a> <span style="opacity:0.45">· v21</span></div>
     </div>
   </section>
 
@@ -866,11 +884,11 @@
       <p class="search-hint" id="search-hint">Name, neighborhood, or category — 108 picks.</p>
     </header>
 
-    <div class="sec-head">
+    <div class="sec-head" id="picks-head" style="display:none">
       <h2 id="picks-title">This week's picks</h2>
     </div>
     <div class="cards grid" id="cards"></div>
-    <div class="empty" id="cards-empty">No picks match — try another search 🌸</div>
+    <div class="empty" id="cards-empty" style="display:none">No picks match — try another search 🌸</div>
 
     <footer>
       <div class="row-f">
@@ -1053,7 +1071,7 @@
     eat:    { name:"Eat",    em:"🍜", tag:"where & what to order",  desc:"Bowls, banchan, late-night counters — what locals actually eat, and how to order it.", ko:{ desc:"국밥, 반찬, 심야 카운터 — 현지인이 진짜 먹는 것, 그리고 주문하는 법." }, img:"https://images.unsplash.com/photo-1498654896293-37aacf113fd9?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
     beauty: { name:"Beauty", em:"✨", tag:"spa · skin · scrub",      eyebrow:"Skin · steam · scrub", desc:"Saunas, derm clinics, pharmacy hauls — Korea's beauty routines without the export marketing.", ko:{ eyebrow:"피부 · 스팀 · 세신", desc:"사우나, 피부과, 약국 하울 — 수출 마케팅을 걷어낸 한국의 뷰티 루틴." }, img:"https://images.unsplash.com/photo-1526413232644-8a40f03cc03b?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
     body:   { name:"Body",   em:"🌿", tag:"move like a local",         eyebrow:"Programs, week by week", desc:"River runs, pilates etiquette, mountain mornings — move like a local, one week at a time.", ko:{ eyebrow:"주 단위 프로그램", desc:"한강 러닝, 필라테스 에티켓, 새벽 산 — 현지인처럼, 일주일씩 움직이기." }, img:"https://images.unsplash.com/photo-1747239202356-764770773c9a?fm=jpg&q=60&w=2400&auto=format&fit=crop" },
-    trend:  { name:"Trend",  em:"📰", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", ko:{ eyebrow:"지금 서울에서는", desc:"새로 여는 곳, 예약 마감된 곳, 다들 시키는 것 — 피드에 뜨기 전에." }, img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=2400&auto=format&fit=crop" }
+    trend:  { name:"Trend",  em:"🔥", tag:"what Korea's into",       eyebrow:"Right now in Seoul", desc:"What's opening, what's booked out, what everyone's ordering — before it hits your feed.", ko:{ eyebrow:"지금 서울에서는", desc:"새로 여는 곳, 예약 마감된 곳, 다들 시키는 것 — 피드에 뜨기 전에." }, img:"https://images.unsplash.com/photo-1556513492-5ecf87648d3a?fm=jpg&q=60&w=2400&auto=format&fit=crop" }
   };
 
   var HOODS = [
@@ -1479,7 +1497,9 @@
   } catch (e) {}
   var IS_MEMBER = /[?&]member=1/.test(location.search) || validMemberPass();
   if (/[?&]member=1/.test(location.search)) saveMemberPass('TESTTESTTESTX', Date.now() + 86400000);
-  function isLocked(p) { return p.tier === "paid" && !IS_MEMBER; }
+  // 트렌드는 tier 와 무관하게 전부 멤버 전용이다.
+  // 이 한 줄이 카드 블러 · 상세시트 잠금 · 지도 점 제목 숨김 · 조인카드 개수를 모두 결정한다.
+  function isLocked(p) { return !IS_MEMBER && (p.tier === "paid" || p.cat === "trend"); }
   function joinCard(n) {
     var el = document.createElement('a');
     el.className = "pcard joincard";
@@ -2203,7 +2223,15 @@
   function renderHome() {
     var wrap = document.getElementById('cards');
     var empty = document.getElementById('cards-empty');
+    var head = document.getElementById('picks-head');
     wrap.innerHTML = ""; var shown = 0; var lockedN = 0;
+    // 검색 탭은 '검색 엔진'만 둔다 — 검색어를 치기 전에는 결과도 제목도 없다.
+    if (!state.q) {
+      if (head) head.style.display = "none";
+      empty.style.display = "none";
+      return;
+    }
+    if (head) head.style.display = "";
     // 비멤버도 전체 픽을 본다 — 유료 항목은 숨기지 않고 블러 처리해서 보여준다.
     var matched = PICKS.filter(function (p) {
       if (state.hood !== "all" && p.hood !== state.hood) return false;
@@ -2265,7 +2293,7 @@
     wrap.innerHTML = "";
     TRENDING.forEach(function (f, i) {
       var el = document.createElement('a');
-      el.className = "feed-item"; el.href = "join.html";
+      el.className = "feed-item" + (IS_MEMBER ? "" : " locked"); el.href = "join.html";
       el.innerHTML = '<div class="num">' + (i + 1) + '</div>' +
         '<div class="txt"><div class="kicker-row"><span class="kicker">' + tr(f,'k') + '</span>' +
         (f.dist ? '<span class="dist">📍 ' + tr(f,'dist') + '</span>' : '') + '</div>' +
@@ -2389,7 +2417,9 @@
       tabBtns[ti].classList.toggle('active', tabBtns[ti].getAttribute('data-cat') === state.curCat);
     }
     document.getElementById('cat-eyebrow').textContent = tr(c,'eyebrow') || '';
-    document.getElementById('cat-title').innerHTML = state.curCat === 'trend' ? '<em>' + (state.lang === 'ko' ? '트렌드' : 'The Trend') + '</em>' : '<em>' + c.name + '</em>';
+    document.getElementById('cat-title').innerHTML = state.curCat === 'trend'
+      ? (state.lang === 'ko' ? '지금 <em>핫한</em> 것' : "What\u2019s <em>HOT</em> now")
+      : '<em>' + c.name + '</em>';
     document.getElementById('cat-desc').textContent = tr(c,'desc');
     document.getElementById('cat-img').src = c.img;
     var wrap = document.getElementById('cat-cards');
