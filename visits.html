@@ -105,11 +105,13 @@
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   ⚠️ 여기 두 줄만 채우면 됩니다.
-   1) ANALYTICS_API — sknyus-analytics Apps Script 배포 URL (.../exec)
-   2) 비밀번호는 입력창에서 넣습니다 (= .gs 의 ADMIN_KEY)
+   설정 — 이 두 줄만 채우면 구글시트에 쌓인 전체 방문자가 보입니다.
+   비워두면 "이 브라우저 기록"만 보여줍니다.
    ═══════════════════════════════════════════════════════════ */
-var ANALYTICS_API = "";   // 예: "https://script.google.com/macros/s/AKfycb.../exec"
+var ANALYTICS_API = "";        // sknyus-analytics Apps Script 배포 URL (.../exec)
+var ANALYTICS_KEY = "";        // 그 스크립트의 ADMIN_KEY 값
+
+var PAGE_PW = "2121";          // 이 페이지 비밀번호
 
 /* ───────── 타임존 → 국가 ───────── */
 var TZC = {
@@ -173,9 +175,60 @@ function refLabel(h){
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
 /* ───────── 상태 ───────── */
-var KEY = "", DAYS = 30, DATA = null, LOADING = false;
+var DAYS = 30, DATA = null, LOADING = false, MODE = "local";
 function sg(k){ try{ return sessionStorage.getItem(k)||""; }catch(e){ return ""; } }
-function ss(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){} }
+function sst(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){} }
+
+/* ───────── 이 브라우저 기록에서 통계 만들기 (백엔드 없이도 동작) ───────── */
+function localStats(days){
+  var arr = [];
+  try{ arr = JSON.parse(localStorage.getItem('su_log')||'[]'); }catch(e){}
+  var since = Date.now() - days*86400000;
+  var day={}, tz={}, ref={}, src={}, pick={}, view={}, sess={};
+  var f={visit:0,pick:0,join:0,pay:0,member:0}, total=0, recent=[];
+  var pad=function(n){ return (n<10?'0':'')+n; };
+
+  arr.forEach(function(x){
+    if(!x || !x.t || x.t < since) return;
+    total++;
+    var ev = x.ev || String(x.e||'').split(':')[0];
+    var dt = x.d != null ? x.d : String(x.e||'').split(':').slice(1).join(':');
+    var d  = new Date(x.t);
+    var dk = pad(d.getMonth()+1)+'-'+pad(d.getDate());
+    day[dk]=(day[dk]||0)+1;
+
+    if(ev==='page'){
+      if(x.tz) tz[x.tz]=(tz[x.tz]||0)+1;
+      var rh = x.rh || '(direct)'; ref[rh]=(ref[rh]||0)+1;
+      var sc = x.src || '(none)';  src[sc]=(src[sc]||0)+1;
+      f.visit++;
+    }
+    if(ev==='view'){ view[dt||'?']=(view[dt||'?']||0)+1; }
+    if(ev==='pick'){ pick[dt||'?']=(pick[dt||'?']||0)+1; f.pick++; }
+    if(ev==='join')   f.join++;
+    if(ev==='pay')    f.pay++;
+    if(ev==='member') f.member++;
+  });
+
+  arr.slice(-40).reverse().forEach(function(x){
+    var d=new Date(x.t);
+    recent.push({
+      ts: pad(d.getMonth()+1)+'/'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes()),
+      event: x.ev || String(x.e||'').split(':')[0],
+      detail: x.d != null ? x.d : String(x.e||'').split(':').slice(1).join(':'),
+      src: x.src, refhost: x.rh, tz: x.tz, lang: x.lg, device: x.dv
+    });
+  });
+
+  var top=function(o,n){ return Object.keys(o).map(function(k){return {k:k,n:o[k]};})
+      .sort(function(a,b){return b.n-a.n;}).slice(0,n||15); };
+
+  return { ok:true, days:days, total:total,
+    visitors: total?1:0, sessions: total?1:0,
+    byDay: Object.keys(day).sort().map(function(k){return {k:k,n:day[k]};}),
+    byTz: top(tz,20), byRef: top(ref,15), bySrc: top(src,15),
+    byPick: top(pick,20), byView: top(view,15), funnel:f, recent:recent };
+}
 
 /* ───────── 화면 ───────── */
 function login(){
@@ -183,50 +236,51 @@ function login(){
   document.getElementById('body').innerHTML =
     '<div class="title">Visitors</div>' +
     '<div class="sub">누가, 어디서, 무엇을 보고 있는지.</div>' +
-    (ANALYTICS_API ? '' :
-      '<div class="err" style="display:block">⚠️ visits.html 안의 <b>ANALYTICS_API</b> 가 비어 있습니다. Apps Script 배포 URL을 넣어주세요.</div>') +
-    '<input class="in" id="pw" type="password" placeholder="ADMIN_KEY" autocomplete="off">' +
+    '<input class="in" id="pw" type="password" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off">' +
     '<button class="btn" onclick="doLogin()">Open</button>' +
     '<div class="err" id="err"></div>' +
-    '<div class="hint">비밀번호 = sknyus-analytics Apps Script 의 <b>ADMIN_KEY</b> 값입니다.<br>' +
-    '이 페이지는 검색엔진에 노출되지 않습니다 (noindex).</div>';
+    '<div class="hint">이 페이지는 검색엔진에 노출되지 않습니다 (noindex).</div>';
   var el = document.getElementById('pw');
   el.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
   el.focus();
 }
 function doLogin(){
-  KEY = document.getElementById('pw').value.trim();
-  if(!KEY){ return fail("비밀번호를 입력하세요."); }
-  ss('sknyus_ak', KEY);
+  var v = (document.getElementById('pw').value||'').trim();
+  if(v !== PAGE_PW) return fail("비밀번호가 틀립니다.");
+  sst('su_admin','1');
   load();
 }
 function fail(m){
   var e = document.getElementById('err');
   if(e){ e.innerHTML = m; e.style.display='block'; }
 }
-function logout(){ try{ sessionStorage.removeItem('sknyus_ak'); }catch(e){} KEY=""; DATA=null; login(); }
+function logout(){ try{ sessionStorage.removeItem('su_admin'); }catch(e){} DATA=null; login(); }
 
 function load(){
-  if(!ANALYTICS_API){ return fail("ANALYTICS_API 가 비어 있습니다."); }
+  if(!ANALYTICS_API || !ANALYTICS_KEY){
+    MODE = "local"; DATA = localStats(DAYS); return render();
+  }
   if(LOADING) return;
   LOADING = true;
   document.getElementById('tb-right').textContent = "loading…";
-  fetch(ANALYTICS_API + "?action=stats&days=" + DAYS + "&key=" + encodeURIComponent(KEY))
+  fetch(ANALYTICS_API + "?action=stats&days=" + DAYS + "&key=" + encodeURIComponent(ANALYTICS_KEY))
     .then(function(r){ return r.json(); })
     .then(function(d){
       LOADING = false;
       if(!d || !d.ok){
-        document.getElementById('tb-right').textContent = "";
-        if(!DATA) login();
-        return fail(d && d.error === "bad key" ? "비밀번호가 틀립니다." : "불러오지 못했습니다: " + esc((d&&d.error)||"unknown"));
+        MODE = "local:err"; DATA = localStats(DAYS);
+        DATA.warn = (d && d.error === "bad key")
+          ? "ANALYTICS_KEY 가 Apps Script 의 ADMIN_KEY 와 다릅니다."
+          : "서버 응답 오류: " + esc((d&&d.error)||"unknown");
+        return render();
       }
-      DATA = d; render();
+      MODE = "server"; DATA = d; render();
     })
     .catch(function(){
       LOADING = false;
-      document.getElementById('tb-right').textContent = "";
-      if(!DATA) login();
-      fail("연결 실패. 배포 URL이 맞는지, 액세스 권한이 <b>모든 사용자</b>인지 확인해주세요.");
+      MODE = "local:err"; DATA = localStats(DAYS);
+      DATA.warn = "분석 서버에 연결할 수 없습니다. 배포 URL과 액세스 권한(모든 사용자)을 확인해주세요.";
+      render();
     });
 }
 function setDays(n){ DAYS = n; load(); }
@@ -261,10 +315,16 @@ function render(){
       '<td>' + esc(tzLabel(r.tz)) + '<br><span style="color:#B99">' + esc(refLabel(r.refhost)) + '</span></td></tr>';
   }).join('');
 
-  document.getElementById('tb-right').textContent = d.total + " events";
+  document.getElementById('tb-right').textContent = (MODE==='server'?'':'local · ') + d.total + " events";
   document.getElementById('body').innerHTML =
     '<div class="title">Visitors</div>' +
     '<div class="sub">최근 ' + d.days + '일 · 누가, 어디서, 무엇을 보고 있는지.</div>' +
+    (MODE === 'server' ? '' :
+      '<div class="empty" style="text-align:left;border-color:#F0AEC4;background:#FFF7FA;margin-bottom:16px">' +
+        '<b>이 브라우저 기록만 표시 중입니다.</b><br>' +
+        (d.warn ? esc(d.warn) + '<br>' : '') +
+        '전체 방문자를 보려면 visits.html 상단의 <b>ANALYTICS_API</b> · <b>ANALYTICS_KEY</b> 두 줄을 채워주세요.' +
+      '</div>') +
 
     '<div class="range">' +
       ['7','30','90'].map(function(n){
@@ -308,8 +368,7 @@ function render(){
 }
 
 /* 시작 */
-KEY = sg('sknyus_ak');
-if(KEY && ANALYTICS_API) load(); else login();
+if(sg('su_admin') === '1') load(); else login();
 </script>
 </body>
 </html>
