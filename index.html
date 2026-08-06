@@ -852,7 +852,7 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit">Admin</a> <span style="opacity:0.45">· v22</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit">Admin</a> <span style="opacity:0.45">· v23</span></div>
     </div>
   </section>
 
@@ -896,7 +896,7 @@
         <a href="https://wecoutez.github.io/skinny-us-legal/privacy">Privacy Policy</a>
         <a href="mailto:awonspc@gmail.com">Contact</a>
       </div>
-      © 2026 Skinny-us · Made in Seoul 🌸
+      © 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit;opacity:.55">Admin</a>
     </footer>
   </section>
 
@@ -952,7 +952,7 @@
       </div>
     </section>
 
-    <footer>© 2026 Skinny-us · Made in Seoul 🌸</footer>
+    <footer>© 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit;opacity:.55">Admin</a></footer>
   </section>
 
   <div class="chatpanel" id="chatpanel">
@@ -1685,6 +1685,9 @@
       showView('cat');
     } else if (h === '#/home') {
       showView('home');
+    } else if (h === '#/admin') {
+      showView('entry');
+      try { skAdminGate(); } catch (e) {}
     } else if (h === '#/suadmin') {
       showView('entry'); openAdmin();
     } else if (h === '#/gate') {
