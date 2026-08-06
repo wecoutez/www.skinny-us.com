@@ -122,9 +122,7 @@
     background:var(--cream); border:1px solid var(--line); border-radius:999px; padding:8px 12px;
   }
   .topbar .lang-sm { cursor:pointer; font-size:12px; font-weight:700; color:var(--ink); background:#fff; border:1px solid var(--line); padding:8px 12px; border-radius:999px; text-decoration:none; flex-shrink:0; }
-  .entry-tour { display:block; width:100%; margin-top:10px; padding:13px; border:1px solid var(--line2);
-    border-radius:999px; background:#fff; cursor:pointer; font-family:inherit; font-size:13.5px;
-    font-weight:700; color:#111; }
+  .g-code-hint { margin-top:10px; font-size:12px; line-height:1.5; color:rgba(255,255,255,0.72); text-align:center; }
   #tour-bar { position:fixed; left:0; right:0; bottom:0; z-index:120; display:flex; align-items:center;
     gap:10px; padding:11px 16px calc(11px + env(safe-area-inset-bottom)); background:#111; color:#fff; }
   #tour-bar .tb-txt { font-size:12.5px; font-weight:600; flex:1; min-width:0; overflow:hidden;
@@ -868,9 +866,8 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <button class="entry-tour" id="entry-tour" onclick="startTour()">Take a free 10-min tour →</button>
       <a class="entry-mem" id="entry-mem" href="#/gate">Already a member? Enter code →</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit">Admin</a> <span style="opacity:0.45">· v27</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit">Admin</a> <span style="opacity:0.45">· v28</span></div>
     </div>
   </section>
 
@@ -1049,11 +1046,11 @@
       <div class="g-cred">12 yrs on trend in Korea · 10 yrs living abroad</div>
       <a class="g-join" href="join.html">Join to unlock</a>
       <button class="g-member" onclick="toggleCode()">Already a member? Continue →</button>
-      <button class="g-member" id="g-tour" onclick="startTour()">Take a free 10-min tour →</button>
       <div class="g-code" id="g-code" style="display:none">
         <input class="g-code-in" id="g-code-in" type="text" autocomplete="off" placeholder="Access code" aria-label="Access code">
         <button class="g-code-btn" onclick="memberLogin()">Enter</button>
         <div class="g-code-err" id="g-code-err">That code didn't work. It's in your payment confirmation.</div>
+        <div class="g-code-hint" id="g-code-hint">Just looking? Type TOUR for a free 3-minute preview.</div>
       </div>
     </div>
   </section>
@@ -1475,9 +1472,10 @@
       skip:"Skip it if", mapBtn:"📍 Naver Map", gmapBtn:"🌍 Google Maps", lockedTitle:"A members-only pick",
       unlock:"Unlock the full list",
       memLink:"Already a member? Enter code →",
-      tourCta:"Take a free 10-min tour →",
-      tourOn:"Free tour — full list unlocked",
-      tourDone:"Your free tour has ended.",
+      tourOn:"Free preview — full list unlocked",
+      tourDone:"You have already used your free preview.",
+      tourHint:"Just looking? Type TOUR for a free 3-minute preview.",
+      codeErr:"That code didn't work. It's in your payment confirmation.",
       lockP:"Why we trust it, what to order, and who should skip it —<br>the parts a sponsored blog can\u2019t write.",
       members:"🔒 Members", langBtn:"한국어" },
     ko: { picksTitle:"이번 주 픽", trendingTitle:"지금 뜨는 것", allPicks:"전체 픽",
@@ -1495,9 +1493,10 @@
       skip:"이런 사람은 패스", mapBtn:"📍 네이버 지도", gmapBtn:"🌍 구글맵", lockedTitle:"멤버 전용 픽",
       unlock:"전체 리스트 잠금 해제",
       memLink:"이미 멤버라면? 코드 입력 →",
-      tourCta:"10분 무료 둘러보기 →",
-      tourOn:"무료 둘러보기 — 전체 리스트 열림",
-      tourDone:"무료 둘러보기가 끝났습니다.",
+      tourOn:"무료 미리보기 — 전체 리스트 열림",
+      tourDone:"무료 미리보기를 이미 사용하셨습니다.",
+      tourHint:"둘러보기만 하시나요? TOUR 를 입력하면 3분간 열립니다.",
+      codeErr:"코드가 맞지 않습니다. 결제 확인 메일에 있습니다.",
       lockP:"믿는 이유, 주문 팁, 누구는 피해야 하는지 —<br>협찬 블로그가 못 쓰는 부분들.",
       members:"🔒 멤버 전용", langBtn:"English" }
   };
@@ -1641,7 +1640,7 @@
      TOUR_MIN 만 바꾸면 시간이 바뀝니다 (분 단위).
      TOUR_ONCE = true 면 브라우저당 1회만.
      ═════════════════════════════════════════════════════════════ */
-  var TOUR_MIN  = 10;
+  var TOUR_MIN  = 3;
   var TOUR_ONCE = true;
 
   function tourLeft() {
@@ -1675,15 +1674,10 @@
   }
 
   function syncTour() {
-    var can = tourCanStart();
-    ['entry-tour', 'g-tour'].forEach(function (id) {
-      var b = document.getElementById(id);
-      if (!b) return;
-      b.style.display = can ? '' : 'none';
-      b.textContent = L('tourCta');
-    });
     var t = document.getElementById('tour-txt');
     if (t) t.textContent = L('tourOn');
+    var h = document.getElementById('g-code-hint');
+    if (h) { h.textContent = L('tourHint'); h.style.display = tourCanStart() ? 'block' : 'none'; }
   }
 
   // 상단 카운트다운 바
@@ -1776,6 +1770,14 @@
   }
   function memberLogin() {
     var v = (document.getElementById('g-code-in').value || '');
+    // "TOUR" — 코드 없이 3분 체험
+    if (v.trim().toLowerCase() === 'tour') {
+      var erT = document.getElementById('g-code-err');
+      if (!tourCanStart()) { erT.textContent = L('tourDone'); erT.style.display = 'block'; return; }
+      erT.style.display = 'none';
+      startTour();
+      return;
+    }
     skCheck(v).then(function (expiry) {
       if (expiry) {
         track('member:enter');
@@ -1783,7 +1785,9 @@
         saveMemberPass(v, expiry);
         go('cat','trend');
       } else {
-        document.getElementById('g-code-err').style.display = 'block';
+        var er2 = document.getElementById('g-code-err');
+        er2.textContent = L('codeErr');
+        er2.style.display = 'block';
       }
     });
   }
@@ -1883,7 +1887,6 @@
           '<p>' + L('lockP') + '</p>' +
           '<button class="cta" style="border:none;cursor:pointer;font-family:inherit" onclick="location.href=\'join.html\'">' + L('unlock') + '</button>' +
           '<button class="lock-mem" onclick="closeSheet();location.hash=\'#/gate\'">' + L('memLink') + '</button>' +
-          (tourCanStart() ? '<button class="lock-mem" style="color:#111" onclick="closeSheet();startTour()">' + L('tourCta') + '</button>' : '') +
         '</div>';
     } else {
       html += '<div class="simg" style="background:' + p.g + '">' +
