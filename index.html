@@ -122,6 +122,11 @@
     background:var(--cream); border:1px solid var(--line); border-radius:999px; padding:8px 12px;
   }
   .topbar .lang-sm { cursor:pointer; font-size:12px; font-weight:700; color:var(--ink); background:#fff; border:1px solid var(--line); padding:8px 12px; border-radius:999px; text-decoration:none; flex-shrink:0; }
+  .entry-mem { display:block; margin-top:14px; font-size:12.5px; font-weight:600; color:var(--ink-mid);
+    text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+  .lockpanel .lock-mem { display:block; width:100%; margin-top:12px; padding:6px; background:none; border:none;
+    cursor:pointer; font-family:inherit; font-size:12.5px; font-weight:600; color:var(--ink-mid);
+    text-decoration:underline; text-underline-offset:3px; }
   .topbar .join-sm {
     font-size:12px; font-weight:700; color:#111; text-decoration:none; white-space:nowrap; flex-shrink:0;
     padding:8px 14px; border-radius:999px;
@@ -852,7 +857,8 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit">Admin</a> <span style="opacity:0.45">· v25</span></div>
+      <a class="entry-mem" id="entry-mem" href="#/gate">Already a member? Enter code →</a>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit">Admin</a> <span style="opacity:0.45">· v26</span></div>
     </div>
   </section>
 
@@ -1448,6 +1454,7 @@
       bestFor:"Best for: ", why:"Why we trust it", order:"What to order",
       skip:"Skip it if", mapBtn:"📍 Naver Map", gmapBtn:"🌍 Google Maps", lockedTitle:"A members-only pick",
       unlock:"Unlock the full list",
+      memLink:"Already a member? Enter code →",
       lockP:"Why we trust it, what to order, and who should skip it —<br>the parts a sponsored blog can\u2019t write.",
       members:"🔒 Members", langBtn:"한국어" },
     ko: { picksTitle:"이번 주 픽", trendingTitle:"지금 뜨는 것", allPicks:"전체 픽",
@@ -1464,6 +1471,7 @@
       bestFor:"이런 사람에게: ", why:"믿는 이유", order:"뭘 시킬까",
       skip:"이런 사람은 패스", mapBtn:"📍 네이버 지도", gmapBtn:"🌍 구글맵", lockedTitle:"멤버 전용 픽",
       unlock:"전체 리스트 잠금 해제",
+      memLink:"이미 멤버라면? 코드 입력 →",
       lockP:"믿는 이유, 주문 팁, 누구는 피해야 하는지 —<br>협찬 블로그가 못 쓰는 부분들.",
       members:"🔒 멤버 전용", langBtn:"English" }
   };
@@ -1509,6 +1517,7 @@
       set("join-home-h", d.joinH); set("join-home-sub", d.joinSub); set("join-home-cta", d.joinCta);
       set("join-cat-h", d.joinCatH); set("join-cat-sub", d.joinCatSub); set("join-cat-cta", d.joinCta);
       var ml = state.lang === 'ko' ? '이미 멤버라면? 코드 입력 →' : 'Already a member? Enter code →';
+      var em = document.getElementById('entry-mem'); if (em) em.textContent = ml;
       var m3 = document.getElementById('join-home-mem'); if (m3) { m3.textContent = ml; m3.style.display = ''; }
       var m4 = document.getElementById('join-cat-mem'); if (m4) { m4.textContent = ml; m4.style.display = ''; }
     }
@@ -1772,6 +1781,7 @@
           '<h3>' + L('unlock') + '</h3>' +
           '<p>' + L('lockP') + '</p>' +
           '<button class="cta" style="border:none;cursor:pointer;font-family:inherit" onclick="location.href=\'join.html\'">' + L('unlock') + '</button>' +
+          '<button class="lock-mem" onclick="closeSheet();location.hash=\'#/gate\'">' + L('memLink') + '</button>' +
         '</div>';
     } else {
       html += '<div class="simg" style="background:' + p.g + '">' +
