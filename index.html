@@ -852,7 +852,7 @@
         </div>
       </div>
       <a class="entry-join" href="join.html">Join Skinny-us</a>
-      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit">Admin</a> <span style="opacity:0.45">· v24</span></div>
+      <div class="fine">© 2026 Skinny-us · Made in Seoul 🌸 · <a href="#" onclick="skAdminGate(event)" style="color:inherit">Admin</a> <span style="opacity:0.45">· v25</span></div>
     </div>
   </section>
 
@@ -1397,6 +1397,8 @@
       } catch (e) {}
     }
     function push(event, detail) {
+      // 내 방문 제외 (visits.html 에서 켜고 끔)
+      try { if (localStorage.getItem("su_notrack") === "1") return; } catch (e) {}
       var h = payload(event, detail);
       q.push(h);
       // 로컬 사본 (백엔드 없이도 visits.html 에서 볼 수 있게)

@@ -285,6 +285,37 @@ function load(){
 }
 function setDays(n){ DAYS = n; load(); }
 
+function noTrack(){ try{ return localStorage.getItem('su_notrack')==='1'; }catch(e){ return false; } }
+function toggleNoTrack(){
+  try{
+    if(noTrack()) localStorage.removeItem('su_notrack');
+    else localStorage.setItem('su_notrack','1');
+  }catch(e){}
+  render();
+}
+function resetAll(){
+  if(!confirm('구글시트와 이 브라우저에 쌓인 방문 기록을 전부 지웁니다.\n되돌릴 수 없습니다. 진행할까요?')) return;
+  try{ localStorage.removeItem('su_log'); }catch(e){}
+  if(!ANALYTICS_API || !ANALYTICS_KEY){ alert('브라우저 기록을 지웠습니다.'); return load(); }
+  document.getElementById('tb-right').textContent = 'clearing…';
+  fetch(ANALYTICS_API, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ action:'reset', key: ANALYTICS_KEY })
+  }).then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && d.ok) alert('초기화 완료 · 삭제된 기록 ' + (d.cleared||0) + '건');
+      else alert('시트 초기화 실패: ' + ((d&&d.error)||'unknown') + '\n스크립트를 새 버전으로 재배포했는지 확인해주세요.');
+      load();
+    })
+    .catch(function(){ alert('시트에 연결할 수 없습니다. 브라우저 기록만 지웠습니다.'); load(); });
+}
+function clearLocal(){
+  if(!confirm('이 브라우저에 쌓인 기록을 지웁니다. 구글시트 기록은 그대로입니다. 진행할까요?')) return;
+  try{ localStorage.removeItem('su_log'); }catch(e){}
+  load();
+}
+
 function bars(list, labelFn){
   if(!list || !list.length) return '<div class="empty">아직 데이터가 없습니다.</div>';
   var max = list[0].n || 1;
@@ -361,10 +392,12 @@ function render(){
 
     '<div class="foot">' +
       '<button class="ghost" onclick="load()">새로고침</button>' +
+      '<button class="ghost" onclick="toggleNoTrack()">' + (noTrack() ? '\u2705 내 방문 제외 중' : '내 방문 제외하기') + '</button>' +
+      '<button class="ghost" style="border-color:#E8A0A0;color:#C0392B" onclick="resetAll()">전체 기록 초기화</button>' +
       '<a class="ghost" href="admin.html">Admin</a>' +
-      '<a class="ghost" href="https://www.paypal.com/activities" target="_blank" rel="noopener">PayPal ↗</a>' +
       '<button class="ghost" onclick="logout()">로그아웃</button>' +
-    '</div>';
+    '</div>' +
+    '<div class="hint">「전체 기록 초기화」는 구글시트와 이 브라우저 기록을 <b>모두</b> 지웁니다. 되돌릴 수 없습니다.</div>';
 }
 
 /* 시작 */
