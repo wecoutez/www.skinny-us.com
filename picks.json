@@ -1,39 +1,7 @@
 {
- "updated": "2026-08-02",
- "count": 108,
+ "updated": "2026-08-09",
+ "count": 109,
  "picks": [
-  {
-   "id": "trend-the-snickers-ice-truck-is-loose-in-the-c",
-   "category": "trend",
-   "tier": "free",
-   "title": "The Snickers ice truck is loose in the city",
-   "area": "Seongsu · Hongdae",
-   "meta": "moving popup · Jul 2026",
-   "photo": "trend-snickers.jpg",
-   "group": "Pop-ups now",
-   "group_kr": "지금 팝업",
-   "title_kr": "도심을 떠도는 스니커즈 아이스트럭",
-   "area_kr": "성수 · 홍대",
-   "why_trust": "To launch the Snickers ice bar in Korea, the brand skipped renting one address and sent a wrapped truck through foot-traffic districts instead, handing out bars with mini games — a curling 'Chill Shot', an ice-freezer photo zone — and merch for anyone who clears a mission. The guerrilla moving-popup format is the trend itself: cooling you down on the spot instead of asking you to queue.",
-   "desc": "A free ice-bar truck roaming Seoul's busiest districts — the popup comes to you.",
-   "desc_kr": "서울 번화가를 돌아다니는 무료 아이스바 트럭 — 팝업이 나를 찾아온다."
-  },
-  {
-   "id": "trend-a-creator-bakery-meets-the-yogurt-empire",
-   "category": "trend",
-   "tier": "free",
-   "title": "A creator bakery meets the yogurt empire",
-   "area": "Seongsu · dept. stores",
-   "meta": "limited popup · Jul 2026",
-   "photo": "trend-parkddugi.jpg",
-   "group": "Pop-ups now",
-   "group_kr": "지금 팝업",
-   "title_kr": "크리에이터 베이커리와 요거트 제국의 만남",
-   "area_kr": "성수 · 백화점",
-   "why_trust": "Parkddugi, a cult creator bakery, joined Yoajung — the yogurt-ice-cream topping franchise Koreans are currently obsessed with — for a limited run: their bestselling churros salt bread turned into an ice-cream cone under honeycomb and choco-shell toppings, sold only at popup counters in Seongsu and department stores. It's the salt-bread-as-canvas trend and the topping economy colliding in one product.",
-   "desc": "Churros salt bread piled with honeycomb and choco shell — two Korean obsessions in one cone.",
-   "desc_kr": "벌집꿀과 초코쉘을 얹은 츄러스 소금빵 — 한국의 두 집착이 콘 하나에."
-  },
   {
    "id": "trend-a-museum-s-ai-joke-became-a-real-gacha-t",
    "category": "trend",
@@ -1758,6 +1726,54 @@
    "title_kr": "캐릭터에게 점령당하는 서울의 카페들",
    "area_kr": "홍대 · 백화점",
    "why_trust": "Seoul's café scene runs a rotating cast of character takeovers — a cartoon monkey in a Starbucks barista apron, chain cafés rebuilt into dollhouse dioramas, limited figures drip-released every ten days to engineer revisits. The scarcity choreography is half the show."
+  },
+  {
+   "id": "trend-the-hangul-museum-is-closed-the-shows-m",
+   "category": "trend",
+   "tier": "free",
+   "title": "The Hangul museum is closed — the shows moved",
+   "area": "Yongsan · check before you go",
+   "meta": "hangul year · shut until 2028",
+   "photo": "",
+   "group": "Seasonal moments",
+   "group_kr": "시즌 모먼트",
+   "title_kr": "국립한글박물관은 닫혀 있다 — 전시는 옮겨졌다",
+   "area_kr": "용산 · 가기 전 확인",
+   "why_trust": "A fire during rooftop construction in February 2025 closed the National Hangul Museum, and the reopening target is October 2028. Every guidebook and blog still sends you to Yongsan, where you now find a construction hoarding beside the National Museum of Korea. Meanwhile the museum has designated 2026 its 'Year of Hangul' — 100 years since Hangul Day was first declared, 580 since Hunminjeongeum was published — and is running its anniversary exhibitions inside other institutions, including the National Folk Museum by Gyeongbokgung. The programming is real. The address isn't.",
+   "desc": "Seoul's alphabet museum has been dark since a 2025 fire. Its centenary exhibitions are running elsewhere.",
+   "desc_kr": "2025년 화재 이후 계속 휴관 중. 100돌 기념 전시는 다른 곳에서 열린다."
+  },
+  {
+   "id": "trend-october-gives-seoul-two-long-weekends",
+   "category": "trend",
+   "tier": "free",
+   "title": "October gives Seoul two long weekends",
+   "area": "Citywide · Oct 3–5, Oct 9–11",
+   "meta": "seasonal moment · public holidays",
+   "photo": "",
+   "group": "Seasonal moments",
+   "group_kr": "시즌 모먼트",
+   "title_kr": "10월의 서울에는 연휴가 두 번 있다",
+   "area_kr": "도시 전체 · 10/3–5, 10/9–11",
+   "why_trust": "Gaecheonjeol falls on Saturday 3 October, which pushes a substitute holiday onto Monday the 5th; Hangul Day is Friday 9 October. That is two consecutive three-day weekends inside one month, and Koreans travel on both of them. Domestic flights, hanok stays and any restaurant that takes bookings go first; palaces, Seongsu and Bukchon carry local crowds on top of the tourist ones. The trade is real, though — department stores and cafés run their best seasonal menus and events precisely on those dates.",
+   "desc": "National Foundation Day and Hangul Day both land beside a weekend. Two three-day breaks, back to back.",
+   "desc_kr": "개천절과 한글날이 나란히 주말에 붙는다. 사흘 연휴가 두 번 연속."
+  },
+  {
+   "id": "trend-hangul-is-the-souvenir-not-the-t-shirt",
+   "category": "trend",
+   "tier": "paid",
+   "title": "Hangul is the souvenir, not the T-shirt",
+   "area": "Dept. stores · citywide",
+   "meta": "city collab · October drops",
+   "photo": "",
+   "group": "Characters & collabs",
+   "group_kr": "캐릭터 · 콜라보",
+   "title_kr": "기념품은 티셔츠가 아니라 한글이다",
+   "area_kr": "백화점 · 도시 전체",
+   "why_trust": "Every autumn Korean jewellery houses release Hangul pieces for the holiday. J.ESTINA's line uses the official Seoul city typeface — ㅎㄱ for hangul, ㅅㅇ for Seoul — engraved on 925 silver bracelets, ear cuffs and earrings. Golden Dew has worked with Ahn Sang-soo, the most consequential typographer in the country, on a heritage collection built from the letter ㅎ. These are designed for the domestic market and only secondarily for visitors, which is precisely why they read as jewellery instead of merchandise.",
+   "desc": "Silver stamped ㅎㄱ, a collection shaped from the letter ㅎ — made for locals first, which is why it's good.",
+   "desc_kr": "ㅎㄱ을 새긴 은, ㅎ을 조형으로 만든 컬렉션 — 내국인용으로 먼저 만든 물건이라 좋다."
   }
  ]
 }
