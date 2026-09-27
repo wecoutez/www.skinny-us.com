@@ -137,7 +137,7 @@
       if (span >= 1) h += `<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${span >= 3 ? 11 : 9.5}" fill="${cur ? '#fff' : past ? '#6b8597' : '#d8ecf7'}" font-family="Noto Sans KR" font-weight="${cur ? 700 : 500}">${esc(span >= 2 ? label : label.split(' ')[0])}</text>`;
     });
     // calendar events on the outer ring
-    eventsOn(state.today).filter(e => !e.holiday && e.time).forEach(e => {
+    eventsOn(state.today).filter(e => !e.holiday && !e.work && e.time).forEach(e => {
       const [sh, sm] = e.time.split(':').map(Number), s0 = sh + sm / 60, e0 = e.endTime ? (([a, b]) => a + b / 60)(e.endTime.split(':').map(Number)) : s0 + 1;
       h += `<path d="${wedge(s0, Math.max(e0, s0 + .25), R + 4, R + 13)}" fill="#ff9d3c"/>`;
     });
@@ -147,7 +147,7 @@
     svg.innerHTML = h;
     $('#dayKind').textContent = kind === 'weekend' ? '주말 · 휴일' : '평일';
     const cur = blocks.find(([s0, e0]) => s0 <= nowH && nowH < e0), next = blocks.find(([s0]) => s0 > nowH);
-    const ev = eventsOn(state.today).filter(e => !e.holiday && e.time).map(e => `${ampm(e.time)} ${esc(e.title)}`);
+    const ev = eventsOn(state.today).filter(e => !e.holiday && !e.work && e.time).map(e => `${ampm(e.time)} ${esc(e.title)}`);
     $('#dayNow').innerHTML = `지금은 <b>${esc(cur ? cur[3] || cur[2] : '—')}</b> 시간이에요.${next ? ` 다음은 ${ampm(String(Math.floor(next[0])).padStart(2, '0') + ':00')} ${esc(next[3] || next[2])}.` : ''}${ev.length ? `<br>오늘 일정: ${ev.join(', ')}` : ''}<br><span class="dim">바꾸려면 명령어 창에 "시간표 20-22 운동"처럼 입력하세요.</span>`;
   }
 
@@ -353,7 +353,7 @@
     if (cali != null) parts.push(['캘리포니아 닮음', cali]);
     const air = aq ? [0, 100, 75, 35, 10][aq.g] : 70; parts.push(['공기', air]);
     if (aq && aq.g >= 3) { why.push(['−', `미세먼지 ${aq.name}`]); caut.push('미세먼지 · 마스크, 운동은 실내로'); }
-    const n = eventsOn(state.today).filter(e => !e.holiday).length, sched = [95, 85, 70, 55][n] ?? 40; parts.push(['일정 여유', sched]);
+    const n = eventsOn(state.today).filter(e => !e.holiday && !e.work).length, sched = [95, 85, 70, 55][n] ?? 40; parts.push(['일정 여유', sched]);
     if (n >= 3) { why.push(['−', `일정 ${n}건`]); caut.push(`일정 ${n}건 · 회의 사이 10분씩 비워두기`); warn.head = true; } else if (n === 0) why.push(['+', '일정 여유']);
     const rr = rrLast(), haim = rr && rr.d === state.today ? (rr.v < 30 ? 100 : rr.v <= 35 ? 60 : 30) : 80; parts.push(['하임이', haim]);
     if (rr && rr.d === state.today && rr.v >= 30) { why.push(['−', `하임 호흡 ${rr.v}/분`]); caut.push('하임이 호흡수가 목표보다 높아요 · 잘 때 한 번 더 재보기'); warn.heart = true; }
@@ -586,7 +586,10 @@
   function allEvents() {
     const local = store.get('events', []).map(e => ({ ...e, local: true }));
     const hol = Object.entries(HOLIDAYS).map(([date, title]) => ({ date, title, allDay: true, holiday: true }));
-    return state.events.concat(local, hol).sort((a, b) => (a.date + (a.time || '00:00')).localeCompare(b.date + (b.time || '00:00')));
+    // weekdays (not holidays): office 9-6, unless the calendar already has an all-day 휴가/연차 that day
+    const work = Array.from({ length: 14 }, (_, i) => addDays(state.today, i)).filter(d => { const w = wday(d); return w > 0 && w < 6 && !HOLIDAYS[d] && !state.events.concat(local).some(e => e.date === d && /휴가|연차|off|vacation/i.test(e.title)); })
+      .map(date => ({ date, time: '09:00', endTime: '18:00', title: '회사', work: true }));
+    return state.events.concat(local, hol, work).sort((a, b) => (a.date + (a.time || '00:00')).localeCompare(b.date + (b.time || '00:00')));
   }
   const eventsOn = d => allEvents().filter(e => e.date === d);
   function renderSchedule() {
@@ -595,11 +598,12 @@
     days.forEach((d, i) => {
       const ev = eventsOn(d);
       if (i > 0 && !ev.length) return;
-      const n = ev.filter(e => !e.holiday).length;
-      h += `<div class="day"><span>${i === 0 ? 'TODAY · ' : ''}${label(d)}</span><span class="${n >= 3 ? 'or' : 'dim'}">${ev.length && ev.every(e => e.holiday) ? 'HOLIDAY' : n + (n === 1 ? ' EVENT' : ' EVENTS')}</span></div>`;
+      const n = ev.filter(e => !e.holiday && !e.work).length;
+      h += `<div class="day"><span>${i === 0 ? 'TODAY · ' : ''}${label(d)}</span><span class="${n >= 3 ? 'or' : 'dim'}">${ev.length && ev.every(e => e.holiday) ? 'HOLIDAY' : !n && ev.some(e => e.work) ? 'WORK DAY' : n + (n === 1 ? ' EVENT' : ' EVENTS')}</span></div>`;
       if (!ev.length) h += `<div class="empty">등록된 일정 없음 · 자유 시간 ✦</div>`;
+      if (i > 0 && ev.every(e => e.work)) { h = h.slice(0, h.lastIndexOf('<div class="day">')); return; }
       ev.forEach(e => {
-        const c = e.holiday ? 'var(--gr)' : e.allDay ? 'var(--or)' : e.local ? 'var(--vi)' : 'var(--cy)';
+        const c = e.holiday ? 'var(--gr)' : e.work ? '#8fb0c4' : e.allDay ? 'var(--or)' : e.local ? 'var(--vi)' : 'var(--cy)';
         const t = e.allDay || !e.time ? 'ALL DAY' : range(e.time, e.endTime);
         const sub = [e.location && esc(e.location), e.meet && `<a href="${esc(e.meet)}" target="_blank" rel="noopener">Meet 참여</a>`, e.local && '직접 추가'].filter(Boolean).join(' · ');
         h += `<div class="ev" style="--c:${c}"><time>${t}</time><div class="n">${e.local ? `<button class="x" data-del="${esc(e.id)}" aria-label="삭제">✕</button>` : ''}${esc(e.title)}${sub ? `<small>${sub}</small>` : ''}</div></div>`;
@@ -631,17 +635,21 @@
   function briefing(scope = 'today') {
     const hr = +parts(new Date(), TZ, { hour: '2-digit' }).hour;
     const hi = hr < 5 ? '늦은 밤이에요' : hr < 12 ? '좋은 아침이에요' : hr < 18 ? '좋은 오후예요' : '좋은 저녁이에요';
-    const today = eventsOn(state.today).filter(e => !e.holiday), hol = eventsOn(state.today).find(e => e.holiday);
+    const workToday = eventsOn(state.today).find(e => e.work);
+    const today = eventsOn(state.today).filter(e => !e.holiday && !e.work), hol = eventsOn(state.today).find(e => e.holiday);
     const b = bio(), avg = (b.p + b.e + b.i) / 3, w = cityWx(0), aq = cityAq(0);
     const px = personalIndex();
     const cond = `오늘 바이오 지수는 <b>${px.s}점(${px.label})</b>이에요.`;
-    const dayTxt = today.length
-      ? `오늘은 일정이 <b>${today.length}건</b> 있어요.${today[0].time ? ` 첫 일정은 <b>${ampm(today[0].time)} ${esc(today[0].title)}</b>.` : ''}`
+    const first = today.find(e => e.time);
+    const dayTxt = workToday
+      ? `오늘은 <b>9시–6시 회사</b> 가는 ${WDK[wday(state.today)]}요일이에요.${today.length ? ` 그 외 일정은 <b>${today.length}건</b>${first ? `, 첫 일정은 <b>${ampm(first.time)} ${esc(first.title)}</b>` : ''}이에요.` : ''}`
+      : today.length
+      ? `오늘은 일정이 <b>${today.length}건</b> 있어요.${first ? ` 첫 일정은 <b>${ampm(first.time)} ${esc(first.title)}</b>.` : ''}`
       : `오늘은 <b>일정이 없는 ${WDK[wday(state.today)]}요일</b>이에요.${hol ? ` ${j(hol.title, '이에요', '예요')}.` : ''}`;
     const wxTxt = w ? ` 서울은 <b>${w.desc}, ${w.t}°</b>${aq ? `이고 미세먼지는 <b>${aq.name}</b>${j(aq.name, '이에요', '예요').slice(aq.name.length)}.` : '예요.'}` : '';
     const lead = `${hi}, 아란. ${dayTxt} ${cond}${wxTxt}`;
     const items = [];
-    const week = Array.from({ length: 7 }, (_, i) => addDays(state.today, i + 1)).map(d => [d, eventsOn(d).filter(e => !e.holiday)]);
+    const week = Array.from({ length: 7 }, (_, i) => addDays(state.today, i + 1)).map(d => [d, eventsOn(d).filter(e => !e.holiday && !e.work)]);
     const busiest = week.slice().sort((a, c) => c[1].length - a[1].length)[0];
     if (busiest && busiest[1].length >= 2) { const kd = kday(busiest[0]); items.push(`이번 주에 가장 바쁜 날은 <b>${kd}</b>${j(kd, '이에요', '예요').slice(kd.length)}. 일정: ${busiest[1].map(e => esc(e.title)).join(', ')}`); }
     if (scope === 'week') week.forEach(([d, ev]) => { if (ev.length) items.push(`${kday(d)} · ${ev.map(e => (e.time ? ampm(e.time) + ' ' : '') + esc(e.title)).join(', ')}`); });
