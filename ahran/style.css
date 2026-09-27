@@ -482,3 +482,19 @@ body{word-break:keep-all;overflow-wrap:break-word;line-break:strict}
 .caution .ca{font-size:11.5px}
 @media (max-width:1240px){.stage{grid-template-columns:1fr 1fr}}
 @media (max-width:760px){.stage{grid-template-columns:1fr}}
+
+/* hero: time + today's state, the first thing you see */
+.hspace{width:120px}
+.hero{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:56px;margin:48px auto 0;max-width:1180px;padding:28px 40px;border-radius:14px;
+  background:linear-gradient(90deg,rgba(79,214,255,.07),rgba(79,214,255,.02));border:1px solid rgba(79,214,255,.16)}
+.hero-time{padding-right:56px;border-right:1px solid rgba(79,214,255,.18)}
+.hero-time .t{font-family:var(--num);font-weight:700;font-size:clamp(56px,7vw,92px);line-height:1;color:#fff;letter-spacing:-.02em;text-shadow:0 0 28px rgba(79,214,255,.55)}
+.hero-time .t span{font-size:clamp(16px,1.6vw,22px);font-weight:600;color:var(--cy);margin-left:6px;letter-spacing:0}
+.hero-time .d{font-size:15px;color:var(--ink2);margin-top:12px;letter-spacing:.04em}
+.hero .treeinfo{margin:0;justify-content:flex-start;gap:14px 34px}
+.hero .chip{font-size:17px;color:var(--ink2);gap:10px}
+.hero .chip b{font-size:26px;font-weight:700}
+.hero .chip .dot{width:11px;height:11px}
+.hero .treenote{margin-top:16px;font-size:17px;color:var(--ink);text-align:left}
+@media (max-width:980px){.hero{grid-template-columns:1fr;gap:22px;text-align:center;padding:24px}.hero-time{padding:0 0 20px;border-right:0;border-bottom:1px solid rgba(79,214,255,.18)}.hero .treeinfo{justify-content:center}.hero .treenote{text-align:center}}
+@media (max-width:760px){.hspace{display:none}.hero{margin-top:22px}.hero .chip{font-size:14px}.hero .chip b{font-size:20px}.hero .treenote{font-size:15px}}
