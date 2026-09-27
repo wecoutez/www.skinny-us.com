@@ -56,6 +56,7 @@
         <div><h3>최근 작업 기록 <small>GitHub</small></h3>${recent}</div>
         <div><h3>다음 할 일</h3><ul class="nx">${p.next.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div>
       </div>
+      ${p.staff && p.staff.length ? `<div class="staff"><h3>AI 직원 <small>${p.staff.length}명</small></h3><div class="staff-row">${p.staff.map(st => `<div class="st"><span class="st-no">${esc(st.id)}</span><b>${esc(st.name)}</b><p>${esc(st.role)}</p><small>${esc(st.schedule)}</small><em>${esc(st.status)}</em></div>`).join('')}</div></div>` : ''}
     </section>`;
   }
 
