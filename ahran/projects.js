@@ -159,7 +159,7 @@
     $('#pjDetail').innerHTML = `<div class="pj-nav"><button type="button" class="all" data-parent="${sb.parent}">← ${esc(par.p.short)}</button><span class="hud-t">SUB · ${esc(par.p.short)}</span></div>` + card(sb.p, sb.log);
     openModal();
   }
-  const face = (st, color, size) => st.photo ? `<img class="avatar photo" src="${esc(st.photo)}" width="${size}" height="${size}" alt="${esc(st.person)}" style="--c:${color}" loading="lazy">` : window.ahranAvatar(st.avatar, color, size);
+  const face = (st, color, size) => st.photo ? `<img class="avatar photo" src="${esc(st.photo)}?v=30" width="${size}" height="${size}" alt="${esc(st.person)}" style="--c:${color}" loading="lazy">` : window.ahranAvatar(st.avatar, color, size);
   let PK = null, DLV = [];
   const dlvFor = key => DLV.filter(x => x.key === key).sort((a, b) => (b.date + b.file).localeCompare(a.date + a.file));
   const KIT = 'https://claude.ai/artifact/EZ18A8mqCWAbgJMMs1Az4G';
