@@ -44,7 +44,7 @@
     ].join('');
     const team = staff.length ? `<div class="team">${staff.map(st => `
         <div class="agent" role="button" tabindex="0" data-agent="${esc(p.id || p.repo)}|${esc(st.id)}" aria-label="${esc(st.person)} 업무 보기">
-          ${window.ahranAvatar(st.avatar, color, 88)}
+          ${face(st, color, 88)}
           <div class="who"><b>${esc(st.person || '')}</b><span class="ttl" style="--c:${color}">${esc(st.title || '')}${st.title2 ? ' · ' + esc(st.title2) : ''}</span>
           <span class="job">${esc(st.job || '')}</span><p>${esc(st.role)}</p><span class="more">할 일 ${(st.todo || []).length}개 보기 →</span><small>⏱ ${esc(String(st.schedule).replace(/^제안:\s*/, "").split(/ — | \(|\. 5회/)[0])}</small></div>
         </div>`).join('')}</div>` : (p.staff_note ? `<p class="team-note">${esc(p.staff_note)}</p>` : '');
@@ -159,6 +159,9 @@
     $('#pjDetail').innerHTML = `<div class="pj-nav"><button type="button" class="all" data-parent="${sb.parent}">← ${esc(par.p.short)}</button><span class="hud-t">SUB · ${esc(par.p.short)}</span></div>` + card(sb.p, sb.log);
     openModal();
   }
+  const face = (st, color, size) => st.photo ? `<img class="avatar photo" src="${esc(st.photo)}" width="${size}" height="${size}" alt="${esc(st.person)}" style="--c:${color}" loading="lazy">` : window.ahranAvatar(st.avatar, color, size);
+  let PK = null, DLV = [];
+  const dlvFor = key => DLV.filter(x => x.key === key).sort((a, b) => (b.date + b.file).localeCompare(a.date + a.file));
   const KIT = 'https://claude.ai/artifact/EZ18A8mqCWAbgJMMs1Az4G';
   function askUrl(p, st, task) {
     const q = `너는 ${p.name}(${p.url})의 ${st.title}${st.title2 ? '(' + st.title2 + ')' : ''} ${st.person}이야. 직무: ${st.job}. 역할: ${st.role}\n규칙: 초안까지만 만들고 발송·게시·결제는 하지 않아. 모르는 사실은 [확인 필요]로 표시해.\n\n할 일: ${task}`;
@@ -169,22 +172,33 @@
     const p = it.p, st = p.staff.find(x => x.id === sid), color = ['#8fb0c4', '#a896ff', '#ff9d3c', '#4fd6ff'][p.stage], back = items.indexOf(it);
     $('#pjDetail').innerHTML = `<div class="pj-nav"><button type="button" class="all" data-back="${back}">← ${esc(p.short)}</button><span class="hud-t">AI STAFF · ${esc(p.short)}</span></div>
       <section class="agent-page" style="--c:${color}">
-        <div class="ap-head">${window.ahranAvatar(st.avatar, color, 128)}<div><span class="ttl">${esc(st.title)}${st.title2 ? ' · ' + esc(st.title2) : ''}</span><h2>${esc(st.person)}</h2><p class="job">${esc(st.job)} · ${esc(p.name)}</p><p>${esc(st.role)}</p><span class="stt">${esc(st.status)}</span></div></div>
+        <div class="ap-head">${face(st, color, 128)}<div><span class="ttl">${esc(st.title)}${st.title2 ? ' · ' + esc(st.title2) : ''}</span><h2>${esc(st.person)}</h2><p class="job">${esc(st.job)} · ${esc(p.name)}</p><p>${esc(st.role)}</p><span class="stt">${esc(st.status)}</span></div></div>
         <div class="ap-grid">
           <div><h3>이번 주 할 일</h3><ol class="ap-todo">${(st.todo || []).map(t => `<li><span>${esc(t)}</span><a class="hbtn" href="${askUrl(p, st, t)}" target="_blank" rel="noopener">Claude에게 시키기 ↗</a></li>`).join('')}</ol>
             <form class="ap-ask" data-key="${esc(key)}"><label for="apTask">직접 일 시키기</label><textarea id="apTask" rows="3" placeholder="예: 이번 주 인스타 캡션 3개 더 써줘"></textarea><button class="hbtn" type="submit">Claude에게 보내기 ↗</button></form></div>
           <div><h3>맡은 업무</h3><ul class="ap-du">${(st.duties || []).map(t => `<li>${esc(t)}</li>`).join('')}</ul>
-            <h3>예약</h3><p class="dim">${esc(st.schedule)}</p>
+            <h3>자동 딜리버리</h3><p class="dim">${st.deliver ? `<b class="gr">● 켜짐</b> · ${esc(st.deliver.label)} (한국시간)` : '예약 없음 · 필요할 때 직접 시키기'}</p>
             <h3>지키는 규칙</h3><ul class="ap-du"><li>초안까지만 · 발송·게시·결제는 직접</li><li>모르는 사실은 [확인 필요]로 표시</li><li>커넥터는 읽기 전용으로 시작</li></ul>
             <p class="dim ap-kit">더 정확하게 쓰려면 <a href="${KIT}" target="_blank" rel="noopener">세팅 키트</a>에서 이 직원의 프로젝트(지침·지식 파일)를 만들어 두세요.</p></div>
         </div>
+        <div class="ap-dlv"><h3>받은 딜리버리 <span class="dim">${dlvFor(st.key).length}건</span></h3>${dlvFor(st.key).length ? `<ul>${dlvFor(st.key).map(x => `<li><button type="button" class="dlv" data-file="${esc(x.file)}"><span class="d">${esc(x.date.slice(5).replace('-', '/'))} ${esc(x.time || '')}</span><b>${esc(x.task)}</b><span class="op">열기 →</span></button><div class="dlv-body" hidden></div></li>`).join('')}</ul>` : `<p class="dim">아직 도착한 결과물이 없어요.${st.deliver ? ` 다음 예약: ${esc(st.deliver.label)}` : ''}</p>`}</div>
       </section>`;
     openModal();
+  }
+  async function openDelivery(btn) {
+    const box = btn.nextElementSibling; if (!box.hidden) { box.hidden = true; return; }
+    box.hidden = false; box.innerHTML = '<p class="dim">여는 중…</p>';
+    try {
+      const x = await window.AhranLock.decryptJSON(PK, await (await fetch('data/deliveries/' + btn.dataset.file, { cache: 'no-store' })).json());
+      box.innerHTML = `${x.summary ? `<p class="sum">${esc(x.summary)}</p>` : ''}<pre>${esc(x.body)}</pre><button type="button" class="hbtn copy">복사하기</button>`;
+      box.querySelector('.copy').onclick = e => { navigator.clipboard && navigator.clipboard.writeText(x.body); e.target.textContent = '복사됐어요 ✓'; };
+    } catch (e) { box.innerHTML = '<p class="dim">열 수 없어요 · 잠금을 풀었는지 확인해 주세요</p>'; }
   }
   function showAll() { selected = null; drawSvg(); drawNodes(); showDetail(true); }
 
   async function render() {
     const d = await (await fetch('data/projects.json', { cache: 'no-store' })).json();
+    try { DLV = (await (await fetch('data/deliveries/index.json', { cache: 'no-store' })).json()).items || []; } catch (e) { DLV = []; }
     const repos = [...new Set(d.projects.map(p => p.repo))];
     const logs = Object.fromEntries(await Promise.all(repos.map(async r => [r, await commits(r)])));
     items = d.projects.map(p => { const l = logs[p.repo], own = ownLog(p, l); const last = own && own[0] ? new Date(own[0].date) : new Date(0);
@@ -214,6 +228,7 @@
       const st = e.target.closest('[data-step]'); if (st) return select(selected + +st.dataset.step);
       const pa = e.target.closest('[data-parent]'); if (pa) return select(+pa.dataset.parent);
       const bk = e.target.closest('[data-back]'); if (bk) return select(+bk.dataset.back);
+      const dv = e.target.closest('.dlv[data-file]'); if (dv) return openDelivery(dv);
       if (e.target.closest('#showAll')) showAll();
     });
     $('#pjModal').addEventListener('submit', e => {
@@ -232,5 +247,5 @@
   }
 
   $('#lockBtn').addEventListener('click', e => { e.preventDefault(); window.AhranLock.lockNow(); });
-  window.AhranLock.gate().then(render);
+  window.AhranLock.gate().then(pk => { PK = pk; return render(); });
 })();

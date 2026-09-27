@@ -569,6 +569,10 @@
       if (r.ok) state.healthData = await window.AhranLock.decryptJSON(state.pk, await r.json());
     } catch (e) { state.healthData = null; }
   }
+  async function loadDeliveries() {
+    const PK = { wg: 'work-genius', olive: 'theoliveskin', medi: 'medi-won', skinny: 'www.skinny-us.com', won: 'wonahran', ahran: 'ahran' };
+    try { state.dlv = ((await (await fetch('data/deliveries/index.json', { cache: 'no-store' })).json()).items || []).map(x => ({ ...x, pk: PK[x.key.split('-')[0]] })); } catch (e) { state.dlv = []; }
+  }
   // resting / sleeping respiratory rate log for 하임 (this device)
   // this device's log merged with entries saved in the encrypted record (shared across devices)
   const rrLog = () => {
@@ -647,6 +651,8 @@
     const fx = fxOf('USD'); if (fx && fx.chg != null && Math.abs(fx.chg) >= .5) items.push(`달러 환율이 ${fmt(Math.abs(fx.chg))}% ${fx.chg > 0 ? '올랐어요' : '내렸어요'}. 지금 1달러는 ${fmt(fx.v)}원이에요.`);
     const open = store.get('todos', []).filter(t => !t.done); if (open.length) items.push(`남은 할 일이 ${open.length}개 있어요. 먼저 "${esc(open[0].text)}"부터 해 보세요.`);
     if (px.s < 60) items.push(`컨디션 지수가 낮은 날이에요. ${px.tip}.`);
+    const dl = (state.dlv || []).filter(x => (Date.now() - new Date(x.date)) / 864e5 < 2);
+    if (dl.length) items.unshift(`AI 직원 결과물이 ${dl.length}건 도착했어요: ${dl.slice(-3).reverse().map(x => `<a href="projects.html#${encodeURIComponent(x.pk || '')}">${esc(x.person)} · ${esc(x.task)}</a>`).join(', ')}`);
     return { lead, items: items.slice(0, scope === 'week' ? 10 : 3) };
   }
   function renderBrief() {
@@ -773,7 +779,7 @@
   window.AhranLock.gate().then(pk => {
     state.pk = pk;
     renderAll(); tick(); setInterval(tick, 1000);
-    Promise.allSettled([loadSchedule(), loadHealth(), loadWeather(), loadFx(), loadRepos()]).then(renderAll);
+    Promise.allSettled([loadSchedule(), loadHealth(), loadWeather(), loadFx(), loadRepos(), loadDeliveries()]).then(renderAll);
   });
   setInterval(() => state.pk !== undefined && Promise.allSettled([loadWeather(), loadFx()]).then(() => { renderCities(); renderTree(); renderBrief(); renderStrip(); }), 15 * 6e4);
 })();
