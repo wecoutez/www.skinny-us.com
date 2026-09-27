@@ -19,6 +19,7 @@
   function renderHead() {
     const age = Math.floor((new Date(today) - new Date('2014-07-05')) / 3.15576e10), rr = rrAll().slice(-1)[0];
     $('#hmSub').textContent = H ? `${H.patient.sex} · ${age}살 · ${H.main_condition.working_diagnosis}` : '';
+    const vd = window.haimVerdict(rrAll(), today); $('#hmVerdict').className = 'hm-verdict ' + vd.c; $('#hmVerdict').innerHTML = `<b>한줄 의견</b>${esc(vd.t)}`;
     $('#hmStats').innerHTML = [
       ['체중', H ? H.patient.weight_kg + 'kg' : '—'],
       ['최근 호흡수', rr ? `<b class="${rr.v >= 30 ? 'rd' : 'gr'}">${rr.v}</b>회/분` : '—'],

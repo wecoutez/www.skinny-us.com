@@ -393,9 +393,10 @@
     if (m >= 9 && m <= 11) tip = '털갈이 시즌 · 하루 한 번 빗질 (헤어볼 예방)';
     if (w && w.lo <= 5) tip = '창가 대신 따뜻한 자리 마련해주기';
     if (aq && aq.g >= 3) tip = '오늘은 창문 닫고 공기청정기 (폐 질환 관리)';
-    if (H && !(rr && rr.d === state.today)) tip = '자는 동안 30초 호흡수 재기 — 목표 30회/분 미만';
+    if (H) tip = haimOneLine();
     return { s, label, why: why.slice(0, 4), tip };
   }
+  function haimOneLine() { const w = cityWx(0), aq = cityAq(0); return window.haimVerdict(rrLog(), state.today, { lo: w ? w.lo : null, aqG: aq ? aq.g : 0 }).t; }
   function haimSummary() {
     const H = state.healthData.haim, med = H.medications.current_daily, rr = rrLast();
     return `<div class="hsum">
@@ -486,7 +487,7 @@
       ${false ? `<div class="cond-bio">신체 <b class="${bioColor(p.cond.b.p)}">${p.cond.b.p}</b> · 감성 <b class="${bioColor(p.cond.b.e)}">${p.cond.b.e}</b> · 지성 <b class="${bioColor(p.cond.b.i)}">${p.cond.b.i}</b></div>` : ''}
       ${p.caution ? `<div class="caution"><h4>오늘 조심할 부분</h4><ul>${p.caution.list.map(([, t]) => `<li>${esc(t)}</li>`).join('')}</ul></div>` : ''}
       <ul>${p.cond.why.map(([sg, t]) => `<li class="${sg === '+' ? 'gr' : sg === '·' ? 'dim' : 'rd'}"><span>${sg}</span>${esc(t)}</li>`).join('')}</ul>
-      <p class="tip">오늘의 팁 · ${esc(p.cond.tip)}</p>
+      ${p.kind === 'cat' && state.healthData && state.healthData.haim ? `<p class="hm-verdict ${window.haimVerdict(rrLog(), state.today).c}"><b>한줄 의견</b>${esc(p.cond.tip)}</p>` : `<p class="tip">오늘의 팁 · ${esc(p.cond.tip)}</p>`}
       ${p.kind === 'cat' && state.healthData && state.healthData.haim ? haimSummary() : ''}<p class="health dim" ${(p.kind === 'cat' && state.healthData && state.healthData.haim) || (p.kind !== 'cat' && state.healthData && state.healthData.ahran) ? 'hidden' : ''}>건강 정보 · ${state.health && state.health[p.id] ? esc(state.health[p.id]) : p.kind === 'cat' ? '진료 기록 미입력 · 러시안블루 시니어 일반 체크: 체중(비만 경향) · 신장 · 요로 · 치아, 6개월마다 검진 권장' : '아직 입력 전 (키·체중·혈액형·알레르기·복용약 등)'}</p>
     </div>`).join('');
   }
