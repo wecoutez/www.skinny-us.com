@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 <div class="lock" aria-hidden="false">
@@ -73,11 +73,14 @@
   </div>
 
   <div class="center" id="life">
-    <div class="treebox">
-      <svg id="tree" viewBox="0 0 620 600" role="img" aria-label="오늘의 나무"></svg>
+    <div class="treebox scene">
+      <svg id="tree" viewBox="0 0 620 600" aria-hidden="true"></svg>
+      <svg id="bodies" viewBox="0 0 620 600" role="img" aria-label="원아란과 하임의 오늘 컨디션"></svg>
+      <div id="callouts"></div>
     </div>
     <div class="treeinfo" id="treeInfo"></div>
     <div class="treenote" id="treeNote"></div>
+    <div class="cond-cards" id="condCards"></div>
     <div class="areas" id="nodes"></div>
   </div>
 
@@ -111,8 +114,9 @@
 <div class="strip" id="strip"></div>
 </div>
 
-<script src="lock.js?v=4"></script>
-<script src="tree.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="lock.js?v=5"></script>
+<script src="tree.js?v=5"></script>
+<script src="body.js?v=5"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>

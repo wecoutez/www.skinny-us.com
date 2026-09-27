@@ -15,6 +15,11 @@
     { id: 'la', name: 'LOS ANGELES', ko: '로스앤젤레스', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 34.0522, lon: -118.2437, fx: 'USD', fxLabel: '🇺🇸 1달러 환율' },
     { id: 'sf', name: 'SAN FRANCISCO', ko: '샌프란시스코', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 37.7749, lon: -122.4194, fx: 'USD', fxLabel: '🇺🇸 1달러 환율' },
   ];
+  // people shown on the Today scene; 하임's details are filled in once known
+  const FAMILY = [
+    { id: 'ahran', name: '원아란', sex: 'f', birth: BIRTH, color: '#4fd6ff' },
+    { id: 'haim', name: '하임', sex: null, birth: null, color: '#ffb454' },
+  ];
   const AREAS = ['건강', '성장', '일', '관계', '마음', '재정'];
   const RITUAL = ['물 한 잔 · 스트레칭', '명상 15분', '오늘의 3가지 목표', '영어 / 일본어 20분', '감사 3줄'];
   // 2026 public holidays (KR), incl. substitute days
@@ -232,6 +237,66 @@
     }).join('');
   }
 
+  // ---------------------------------------------------------------- people, age, condition
+  const person = f => { const o = store.get('person.' + f.id, {}); return { ...f, ...o }; };
+  function ageInfo(birth) {
+    if (!birth) return null;
+    const [y, m, d] = birth.split('-').map(Number), [ty, tm, td] = state.today.split('-').map(Number);
+    const age = ty - y - ((tm < m || (tm === m && td < d)) ? 1 : 0);
+    let next = `${ty}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`; if (next < state.today) next = `${ty + 1}-${next.slice(5)}`;
+    const zod = ['원숭이', '닭', '개', '돼지', '쥐', '소', '호랑이', '토끼', '용', '뱀', '말', '양'][y % 12];
+    const md = m * 100 + d, signs = [[120, '염소'], [219, '물병'], [321, '물고기'], [420, '양'], [521, '황소'], [622, '쌍둥이'], [723, '게'], [823, '사자'], [923, '처녀'], [1023, '천칭'], [1122, '전갈'], [1222, '사수'], [1232, '염소']];
+    const sign = signs.find(([lim]) => md < lim)[1];
+    return { age, days: dayNum(state.today) - dayNum(birth), dday: dayNum(next) - dayNum(state.today), zod, sign };
+  }
+  function bioOf(birth) { if (!birth) return null; const n = dayNum(state.today) - dayNum(birth); const f = p => Math.round(100 * Math.sin(2 * Math.PI * n / p)); return { p: f(23), e: f(28), i: f(33) }; }
+  function condition(pp, child) {
+    const w = cityWx(0), aq = cityAq(0), b = bioOf(pp.birth), why = [];
+    let s = 72;
+    if (b) { const avg = (b.p + b.e + b.i) / 3; s += avg * .15; why.push([avg >= 0 ? '+' : '−', `바이오리듬 평균 ${avg > 0 ? '+' : ''}${Math.round(avg)}`]); }
+    if (aq) { const d = [0, 5, 0, -10, -18][aq.g]; s += d; if (d) why.push([d > 0 ? '+' : '−', `미세먼지 ${aq.name}`]); }
+    if (w) {
+      const swing = w.hi - w.lo;
+      if (swing >= 10) { s -= 6; why.push(['−', `일교차 ${swing}° · 면역 주의`]); }
+      if (w.kind === 'rain' || w.kind === 'snow') { s -= 5; why.push(['−', `${w.desc} · 몸이 무거울 수 있음`]); }
+      else if (w.kind === 'clear' && w.day) { s += 4; why.push(['+', '맑은 날씨 · 햇빛']); }
+      if (w.t <= 5 || w.t >= 30) { s -= 6; why.push(['−', `기온 ${w.t}°`]); }
+    }
+    if (!child) { const n = eventsOn(state.today).filter(e => !e.holiday).length; if (n >= 3) { s -= 5; why.push(['−', `일정 ${n}건`]); } else if (n === 0) { s += 3; why.push(['+', '일정 여유']); } }
+    s = Math.max(5, Math.min(99, Math.round(s)));
+    const label = s >= 88 ? '최상' : s >= 75 ? '좋음' : s >= 60 ? '보통' : s >= 45 ? '주의' : '휴식 필요';
+    let tip;
+    if (aq && aq.g >= 3) tip = child ? '실외 놀이는 줄이고 마스크 챙기기' : '마스크 챙기고 운동은 실내로';
+    else if (w && w.hi - w.lo >= 10) tip = child ? '아침엔 겉옷, 낮엔 가볍게 — 겹쳐 입히기' : '겹쳐 입고 따뜻한 물 자주';
+    else if (w && (w.kind === 'rain' || w.kind === 'snow')) tip = '우산 챙기고 실내 스트레칭';
+    else if (s < 60) tip = child ? '일찍 재우고 충분히 쉬게 하기' : '큰 결정은 미루고 일찍 쉬기';
+    else tip = child ? '바깥 산책하기 좋은 날' : '중요한 일은 오전에 몰아서';
+    return { s, label, why: why.slice(0, 4), tip, b };
+  }
+  function renderScene() {
+    const people = FAMILY.map(person);
+    const cfg = [{ ...people[0], x: 246 }, { ...people[1], x: 390 }];
+    cfg.forEach(p => { const a = ageInfo(p.birth); p.info = a; p.age = a ? a.age : null; p.cond = condition(p, p.age == null || p.age < 18); p.sex = p.sex || 'f'; });
+    window.drawBodies($('#bodies'), cfg, 600);
+    $('#callouts').innerHTML = cfg.map((p, i) => {
+      const known = !!p.info, side = i === 0 ? 'l' : 'r', top = Math.max(2, p.anchor.top / 600 * 100 - 2);
+      return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'right' : 'left'}:${side === 'l' ? 100 - p.x / 620 * 100 + 13 : p.x / 620 * 100 + 13}%">
+        <span class="nm">${esc(p.name)}</span>
+        ${known ? `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>` : '<span class="ag">생일 입력 전</span>'}
+        <span class="sc"><b>${p.cond.s}</b><small>${p.cond.label}</small></span>
+      </div>`;
+    }).join('');
+    $('#condCards').innerHTML = cfg.map((p, i) => `<div class="cond" style="--c:${p.color}">
+      <div class="cond-h"><span class="nm">${esc(p.name)}</span><span class="cs"><b>${p.cond.s}</b> / 100 · ${p.cond.label}</span></div>
+      ${p.info ? `<div class="cond-age">만 ${p.info.age}세 · ${esc(p.birth.replace(/-/g, '.'))} · ${esc(p.info.zod)}띠 · ${esc(p.info.sign)}자리 · 생일 D-${p.info.dday}</div>`
+        : `<div class="cond-age dim">생년월일·성별을 알려주시면 나이·바이오리듬·체형이 반영돼요</div>`}
+      ${p.cond.b ? `<div class="cond-bio">신체 <b class="${bioColor(p.cond.b.p)}">${p.cond.b.p}</b> · 감성 <b class="${bioColor(p.cond.b.e)}">${p.cond.b.e}</b> · 지성 <b class="${bioColor(p.cond.b.i)}">${p.cond.b.i}</b></div>` : ''}
+      <ul>${p.cond.why.map(([sg, t]) => `<li class="${sg === '+' ? 'gr' : 'rd'}"><span>${sg}</span>${esc(t)}</li>`).join('')}</ul>
+      <p class="tip">오늘의 팁 · ${esc(p.cond.tip)}</p>
+      <p class="health dim">건강 정보 · ${state.health && state.health[p.id] ? esc(state.health[p.id]) : '아직 입력 전 (키·체중·혈액형·알레르기·복용약 등)'}</p>
+    </div>`).join('');
+  }
+
   // ---------------------------------------------------------------- tree
   function treeConfig() {
     const m = +state.today.slice(5, 7), w = cityWx(0), aq = cityAq(0);
@@ -263,7 +328,7 @@
     cfg.leafColors = colors;
     return { cfg, season, w, aq };
   }
-  function renderTree() { const { cfg } = treeConfig(); window.drawTree($('#tree'), cfg); renderTreeInfo(); }
+  function renderTree() { const { cfg } = treeConfig(); window.drawTree($('#tree'), cfg); renderTreeInfo(); renderScene(); }
   function renderTreeInfo() {
     const { cfg, season, w, aq } = treeConfig();
     const sName = { spring: '🌸 봄', summer: '🌿 여름', autumn: '🍂 가을', winter: '❄️ 겨울' }[season];
@@ -461,6 +526,12 @@
     if ((m = q.match(/^점수\s*(\S+)\s*(\d{1,3})$/))) {
       const k = AREAS.find(a => m[1].includes(a)); if (!k) return reply(q, `영역: ${AREAS.join(', ')}`);
       const a = areas(); a[k] = Math.min(100, +m[2]); store.set('areas', a); renderNodes(); renderTreeInfo(); return reply(q, `${k} 점수 → <b>${a[k]}</b> · LIFE INDEX ${lifeIndex()}`);
+    }
+    if ((m = q.match(/^(하임|아란|원아란)\s*(생일|생년월일|성별)\s*[:：]?\s*(.+)$/))) {
+      const id = m[1] === '하임' ? 'haim' : 'ahran', o = store.get('person.' + id, {});
+      if (m[2] === '성별') o.sex = /남|m/i.test(m[3]) ? 'm' : 'f';
+      else { const d = m[3].match(/(\d{4})\D?(\d{1,2})\D?(\d{1,2})/); if (!d) return reply(q, '예: 하임 생일 2019-05-01'); o.birth = `${d[1]}-${d[2].padStart(2, '0')}-${d[3].padStart(2, '0')}`; }
+      store.set('person.' + id, o); renderScene(); return reply(q, `저장했어요 (이 기기). ${m[1]} ${m[2]} → <b>${esc(o.sex === 'm' ? '남' : o.sex === 'f' ? '여' : o.birth)}</b>`);
     }
     if ((m = q.match(/^(?:검색|구글|google)\s+(.+)$/i))) return reply(q, `<a href="https://www.google.com/search?q=${encodeURIComponent(m[1])}" target="_blank" rel="noopener">🔎 "${esc(m[1])}" 구글 검색 열기</a>`);
     return reply(q, `이건 제가 여기서 바로 처리할 수 없는 요청이에요.<br><a href="https://claude.ai/new?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">✦ Claude에게 물어보기</a> &nbsp;·&nbsp; <a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">🔎 구글 검색</a> &nbsp;·&nbsp; <span class="muted">"도움말"로 명령어 보기</span>`);
