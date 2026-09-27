@@ -556,3 +556,14 @@ body{word-break:keep-all;overflow-wrap:break-word;line-break:strict}
 .cmd input::placeholder{text-overflow:ellipsis}
 .cmdwrap{margin-top:28px}
 .stage{margin-top:48px}
+/* city card: FX right under the country, then time */
+.fx.fx-top{margin:14px 0 4px;padding:12px 0 14px;border-top:1px solid rgba(64,190,255,.1);border-bottom:1px solid rgba(64,190,255,.1)}
+.fx.fx-top + .time{margin-top:14px}
+/* live sky on city cards */
+.city{position:relative;overflow:hidden;isolation:isolate}
+.city > *:not(.sky){position:relative;z-index:1}
+.city .sky{position:absolute;inset:0 0 auto 0;height:68%;z-index:0;background:linear-gradient(180deg,var(--g1),var(--g2));-webkit-mask-image:linear-gradient(#000 45%,transparent);mask-image:linear-gradient(#000 45%,transparent);transition:background 1s}
+.city .sky svg{position:absolute;inset:0;width:100%;height:100%}
+.city .sky.day{opacity:.9}.city .sky.night{opacity:1}.city .sky.dawn,.city .sky.dusk{opacity:.95}
+.city h3,.city .time,.city .fx .v{text-shadow:0 1px 8px rgba(0,0,0,.45)}
+.city .top small,.city .fx .k,.city .dt{color:#c9dbe8}

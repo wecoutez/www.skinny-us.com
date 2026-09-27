@@ -175,7 +175,7 @@
   async function loadWeather() {
     const lat = CITIES.map(c => c.lat).join(','), lon = CITIES.map(c => c.lon).join(',');
     try {
-      const w = await getJSON(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,cloud_cover,weather_code,is_day,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=1`, 'weather', 15);
+      const w = await getJSON(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,cloud_cover,weather_code,is_day,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&timezone=auto&forecast_days=1`, 'weather', 15);
       state.weather = Array.isArray(w) ? w : [w]; state.feeds.weather = 'ok';
     } catch (e) { state.feeds.weather = 'err'; }
     try {
@@ -183,7 +183,7 @@
       state.air = Array.isArray(a) ? a : [a]; state.feeds.air = 'ok';
     } catch (e) { state.feeds.air = 'err'; }
   }
-  const cityWx = i => { const w = state.weather && state.weather[i]; if (!w || !w.current) return null; const [desc, kind] = WMO(w.current.weather_code); return { t: Math.round(w.current.temperature_2m), rh: w.current.relative_humidity_2m, cloud: w.current.cloud_cover, code: w.current.weather_code, desc, kind, day: w.current.is_day, wind: w.current.wind_speed_10m, hi: w.daily && Math.round(w.daily.temperature_2m_max[0]), lo: w.daily && Math.round(w.daily.temperature_2m_min[0]), pop: w.daily && w.daily.precipitation_probability_max && w.daily.precipitation_probability_max[0] }; };
+  const cityWx = i => { const w = state.weather && state.weather[i]; if (!w || !w.current) return null; const [desc, kind] = WMO(w.current.weather_code); return { t: Math.round(w.current.temperature_2m), rh: w.current.relative_humidity_2m, cloud: w.current.cloud_cover, code: w.current.weather_code, desc, kind, day: w.current.is_day, wind: w.current.wind_speed_10m, sr: w.daily && w.daily.sunrise && w.daily.sunrise[0], ss: w.daily && w.daily.sunset && w.daily.sunset[0], hi: w.daily && Math.round(w.daily.temperature_2m_max[0]), lo: w.daily && Math.round(w.daily.temperature_2m_min[0]), pop: w.daily && w.daily.precipitation_probability_max && w.daily.precipitation_probability_max[0] }; };
   const cityAq = i => { const a = state.air && state.air[i]; return a && a.current ? aqGrade(a.current.pm10, a.current.pm2_5) : null; };
 
   // ---------------------------------------------------------------- FX
@@ -207,6 +207,29 @@
   const fxOf = cur => { if (!state.fx) return null; const s = state.fx.series[cur], v = s[s.length - 1], p = s.length > 1 ? s[s.length - 2] : null; return { v, chg: p ? (v - p) / p * 100 : null, s }; };
   const spark = (s, up) => { if (!s || s.length < 2) return ''; const mn = Math.min(...s), mx = Math.max(...s), rg = mx - mn || 1; return `<svg viewBox="0 0 100 26" preserveAspectRatio="none"><path d="${s.map((v, i) => (i ? 'L' : 'M') + (i / (s.length - 1) * 100).toFixed(1) + ',' + (23 - (v - mn) / rg * 20).toFixed(1)).join('')}" stroke="${up ? '#3ddc97' : '#ff5b6b'}" stroke-width="1.5" fill="none" vector-effect="non-scaling-stroke"/></svg>`; };
 
+  // live sky behind each city card, from local time, sunrise/sunset and weather
+  function skyHtml(mins, w) {
+    const hm = iso => { if (!iso) return null; const t = iso.slice(11, 16).split(':'); return +t[0] * 60 + +t[1]; };
+    const sr = (w && hm(w.sr)) ?? 390, ss = (w && hm(w.ss)) ?? 1110;
+    const phase = mins < sr - 40 || mins > ss + 40 ? 'night' : mins < sr + 50 ? 'dawn' : mins > ss - 50 ? 'dusk' : 'day';
+    const G = { night: ['#040a1c', '#0a1a34'], dawn: ['#2d2656', '#c9706a'], day: ['#1f6fc2', '#0e3a68'], dusk: ['#2e1f4e', '#e07a45'] }[phase];
+    const kind = w ? w.kind : 'clear', grey = kind === 'rain' || kind === 'snow' || kind === 'fog';
+    const g1 = grey ? (phase === 'night' ? '#0b1320' : '#34465a') : G[0], g2 = grey ? '#141f2c' : G[1];
+    let svg = '';
+    if (phase === 'night') {
+      for (let i = 0; i < 22; i++) { const x = (Math.sin(i * 12.99) * 43758.5 % 1 + 1) % 1 * 100, y = (Math.cos(i * 78.23) * 1000 % 1 + 1) % 1 * 60; svg += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(.3 + (i % 3) * .25).toFixed(2)}" fill="#fff" class="tw" style="--t:${2 + i % 3}s;--d:${-(i % 4)}s" opacity=".85"/>`; }
+      const nl = (1440 - ss) + sr, f = ((mins - ss + 1440) % 1440) / nl, x = 66 + 20 * Math.min(1, f), y = 19 - Math.sin(Math.PI * Math.min(1, f)) * 4;
+      if (!grey) svg += `<circle cx="${x}" cy="${y}" r="4.2" fill="#f4f1dc" opacity=".9"/><circle cx="${x + 1.8}" cy="${y - 1.2}" r="3.8" fill="${g1}"/>`;
+    } else {
+      const f = Math.max(0, Math.min(1, (mins - sr) / (ss - sr))), x = 66 + 20 * f, y = 19 - Math.sin(Math.PI * f) * 4, sc = phase === 'day' ? '#ffe28a' : '#ffb46b';
+      if (!grey) svg += `<circle cx="${x}" cy="${y}" r="9" fill="${sc}" opacity=".22"/><circle cx="${x}" cy="${y}" r="4.5" fill="${sc}"/>`;
+    }
+    if (kind === 'cloud' || grey) svg += [[40, 12, 8], [70, 8, 10], [88, 20, 7]].map(([x, y, r]) => `<g opacity="${grey ? .4 : .3}" fill="#dfe8f2"><ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .38}"/><ellipse cx="${x - r * .35}" cy="${y - r * .2}" rx="${r * .5}" ry="${r * .35}"/></g>`).join('');
+    if (kind === 'rain') for (let i = 0; i < 18; i++) svg += `<line x1="${(i * 5.7) % 100}" y1="${(i * 11) % 40 + 20}" x2="${(i * 5.7) % 100 - 1.5}" y2="${(i * 11) % 40 + 26}" stroke="#9fd8ff" stroke-width=".6" opacity=".7"/>`;
+    if (kind === 'snow') for (let i = 0; i < 18; i++) svg += `<circle cx="${(i * 5.7) % 100}" cy="${(i * 11) % 50 + 10}" r=".9" fill="#fff" opacity=".85"/>`;
+    return `<div class="sky ${phase}" style="--g1:${g1};--g2:${g2}"><svg viewBox="0 0 100 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${svg}</svg></div>`;
+  }
+
   // ---------------------------------------------------------------- cities
   function renderCities() {
     const now = new Date(), seoulOff = tzOffsetMin(TZ, now);
@@ -216,13 +239,13 @@
       const d = `${p.year}-${p.month}-${p.day}`, pos = (h * 60 + +p.minute) / 1440 * 100;
       const w = cityWx(i), aq = cityAq(i), fx = fxOf(c.fx);
       const icon = w ? (w.kind === 'clear' && !w.day ? ICON.night : ICON[w.kind]) : '';
-      return `<div class="panel city">
+      return `<div class="panel city">${skyHtml(h * 60 + +p.minute, w)}
         <div class="top"><div><h3><span class="flag">${c.flag}</span>${c.name}</h3><small>${c.ko}</small></div><span class="tag">${i === 0 ? '기준' : (diff > 0 ? '+' : diff < 0 ? '−' : '±') + Math.abs(diff) + 'H'}</span></div>
+        <div class="fx fx-top"><span class="k">${c.fxLabel}</span><span class="v">${fx ? fmt(fx.v) + '<small>원</small>' : '—'}</span><span class="c ${fx && fx.chg != null ? (fx.chg >= 0 ? 'gr' : 'rd') : 'dim'}">${fx && fx.chg != null ? (fx.chg >= 0 ? '▲ +' : '▼ ') + fmt(fx.chg) + '%' : ''}</span>${fx ? spark(fx.s, fx.chg == null || fx.chg >= 0) : ''}</div>
         <div class="time">${h % 12 || 12}:${p.minute}<span>${ap}</span></div><div class="dt">${label(d)}</div>
         <div class="dn"><i style="left:calc(${pos}% - 5px)"></i></div>
         <div class="wx">${w ? `${icon}<b>${w.t}°</b><span>${w.desc}</span><span class="hl">${w.hi}° / ${w.lo}°</span>` : '<span class="dim">날씨 불러오는 중…</span>'}</div>
         <div class="aq">${aq ? `${aq.emoji} 미세먼지 <span class="${aq.cls}">${aq.name}</span><span class="hl">PM2.5 ${Math.round(aq.pm25)}</span>` : '&nbsp;'}</div>
-        <div class="fx"><span class="k">${c.fxLabel}</span><span class="v">${fx ? fmt(fx.v) + '<small>원</small>' : '—'}</span><span class="c ${fx && fx.chg != null ? (fx.chg >= 0 ? 'gr' : 'rd') : 'dim'}">${fx && fx.chg != null ? (fx.chg >= 0 ? '▲ +' : '▼ ') + fmt(fx.chg) + '%' : ''}</span>${fx ? spark(fx.s, fx.chg == null || fx.chg >= 0) : ''}</div>
       </div>`;
     }).join('');
   }
