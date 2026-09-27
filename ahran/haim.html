@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#02060c">
-<title>AHRAN · Projects</title>
+<title>하임 · Health</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='8' fill='%2302060c'/%3E%3Cpath d='M22 34V20M22 25l-6-5M22 22l6-6' stroke='%234fd6ff' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='15' cy='18' r='4' fill='%23ff9d3c'/%3E%3Ccircle cx='29' cy='14' r='4.5' fill='%23ffd166'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,22 +30,48 @@
     <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><polygon points="22,2 39,12 39,32 22,42 5,32 5,12" fill="none" stroke="#4fd6ff" stroke-width="1.4"/><polygon points="22,9 33,15.5 33,28.5 22,35 11,28.5 11,15.5" fill="rgba(79,214,255,.12)" stroke="#4fd6ff" stroke-width=".8" opacity=".7"/><path d="M22 31V20M22 24l-5-4M22 22l5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="16.5" cy="18" r="2.4" fill="#ff9d3c"/><circle cx="27.5" cy="15.5" r="2.8" fill="#ffd166"/><circle cx="22" cy="16" r="1.8" fill="#4fd6ff"/></svg>
     <div><b>AHRAN</b><small>PERSONAL OPERATING SYSTEM</small></div>
   </a>
-  <nav><a href="./">TODAY</a><a href="projects.html" class="on">PROJECTS</a><a href="haim.html">하임</a><a href="#" id="lockBtn" title="잠그기">🔒</a></nav>
+  <nav><a href="./">TODAY</a><a href="projects.html">PROJECTS</a><a href="haim.html" class="on">하임</a><a href="#" id="lockBtn" title="잠그기">🔒</a></nav>
   <div class="hclock"><div class="t" id="pjCount">—</div><div class="d" id="pjSub">&nbsp;</div></div>
 </header>
 
-<div class="mm" id="mm">
-  <svg class="mm-svg" id="mmSvg" viewBox="0 0 1200 780" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
-  <button class="mm-hub" id="mmHub" type="button"><span class="k">AHRAN</span><b>PROJECTS</b><span class="s" id="mmHubSub">—</span></button>
-  <div id="mmNodes"></div>
-</div>
-<div class="pj-stats" id="pjStats"></div>
-<div class="pj-modal" id="pjModal" hidden><div class="pj-sheet" id="pjSheet" role="dialog" aria-modal="true" aria-label="사이트 상세"><button class="pj-close" id="pjClose" type="button" aria-label="닫기">✕</button><div id="pjDetail"></div></div></div>
+<section class="hm-hero">
+  <img src="img/haim.webp" alt="하임 홀로그램" class="hm-img">
+  <div>
+    <div class="hud-t">RUSSIAN BLUE · 2014.07.05 · CHICAGO</div>
+    <h1>하임이</h1>
+    <p id="hmSub" class="muted">불러오는 중…</p>
+    <div class="hm-stats" id="hmStats"></div>
+  </div>
+</section>
 
-<p class="pj-foot">최근 작업은 GitHub에서 실시간으로 불러와요 · 요약·단계·다음 할 일은 <code>data/projects.json</code>에 적혀 있어요 (Claude에게 "프로젝트 현황 업데이트해줘"라고 하면 갱신)</p>
+<div class="hm-grid">
+  <section class="panel">
+    <div class="ph"><span class="pt">수면 호흡수</span><span class="tag">목표 30 미만</span></div>
+    <svg id="rrChart" viewBox="0 0 520 180" role="img" aria-label="호흡수 추이"></svg>
+    <div class="rr-ctl hm-rr"><button type="button" class="hbtn big" id="rrStart">30초 재기</button><button type="button" class="hbtn tap" id="rrTap" disabled>숨 ●</button><span class="rr-now" id="rrNow"></span>
+      <label class="rr-man" for="rrManual">직접 입력 <input id="rrManual" type="number" min="5" max="120" inputmode="numeric" placeholder="회/분"><button type="button" class="hbtn" id="rrSave">저장</button></label></div>
+  </section>
+  <section class="panel">
+    <div class="ph"><span class="pt">다가오는 일정 · 체크</span></div>
+    <ul class="hm-due" id="hmDue"></ul>
+  </section>
+</div>
+
+<section class="panel hm-tl-wrap">
+  <div class="ph"><span class="pt">건강 기록 타임라인</span><span class="hm-filter" id="hmFilter"></span></div>
+  <form class="hm-add" id="hmAdd">
+    <input id="addDate" type="date" aria-label="날짜" required>
+    <select id="addKind" aria-label="종류"><option>검사</option><option>진료</option><option>접종</option><option>약</option><option>증상</option><option>측정</option></select>
+    <input id="addText" type="text" placeholder="예: 해마루 재진 · 흉부 X-ray, 광견병 접종 (Huron Vet)" aria-label="내용" required>
+    <button class="hbtn" type="submit">기록 추가</button>
+  </form>
+  <ol class="hm-tl" id="hmTl"></ol>
+  <p class="dim hm-note">직접 추가한 기록과 호흡수는 이 기기에 저장돼요. 병원 기록 원본은 암호화되어 저장돼요. 약 변경·중단은 반드시 수의사와 상의하세요.</p>
+</section>
+
+<section class="panel"><div class="ph"><span class="pt">전체 건강 기록</span></div><div id="hBody"></div></section>
 </div>
 <script src="lock.js?v=26"></script>
-<script src="avatar.js?v=26"></script>
-<script src="projects.js?v=26"></script>
+<script src="haim.js?v=26"></script>
 </body>
 </html>

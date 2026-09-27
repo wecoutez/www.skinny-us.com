@@ -403,7 +403,7 @@
       <div class="hsum-row"><span>오늘 약</span>${med.map(m => `<b>${esc(m.name.split(' (')[0])} ${esc(m.dose.replace('/일', ''))}</b>`).join(' · ')}</div>
       <div class="hsum-row"><span>호흡수</span>${rr ? `<b class="${rr.v >= 30 ? 'rd' : 'gr'}">${rr.v}회/분</b> ${esc(rr.d === state.today ? '오늘' : rr.d.slice(5).replace('-', '/'))}` : '<b class="dim">기록 없음</b>'} · 목표 30 미만</div>
       <div class="hsum-row"><span>체중</span><b>${H.patient.weight_kg}kg</b> · ${esc(H.patient.sex)}</div>
-      <button type="button" class="hbtn" id="openHealth">건강 기록 · 호흡수 재기</button>
+      <a class="hbtn" href="haim.html">하임 페이지 · 건강 기록 →</a>
     </div>`;
   }
   const li = a => a.map(x => `<li>${esc(typeof x === 'string' ? x : [x.name || x.issue, x.dose, x.period, x.status || x.result || x.purpose, x.note].filter(Boolean).join(' · '))}</li>`).join('');
@@ -460,10 +460,10 @@
     cfg.forEach(p => { const a = ageInfo(p.birth); p.info = a; p.age = a ? a.age : null; p.cond = p.kind === 'cat' ? catCondition(p) : condition(p, p.age == null || p.age < 18); p.sex = p.sex || 'f'; if (p.kind !== 'cat') { p.caution = { list: p.cond.caut.map(t => ['', t]) }; p.warn = p.cond.warn; } });
     window.drawBodies($('#bodies'), cfg, 600);
     const wa = cfg[0].warn || {};
-    $('#figs').innerHTML = `<figure class="fig fig-a" style="--c:${cfg[0].color}"><img src="img/ahran.webp" alt="원아란 홀로그램">${wa.head ? '<i class="hot" style="top:10%;left:50%"></i>' : ''}${wa.heart ? '<i class="hot" style="top:27%;left:53%"></i>' : ''}${wa.joints ? '<i class="hot" style="top:50%;left:44%"></i><i class="hot" style="top:70%;left:44%"></i><i class="hot" style="top:70%;left:56%"></i>' : ''}</figure><figure class="fig fig-h" style="--c:${cfg[1].color}"><img src="img/haim.webp" alt="하임 홀로그램"></figure>`;
+    $('#figs').innerHTML = `<figure class="fig fig-a" style="--c:${cfg[0].color}"><img src="img/ahran.webp" alt="원아란 홀로그램">${wa.head ? '<i class="hot" style="top:10%;left:50%"></i>' : ''}${wa.heart ? '<i class="hot" style="top:27%;left:53%"></i>' : ''}${wa.joints ? '<i class="hot" style="top:50%;left:44%"></i><i class="hot" style="top:70%;left:44%"></i><i class="hot" style="top:70%;left:56%"></i>' : ''}</figure><a class="fig fig-h" href="haim.html" style="--c:${cfg[1].color}" aria-label="하임 건강 페이지"><img src="img/haim.webp" alt="하임 홀로그램"></a>`;
     $('#callouts').innerHTML = cfg.map((p, i) => {
       const known = !!p.info, side = i === 0 ? 'l' : 'r', top = Math.max(2, p.anchor.top / 600 * 100 - 2);
-      return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'left' : 'right'}:0">
+      return `<${p.kind === 'cat' ? 'a href="haim.html"' : 'div'} class="callout ${side} ${known ? '' : 'unknown'}${p.kind === 'cat' ? ' callout-link' : ''}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'left' : 'right'}:0">
         <span class="nm">${esc(p.name)}</span>
         ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${p.info.age}살 · 러시안블루${rrLast() ? `<br>호흡 ${rrLast().v}회/분` : ''}</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
         <span class="cl">${p.kind === 'cat' ? '오늘 컨디션' : '바이오 지수'}</span><span class="sc"><b>${p.cond.s}</b><small>${p.cond.label}</small></span>
