@@ -396,7 +396,7 @@
     if (H) tip = haimOneLine();
     return { s, label, why: why.slice(0, 4), tip };
   }
-  function haimOneLine() { const w = cityWx(0), aq = cityAq(0); return window.haimVerdict(rrLog(), state.today, { lo: w ? w.lo : null, aqG: aq ? aq.g : 0 }).t; }
+  function haimOneLine() { if (state.haimAI) return state.haimAI.oneline; const w = cityWx(0), aq = cityAq(0); return window.haimVerdict(rrLog(), state.today, { lo: w ? w.lo : null, aqG: aq ? aq.g : 0 }).t; }
   function haimSummary() {
     const H = state.healthData.haim, med = H.medications.current_daily, rr = rrLast();
     return `<div class="hsum">
@@ -568,6 +568,7 @@
       const r = await fetch('data/health.enc.json', { cache: 'no-store' });
       if (r.ok) state.healthData = await window.AhranLock.decryptJSON(state.pk, await r.json());
     } catch (e) { state.healthData = null; }
+    try { const r = await fetch('data/haim-insight.enc.json', { cache: 'no-store' }); if (r.ok) state.haimAI = await window.AhranLock.decryptJSON(state.pk, await r.json()); } catch (e) { state.haimAI = null; }
   }
   async function loadDeliveries() {
     const PK = { wg: 'work-genius', olive: 'theoliveskin', medi: 'medi-won', skinny: 'www.skinny-us.com', won: 'wonahran', ahran: 'ahran' };
@@ -651,6 +652,8 @@
     const fx = fxOf('USD'); if (fx && fx.chg != null && Math.abs(fx.chg) >= .5) items.push(`달러 환율이 ${fmt(Math.abs(fx.chg))}% ${fx.chg > 0 ? '올랐어요' : '내렸어요'}. 지금 1달러는 ${fmt(fx.v)}원이에요.`);
     const open = store.get('todos', []).filter(t => !t.done); if (open.length) items.push(`남은 할 일이 ${open.length}개 있어요. 먼저 "${esc(open[0].text)}"부터 해 보세요.`);
     if (px.s < 60) items.push(`컨디션 지수가 낮은 날이에요. ${px.tip}.`);
+    const ha = state.haimAI && state.haimAI.supplements && state.haimAI.supplements.alerts || [];
+    if (ha.length) items.unshift(`<a href="haim.html">하임이 영양제 체크</a> · ${esc(ha[0].text)}`);
     const dl = (state.dlv || []).filter(x => (Date.now() - new Date(x.date)) / 864e5 < 2);
     if (dl.length) items.unshift(`AI 직원 결과물이 ${dl.length}건 도착했어요: ${dl.slice(-3).reverse().map(x => `<a href="projects.html#${encodeURIComponent(x.pk || '')}">${esc(x.person)} · ${esc(x.task)}</a>`).join(', ')}`);
     return { lead, items: items.slice(0, scope === 'week' ? 10 : 3) };

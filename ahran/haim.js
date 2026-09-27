@@ -6,7 +6,7 @@
   const store = { get(k, d) { try { const v = localStorage.getItem('ahran.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem('ahran.' + k, JSON.stringify(v)); } catch (e) { /* private */ } } };
   const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
   const KC = { 검사: '#4fd6ff', 진료: '#3ddc97', 접종: '#ffd166', 약: '#a896ff', 증상: '#ff6b7d', 측정: '#b7c6ff', 진단: '#ff9d3c' };
-  let H = null, filter = '전체';
+  let H = null, AI = null, filter = '전체';
 
   const rrAll = () => {
     const seen = new Set(), out = [];
@@ -19,7 +19,8 @@
   function renderHead() {
     const age = Math.floor((new Date(today) - new Date('2014-07-05')) / 3.15576e10), rr = rrAll().slice(-1)[0];
     $('#hmSub').textContent = H ? `${H.patient.sex} · ${age}살 · ${H.main_condition.working_diagnosis}` : '';
-    const vd = window.haimVerdict(rrAll(), today); $('#hmVerdict').className = 'hm-verdict ' + vd.c; $('#hmVerdict').innerHTML = `<b>한줄 의견</b>${esc(vd.t)}`;
+    const vd = window.haimVerdict(rrAll(), today); $('#hmVerdict').className = 'hm-verdict ' + (AI ? 'or' : vd.c);
+    $('#hmVerdict').innerHTML = AI ? `<b>한줄 의견</b>${esc(AI.oneline)}<span class="rr-now">오늘 호흡 · ${esc(vd.t)}</span>` : `<b>한줄 의견</b>${esc(vd.t)}`;
     $('#hmStats').innerHTML = [
       ['체중', H ? H.patient.weight_kg + 'kg' : '—'],
       ['최근 호흡수', rr ? `<b class="${rr.v >= 30 ? 'rd' : 'gr'}">${rr.v}</b>회/분` : '—'],
@@ -69,7 +70,16 @@
       <section><h3>병원</h3><ul>${li([`한국: ${H.clinics.korea.join(', ')}`, `미국: ${H.clinics.usa.join(', ')}`, `의뢰 후보: ${H.clinics.referral_candidates.join(', ')}`])}</ul><h3>환경 이력</h3><ul>${li(H.patient.environment_history)}</ul></section>
     </div>`;
   }
-  function renderAll() { renderHead(); renderRR(); renderDue(); renderTL(); renderFull(); }
+  function renderAI() {
+    const el = $('#hmAI'); if (!AI) { el.hidden = true; return; } el.hidden = false;
+    const al = (AI.supplements && AI.supplements.alerts) || [];
+    el.innerHTML = `<div class="ph"><span class="pt">AI 분석 · 온라인 문헌 기반</span><span class="tag">${esc(AI.date.replace(/-/g, '.'))} ${esc(AI.time || '')}</span></div>
+      <div class="ai-grid"><div><h3>가능성 높은 원인</h3><ul class="ai-dx">${AI.differentials.map(d => `<li><div class="top"><b>${esc(d.name)}</b><span>${d.p}%</span></div><i style="width:${d.p}%"></i><small>${esc(d.why)}</small></li>`).join('')}</ul></div>
+      <div><h3>이렇게 케어하세요</h3><ol class="ai-care">${AI.care.map(c => `<li>${esc(c)}</li>`).join('')}</ol>
+      <h3>영양제 체크 <span class="dim">${esc(AI.supplements.checked.join(' · '))}</span></h3>${al.length ? al.map(a => `<p class="ai-alert">⚠ ${esc(a.text)}</p>`).join('') : ''}<p class="dim">${esc(AI.supplements.news || '')}</p></div></div>
+      <p class="dim ai-src">근거: ${AI.sources.map(x => `<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t)}</a>`).join(' · ')}</p><p class="dim">${esc(AI.disclaimer)}</p>`;
+  }
+  function renderAll() { renderAI(); renderHead(); renderRR(); renderDue(); renderTL(); renderFull(); }
 
   // breathing-rate counter
   let timer = null;
@@ -94,6 +104,7 @@
   $('#lockBtn').addEventListener('click', e => { e.preventDefault(); window.AhranLock.lockNow(); });
   window.AhranLock.gate().then(async pk => {
     try { const r = await fetch('data/health.enc.json', { cache: 'no-store' }); if (pk && r.ok) H = (await window.AhranLock.decryptJSON(pk, await r.json())).haim; } catch (e) { H = null; }
+    try { const r = await fetch('data/haim-insight.enc.json', { cache: 'no-store' }); if (pk && r.ok) AI = await window.AhranLock.decryptJSON(pk, await r.json()); } catch (e) { AI = null; }
     renderAll();
   });
 })();
