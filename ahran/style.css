@@ -593,3 +593,5 @@ body{word-break:keep-all;overflow-wrap:break-word;line-break:strict}
 .city .sky-img::after{background:linear-gradient(180deg,rgba(2,6,12,.55) 0%,rgba(2,6,12,.25) 35%,rgba(2,6,12,.1) 60%,rgba(5,13,24,.85) 88%,#050d18 100%)}
 .city .fx.fx-top{background:rgba(2,6,12,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);border-radius:8px;padding:12px 12px 14px;border:0}
 .fig-h{left:57%;width:14%;bottom:5%}
+.fig-a{left:30%;width:32%}
+.fig-h{left:51%;width:14%;bottom:5%}
