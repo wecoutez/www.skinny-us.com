@@ -48,7 +48,7 @@
   function lockNow() { try { localStorage.removeItem(PK); } catch (e) { /* ignore */ } location.reload(); }
 
   // reload once when a newer build is published (GitHub Pages may serve cached HTML for ~10 min)
-  const BUILD = '16';
+  const BUILD = '18';
   fetch('data/version.json?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(v => {
     if (v && v.build && v.build !== BUILD && !sessionStorage.getItem('ahran.reloaded.' + v.build)) {
       sessionStorage.setItem('ahran.reloaded.' + v.build, '1');

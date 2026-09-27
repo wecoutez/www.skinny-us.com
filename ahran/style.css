@@ -567,3 +567,12 @@ body{word-break:keep-all;overflow-wrap:break-word;line-break:strict}
 .city .sky.day{opacity:.9}.city .sky.night{opacity:1}.city .sky.dawn,.city .sky.dusk{opacity:.95}
 .city h3,.city .time,.city .fx .v{text-shadow:0 1px 8px rgba(0,0,0,.45)}
 .city .top small,.city .fx .k,.city .dt{color:#c9dbe8}
+/* figure name tags: keep everything inside the box */
+.callout{max-width:36%;min-width:0;overflow:hidden}
+.callout .cl{font-size:11px;color:var(--ink3);margin-top:6px}
+.callout .sc{white-space:nowrap;margin-top:0}
+.callout .ag{white-space:normal}
+/* profile rows in the condition cards */
+.kv{display:grid;grid-template-columns:44px 1fr;gap:5px 10px;margin-top:10px;font-size:13px;line-height:1.5}
+.kv dt{color:var(--ink3)}
+.kv dd{margin:0;color:var(--ink)}

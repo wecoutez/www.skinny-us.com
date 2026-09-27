@@ -105,7 +105,7 @@
     $('#bioVals').innerHTML = `<div class="idx-ring"><svg viewBox="0 0 110 110" width="118" height="118"><circle cx="55" cy="55" r="44" fill="none" stroke="rgba(79,214,255,.12)" stroke-width="9"/><circle cx="55" cy="55" r="44" fill="none" stroke="var(--cy)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${(x.s / 100 * C).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 55 55)"/></svg><div><b>${x.s}</b><span>${x.label}</span></div></div>
       <div class="idx-bars">${x.parts.map(([k, v]) => `<div class="ib"><span>${k}</span><em><i style="width:${v}%;background:${v >= 75 ? 'var(--gr)' : v >= 50 ? 'var(--cy)' : 'var(--or)'}"></i></em><b>${v}</b></div>`).join('')}</div>`;
     $('#bio').innerHTML = '';
-    $('#bioNote').innerHTML = `${x.cali != null ? `오늘 서울은 LA 날씨와 <b>${x.cali}%</b> 닮았어요. ` : ''}${esc(x.tip)}<br><span class="dim">기준 · 좋아하는 것: ${PROFILE.likes.join(', ')} · 싫어하는 것: ${PROFILE.dislikes.join(', ')}</span>`;
+    $('#bioNote').innerHTML = `${x.cali != null ? `오늘 서울은 LA 날씨와 <b>${x.cali}%</b> 닮았어요. ` : ''}${esc(x.tip)}`;
   }
 
   // ---------------------------------------------------------------- year
@@ -419,14 +419,23 @@
       return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'left' : 'right'}:0">
         <span class="nm">${esc(p.name)}</span>
         ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${p.info.age}살 · 러시안블루${rrLast() ? `<br>호흡 ${rrLast().v}회/분` : ''}</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
-        <span class="sc"><b>${p.cond.s}</b><small>${p.kind === 'cat' ? '' : '바이오 지수 · '}${p.cond.label}</small></span>
+        <span class="cl">${p.kind === 'cat' ? '오늘 컨디션' : '바이오 지수'}</span><span class="sc"><b>${p.cond.s}</b><small>${p.cond.label}</small></span>
       </div>`;
     }).join('');
     $('#condCards').innerHTML = cfg.map((p, i) => `<div class="cond" style="--c:${p.color}">
       <div class="cond-h"><span class="nm">${esc(p.name)}</span><span class="cs"><b>${p.cond.s}</b> / 100 · ${p.cond.label}</span></div>
-      ${p.kind === 'cat' ? `<div class="cond-age">${esc(p.breed)} · ${esc(p.birth.replace(/-/g, '.'))} ${esc(p.born)} 출생 · ${p.info.age}살 · 생일 D-${p.info.dday}</div>` : p.info ? `<div class="cond-age">만 ${p.info.age}세 · ${esc(p.birth.replace(/-/g, '.'))} · ${esc(p.info.zod)}띠 · ${esc(p.info.sign)}자리 · 생일 D-${p.info.dday}</div>`
-        : `<div class="cond-age dim">생년월일·성별을 알려주시면 나이·바이오리듬·체형이 반영돼요</div>`}
-      ${p.kind !== 'cat' && state.healthData && state.healthData.ahran ? (h => `<div class="cond-age">키 ${h.height_cm}cm · ${h.weight_kg}kg · BMI ${(h.weight_kg / (h.height_cm / 100) ** 2).toFixed(1)} (정상 범위)${h.blood_type ? ` · ${esc(h.blood_type)}형` : ''}${h.allergies ? ` · 알레르기 ${esc(h.allergies)}` : ''}</div>`)(state.healthData.ahran) : ''}
+      ${(() => {
+        const H = state.healthData || {}, rows = [];
+        if (p.kind === 'cat') {
+          const hh = H.haim && H.haim.patient;
+          rows.push(['품종', `${p.breed}${hh ? ' · ' + hh.sex.replace(', ', ' ') : ''}`], ['생일', `${p.birth.replace(/-/g, '.')} · ${p.born} 출생`], ['나이', `${p.info.age}살 · 생일 D-${p.info.dday}`]);
+        } else if (p.info) {
+          const h = H.ahran;
+          rows.push(['나이', `만 ${p.info.age}세 · ${p.info.zod}띠 · ${p.info.sign}자리`], ['생일', `${p.birth.replace(/-/g, '.')} · D-${p.info.dday}`]);
+          if (h) rows.push(['신체', `${h.height_cm}cm · ${h.weight_kg}kg · BMI ${(h.weight_kg / (h.height_cm / 100) ** 2).toFixed(1)}`], ['혈액형', `${h.blood_type ? h.blood_type + '형' : '—'} · 알레르기 ${h.allergies || '—'}`]);
+        } else rows.push(['정보', '생년월일·성별을 알려주시면 반영돼요']);
+        return `<dl class="kv">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
+      })()}
       ${false ? `<div class="cond-bio">신체 <b class="${bioColor(p.cond.b.p)}">${p.cond.b.p}</b> · 감성 <b class="${bioColor(p.cond.b.e)}">${p.cond.b.e}</b> · 지성 <b class="${bioColor(p.cond.b.i)}">${p.cond.b.i}</b></div>` : ''}
       ${p.caution ? `<div class="caution"><h4>오늘 조심할 부분</h4><ul>${p.caution.list.map(([, t]) => `<li>${esc(t)}</li>`).join('')}</ul></div>` : ''}
       <ul>${p.cond.why.map(([sg, t]) => `<li class="${sg === '+' ? 'gr' : sg === '·' ? 'dim' : 'rd'}"><span>${sg}</span>${esc(t)}</li>`).join('')}</ul>
