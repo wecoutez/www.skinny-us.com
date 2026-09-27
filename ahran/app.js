@@ -172,11 +172,12 @@
     return n;
   }
   function renderRitual() {
+    if (!$('#ritual')) return;
     const done = store.get('ritual.' + state.today, []);
     $('#ritualCount').textContent = `${done.length} / ${RITUAL.length}`;
     $('#ritual').innerHTML = RITUAL.map((t, i) => { const s = streak(i); return `<button class="habit ${done.includes(i) ? 'on' : ''}" data-i="${i}"><span class="chk"></span>${esc(t)}<span class="s ${s ? '' : 'dim'}">${s ? '🔥 ' + s + '일' : '—'}</span></button>`; }).join('');
   }
-  $('#ritual').addEventListener('click', e => {
+  $('#ritual') && $('#ritual').addEventListener('click', e => {
     const b = e.target.closest('.habit'); if (!b) return;
     const i = +b.dataset.i, k = 'ritual.' + state.today, done = store.get(k, []);
     store.set(k, done.includes(i) ? done.filter(x => x !== i) : done.concat(i));
@@ -352,10 +353,9 @@
     if (aq && aq.g >= 3) { why.push(['−', `미세먼지 ${aq.name}`]); caut.push('미세먼지 · 마스크, 운동은 실내로'); }
     const n = eventsOn(state.today).filter(e => !e.holiday).length, sched = [95, 85, 70, 55][n] ?? 40; parts.push(['일정 여유', sched]);
     if (n >= 3) { why.push(['−', `일정 ${n}건`]); caut.push(`일정 ${n}건 · 회의 사이 10분씩 비워두기`); warn.head = true; } else if (n === 0) why.push(['+', '일정 여유']);
-    const done = store.get('ritual.' + state.today, []).length, ritual = 50 + done * 10; parts.push(['모닝 루틴', ritual]);
     const rr = rrLast(), haim = rr && rr.d === state.today ? (rr.v < 30 ? 100 : rr.v <= 35 ? 60 : 30) : 80; parts.push(['하임이', haim]);
     if (rr && rr.d === state.today && rr.v >= 30) { why.push(['−', `하임 호흡 ${rr.v}/분`]); caut.push('하임이 호흡수가 목표보다 높아요 · 잘 때 한 번 더 재보기'); warn.heart = true; }
-    const W = { '날씨 궁합': .35, '캘리포니아 닮음': .1, '공기': .15, '일정 여유': .2, '모닝 루틴': .1, '하임이': .1 };
+    const W = { '날씨 궁합': .35, '캘리포니아 닮음': .1, '공기': .15, '일정 여유': .25, '하임이': .15 };
     const tw = parts.reduce((t, [k]) => t + W[k], 0), score = clamp(parts.reduce((t, [k, v]) => t + v * W[k], 0) / tw);
     const label = score >= 88 ? '최상' : score >= 75 ? '좋음' : score >= 60 ? '보통' : score >= 45 ? '주의' : '쉬어가기';
     let tip;
