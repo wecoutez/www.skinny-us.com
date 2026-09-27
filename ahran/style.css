@@ -463,3 +463,22 @@ body.modal-open{overflow:hidden}
 .meds small{display:block;color:var(--or);font-size:12px}
 .h-foot{font-size:12px;margin:26px 0 8px}
 @media (max-width:760px){.h-rr{grid-template-columns:1fr}#hBody{padding:12px 8px}.rr-log li{grid-template-columns:90px 34px 1fr}}
+/* Korean: break lines between words, never inside one */
+body{word-break:keep-all;overflow-wrap:break-word;line-break:strict}
+/* centre column lines up with the side columns */
+.center{align-items:stretch}
+.center .treebox{align-self:center}
+.cond-cards,.center .areas{max-width:none;width:100%}
+.treeinfo,.treenote{align-self:center;text-align:center}
+.callout{max-width:30%}
+.caution{margin-top:12px;padding:10px 12px;border-radius:8px;background:rgba(255,107,125,.06);border:1px solid rgba(255,107,125,.22)}
+.caution h4{font-size:12.5px;color:#ffb3bd;font-weight:600;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.caution h4 small{font-weight:400;color:var(--ink3);font-size:11px;cursor:help}
+.caution ul{margin-top:6px}
+.caution li{display:grid!important;grid-template-columns:34px 1fr;gap:6px;font-size:12.5px!important}
+.caution .ca{width:auto!important;color:#ffb3bd;font-weight:600}
+.stage{grid-template-columns:320px minmax(0,1fr) 320px;gap:36px}
+.caution li{grid-template-columns:1fr!important;gap:2px!important;padding:5px 0!important}
+.caution .ca{font-size:11.5px}
+@media (max-width:1240px){.stage{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.stage{grid-template-columns:1fr}}

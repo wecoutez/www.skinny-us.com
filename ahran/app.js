@@ -250,10 +250,29 @@
     return { age, days: dayNum(state.today) - dayNum(birth), dday: dayNum(next) - dayNum(state.today), zod, sign };
   }
   function bioOf(birth) { if (!birth) return null; const n = dayNum(state.today) - dayNum(birth); const f = p => Math.round(100 * Math.sin(2 * Math.PI * n / p)); return { p: f(23), e: f(28), i: f(33) }; }
+  // biorhythm caution list (reference only) + which body parts to highlight
+  function bioCautions(birth) {
+    if (!birth) return { list: [], warn: {} };
+    const n = dayNum(state.today) - dayNum(birth), val = (per, k) => Math.sin(2 * Math.PI * (n + k) / per);
+    const out = [], warn = {};
+    const crit = per => Math.sign(val(per, 0)) !== Math.sign(val(per, 1)) || Math.sign(val(per, -1)) !== Math.sign(val(per, 0));
+    const P = Math.round(val(23, 0) * 100), E = Math.round(val(28, 0) * 100), I = Math.round(val(33, 0) * 100);
+    if (crit(23)) { out.push(['신체', '전환일 · 컨디션 기복이 클 수 있어요. 운전·계단에서 한 번 더 조심']); warn.joints = true; }
+    else if (P <= -50) { out.push(['신체', '체력 저점 · 무리한 운동과 야근은 피하고, 허리·무릎을 조심하세요. 일찍 자기']); warn.joints = true; }
+    else if (P < 0) out.push(['신체', '체력이 조금 낮아요 · 가벼운 스트레칭 정도로']);
+    if (crit(28)) { out.push(['감성', '전환일 · 기분이 쉽게 흔들려요. 예민한 대화는 하루 미루기']); warn.heart = true; }
+    else if (E <= -50) { out.push(['감성', '감정 저점 · 예민해지기 쉬워요. 갈등이 생길 대화나 감정적인 결정은 미루고, 말은 한 번 더 생각하고']); warn.heart = true; }
+    else if (E < 0) out.push(['감성', '감정이 조금 가라앉는 날 · 좋아하는 것으로 기분 챙기기']);
+    if (crit(33)) { out.push(['지성', '전환일 · 실수하기 쉬워요. 숫자와 일정을 다시 확인']); warn.head = true; }
+    else if (I <= -50) { out.push(['지성', '집중력 저점 · 계약서·숫자·송금은 두 번 확인하고, 큰 결정은 미루기']); warn.head = true; }
+    else if (I < 0) out.push(['지성', '집중력이 조금 낮아요 · 새 공부보다 복습과 정리']);
+    if (!out.length) out.push(['전체', '리듬이 모두 좋은 편이에요 · 중요한 일을 앞으로']);
+    return { list: out, warn };
+  }
   function condition(pp, child) {
     const w = cityWx(0), aq = cityAq(0), b = bioOf(pp.birth), why = [];
     let s = 72;
-    if (b) { const avg = (b.p + b.e + b.i) / 3; s += avg * .15; why.push([avg >= 0 ? '+' : '−', `바이오리듬 평균 ${avg > 0 ? '+' : ''}${Math.round(avg)}`]); }
+    if (b) { const avg = (b.p + b.e + b.i) / 3; s += avg * .08; why.push([avg >= 0 ? '+' : '−', `바이오리듬 평균 ${avg > 0 ? '+' : ''}${Math.round(avg)}`]); }
     if (aq) { const d = [0, 5, 0, -10, -18][aq.g]; s += d; if (d) why.push([d > 0 ? '+' : '−', `미세먼지 ${aq.name}`]); }
     if (w) {
       const swing = w.hi - w.lo;
@@ -359,11 +378,11 @@
   function renderScene() {
     const people = FAMILY.map(person);
     const cfg = [{ ...people[0], x: 246 }, { ...people[1], x: 390 }];
-    cfg.forEach(p => { const a = ageInfo(p.birth); p.info = a; p.age = a ? a.age : null; p.cond = p.kind === 'cat' ? catCondition(p) : condition(p, p.age == null || p.age < 18); p.sex = p.sex || 'f'; });
+    cfg.forEach(p => { const a = ageInfo(p.birth); p.info = a; p.age = a ? a.age : null; p.cond = p.kind === 'cat' ? catCondition(p) : condition(p, p.age == null || p.age < 18); p.sex = p.sex || 'f'; if (p.kind !== 'cat') { p.caution = bioCautions(p.birth); p.warn = p.caution.warn; } });
     window.drawBodies($('#bodies'), cfg, 600);
     $('#callouts').innerHTML = cfg.map((p, i) => {
       const known = !!p.info, side = i === 0 ? 'l' : 'r', top = Math.max(2, p.anchor.top / 600 * 100 - 2);
-      return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'right' : 'left'}:${side === 'l' ? 100 - p.x / 620 * 100 + 13 : p.x / 620 * 100 + 13}%">
+      return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'left' : 'right'}:0">
         <span class="nm">${esc(p.name)}</span>
         ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${esc(p.breed)} · ${p.info.age}살 (사람 ${catHuman(p.info.age)}세)${rrLast() ? ` · 호흡 ${rrLast().v}/분` : ''}</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
         <span class="sc"><b>${p.cond.s}</b><small>${p.cond.label}</small></span>
@@ -373,10 +392,12 @@
       <div class="cond-h"><span class="nm">${esc(p.name)}</span><span class="cs"><b>${p.cond.s}</b> / 100 · ${p.cond.label}</span></div>
       ${p.kind === 'cat' ? `<div class="cond-age">${esc(p.breed)} · ${esc(p.birth.replace(/-/g, '.'))} ${esc(p.born)} 출생 · ${p.info.age}살 (사람 나이 약 ${catHuman(p.info.age)}세 · 시니어) · 생일 D-${p.info.dday}</div>` : p.info ? `<div class="cond-age">만 ${p.info.age}세 · ${esc(p.birth.replace(/-/g, '.'))} · ${esc(p.info.zod)}띠 · ${esc(p.info.sign)}자리 · 생일 D-${p.info.dday}</div>`
         : `<div class="cond-age dim">생년월일·성별을 알려주시면 나이·바이오리듬·체형이 반영돼요</div>`}
+      ${p.kind !== 'cat' && state.healthData && state.healthData.ahran ? (h => `<div class="cond-age">키 ${h.height_cm}cm · ${h.weight_kg}kg · BMI ${(h.weight_kg / (h.height_cm / 100) ** 2).toFixed(1)} (정상 범위)</div>`)(state.healthData.ahran) : ''}
       ${p.cond.b ? `<div class="cond-bio">신체 <b class="${bioColor(p.cond.b.p)}">${p.cond.b.p}</b> · 감성 <b class="${bioColor(p.cond.b.e)}">${p.cond.b.e}</b> · 지성 <b class="${bioColor(p.cond.b.i)}">${p.cond.b.i}</b></div>` : ''}
+      ${p.caution ? `<div class="caution"><h4>오늘 조심할 부분 <small title="출생일부터 23·28·33일 주기로 계산하는 바이오리듬 이론(1900년대 초) 기준이에요. 과학적으로 검증되지 않아 참고용이에요.">바이오리듬 기준 · 참고용 ⓘ</small></h4><ul>${p.caution.list.map(([a, t]) => `<li><span class="ca">${a}</span>${esc(t)}</li>`).join('')}</ul></div>` : ''}
       <ul>${p.cond.why.map(([sg, t]) => `<li class="${sg === '+' ? 'gr' : sg === '·' ? 'dim' : 'rd'}"><span>${sg}</span>${esc(t)}</li>`).join('')}</ul>
       <p class="tip">오늘의 팁 · ${esc(p.cond.tip)}</p>
-      ${p.kind === 'cat' && state.healthData && state.healthData.haim ? haimSummary() : ''}<p class="health dim" ${p.kind === 'cat' && state.healthData && state.healthData.haim ? 'hidden' : ''}>건강 정보 · ${state.health && state.health[p.id] ? esc(state.health[p.id]) : p.kind === 'cat' ? '진료 기록 미입력 · 러시안블루 시니어 일반 체크: 체중(비만 경향) · 신장 · 요로 · 치아, 6개월마다 검진 권장' : '아직 입력 전 (키·체중·혈액형·알레르기·복용약 등)'}</p>
+      ${p.kind === 'cat' && state.healthData && state.healthData.haim ? haimSummary() : ''}<p class="health dim" ${(p.kind === 'cat' && state.healthData && state.healthData.haim) || (p.kind !== 'cat' && state.healthData && state.healthData.ahran) ? 'hidden' : ''}>건강 정보 · ${state.health && state.health[p.id] ? esc(state.health[p.id]) : p.kind === 'cat' ? '진료 기록 미입력 · 러시안블루 시니어 일반 체크: 체중(비만 경향) · 신장 · 요로 · 치아, 6개월마다 검진 권장' : '아직 입력 전 (키·체중·혈액형·알레르기·복용약 등)'}</p>
     </div>`).join('');
   }
 
@@ -502,28 +523,35 @@
   });
 
   // ---------------------------------------------------------------- briefing
+  // Korean particle by final consonant of the last Hangul syllable: j('개천절', '은', '는')
+  const j = (w, withB, noB) => { const h = String(w).replace(/[^가-힣]/g, ''); const c = h ? (h.charCodeAt(h.length - 1) - 0xac00) % 28 : 0; return w + (c ? withB : noB); };
+  const kday = d => `${+d.slice(5, 7)}월 ${+d.slice(8)}일(${WDK[wday(d)]})`;
   function briefing(scope = 'today') {
     const hr = +parts(new Date(), TZ, { hour: '2-digit' }).hour;
     const hi = hr < 5 ? '늦은 밤이에요' : hr < 12 ? '좋은 아침이에요' : hr < 18 ? '좋은 오후예요' : '좋은 저녁이에요';
     const today = eventsOn(state.today).filter(e => !e.holiday), hol = eventsOn(state.today).find(e => e.holiday);
     const b = bio(), avg = (b.p + b.e + b.i) / 3, w = cityWx(0), aq = cityAq(0);
-    const cond = avg > 50 ? '최상' : avg > 0 ? '양호' : avg > -50 ? '조금 낮은 편' : '전부 저점';
-    let lead = `${hi}, 아란. 오늘은 `;
-    lead += today.length ? `<b>일정 ${today.length}건</b>이 있어요${today[0].time ? ` — 첫 일정은 <b>${ampm(today[0].time)} ${esc(today[0].title)}</b>` : ''}.` : `<b>일정이 비어 있는 ${WDK[wday(state.today)]}요일</b>이에요${hol ? ` (${hol.title})` : ''}.`;
-    lead += ` 컨디션은 <b>${cond}</b>`;
-    lead += w ? `, 서울은 <b>${w.desc} ${w.t}°</b>${aq ? ` · 미세먼지 <b>${aq.name}</b>` : ''}.` : '.';
+    const cond = avg > 50 ? '바이오리듬이 모두 높은 날이에요. 중요한 일을 앞에 두세요.'
+      : avg > 0 ? '바이오리듬은 무난한 편이에요.'
+      : avg > -50 ? '바이오리듬이 조금 낮아요. 일정을 너무 빡빡하게 잡지 마세요.'
+      : '바이오리듬이 모두 낮은 날이라 무리하지 않는 게 좋아요.';
+    const dayTxt = today.length
+      ? `오늘은 일정이 <b>${today.length}건</b> 있어요.${today[0].time ? ` 첫 일정은 <b>${ampm(today[0].time)} ${esc(today[0].title)}</b>.` : ''}`
+      : `오늘은 <b>일정이 없는 ${WDK[wday(state.today)]}요일</b>이에요.${hol ? ` ${j(hol.title, '이에요', '예요')}.` : ''}`;
+    const wxTxt = w ? ` 서울은 <b>${w.desc}, ${w.t}°</b>${aq ? `이고 미세먼지는 <b>${aq.name}</b>${j(aq.name, '이에요', '예요').slice(aq.name.length)}.` : '예요.'}` : '';
+    const lead = `${hi}, 아란. ${dayTxt} ${cond}${wxTxt}`;
     const items = [];
     const week = Array.from({ length: 7 }, (_, i) => addDays(state.today, i + 1)).map(d => [d, eventsOn(d).filter(e => !e.holiday)]);
     const busiest = week.slice().sort((a, c) => c[1].length - a[1].length)[0];
-    if (busiest && busiest[1].length >= 2) items.push(`이번 주 핵심은 <b>${WDK[wday(busiest[0])]}요일 ${+busiest[0].slice(5, 7)}/${+busiest[0].slice(8)}</b> — ${busiest[1].map(e => esc(e.title)).join(' · ')}`);
-    if (scope === 'week') week.forEach(([d, ev]) => { if (ev.length) items.push(`${WDK[wday(d)]} ${+d.slice(5, 7)}/${+d.slice(8)} · ${ev.map(e => (e.time ? ampm(e.time) + ' ' : '') + esc(e.title)).join(', ')}`); });
+    if (busiest && busiest[1].length >= 2) { const kd = kday(busiest[0]); items.push(`이번 주에 가장 바쁜 날은 <b>${kd}</b>${j(kd, '이에요', '예요').slice(kd.length)}. 일정: ${busiest[1].map(e => esc(e.title)).join(', ')}`); }
+    if (scope === 'week') week.forEach(([d, ev]) => { if (ev.length) items.push(`${kday(d)} · ${ev.map(e => (e.time ? ampm(e.time) + ' ' : '') + esc(e.title)).join(', ')}`); });
     const nextHol = week.map(([d]) => [d, HOLIDAYS[d]]).find(x => x[1]);
-    if (nextHol) items.push(`${WDK[wday(nextHol[0])]}요일 ${+nextHol[0].slice(5, 7)}/${+nextHol[0].slice(8)} ${nextHol[1]} · 쉬는 날 계획 체크`);
-    if (w && w.pop >= 50) items.push(`오늘 강수확률 ${w.pop}% · 우산 챙기기 ☂️`);
-    if (aq && aq.g >= 3) items.push(`미세먼지 ${aq.name} · 마스크 챙기고 야외 운동은 실내로 😷`);
-    const fx = fxOf('USD'); if (fx && fx.chg != null && Math.abs(fx.chg) >= .5) items.push(`달러 환율 ${fx.chg > 0 ? '상승' : '하락'} ${fmt(Math.abs(fx.chg))}% · 1달러 ${fmt(fx.v)}원`);
-    const open = store.get('todos', []).filter(t => !t.done); if (open.length) items.push(`남은 할 일 ${open.length}개 · ${esc(open[0].text)}${open.length > 1 ? ' 외' : ''}`);
-    if (avg <= -50) items.push('리듬 저점 · 무리한 약속보다 회복과 정리에 쓰기 좋은 날');
+    if (nextHol) items.push(`${j(kday(nextHol[0]), '은', '는')} ${j(nextHol[1], '이에요', '예요')}. 쉬는 날 계획을 세워 두세요.`);
+    if (w && w.pop >= 50) items.push(`오늘 비 올 확률이 ${w.pop}%예요. 우산을 챙기세요.`);
+    if (aq && aq.g >= 3) items.push(`미세먼지가 ${j(aq.name, '이에요', '예요')}. 마스크를 챙기고 운동은 실내에서 하세요.`);
+    const fx = fxOf('USD'); if (fx && fx.chg != null && Math.abs(fx.chg) >= .5) items.push(`달러 환율이 ${fmt(Math.abs(fx.chg))}% ${fx.chg > 0 ? '올랐어요' : '내렸어요'}. 지금 1달러는 ${fmt(fx.v)}원이에요.`);
+    const open = store.get('todos', []).filter(t => !t.done); if (open.length) items.push(`남은 할 일이 ${open.length}개 있어요. 먼저 "${esc(open[0].text)}"부터 해 보세요.`);
+    if (avg <= -50) items.push('새 약속보다는 정리와 휴식에 시간을 쓰세요.');
     return { lead, items: items.slice(0, scope === 'week' ? 10 : 3) };
   }
   function renderBrief() {
