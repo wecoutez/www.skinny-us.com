@@ -31,12 +31,26 @@
   function card(p, log) {
     const mine = p.id === 'ahran' ? log && log.filter(c => /^AHRAN|dashboard at \/ahran/.test(c.msg)) : log && log.filter(c => !/^AHRAN|dashboard at \/ahran/.test(c.msg));
     const last = mine && mine[0] ? mine[0].date : null;
-    const real = mine ? mine.filter(c => !NOISE.test(c.msg)).slice(0, 6) : [];
+    const real = mine ? mine.filter(c => !NOISE.test(c.msg)) : [];
     const uploads = mine ? mine.filter(c => /^Add files via upload/.test(c.msg)).length : 0;
     const fresh = last && (Date.now() - new Date(last)) / 864e5 < 2;
-    const recent = mine == null ? '<div class="empty">GitHub에서 불러오지 못했어요</div>'
-      : (real.length ? real.map(c => `<a class="cm" href="${esc(c.url)}" target="_blank" rel="noopener"><time>${kdate(c.date)}</time><span>${esc(c.msg)}</span></a>`).join('') : '')
-        + (uploads ? `<div class="cm dim"><time></time><span>GitHub 웹에서 파일 직접 업로드 ${uploads}건${real.length ? '' : ' (설명 없는 업데이트)'}</span></div>` : '');
+    const color = ['#8fb0c4', '#a896ff', '#ff9d3c', '#4fd6ff'][p.stage];
+    const staff = p.staff || [];
+    const chips = [
+      `<span class="sc" style="--c:${color}">● ${STAGES[p.stage]} 단계</span>`,
+      `<span class="sc ${fresh ? 'ok' : ''}">${last ? '업데이트 ' + ago(last) : '업데이트 기록 없음'}</span>`,
+      `<span class="sc">할 일 ${p.next.length}개</span>`,
+      staff.length ? `<span class="sc">AI 팀 ${staff.length}명</span>` : '',
+    ].join('');
+    const team = staff.length ? `<div class="team">${staff.map(st => `
+        <div class="agent">
+          ${window.ahranAvatar(st.avatar, color, 88)}
+          <div class="who"><b>${esc(st.person || '')}</b><span class="ttl" style="--c:${color}">${esc(st.title || '')}${st.title2 ? ' · ' + esc(st.title2) : ''}</span>
+          <span class="job">${esc(st.job || '')}</span><p>${esc(st.role)}</p><small>⏱ ${esc(String(st.schedule).replace(/^제안:\s*/, "").split(/ — | \(|\. 5회/)[0])}</small></div>
+        </div>`).join('')}</div>` : (p.staff_note ? `<p class="team-note">${esc(p.staff_note)}</p>` : '');
+    const tl = p.milestones.slice().reverse();
+    const logRows = real.slice(0, 12).map(c => `<a class="cm" href="${esc(c.url)}" target="_blank" rel="noopener"><time>${kdate(c.date)}</time><span>${esc(c.msg)}</span></a>`).join('')
+      + (uploads ? `<div class="cm dim"><time></time><span>GitHub 웹에서 파일 직접 업로드 ${uploads}건</span></div>` : '');
     return `<section class="panel pj" id="${esc(p.id || p.repo)}">
       <div class="pj-head">
         <div>
@@ -44,19 +58,15 @@
           <h2>${esc(p.name)}</h2>
           <a class="pj-url" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.url.replace(/^https?:\/\//, '').replace(/\/$/, ''))} ↗</a>
         </div>
-        <div class="pj-meta">
-          <span class="pj-live ${fresh ? 'gr' : ''}">● ${last ? '마지막 업데이트 ' + ago(last) : '—'}</span>
-          <span class="dim">시작 ${esc(p.started.replace(/-/g, '.'))} · ${mine ? mine.length + '+ 커밋' : ''}</span>
-        </div>
+        <div class="pj-chips">${chips}</div>
       </div>
-      ${stepper(p.stage)}
       <p class="pj-sum">${esc(p.summary)}</p>
-      <div class="pj-cols">
-        <div><h3>지금까지</h3><ol class="tl">${p.milestones.slice().reverse().map(m => `<li><time>${esc(m.date.slice(5).replace('-', '.'))}</time><span>${esc(m.text)}</span></li>`).join('')}</ol></div>
-        <div><h3>최근 작업 기록 <small>GitHub</small></h3>${recent}</div>
-        <div><h3>다음 할 일</h3><ul class="nx">${p.next.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div>
+      ${team}
+      <div class="pj-two">
+        <div><h3>다음 할 일</h3><ol class="todo-list">${p.next.map(n => `<li>${esc(n)}</li>`).join('')}</ol></div>
+        <div><h3>지금까지</h3><ol class="tl">${tl.slice(0, 5).map(m => `<li><time>${esc(m.date.slice(5).replace('-', '.'))}</time><span>${esc(m.text)}</span></li>`).join('')}</ol></div>
       </div>
-      ${p.staff && p.staff.length ? `<div class="staff"><h3>AI 직원 <small>${p.staff.length}명</small></h3><div class="staff-row">${p.staff.map(st => `<div class="st"><span class="st-no">${esc(st.id)}</span><b>${esc(st.name)}</b><p>${esc(st.role)}</p><small>${esc(st.schedule)}</small><em>${esc(st.status)}</em></div>`).join('')}</div></div>` : ''}
+      ${mine == null ? '<p class="team-note">GitHub 작업 기록을 불러오지 못했어요</p>' : `<details class="pj-log"><summary>GitHub 작업 기록 · ${real.length + uploads}건</summary><div>${logRows || '<div class="cm dim"><span>기록 없음</span></div>'}</div></details>`}
     </section>`;
   }
 

@@ -357,3 +357,33 @@ body.modal-open{overflow:hidden}
 .mm-node.sub .cap.bottom{top:calc(100% + 10px)}
 .mm-node.sub .cap.top{bottom:calc(100% + 10px)}
 @media (max-width:900px){.mm-node.sub{width:84px}}
+
+/* simpler project sheet with the AI team up front */
+.pj-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;max-width:520px}
+.sc{font-size:12.5px;padding:5px 12px;border-radius:999px;border:1px solid rgba(79,214,255,.2);color:var(--ink2);white-space:nowrap}
+.sc[style]{color:var(--c);border-color:color-mix(in srgb,var(--c) 45%,transparent)}
+.sc.ok{color:var(--gr);border-color:rgba(61,220,151,.4)}
+.pj-sum{margin-top:20px}
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:28px}
+.agent{display:flex;gap:16px;align-items:flex-start;padding:18px;border-radius:12px;border:1px solid rgba(79,214,255,.14);background:linear-gradient(180deg,rgba(79,214,255,.05),rgba(79,214,255,.01))}
+.agent .avatar{flex:none;filter:drop-shadow(0 0 10px rgba(79,214,255,.35))}
+.who{display:flex;flex-direction:column;gap:3px;min-width:0}
+.who b{font-size:17px;color:#fff}
+.who .ttl{font-size:12.5px;font-weight:600;color:var(--c)}
+.who .job{font-size:12.5px;color:var(--ink2)}
+.who p{font-size:13px;line-height:1.55;color:var(--ink2);margin:6px 0 4px}
+.who small{font-size:11.5px;color:var(--ink3);line-height:1.5}
+.team-note{margin-top:22px;font-size:13px;color:var(--ink3)}
+.pj-two{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:32px;padding-top:26px;border-top:1px solid rgba(79,214,255,.1)}
+.pj-two h3{font-size:12px;letter-spacing:.14em;color:var(--cy);font-weight:600;margin-bottom:14px}
+.todo-list{list-style:none;counter-reset:t}
+.todo-list li{counter-increment:t;display:grid;grid-template-columns:28px 1fr;gap:8px;font-size:14px;line-height:1.6;padding:7px 0}
+.todo-list li::before{content:counter(t);width:22px;height:22px;border-radius:50%;border:1.5px solid var(--or);color:var(--or);font-family:var(--num);font-size:12px;font-weight:600;display:grid;place-items:center;margin-top:1px}
+.pj-log{margin-top:24px;border-top:1px solid rgba(79,214,255,.1);padding-top:14px}
+.pj-log summary{cursor:pointer;font-size:13px;color:var(--ink2);list-style:none}
+.pj-log summary::-webkit-details-marker{display:none}
+.pj-log summary::before{content:"▸ ";color:var(--ink3)}
+.pj-log[open] summary::before{content:"▾ "}
+.pj-log > div{margin-top:10px;max-width:760px}
+@media (max-width:760px){.pj-two{grid-template-columns:1fr;gap:28px}.pj-chips{justify-content:flex-start}.agent{padding:14px}}
+.team:has(> .agent:only-child){max-width:620px}
