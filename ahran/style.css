@@ -230,3 +230,47 @@ body.locked .lock{display:grid;place-items:center;position:fixed;inset:0;z-index
 .lockbox label{font-size:13px;color:var(--ink2);display:flex;gap:8px;align-items:center}
 .lockbox button{width:100%;padding:12px;border-radius:8px;background:rgba(79,214,255,.15);border:1px solid var(--cy);color:var(--cy);font-family:var(--hud);letter-spacing:.2em;font-size:12px}
 .lockbox small{min-height:18px;font-size:13px;color:var(--rd)}
+
+/* projects page */
+.pj-hero{text-align:center;margin:72px 0 64px}
+.pj-hero h1{font-family:var(--hud);font-weight:500;letter-spacing:.4em;font-size:28px;color:#fff;text-shadow:0 0 16px rgba(79,214,255,.5)}
+.pj-hero p{color:var(--ink2);margin-top:14px;font-size:15px}
+.pj-stats{display:flex;justify-content:center;gap:64px;margin-top:40px}
+.pj-stats div{text-align:center}
+.pj-stats b{display:block;font-family:var(--num);font-size:36px;font-weight:600;color:#fff}
+.pj-stats span{font-size:13px;color:var(--ink2)}
+.hclock .t span{font-size:13px}
+.pj{margin-bottom:40px;padding:36px 40px}
+.pj-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.pj-kind{font-size:12.5px;color:var(--cy);letter-spacing:.04em}
+.pj h2{font-size:26px;font-weight:700;color:#fff;margin:6px 0 4px}
+.pj-url{font-family:var(--num);font-size:14px;color:var(--ink2)}
+.pj-url:hover{color:var(--cy)}
+.pj-meta{text-align:right;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.pj-live{font-weight:500}
+.stepper{display:grid;grid-template-columns:repeat(4,1fr);margin:30px 0 26px;max-width:560px}
+.stepper span{position:relative;font-size:12.5px;color:var(--ink3);padding-top:18px}
+.stepper span::before{content:"";position:absolute;top:5px;left:0;right:0;height:2px;background:rgba(79,214,255,.12)}
+.stepper span i{position:absolute;top:0;left:0;width:12px;height:12px;border-radius:50%;background:#0b1a2b;border:2px solid rgba(79,214,255,.25);z-index:1}
+.stepper span.done{color:var(--ink2)}
+.stepper span.done::before{background:var(--cy)}
+.stepper span.done i{background:var(--cy);border-color:var(--cy)}
+.stepper span.now{color:#fff;font-weight:600}
+.stepper span.now i{background:var(--bg);border-color:var(--cy);box-shadow:0 0 10px var(--cy)}
+.pj-sum{font-size:15px;line-height:1.85;color:var(--ink);max-width:880px}
+.pj-cols{display:grid;grid-template-columns:1fr 1.15fr .9fr;gap:48px;margin-top:34px;padding-top:30px;border-top:1px solid rgba(64,190,255,.1)}
+.pj-cols h3{font-size:12px;letter-spacing:.14em;color:var(--cy);font-weight:600;margin-bottom:16px}
+.pj-cols h3 small{color:var(--ink3);font-weight:400;letter-spacing:0;margin-left:6px}
+.tl{list-style:none}
+.tl li{display:grid;grid-template-columns:52px 1fr;gap:10px;font-size:13.5px;line-height:1.6;padding:6px 0;color:var(--ink)}
+.tl time,.cm time{font-family:var(--num);font-size:12.5px;color:var(--ink3);padding-top:1px}
+.cm{display:grid;grid-template-columns:78px 1fr;gap:10px;font-size:13px;line-height:1.55;padding:6px 0;color:var(--ink)}
+a.cm:hover span{color:var(--cy)}
+.cm.dim span{color:var(--ink3)}
+.nx{list-style:none}
+.nx li{position:relative;padding:6px 0 6px 20px;font-size:13.5px;line-height:1.6}
+.nx li::before{content:"";position:absolute;left:2px;top:13px;width:8px;height:8px;border:1.5px solid var(--or);transform:rotate(45deg)}
+.pj-foot{text-align:center;color:var(--ink3);font-size:12.5px;margin-top:56px}
+.pj-foot code{color:var(--ink2)}
+@media (max-width:1000px){.pj-cols{grid-template-columns:1fr;gap:32px}.pj-meta{text-align:left}}
+@media (max-width:760px){.pj{padding:24px 20px}.pj h2{font-size:21px}.pj-stats{gap:32px}.pj-hero{margin:44px 0 40px}}

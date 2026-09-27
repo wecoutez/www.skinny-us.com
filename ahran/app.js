@@ -389,7 +389,7 @@
     $('#repos').innerHTML = r.map(x => {
       const c = LANG[x.language] || '#8fb0c4', fresh = (Date.now() - new Date(x.pushed_at)) / 864e5 < 2;
       const site = x.homepage || (x.name.includes('.') ? 'https://' + x.name : '');
-      return `<a class="panel repo" href="${esc(site || x.html_url)}" target="_blank" rel="noopener">
+      return `<a class="panel repo" href="projects.html#${esc(x.name)}">
         <div class="n"><span class="d" style="background:${c};box-shadow:0 0 8px ${c}"></span>${esc(x.name)}</div>
         <div class="o">${esc(x.description || (site ? site.replace('https://', '') : `${GH_USER}/${x.name}`))}</div>
         <div class="s"><span class="${fresh ? 'gr' : ''}">● ${ago(x.pushed_at)}</span><span>${esc(x.language || '')}</span></div></a>`;

@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 <div class="lock" aria-hidden="false">
@@ -31,7 +31,7 @@
     <div><b>AHRAN</b><small>PERSONAL OPERATING SYSTEM</small></div>
   </div>
   <nav>
-    <a href="#top" class="on">TODAY</a><a href="#schedule">SCHEDULE</a><a href="#life">LIFE</a><a href="#world">WORLD</a><a href="#projects">PROJECTS</a><a href="#" id="lockBtn" title="잠그기">🔒</a>
+    <a href="./" class="on">TODAY</a><a href="projects.html">PROJECTS</a><a href="#" id="lockBtn" title="잠그기">🔒</a>
   </nav>
   <div class="hclock"><div class="t" id="clock">--:--<span></span></div><div class="d" id="clockDate">&nbsp;</div></div>
 </header>
@@ -105,14 +105,14 @@
 <div class="sec" id="world"><span class="pt">GLOBAL · 5 CITIES</span><span class="muted" style="font-size:13px">시간 · 날씨 · 미세먼지 · 현지 통화 환율 (원)</span></div>
 <div class="world" id="cities"></div>
 
-<div class="sec" id="projects"><span class="pt">PROJECTS · GITHUB / WECOUTEZ</span><span class="muted" style="font-size:13px" id="repoCount"></span></div>
+<div class="sec" id="projects"><a class="pt" href="projects.html">PROJECTS · 전체 보기 →</a><span class="muted" style="font-size:13px" id="repoCount"></span></div>
 <div class="repos" id="repos"></div>
 
 <div class="strip" id="strip"></div>
 </div>
 
-<script src="lock.js"></script>
-<script src="tree.js"></script>
-<script src="app.js"></script>
+<script src="lock.js?v=4"></script>
+<script src="tree.js?v=4"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>

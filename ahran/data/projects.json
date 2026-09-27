@@ -1,0 +1,233 @@
+{
+  "updated": "2026-09-27",
+  "note": "summary / milestones / next are written by hand (or by Claude) from each repo's history; recent commits are loaded live from GitHub.",
+  "projects": [
+    {
+      "repo": "work-genius",
+      "name": "Work Genius",
+      "url": "https://www.work-genius.com",
+      "kind": "B2B · 업무 대시보드 구축 서비스",
+      "stage": 2,
+      "started": "2026-09-27",
+      "summary": "팀장부터 대표까지 쓰는 회사 맞춤형 업무 대시보드를 진단 → 구축 → 운영까지 제공하는 서비스 사이트. 영어/한국어(/kr) 두 버전.",
+      "milestones": [
+        {
+          "date": "2026-09-27",
+          "text": "사이트 오픈 · 도메인 연결 (www.work-genius.com)"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "히어로에 업종별 예시 대시보드 (뷰티·F&B·건설·제조·제약)"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "요금 페이지 개편 · 화상상담/진단/구축 결제를 한 흐름으로"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "PayApp 카드결제 연결 (30분 화상상담, 운영 진단)"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "문의 폼 → Apps Script 연동 · FAQ 챗봇 + 카카오톡 상담 연결"
+        }
+      ],
+      "next": [
+        "PayApp 결제 두 건 실제로 한 번씩 테스트 결제 → 취소",
+        "영문 페이지와 /kr 페이지 내용 차이 점검",
+        "챗봇 → 카카오톡 채널 연결이 실제 상담으로 오는지 확인"
+      ]
+    },
+    {
+      "repo": "theoliveskin",
+      "name": "Olive Skin Glow Drop",
+      "url": "https://www.theoliveskin.com",
+      "kind": "D2C · 뷰티 브랜드 쇼핑몰",
+      "stage": 2,
+      "started": "2026-09-13",
+      "summary": "올리브·아보카도 냉압착 데일리 케어 오일 브랜드 사이트. 해외(PayPal)와 한국(/kr, PayApp) 결제, 관리자 대시보드와 인스타그램 런칭 콘텐츠까지 준비.",
+      "milestones": [
+        {
+          "date": "2026-09-13",
+          "text": "브랜드 사이트 시작 · 도메인 연결"
+        },
+        {
+          "date": "2026-09-23",
+          "text": "제품 이미지·페이지 대거 업로드"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "관리자 대시보드 (마케팅 플랜·채널·SNS·시딩 탭) + Apps Script"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "인스타그램 티저·런칭 포스트 세트 제작"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "체크아웃: PayPal 결제, $30 이상 무료배송, 주문 기록"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "한국어 사이트 /kr 오픈 · PayApp 결제 (16,000원 × 수량)"
+        }
+      ],
+      "next": [
+        "PayPal 실결제 1건 테스트 (결제 → 주문 기록 → 환불)",
+        "/kr 소매 결제 링크와 도매 링크가 맞게 연결됐는지 확인",
+        "인스타그램 티저 → 런칭 포스트 게시 일정 잡기"
+      ]
+    },
+    {
+      "repo": "medi-won",
+      "name": "메디원내과의원",
+      "url": "https://medi-won.com",
+      "kind": "병원 · 분당 정자 심장내과",
+      "stage": 3,
+      "started": "2026-08-17",
+      "summary": "분당 정자역 심장내과 병원 홈페이지. 진료·검사·예방접종·당뇨·건강검진·오시는 길 등 35개 페이지, 영어 페이지 포함.",
+      "milestones": [
+        {
+          "date": "2026-08-17",
+          "text": "병원 홈페이지 첫 업로드"
+        },
+        {
+          "date": "2026-08-22",
+          "text": "정리 버전(clean0822) · 도메인 연결"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "속도 개선: 이미지 WebP 캐시 파일로 분리, 폰트 비차단 로딩"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "홈 개편: 진료범위·검사·예방접종 큰 버튼, 모바일 정리, 글자 크기 체계 재정비"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "환자용 데모 페이지 /patients 추가"
+        }
+      ],
+      "next": [
+        "/patients 데모 페이지 공개 범위 결정 (검색 노출 막을지)",
+        "sitemap.xml에 새 페이지 반영 후 네이버·구글 서치콘솔 재제출",
+        "모바일에서 전화·길찾기 버튼 동작 확인"
+      ]
+    },
+    {
+      "repo": "www.skinny-us.com",
+      "name": "Skinny-us",
+      "url": "https://www.skinny-us.com",
+      "kind": "플랫폼 · 로컬이 고른 웰니스 픽",
+      "stage": 3,
+      "started": "2026-04-15",
+      "summary": "현지인이 큐레이션한 웰니스 추천 플랫폼 (Skinny Genius). 한국 먼저 오픈, 다른 나라 확장 예정. 가입(join) 페이지 포함.",
+      "milestones": [
+        {
+          "date": "2026-04-15",
+          "text": "사이트 첫 오픈 · 도메인 연결"
+        },
+        {
+          "date": "2026-06-09",
+          "text": "고객지원 페이지 추가"
+        },
+        {
+          "date": "2026-07-26",
+          "text": "가장 많이 작업한 날 (하루 37건 업데이트)"
+        },
+        {
+          "date": "2026-09-06",
+          "text": "옛 사이트 파일 정리 후 새 버전으로 교체"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "개인 대시보드 /ahran 추가"
+        }
+      ],
+      "next": [
+        "메인 페이지 용량(약 1.4MB, 이미지 19개가 코드 안에 포함) 줄여서 로딩 속도 개선",
+        "다음 확장 국가 페이지 계획"
+      ]
+    },
+    {
+      "repo": "wonahran",
+      "name": "Ahran Won — Creative Director",
+      "url": "https://www.wonahran.com",
+      "kind": "포트폴리오",
+      "stage": 3,
+      "started": "2026-08-08",
+      "summary": "Squarespace에서 옮겨온 크리에이티브 디렉터 포트폴리오. 프로젝트 21개 페이지, 이미지 330여 장을 직접 호스팅.",
+      "milestones": [
+        {
+          "date": "2026-08-08",
+          "text": "정적 사이트로 재구축 · 도메인 연결"
+        },
+        {
+          "date": "2026-08-09",
+          "text": "프로젝트 페이지·이미지 업로드"
+        },
+        {
+          "date": "2026-09-22",
+          "text": "콘텐츠 업데이트"
+        }
+      ],
+      "next": [
+        "홈 코드에 Squarespace 이미지 주소 12곳이 남아 있음 (대체 이미지용일 수 있음) → 확인",
+        "확인되면 Squarespace 구독 해지"
+      ]
+    },
+    {
+      "repo": "ahranarchitecture",
+      "name": "Speculative Architecture",
+      "url": "https://www.ahran-won.com",
+      "kind": "리서치 폴리오 · 건축",
+      "stage": 3,
+      "started": "2026-05-17",
+      "summary": "물, 접힌 기하학, 비무장화, 느린 도시를 드로잉·영상·글로 탐구하는 리서치 폴리오.",
+      "milestones": [
+        {
+          "date": "2026-05-17",
+          "text": "사이트 오픈"
+        },
+        {
+          "date": "2026-05-19",
+          "text": "도메인 연결 정리 · 콘텐츠 업로드"
+        },
+        {
+          "date": "2026-05-25",
+          "text": "마지막 업데이트"
+        }
+      ],
+      "next": [
+        "4개월째 업데이트 없음 · 새 작업 추가할지 결정"
+      ]
+    },
+    {
+      "repo": "www.skinny-us.com",
+      "id": "ahran",
+      "name": "AHRAN · Personal OS",
+      "url": "https://www.skinny-us.com/ahran/",
+      "kind": "개인 대시보드",
+      "stage": 3,
+      "started": "2026-09-27",
+      "summary": "매일 아침 인생 전반을 점검하는 개인 대시보드. 날씨·미세먼지로 색이 바뀌는 나무, 일정(암호화), 바이오리듬, 5개 도시, 프로젝트 현황.",
+      "milestones": [
+        {
+          "date": "2026-09-27",
+          "text": "디자인 시안 3종 → 나무 버전 선택"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "공개 · 비밀번호 잠금 + 일정 암호화"
+        },
+        {
+          "date": "2026-09-27",
+          "text": "시간 AM/PM, 환율 원 표기, 프로젝트 페이지 추가"
+        }
+      ],
+      "next": [
+        "매일 아침 6:50 캘린더 자동 업데이트 방식 결정 (A/B)"
+      ]
+    }
+  ]
+}
