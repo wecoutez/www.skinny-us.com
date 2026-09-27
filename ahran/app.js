@@ -9,11 +9,11 @@
   const GH_USER = 'wecoutez';
   const TZ = 'Asia/Seoul';
   const CITIES = [
-    { id: 'seoul', name: 'SEOUL', ko: '서울', flag: '🇰🇷', tz: 'Asia/Seoul', lat: 37.5665, lon: 126.978, fx: 'USD', fxLabel: 'USD → KRW' },
-    { id: 'tokyo', name: 'TOKYO', ko: '도쿄', flag: '🇯🇵', tz: 'Asia/Tokyo', lat: 35.6762, lon: 139.6503, fx: 'JPY', fxLabel: 'JPY 100 → KRW' },
-    { id: 'paris', name: 'PARIS', ko: '파리', flag: '🇫🇷', tz: 'Europe/Paris', lat: 48.8566, lon: 2.3522, fx: 'EUR', fxLabel: 'EUR → KRW' },
-    { id: 'la', name: 'LOS ANGELES', ko: '로스앤젤레스', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 34.0522, lon: -118.2437, fx: 'USD', fxLabel: 'USD → KRW' },
-    { id: 'sf', name: 'SAN FRANCISCO', ko: '샌프란시스코', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 37.7749, lon: -122.4194, fx: 'USD', fxLabel: 'USD → KRW' },
+    { id: 'seoul', name: 'SEOUL', ko: '서울', flag: '🇰🇷', tz: 'Asia/Seoul', lat: 37.5665, lon: 126.978, fx: 'USD', fxLabel: '🇺🇸 1달러 환율' },
+    { id: 'tokyo', name: 'TOKYO', ko: '도쿄', flag: '🇯🇵', tz: 'Asia/Tokyo', lat: 35.6762, lon: 139.6503, fx: 'JPY', fxLabel: '🇯🇵 100엔 환율' },
+    { id: 'paris', name: 'PARIS', ko: '파리', flag: '🇫🇷', tz: 'Europe/Paris', lat: 48.8566, lon: 2.3522, fx: 'EUR', fxLabel: '🇪🇺 1유로 환율' },
+    { id: 'la', name: 'LOS ANGELES', ko: '로스앤젤레스', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 34.0522, lon: -118.2437, fx: 'USD', fxLabel: '🇺🇸 1달러 환율' },
+    { id: 'sf', name: 'SAN FRANCISCO', ko: '샌프란시스코', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 37.7749, lon: -122.4194, fx: 'USD', fxLabel: '🇺🇸 1달러 환율' },
   ];
   const AREAS = ['건강', '성장', '일', '관계', '마음', '재정'];
   const RITUAL = ['물 한 잔 · 스트레칭', '명상 15분', '오늘의 3가지 목표', '영어 / 일본어 20분', '감사 3줄'];
@@ -227,7 +227,7 @@
         <div class="dn"><i style="left:calc(${pos}% - 5px)"></i></div>
         <div class="wx">${w ? `${icon}<b>${w.t}°</b><span>${w.desc}</span><span class="hl">${w.hi}° / ${w.lo}°</span>` : '<span class="dim">날씨 불러오는 중…</span>'}</div>
         <div class="aq">${aq ? `${aq.emoji} 미세먼지 <span class="${aq.cls}">${aq.name}</span><span class="hl">PM2.5 ${Math.round(aq.pm25)}</span>` : '&nbsp;'}</div>
-        <div class="fx"><span class="k">${c.fxLabel}</span><span class="v">${fx ? '₩' + fmt(fx.v) : '—'}</span><span class="c ${fx && fx.chg != null ? (fx.chg >= 0 ? 'gr' : 'rd') : 'dim'}">${fx && fx.chg != null ? (fx.chg >= 0 ? '▲ +' : '▼ ') + fmt(fx.chg) + '%' : ''}</span>${fx ? spark(fx.s, fx.chg == null || fx.chg >= 0) : ''}</div>
+        <div class="fx"><span class="k">${c.fxLabel}</span><span class="v">${fx ? fmt(fx.v) + '<small>원</small>' : '—'}</span><span class="c ${fx && fx.chg != null ? (fx.chg >= 0 ? 'gr' : 'rd') : 'dim'}">${fx && fx.chg != null ? (fx.chg >= 0 ? '▲ +' : '▼ ') + fmt(fx.chg) + '%' : ''}</span>${fx ? spark(fx.s, fx.chg == null || fx.chg >= 0) : ''}</div>
       </div>`;
     }).join('');
   }
@@ -363,7 +363,7 @@
     if (nextHol) items.push(`${WDK[wday(nextHol[0])]}요일 ${+nextHol[0].slice(5, 7)}/${+nextHol[0].slice(8)} ${nextHol[1]} · 쉬는 날 계획 체크`);
     if (w && w.pop >= 50) items.push(`오늘 강수확률 ${w.pop}% · 우산 챙기기 ☂️`);
     if (aq && aq.g >= 3) items.push(`미세먼지 ${aq.name} · 마스크 챙기고 야외 운동은 실내로 😷`);
-    const fx = fxOf('USD'); if (fx && fx.chg != null && Math.abs(fx.chg) >= .5) items.push(`달러 환율 ${fx.chg > 0 ? '상승' : '하락'} ${fmt(Math.abs(fx.chg))}% · ₩${fmt(fx.v)}`);
+    const fx = fxOf('USD'); if (fx && fx.chg != null && Math.abs(fx.chg) >= .5) items.push(`달러 환율 ${fx.chg > 0 ? '상승' : '하락'} ${fmt(Math.abs(fx.chg))}% · 1달러 ${fmt(fx.v)}원`);
     const open = store.get('todos', []).filter(t => !t.done); if (open.length) items.push(`남은 할 일 ${open.length}개 · ${esc(open[0].text)}${open.length > 1 ? ' 외' : ''}`);
     if (avg <= -50) items.push('리듬 저점 · 무리한 약속보다 회복과 정리에 쓰기 좋은 날');
     return { lead, items: items.slice(0, scope === 'week' ? 10 : 3) };
@@ -403,7 +403,7 @@
     $('#strip').innerHTML = [
       ['GOOGLE CALENDAR', cal, f.cal], ['GITHUB', state.repos ? `${state.repos.length} repos · live` : '연결 실패', f.gh],
       ['WEATHER · AIR', f.weather === 'ok' ? `5 cities · 15 min${f.air === 'ok' ? ' · PM ok' : ''}` : '연결 실패', f.weather === 'ok' && f.air !== 'ok' ? 'warn' : f.weather],
-      ['FX FEED', state.fx ? `KRW 기준 · ${state.fx.date}` : '연결 실패', f.fx], ['COMMAND', '/ 키로 바로 입력', 'ok'],
+      ['FX FEED', state.fx ? `원화 기준 · ${state.fx.date}` : '연결 실패', f.fx], ['COMMAND', '/ 키로 바로 입력', 'ok'],
     ].map(([b, s, st]) => `<div><span class="led ${led(st)}"></span><span><b>${b}</b><small>${esc(s)}</small></span></div>`).join('');
   }
 
@@ -455,7 +455,7 @@
       return reply(q, list.map(i => { const w = cityWx(i), aq = cityAq(i), c = CITIES[i]; return `<span class="flag">${c.flag}</span> <b>${c.ko}</b> ${w ? `${w.desc} ${w.t}° (최고 ${w.hi}° / 최저 ${w.lo}°)${w.pop != null ? ` · 강수 ${w.pop}%` : ''}` : '날씨 정보 없음'}${aq ? ` · 미세먼지 ${aq.name}` : ''}`; }).join('<br>'));
     }
     if (/(미세먼지|먼지|공기|pm)/i.test(q)) return reply(q, CITIES.map((c, i) => { const a = cityAq(i); return `<span class="flag">${c.flag}</span> <b>${c.ko}</b> ${a ? `${a.emoji} ${a.name} · PM2.5 ${Math.round(a.pm25)} · PM10 ${Math.round(a.pm10)}` : '정보 없음'}`; }).join('<br>'));
-    if (/(환율|달러|엔화|유로|fx|usd|jpy|eur)/i.test(q)) return reply(q, ['USD', 'JPY', 'EUR'].map(k => { const f = fxOf(k); return `<b>${{ USD: '🇺🇸 1달러', JPY: '🇯🇵 100엔', EUR: '🇪🇺 1유로' }[k]}</b> = ₩${f ? fmt(f.v) : '—'} ${f && f.chg != null ? `(${f.chg >= 0 ? '+' : ''}${fmt(f.chg)}%)` : ''}`; }).join('<br>') + (state.fx ? `<br><span class="muted">기준일 ${state.fx.date} · ECB 고시 환율</span>` : ''));
+    if (/(환율|달러|엔화|유로|fx|usd|jpy|eur)/i.test(q)) return reply(q, ['USD', 'JPY', 'EUR'].map(k => { const f = fxOf(k); return `<b>${{ USD: '🇺🇸 1달러', JPY: '🇯🇵 100엔', EUR: '🇪🇺 1유로' }[k]}</b> = ${f ? fmt(f.v) + '원' : '—'} ${f && f.chg != null ? `(${f.chg >= 0 ? '+' : ''}${fmt(f.chg)}%)` : ''}`; }).join('<br>') + (state.fx ? `<br><span class="muted">기준일 ${state.fx.date} · ECB 고시 환율</span>` : ''));
     if (/(컨디션|바이오|biorhythm)/i.test(q)) { const b = bio(); return reply(q, `신체 <b>${b.p}</b> · 감성 <b>${b.e}</b> · 지성 <b>${b.i}</b><br>${bioAdvice(b)}`); }
     if (/(루틴|ritual)/i.test(q)) { const d = store.get('ritual.' + state.today, []); return reply(q, RITUAL.map((t, i) => `${d.includes(i) ? '◆' : '◇'} ${t}`).join('<br>')); }
     if ((m = q.match(/^점수\s*(\S+)\s*(\d{1,3})$/))) {
