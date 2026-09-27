@@ -9,11 +9,11 @@
   const GH_USER = 'wecoutez';
   const TZ = 'Asia/Seoul';
   const CITIES = [
-    { id: 'seoul', name: 'SEOUL', ko: '서울', flag: '🇰🇷', tz: 'Asia/Seoul', lat: 37.5665, lon: 126.978, fx: 'USD', fxLabel: '🇺🇸 1달러 환율' },
-    { id: 'tokyo', name: 'TOKYO', ko: '도쿄', flag: '🇯🇵', tz: 'Asia/Tokyo', lat: 35.6762, lon: 139.6503, fx: 'JPY', fxLabel: '🇯🇵 100엔 환율' },
-    { id: 'paris', name: 'PARIS', ko: '파리', flag: '🇫🇷', tz: 'Europe/Paris', lat: 48.8566, lon: 2.3522, fx: 'EUR', fxLabel: '🇪🇺 1유로 환율' },
-    { id: 'la', name: 'LOS ANGELES', ko: '로스앤젤레스', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 34.0522, lon: -118.2437, fx: 'USD', fxLabel: '🇺🇸 1달러 환율' },
-    { id: 'sf', name: 'SAN FRANCISCO', ko: '샌프란시스코', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 37.7749, lon: -122.4194, fx: 'USD', fxLabel: '🇺🇸 1달러 환율' },
+    { id: 'seoul', name: 'SEOUL', ko: '서울', flag: '🇰🇷', tz: 'Asia/Seoul', lat: 37.5665, lon: 126.978, fx: 'USD', fxLabel: '1달러 환율' },
+    { id: 'tokyo', name: 'TOKYO', ko: '도쿄', flag: '🇯🇵', tz: 'Asia/Tokyo', lat: 35.6762, lon: 139.6503, fx: 'JPY', fxLabel: '100엔 환율' },
+    { id: 'paris', name: 'PARIS', ko: '파리', flag: '🇫🇷', tz: 'Europe/Paris', lat: 48.8566, lon: 2.3522, fx: 'EUR', fxLabel: '1유로 환율' },
+    { id: 'la', name: 'LOS ANGELES', ko: '로스앤젤레스', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 34.0522, lon: -118.2437, fx: 'USD', fxLabel: '1달러 환율' },
+    { id: 'sf', name: 'SAN FRANCISCO', ko: '샌프란시스코', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 37.7749, lon: -122.4194, fx: 'USD', fxLabel: '1달러 환율' },
   ];
   // people shown on the Today scene; 하임's details are filled in once known
   const FAMILY = [
@@ -460,7 +460,7 @@
     cfg.forEach(p => { const a = ageInfo(p.birth); p.info = a; p.age = a ? a.age : null; p.cond = p.kind === 'cat' ? catCondition(p) : condition(p, p.age == null || p.age < 18); p.sex = p.sex || 'f'; if (p.kind !== 'cat') { p.caution = { list: p.cond.caut.map(t => ['', t]) }; p.warn = p.cond.warn; } });
     window.drawBodies($('#bodies'), cfg, 600);
     const wa = cfg[0].warn || {};
-    $('#figs').innerHTML = `<figure class="fig fig-a" style="--c:${cfg[0].color}"><img src="img/ahran.webp" alt="원아란 홀로그램">${wa.head ? '<i class="hot" style="top:9%;left:50%"></i>' : ''}${wa.heart ? '<i class="hot" style="top:27%;left:53%"></i>' : ''}${wa.joints ? '<i class="hot" style="top:50%;left:44%"></i><i class="hot" style="top:70%;left:44%"></i><i class="hot" style="top:70%;left:56%"></i>' : ''}</figure><figure class="fig fig-h" style="--c:${cfg[1].color}"><img src="img/haim.webp" alt="하임 홀로그램"></figure>`;
+    $('#figs').innerHTML = `<figure class="fig fig-a" style="--c:${cfg[0].color}"><img src="img/ahran.webp" alt="원아란 홀로그램">${wa.head ? '<i class="hot" style="top:10%;left:50%"></i>' : ''}${wa.heart ? '<i class="hot" style="top:27%;left:53%"></i>' : ''}${wa.joints ? '<i class="hot" style="top:50%;left:44%"></i><i class="hot" style="top:70%;left:44%"></i><i class="hot" style="top:70%;left:56%"></i>' : ''}</figure><figure class="fig fig-h" style="--c:${cfg[1].color}"><img src="img/haim.webp" alt="하임 홀로그램"></figure>`;
     $('#callouts').innerHTML = cfg.map((p, i) => {
       const known = !!p.info, side = i === 0 ? 'l' : 'r', top = Math.max(2, p.anchor.top / 600 * 100 - 2);
       return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'left' : 'right'}:0">
