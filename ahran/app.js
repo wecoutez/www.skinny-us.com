@@ -9,11 +9,11 @@
   const GH_USER = 'wecoutez';
   const TZ = 'Asia/Seoul';
   const CITIES = [
-    { id: 'seoul', name: 'SEOUL', ko: '서울', flag: '🇰🇷', tz: 'Asia/Seoul', lat: 37.5665, lon: 126.978, fx: 'USD', fxLabel: '1달러 환율' },
-    { id: 'tokyo', name: 'TOKYO', ko: '도쿄', flag: '🇯🇵', tz: 'Asia/Tokyo', lat: 35.6762, lon: 139.6503, fx: 'JPY', fxLabel: '100엔 환율' },
-    { id: 'paris', name: 'PARIS', ko: '파리', flag: '🇫🇷', tz: 'Europe/Paris', lat: 48.8566, lon: 2.3522, fx: 'EUR', fxLabel: '1유로 환율' },
-    { id: 'la', name: 'LOS ANGELES', ko: '로스앤젤레스', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 34.0522, lon: -118.2437, fx: 'USD', fxLabel: '1달러 환율' },
-    { id: 'sf', name: 'SAN FRANCISCO', ko: '샌프란시스코', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 37.7749, lon: -122.4194, fx: 'USD', fxLabel: '1달러 환율' },
+    { id: 'seoul', name: 'SEOUL', ko: '서울', flag: '🇰🇷', tz: 'Asia/Seoul', lat: 37.5665, lon: 126.978, fx: 'USD', fxLabel: '$1 달러 환율' },
+    { id: 'tokyo', name: 'TOKYO', ko: '도쿄', flag: '🇯🇵', tz: 'Asia/Tokyo', lat: 35.6762, lon: 139.6503, fx: 'JPY', fxLabel: '¥100 엔화 환율' },
+    { id: 'paris', name: 'PARIS', ko: '파리', flag: '🇫🇷', tz: 'Europe/Paris', lat: 48.8566, lon: 2.3522, fx: 'EUR', fxLabel: '€1 유로 환율' },
+    { id: 'la', name: 'LOS ANGELES', ko: '로스앤젤레스', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 34.0522, lon: -118.2437, fx: 'USD', fxLabel: '$1 달러 환율' },
+    { id: 'sf', name: 'SAN FRANCISCO', ko: '샌프란시스코', flag: '🇺🇸', tz: 'America/Los_Angeles', lat: 37.7749, lon: -122.4194, fx: 'USD', fxLabel: '$1 달러 환율' },
   ];
   // people shown on the Today scene; 하임's details are filled in once known
   const FAMILY = [
