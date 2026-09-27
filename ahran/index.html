@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#02060c">
+<title>AHRAN · Personal OS</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='8' fill='%2302060c'/%3E%3Cpath d='M22 34V20M22 25l-6-5M22 22l6-6' stroke='%234fd6ff' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='15' cy='18' r='4' fill='%23ff9d3c'/%3E%3Ccircle cx='29' cy='14' r='4.5' fill='%23ffd166'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="lock" aria-hidden="false">
+  <form id="lockForm" class="lockbox" autocomplete="on">
+    <svg width="56" height="56" viewBox="0 0 44 44" aria-hidden="true"><polygon points="22,2 39,12 39,32 22,42 5,32 5,12" fill="none" stroke="#4fd6ff" stroke-width="1.2"/><path d="M22 31V20M22 24l-5-4M22 22l5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="16.5" cy="18" r="2.4" fill="#ff9d3c"/><circle cx="27.5" cy="15.5" r="2.8" fill="#ffd166"/></svg>
+    <b>AHRAN</b>
+    <input type="text" name="username" value="ahran" autocomplete="username" hidden>
+    <input id="lockPw" type="password" placeholder="비밀번호" autocomplete="current-password" aria-label="비밀번호">
+    <label><input id="lockRemember" type="checkbox" checked> 이 기기에서 기억하기</label>
+    <button type="submit">열기</button>
+    <small id="lockMsg"></small>
+  </form>
+</div>
+<div class="wrap">
+<header>
+  <div class="brand">
+    <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><polygon points="22,2 39,12 39,32 22,42 5,32 5,12" fill="none" stroke="#4fd6ff" stroke-width="1.4"/><polygon points="22,9 33,15.5 33,28.5 22,35 11,28.5 11,15.5" fill="rgba(79,214,255,.12)" stroke="#4fd6ff" stroke-width=".8" opacity=".7"/><path d="M22 31V20M22 24l-5-4M22 22l5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="16.5" cy="18" r="2.4" fill="#ff9d3c"/><circle cx="27.5" cy="15.5" r="2.8" fill="#ffd166"/><circle cx="22" cy="16" r="1.8" fill="#4fd6ff"/></svg>
+    <div><b>AHRAN</b><small>PERSONAL OPERATING SYSTEM</small></div>
+  </div>
+  <nav>
+    <a href="#top" class="on">TODAY</a><a href="#schedule">SCHEDULE</a><a href="#life">LIFE</a><a href="#world">WORLD</a><a href="#projects">PROJECTS</a><a href="#" id="lockBtn" title="잠그기">🔒</a>
+  </nav>
+  <div class="hclock"><div class="t" id="clock">--:--<span></span></div><div class="d" id="clockDate">&nbsp;</div></div>
+</header>
+
+<div class="cmdwrap" id="top">
+  <form class="cmd" id="cmdForm" autocomplete="off">
+    <span class="pr">&gt;_</span>
+    <input id="cmd" type="text" placeholder="명령어 입력 · 예: 오늘 일정 정리 / 할 일 추가 운동 / 일정 추가 10/1 14:00 미팅 / 도쿄 날씨" aria-label="명령어">
+    <span class="kbd">/ 로 포커스</span>
+    <button class="go" type="submit" aria-label="실행"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7h9M7.5 3l4 4-4 4" stroke="#4fd6ff" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button>
+  </form>
+  <div class="sugg">
+    <button data-cmd="오늘 일정 정리">📋 오늘 일정 정리</button>
+    <button data-cmd="이번 주 브리핑">🗓 이번 주 브리핑</button>
+    <button data-cmd="할 일 추가 ">✅ 할 일 추가</button>
+    <button data-cmd="환율">💱 환율</button>
+    <button data-cmd="컨디션">🧬 컨디션</button>
+    <button data-cmd="도움말">❔ 명령어 목록</button>
+  </div>
+  <div class="reply" id="reply"></div>
+</div>
+
+<div class="stage">
+  <div class="col">
+    <section class="panel brief">
+      <div class="ph"><span class="pt">DAILY BRIEFING</span><span class="tag" id="briefTime">—</span></div>
+      <div id="brief"><p class="muted">불러오는 중…</p></div>
+    </section>
+
+    <section class="panel" id="schedule">
+      <div class="ph"><span class="pt">SCHEDULE</span><span class="tag" id="calSrc">GOOGLE CALENDAR</span></div>
+      <div id="sched"></div>
+    </section>
+
+    <section class="panel">
+      <div class="ph"><span class="pt">TO-DO</span><span class="tag" id="todoCount">0</span></div>
+      <div id="todos"></div>
+    </section>
+  </div>
+
+  <div class="center" id="life">
+    <div class="treebox">
+      <svg id="tree" viewBox="0 0 620 600" role="img" aria-label="오늘의 나무"></svg>
+    </div>
+    <div class="treeinfo" id="treeInfo"></div>
+    <div class="treenote" id="treeNote"></div>
+    <div class="areas" id="nodes"></div>
+  </div>
+
+  <div class="col">
+    <section class="panel">
+      <div class="ph"><span class="pt">BIORHYTHM</span><span class="tag" id="bioDay">—</span></div>
+      <div class="bio-row" id="bioVals"></div>
+      <svg id="bio" viewBox="0 0 302 100"></svg>
+      <div class="note" id="bioNote"></div>
+    </section>
+
+    <section class="panel">
+      <div class="ph"><span class="pt">MORNING PROTOCOL</span><span class="tag" id="ritualCount">0 / 5</span></div>
+      <div id="ritual"></div>
+    </section>
+
+    <section class="panel">
+      <div class="ph"><span class="pt">YEAR PROGRESS</span><span class="tag" id="weekNo">—</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end"><span class="big" id="yearPct">0<span>%</span></span><span class="muted" style="font-size:13px" id="yearTxt"></span></div>
+      <div class="yp" id="yearBar"></div>
+    </section>
+  </div>
+</div>
+
+<div class="sec" id="world"><span class="pt">GLOBAL · 5 CITIES</span><span class="muted" style="font-size:13px">시간 · 날씨 · 미세먼지 · 현지 통화 환율 (원화 기준)</span></div>
+<div class="world" id="cities"></div>
+
+<div class="sec" id="projects"><span class="pt">PROJECTS · GITHUB / WECOUTEZ</span><span class="muted" style="font-size:13px" id="repoCount"></span></div>
+<div class="repos" id="repos"></div>
+
+<div class="strip" id="strip"></div>
+</div>
+
+<script src="lock.js"></script>
+<script src="tree.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
