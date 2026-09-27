@@ -111,15 +111,27 @@
     }).join('');
   }
 
+  // detail opens as a floating 90% sheet over the map
+  function openModal() {
+    const m = $('#pjModal'); m.hidden = false; document.body.classList.add('modal-open');
+    $('#pjSheet').scrollTop = 0; $('#pjClose').focus({ preventScroll: true });
+  }
+  function closeModal() {
+    $('#pjModal').hidden = true; document.body.classList.remove('modal-open');
+    selected = null; drawSvg(); drawNodes();
+    if (location.hash) history.replaceState(null, '', location.pathname);
+  }
   function showDetail(all) {
     const list = all ? items : [items[selected]];
-    $('#pjDetail').innerHTML = (all ? '' : `<div class="pj-back"><button type="button" id="showAll">전체 사이트 펼쳐 보기</button></div>`) + list.map(it => card(it.p, it.log)).join('');
-    const b = $('#showAll'); if (b) b.addEventListener('click', () => { selected = null; drawSvg(); drawNodes(); showDetail(true); });
+    const nav = all ? `<div class="pj-nav"><span class="hud-t">ALL SITES · ${items.length}</span></div>`
+      : `<div class="pj-nav"><button type="button" data-step="-1" aria-label="이전 사이트">←</button><span class="hud-t">${selected + 1} / ${items.length}</span><button type="button" data-step="1" aria-label="다음 사이트">→</button><button type="button" class="all" id="showAll">전체 보기</button></div>`;
+    $('#pjDetail').innerHTML = nav + list.map(it => card(it.p, it.log)).join('');
+    openModal();
   }
-  function select(i, scroll) {
-    selected = i; drawSvg(); drawNodes(); showDetail(false);
-    if (scroll) $('#pjDetail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function select(i) {
+    selected = (i + items.length) % items.length; drawSvg(); drawNodes(); showDetail(false);
   }
+  function showAll() { selected = null; drawSvg(); drawNodes(); showDetail(true); }
 
   async function render() {
     const d = await (await fetch('data/projects.json', { cache: 'no-store' })).json();
@@ -135,9 +147,21 @@
     $('#mmHubSub').textContent = `${d.projects.length} SITES · 오늘 ${today}`;
     $('#pjStats').innerHTML = [['운영 중', live, STAGE_C[3]], ['런칭 단계', launch, STAGE_C[2]], ['오늘 작업한 사이트', today, '#3ddc97']].map(([k, v, c]) => `<div><b>${v}</b><span><i style="background:${c}"></i>${k}</span></div>`).join('');
     const hash = decodeURIComponent(location.hash.slice(1)), hi = items.findIndex(it => (it.p.id || it.p.repo) === hash);
-    select(hi >= 0 ? hi : 0, hi >= 0);
-    $('#mmNodes').addEventListener('click', e => { const n = e.target.closest('.mm-node'); if (n) select(+n.dataset.i, true); });
-    $('#mmHub').addEventListener('click', () => { selected = null; drawSvg(); drawNodes(); showDetail(true); $('#pjDetail').scrollIntoView({ behavior: 'smooth' }); });
+    drawSvg(); drawNodes();
+    if (hi >= 0) select(hi);
+    $('#mmNodes').addEventListener('click', e => { const n = e.target.closest('.mm-node'); if (n) select(+n.dataset.i); });
+    $('#mmHub').addEventListener('click', showAll);
+    $('#pjModal').addEventListener('click', e => {
+      if (e.target.id === 'pjModal' || e.target.closest('#pjClose')) return closeModal();
+      const st = e.target.closest('[data-step]'); if (st) return select(selected + +st.dataset.step);
+      if (e.target.closest('#showAll')) showAll();
+    });
+    document.addEventListener('keydown', e => {
+      if ($('#pjModal').hidden) return;
+      if (e.key === 'Escape') closeModal();
+      else if (selected != null && e.key === 'ArrowRight') select(selected + 1);
+      else if (selected != null && e.key === 'ArrowLeft') select(selected - 1);
+    });
   }
 
   $('#lockBtn').addEventListener('click', e => { e.preventDefault(); window.AhranLock.lockNow(); });
