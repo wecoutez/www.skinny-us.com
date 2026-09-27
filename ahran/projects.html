@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 <div class="lock">
@@ -34,17 +34,17 @@
   <div class="hclock"><div class="t" id="pjCount">—</div><div class="d" id="pjSub">&nbsp;</div></div>
 </header>
 
-<div class="pj-hero">
-  <h1>PROJECTS</h1>
-  <p>관리 중인 웹사이트의 진행 단계, 지금까지의 주요 업데이트, 최근 작업 기록, 다음 할 일</p>
-  <div class="pj-stats" id="pjStats"></div>
+<div class="mm" id="mm">
+  <svg class="mm-svg" id="mmSvg" viewBox="0 0 1200 780" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+  <button class="mm-hub" id="mmHub" type="button"><span class="k">AHRAN</span><b>PROJECTS</b><span class="s" id="mmHubSub">—</span></button>
+  <div id="mmNodes"></div>
 </div>
-
-<div id="pjList"></div>
+<div class="pj-stats" id="pjStats"></div>
+<div id="pjDetail"></div>
 
 <p class="pj-foot">최근 작업은 GitHub에서 실시간으로 불러와요 · 요약·단계·다음 할 일은 <code>data/projects.json</code>에 적혀 있어요 (Claude에게 "프로젝트 현황 업데이트해줘"라고 하면 갱신)</p>
 </div>
-<script src="lock.js?v=4"></script>
-<script src="projects.js?v=4"></script>
+<script src="lock.js?v=5"></script>
+<script src="projects.js?v=5"></script>
 </body>
 </html>
