@@ -577,3 +577,18 @@ body{word-break:keep-all;overflow-wrap:break-word;line-break:strict}
 .kv dt{color:var(--ink3)}
 .kv dd{margin:0;color:var(--ink)}
 #dayplan{width:100%;max-width:320px;height:auto;display:block;margin:0 auto}
+/* Canva artwork: city skylines and holograms */
+.city .sky-img{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center bottom;opacity:.85}
+.city .sky-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,6,12,.35) 0%,rgba(2,6,12,.15) 30%,rgba(2,6,12,.55) 55%,rgba(2,6,12,.92) 75%,#050d18 100%)}
+.city .sky.over{height:100%;background:none;-webkit-mask-image:none;mask-image:none;opacity:1}
+.city .sky.over svg circle[r="9"],.city .sky.over svg circle[r="4.5"]{opacity:.9}
+.scene #bodies{opacity:0}
+#figs{position:absolute;inset:0;pointer-events:none}
+.fig{position:absolute;margin:0;bottom:4%;mix-blend-mode:screen}
+.fig img{display:block;width:100%;height:auto;-webkit-mask-image:radial-gradient(ellipse 60% 55% at 50% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 60% 55% at 50% 50%,#000 60%,transparent 100%)}
+.fig-a{left:24%;width:32%}
+.fig-h{left:55%;width:22%;bottom:6%}
+.fig .hot{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#ff6b7d;box-shadow:0 0 12px #ff6b7d;animation:beat 1.1s ease-in-out infinite}
+.city .sky-img{inset:0 0 auto 0;height:62%;opacity:1;background-size:cover;background-position:center 85%}
+.city .sky-img::after{background:linear-gradient(180deg,rgba(2,6,12,.55) 0%,rgba(2,6,12,.25) 35%,rgba(2,6,12,.1) 60%,rgba(5,13,24,.85) 88%,#050d18 100%)}
+.city .fx.fx-top{background:rgba(2,6,12,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);border-radius:8px;padding:12px 12px 14px;border:0}

@@ -252,7 +252,7 @@
   const spark = (s, up) => { if (!s || s.length < 2) return ''; const mn = Math.min(...s), mx = Math.max(...s), rg = mx - mn || 1; return `<svg viewBox="0 0 100 26" preserveAspectRatio="none"><path d="${s.map((v, i) => (i ? 'L' : 'M') + (i / (s.length - 1) * 100).toFixed(1) + ',' + (23 - (v - mn) / rg * 20).toFixed(1)).join('')}" stroke="${up ? '#3ddc97' : '#ff5b6b'}" stroke-width="1.5" fill="none" vector-effect="non-scaling-stroke"/></svg>`; };
 
   // live sky behind each city card, from local time, sunrise/sunset and weather
-  function skyHtml(mins, w) {
+  function skyHtml(mins, w, city) {
     const hm = iso => { if (!iso) return null; const t = iso.slice(11, 16).split(':'); return +t[0] * 60 + +t[1]; };
     const sr = (w && hm(w.sr)) ?? 390, ss = (w && hm(w.ss)) ?? 1110;
     const phase = mins < sr - 40 || mins > ss + 40 ? 'night' : mins < sr + 50 ? 'dawn' : mins > ss - 50 ? 'dusk' : 'day';
@@ -271,7 +271,9 @@
     if (kind === 'cloud' || grey) svg += [[40, 12, 8], [70, 8, 10], [88, 20, 7]].map(([x, y, r]) => `<g opacity="${grey ? .4 : .3}" fill="#dfe8f2"><ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .38}"/><ellipse cx="${x - r * .35}" cy="${y - r * .2}" rx="${r * .5}" ry="${r * .35}"/></g>`).join('');
     if (kind === 'rain') for (let i = 0; i < 18; i++) svg += `<line x1="${(i * 5.7) % 100}" y1="${(i * 11) % 40 + 20}" x2="${(i * 5.7) % 100 - 1.5}" y2="${(i * 11) % 40 + 26}" stroke="#9fd8ff" stroke-width=".6" opacity=".7"/>`;
     if (kind === 'snow') for (let i = 0; i < 18; i++) svg += `<circle cx="${(i * 5.7) % 100}" cy="${(i * 11) % 50 + 10}" r=".9" fill="#fff" opacity=".85"/>`;
-    return `<div class="sky ${phase}" style="--g1:${g1};--g2:${g2}"><svg viewBox="0 0 100 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${svg}</svg></div>`;
+    const img = city ? `<div class="sky-img" style="background-image:url(img/${city}-${phase === 'night' || phase === 'dusk' ? 'night' : 'day'}.webp)"></div>` : '';
+    if (img) return img;
+    return `${img}<div class="sky ${phase}" style="--g1:${g1};--g2:${g2}"><svg viewBox="0 0 100 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${svg}</svg></div>`;
   }
 
   // ---------------------------------------------------------------- cities
@@ -283,7 +285,7 @@
       const d = `${p.year}-${p.month}-${p.day}`, pos = (h * 60 + +p.minute) / 1440 * 100;
       const w = cityWx(i), aq = cityAq(i), fx = fxOf(c.fx);
       const icon = w ? (w.kind === 'clear' && !w.day ? ICON.night : ICON[w.kind]) : '';
-      return `<div class="panel city">${skyHtml(h * 60 + +p.minute, w)}
+      return `<div class="panel city">${skyHtml(h * 60 + +p.minute, w, c.id)}
         <div class="top"><div><h3><span class="flag">${c.flag}</span>${c.name}</h3><small>${c.ko}</small></div><span class="tag">${i === 0 ? '기준' : (diff > 0 ? '+' : diff < 0 ? '−' : '±') + Math.abs(diff) + 'H'}</span></div>
         <div class="fx fx-top"><span class="k">${c.fxLabel}</span><span class="v">${fx ? fmt(fx.v) + '<small>원</small>' : '—'}</span><span class="c ${fx && fx.chg != null ? (fx.chg >= 0 ? 'gr' : 'rd') : 'dim'}">${fx && fx.chg != null ? (fx.chg >= 0 ? '▲ +' : '▼ ') + fmt(fx.chg) + '%' : ''}</span>${fx ? spark(fx.s, fx.chg == null || fx.chg >= 0) : ''}</div>
         <div class="time">${h % 12 || 12}:${p.minute}<span>${ap}</span></div><div class="dt">${label(d)}</div>
@@ -457,6 +459,8 @@
     const cfg = [{ ...people[0], x: 246 }, { ...people[1], x: 390 }];
     cfg.forEach(p => { const a = ageInfo(p.birth); p.info = a; p.age = a ? a.age : null; p.cond = p.kind === 'cat' ? catCondition(p) : condition(p, p.age == null || p.age < 18); p.sex = p.sex || 'f'; if (p.kind !== 'cat') { p.caution = { list: p.cond.caut.map(t => ['', t]) }; p.warn = p.cond.warn; } });
     window.drawBodies($('#bodies'), cfg, 600);
+    const wa = cfg[0].warn || {};
+    $('#figs').innerHTML = `<figure class="fig fig-a" style="--c:${cfg[0].color}"><img src="img/ahran.webp" alt="원아란 홀로그램">${wa.head ? '<i class="hot" style="top:9%;left:50%"></i>' : ''}${wa.heart ? '<i class="hot" style="top:27%;left:53%"></i>' : ''}${wa.joints ? '<i class="hot" style="top:50%;left:44%"></i><i class="hot" style="top:70%;left:44%"></i><i class="hot" style="top:70%;left:56%"></i>' : ''}</figure><figure class="fig fig-h" style="--c:${cfg[1].color}"><img src="img/haim.webp" alt="하임 홀로그램"></figure>`;
     $('#callouts').innerHTML = cfg.map((p, i) => {
       const known = !!p.info, side = i === 0 ? 'l' : 'r', top = Math.max(2, p.anchor.top / 600 * 100 - 2);
       return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'left' : 'right'}:0">
