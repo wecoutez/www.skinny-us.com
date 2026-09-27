@@ -664,3 +664,12 @@ img.avatar.photo{border-radius:50%;object-fit:cover;border:2px solid var(--c,#4f
 .ai-src{margin-top:18px;font-size:12.5px;line-height:1.8;word-break:keep-all}.ai-src a{color:#8fd8ff}
 .hm-hero>div{flex:1 1 520px;min-width:0}
 .hm-ai p.dim{font-size:13px;line-height:1.7}
+/* project icons (Canva) */
+.mm-node .orb.has-ic{justify-content:flex-end;padding-bottom:14%}
+.mm-node .orb .ic{position:absolute;inset:3px;width:calc(100% - 6px);height:calc(100% - 6px);border-radius:50%;object-fit:cover;z-index:0;opacity:.95}
+.mm-node .orb.has-ic::after{content:"";position:absolute;inset:3px;border-radius:50%;background:linear-gradient(to bottom,transparent 42%,rgba(2,6,12,.88) 78%);z-index:1;pointer-events:none}
+.mm-node .orb.has-ic b,.mm-node .orb.has-ic small{position:relative;z-index:2;text-shadow:0 1px 6px #000}
+.mm-node .orb.has-ic b{font-size:clamp(10px,1vw,14px)}
+/* align hero + command bar edges with the stage columns */
+.hero{max-width:none}
+.cmdwrap{width:100%}

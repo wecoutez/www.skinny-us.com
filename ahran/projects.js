@@ -119,11 +119,11 @@
       const sat = Array.from({ length: dots }, (_, k) => { const a = -Math.PI / 2 + k / 10 * Math.PI * 2; return `<i style="left:${50 + Math.cos(a) * 58}%;top:${50 + Math.sin(a) * 58}%"></i>`; }).join('');
       const where = it.y < 200 ? 'top' : it.x < CX - 200 ? 'left' : it.x > CX + 200 ? 'right' : 'bottom';
       return `<button class="mm-node ${it.fresh ? 'fresh' : ''} ${selected === i ? 'sel' : ''}" data-i="${i}" style="left:${it.x / W * 100}%;top:${it.y / H * 100}%;--c:${c}" type="button">
-        <span class="orb">${sat}<b>${esc(it.p.short)}</b><small>${STAGES[it.p.stage]}</small></span>
+        <span class="orb has-ic">${sat}<img class="ic" src="img/pj/${esc(it.p.id || it.p.repo)}.webp?v=32" alt="" onerror="this.remove()"><b>${esc(it.p.short)}</b><small>${STAGES[it.p.stage]}</small></span>
         <span class="cap ${where}"><em>${esc(it.p.kind.split('·').pop().trim())}</em>${esc(it.p.url.replace(/^https?:\/\//, '').replace(/\/$/, ''))}<span class="${it.fresh ? 'gr' : 'dim'}">● ${it.last.getTime() ? ago(it.last.toISOString()) : '—'}</span></span>
       </button>`;
     }).join('') + subs.map((sb, k) => `<button class="mm-node sub ${selected === 's' + k ? 'sel' : ''}" data-s="${k}" style="left:${sb.x / W * 100}%;top:${sb.y / H * 100}%;--c:${STAGE_C[sb.p.stage]}" type="button">
-        <span class="orb"><b>${esc(sb.p.short)}</b><small>${STAGES[sb.p.stage]}</small></span>
+        <span class="orb has-ic"><img class="ic" src="img/pj/phr.webp?v=32" alt="" onerror="this.remove()"><b>${esc(sb.p.short)}</b><small>${STAGES[sb.p.stage]}</small></span>
         <span class="cap ${sb.y > items[sb.parent].y ? 'bottom' : 'top'}"><em>${esc(sb.p.kind.split('·')[0].trim())}</em>${esc(sb.p.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</span>
       </button>`).join('');
   }
