@@ -358,8 +358,8 @@
   function openHealth() { renderHealth(); $('#hModal').hidden = false; document.body.classList.add('modal-open'); $('#hSheet').scrollTop = 0; }
   function closeHealth() { clearInterval(rrTimer); rrTimer = null; $('#hModal').hidden = true; document.body.classList.remove('modal-open'); }
   function saveRR(v) {
-    const p = parts(new Date(), TZ, { hour: '2-digit', minute: '2-digit' }), l = rrLog();
-    l.push({ d: state.today, t: ampm(p.hour + ':' + p.minute), v }); store.set('haim.rr', l.slice(-200)); renderHealth(); renderScene();
+    const p = parts(new Date(), TZ, { hour: '2-digit', minute: '2-digit' });
+    const mine = store.get('haim.rr', []); mine.push({ d: state.today, t: ampm(p.hour + ':' + p.minute), v }); store.set('haim.rr', mine.slice(-200)); renderHealth(); renderScene();
   }
   document.addEventListener('click', e => {
     if (e.target.closest('#openHealth')) return openHealth();
@@ -384,13 +384,13 @@
       const known = !!p.info, side = i === 0 ? 'l' : 'r', top = Math.max(2, p.anchor.top / 600 * 100 - 2);
       return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'left' : 'right'}:0">
         <span class="nm">${esc(p.name)}</span>
-        ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${esc(p.breed)} · ${p.info.age}살 (사람 ${catHuman(p.info.age)}세)${rrLast() ? ` · 호흡 ${rrLast().v}/분` : ''}</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
+        ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${esc(p.breed)} · ${p.info.age}살${rrLast() ? ` · 호흡 ${rrLast().v}/분` : ''}</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
         <span class="sc"><b>${p.cond.s}</b><small>${p.cond.label}</small></span>
       </div>`;
     }).join('');
     $('#condCards').innerHTML = cfg.map((p, i) => `<div class="cond" style="--c:${p.color}">
       <div class="cond-h"><span class="nm">${esc(p.name)}</span><span class="cs"><b>${p.cond.s}</b> / 100 · ${p.cond.label}</span></div>
-      ${p.kind === 'cat' ? `<div class="cond-age">${esc(p.breed)} · ${esc(p.birth.replace(/-/g, '.'))} ${esc(p.born)} 출생 · ${p.info.age}살 (사람 나이 약 ${catHuman(p.info.age)}세 · 시니어) · 생일 D-${p.info.dday}</div>` : p.info ? `<div class="cond-age">만 ${p.info.age}세 · ${esc(p.birth.replace(/-/g, '.'))} · ${esc(p.info.zod)}띠 · ${esc(p.info.sign)}자리 · 생일 D-${p.info.dday}</div>`
+      ${p.kind === 'cat' ? `<div class="cond-age">${esc(p.breed)} · ${esc(p.birth.replace(/-/g, '.'))} ${esc(p.born)} 출생 · ${p.info.age}살 · 생일 D-${p.info.dday}</div>` : p.info ? `<div class="cond-age">만 ${p.info.age}세 · ${esc(p.birth.replace(/-/g, '.'))} · ${esc(p.info.zod)}띠 · ${esc(p.info.sign)}자리 · 생일 D-${p.info.dday}</div>`
         : `<div class="cond-age dim">생년월일·성별을 알려주시면 나이·바이오리듬·체형이 반영돼요</div>`}
       ${p.kind !== 'cat' && state.healthData && state.healthData.ahran ? (h => `<div class="cond-age">키 ${h.height_cm}cm · ${h.weight_kg}kg · BMI ${(h.weight_kg / (h.height_cm / 100) ** 2).toFixed(1)} (정상 범위)${h.blood_type ? ` · ${esc(h.blood_type)}형` : ''}${h.allergies ? ` · 알레르기 ${esc(h.allergies)}` : ''}</div>`)(state.healthData.ahran) : ''}
       ${p.cond.b ? `<div class="cond-bio">신체 <b class="${bioColor(p.cond.b.p)}">${p.cond.b.p}</b> · 감성 <b class="${bioColor(p.cond.b.e)}">${p.cond.b.e}</b> · 지성 <b class="${bioColor(p.cond.b.i)}">${p.cond.b.i}</b></div>` : ''}
@@ -479,7 +479,13 @@
     } catch (e) { state.healthData = null; }
   }
   // resting / sleeping respiratory rate log for 하임 (this device)
-  const rrLog = () => store.get('haim.rr', []);
+  // this device's log merged with entries saved in the encrypted record (shared across devices)
+  const rrLog = () => {
+    const shared = (state.healthData && state.healthData.haim && state.healthData.haim.rr_log) || [], local = store.get('haim.rr', []);
+    const seen = new Set(), all = [];
+    shared.concat(local).forEach(r => { const k = r.d + '|' + r.v + '|' + (r.t || ''); if (!seen.has(k)) { seen.add(k); all.push(r); } });
+    return all.sort((a, b) => (a.d + (a.t || '')).localeCompare(b.d + (b.t || '')));
+  };
   const rrLast = () => { const l = rrLog(); return l.length ? l[l.length - 1] : null; };
   function allEvents() {
     const local = store.get('events', []).map(e => ({ ...e, local: true }));
