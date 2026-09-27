@@ -20,7 +20,9 @@ The run is started with a staff key such as `wg-01` (see `key` on each staff ent
    Drive or order-sheet access; mark anything you would need from those as `[확인 필요]`.
 6. Write the deliverable in Korean, in the staff member's voice (their `title`, `job`, `role`),
    ready to copy and use: real drafts, not advice about drafts. 400–1500 characters is typical.
-   Start with a 1–2 line summary, then the draft, then `확인할 것` (bullets, if any).
+   Start with a 1–2 line summary, then the draft, then `지금 단계에서 더하면 좋을 것` (1–3 concrete,
+   prioritized suggestions for the project at its current stage, grounded in the repo; skip ones
+   already suggested in earlier deliveries of this staff member), then `확인할 것` (bullets, if any).
 7. Save it:
    - Write the plaintext JSON to a temp file OUTSIDE the repo:
      `{"key","person","title","project","task","date","time","summary","body"}` where
