@@ -47,5 +47,14 @@
 
   function lockNow() { try { localStorage.removeItem(PK); } catch (e) { /* ignore */ } location.reload(); }
 
+  // reload once when a newer build is published (GitHub Pages may serve cached HTML for ~10 min)
+  const BUILD = '14';
+  fetch('data/version.json?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(v => {
+    if (v && v.build && v.build !== BUILD && !sessionStorage.getItem('ahran.reloaded.' + v.build)) {
+      sessionStorage.setItem('ahran.reloaded.' + v.build, '1');
+      location.replace(location.pathname + '?v=' + v.build + location.hash);
+    }
+  }).catch(() => {});
+
   window.AhranLock = { gate, decryptJSON, lockNow };
 })();

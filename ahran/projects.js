@@ -143,7 +143,12 @@
     const nav = all ? `<div class="pj-nav"><span class="hud-t">ALL SITES · ${items.length}</span></div>`
       : `<div class="pj-nav"><button type="button" data-step="-1" aria-label="이전 사이트">←</button><span class="hud-t">${selected + 1} / ${items.length}</span><button type="button" data-step="1" aria-label="다음 사이트">→</button><button type="button" class="all" id="showAll">전체 보기</button></div>`;
     $('#pjDetail').innerHTML = nav + list.map(it => card(it.p, it.log)).join('');
+    bindAgents();
     openModal();
+  }
+  // direct handlers on each agent card (in addition to the delegated one)
+  function bindAgents() {
+    document.querySelectorAll('#pjDetail .agent[data-agent]').forEach(a => { a.onclick = ev => { ev.stopPropagation(); showAgent(a.dataset.agent); }; });
   }
   function select(i) {
     selected = (i + items.length) % items.length; drawSvg(); drawNodes(); showDetail(false);
@@ -209,7 +214,6 @@
       const st = e.target.closest('[data-step]'); if (st) return select(selected + +st.dataset.step);
       const pa = e.target.closest('[data-parent]'); if (pa) return select(+pa.dataset.parent);
       const bk = e.target.closest('[data-back]'); if (bk) return select(+bk.dataset.back);
-      const ag = e.target.closest('.agent[data-agent]'); if (ag) return showAgent(ag.dataset.agent);
       if (e.target.closest('#showAll')) showAll();
     });
     $('#pjModal').addEventListener('submit', e => {

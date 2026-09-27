@@ -395,7 +395,7 @@
       const known = !!p.info, side = i === 0 ? 'l' : 'r', top = Math.max(2, p.anchor.top / 600 * 100 - 2);
       return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'left' : 'right'}:0">
         <span class="nm">${esc(p.name)}</span>
-        ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${esc(p.breed)} · ${p.info.age}살${rrLast() ? ` · 호흡 ${rrLast().v}/분` : ''}</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
+        ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${p.info.age}살 · 러시안블루${rrLast() ? `<br>호흡 ${rrLast().v}회/분` : ''}</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
         <span class="sc"><b>${p.cond.s}</b><small>${p.kind === 'cat' ? '' : '바이오 지수 · '}${p.cond.label}</small></span>
       </div>`;
     }).join('');

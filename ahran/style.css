@@ -539,3 +539,20 @@ body{word-break:keep-all;overflow-wrap:break-word;line-break:strict}
 .ap-du li::before{content:"";position:absolute;left:2px;top:13px;width:5px;height:5px;border-radius:50%;background:var(--c)}
 .ap-kit a{color:var(--cy);text-decoration:underline}
 @media (max-width:860px){.ap-grid{grid-template-columns:1fr;gap:26px}.ap-todo li{grid-template-columns:24px 1fr}.ap-todo .hbtn{grid-column:2}.agent-page{padding:6px 6px 12px}}
+
+/* ---- typography pass: Korean headings without tracking, one type scale ---- */
+:root{--fs-xs:12px;--fs-s:13px;--fs-m:14.5px;--fs-l:16px}
+.pj-two h3,.ap-grid h3,.staff h3,.h-grid h3,.h-rr h3,.pj-cols h3,.caution h4,.ap-ask label{letter-spacing:0;font-size:var(--fs-s);font-weight:700}
+.h-grid h4{font-size:var(--fs-s)}
+.brief p,.pj-sum,.ap-head p{font-size:var(--fs-m);line-height:1.8}
+.brief .li,.todo-list li,.ap-todo li,.tl li,.ev .n,.habit,.todo,.cond li,.ap-du li,.h-grid ul li,.h-grid p{font-size:var(--fs-s);line-height:1.65}
+.who p,.cond-age,.cond .tip,.note,.treenote{line-height:1.65}
+.hsum-dx em,.sc,.tag,.st em,.stt,.chip,.hbtn,.kbd,.ev time,.city .time,.fx .v{white-space:nowrap}
+.hsum-dx{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px}
+.callout .ag{line-height:1.5}
+.sec .sec-link{font-size:var(--fs-s);color:var(--ink2)}
+.sec .sec-link:hover{color:var(--cy)}
+.cmd input{font-size:var(--fs-l)}
+.cmd input::placeholder{text-overflow:ellipsis}
+.cmdwrap{margin-top:28px}
+.stage{margin-top:48px}

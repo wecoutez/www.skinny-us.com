@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=14">
 </head>
 <body>
 <div class="lock" aria-hidden="false">
@@ -44,18 +44,10 @@
 <div class="cmdwrap" id="top">
   <form class="cmd" id="cmdForm" autocomplete="off">
     <span class="pr">&gt;_</span>
-    <input id="cmd" type="text" placeholder="명령어 입력 · 예: 오늘 일정 정리 / 할 일 추가 운동 / 일정 추가 10/1 오후 2시 미팅 / 도쿄 날씨" aria-label="명령어">
-    <span class="kbd">/ 로 포커스</span>
+    <input id="cmd" type="text" placeholder="무엇이든 입력하세요 · 예: 오늘 일정 정리, 도쿄 날씨, 할 일 추가 운동" aria-label="명령어">
+    <span class="kbd">단축키 /</span>
     <button class="go" type="submit" aria-label="실행"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7h9M7.5 3l4 4-4 4" stroke="#4fd6ff" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button>
   </form>
-  <div class="sugg">
-    <button data-cmd="오늘 일정 정리">📋 오늘 일정 정리</button>
-    <button data-cmd="이번 주 브리핑">🗓 이번 주 브리핑</button>
-    <button data-cmd="할 일 추가 ">✅ 할 일 추가</button>
-    <button data-cmd="환율">💱 환율</button>
-    <button data-cmd="컨디션">🧬 컨디션</button>
-    <button data-cmd="도움말">❔ 명령어 목록</button>
-  </div>
   <div class="reply" id="reply"></div>
 </div>
 
@@ -111,16 +103,16 @@
 <div class="sec" id="world"><span class="pt">GLOBAL · 5 CITIES</span><span class="muted" style="font-size:13px">시간 · 날씨 · 미세먼지 · 현지 통화 환율 (원)</span></div>
 <div class="world" id="cities"></div>
 
-<div class="sec" id="projects"><a class="pt" href="projects.html">PROJECTS · 전체 보기 →</a><span class="muted" style="font-size:13px" id="repoCount"></span></div>
+<div class="sec" id="projects"><span class="pt">PROJECTS</span><a class="sec-link" href="projects.html">전체 보기 →</a><span class="muted" style="font-size:13px" id="repoCount"></span></div>
 <div class="repos" id="repos"></div>
 
 <div class="strip" id="strip"></div>
 </div>
 
 <div class="pj-modal" id="hModal" hidden><div class="pj-sheet" id="hSheet" role="dialog" aria-modal="true" aria-label="하임 건강 기록"><button class="pj-close" id="hClose" type="button" aria-label="닫기">✕</button><div id="hBody"></div></div></div>
-<script src="lock.js?v=5"></script>
-<script src="tree.js?v=5"></script>
-<script src="body.js?v=12"></script>
-<script src="app.js?v=12"></script>
+<script src="lock.js?v=14"></script>
+<script src="tree.js?v=14"></script>
+<script src="body.js?v=14"></script>
+<script src="app.js?v=14"></script>
 </body>
 </html>
