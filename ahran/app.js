@@ -80,7 +80,7 @@
     const t = ymd(now);
     $('#clockDate').textContent = `${WD[wday(t)]} · ${t.slice(8)} ${MON[+t.slice(5, 7) - 1]} ${t.slice(0, 4)} · ${lunar(now)}`;
     if (t !== state.today) { state.today = t; renderAll(); }
-    if (now.getSeconds() === 0) renderCities();
+    if (now.getSeconds() === 0) { renderCities(); renderDay(); }
   }
 
   // ---------------------------------------------------------------- biorhythm
@@ -106,6 +106,49 @@
       <div class="idx-bars">${x.parts.map(([k, v]) => `<div class="ib"><span>${k}</span><em><i style="width:${v}%;background:${v >= 75 ? 'var(--gr)' : v >= 50 ? 'var(--cy)' : 'var(--or)'}"></i></em><b>${v}</b></div>`).join('')}</div>`;
     $('#bio').innerHTML = '';
     $('#bioNote').innerHTML = `${x.cali != null ? `오늘 서울은 LA 날씨와 <b>${x.cali}%</b> 닮았어요. ` : ''}${esc(x.tip)}`;
+  }
+
+  // ---------------------------------------------------------------- 24h day plan (방학 생활계획표)
+  const PLAN_C = { 수면: '#3b4a8c', 루틴: '#3ddc97', 업무: '#4fd6ff', 식사: '#ffd166', 이동: '#6f8aa0', 사이드: '#a896ff', 휴식: '#ff9d3c', 하임: '#b7c6ff', 운동: '#ff6b7d' };
+  const PLAN = {
+    weekday: [[0, 7, '수면'], [7, 8, '루틴', '모닝 루틴'], [8, 9, '이동', '출근'], [9, 12, '업무', '회사 업무'], [12, 13, '식사', '점심'], [13, 18, '업무', '회사 업무'], [18, 19, '이동', '퇴근'], [19, 20, '식사', '저녁'], [20, 22, '사이드', '사이드 프로젝트'], [22, 23, '하임', '하임 · 휴식'], [23, 24, '수면']],
+    weekend: [[0, 8, '수면'], [8, 9, '루틴', '모닝 루틴'], [9, 12, '사이드', '사이드 프로젝트'], [12, 13, '식사', '점심'], [13, 17, '휴식', '자유 · 외출'], [17, 19, '사이드', '사이드 프로젝트'], [19, 20, '식사', '저녁'], [20, 22, '휴식', '휴식'], [22, 23, '하임', '하임 케어'], [23, 24, '수면']],
+  };
+  function dayPlan() {
+    const wd = wday(state.today), kind = (wd === 0 || wd === 6 || HOLIDAYS[state.today]) ? 'weekend' : 'weekday';
+    const edits = store.get('plan.' + kind, []);
+    let blocks = PLAN[kind].map(b => b.slice());
+    edits.forEach(([s0, e0, cat, name]) => {  // user overrides: cut what's under them, then add
+      blocks = blocks.flatMap(([s1, e1, c1, n1]) => e1 <= s0 || s1 >= e0 ? [[s1, e1, c1, n1]] : [s1 < s0 ? [s1, s0, c1, n1] : null, e1 > e0 ? [e0, e1, c1, n1] : null].filter(Boolean));
+      blocks.push([s0, e0, PLAN_C[cat] ? cat : '휴식', name || cat]);
+    });
+    return { kind, blocks: blocks.sort((a, b) => a[0] - b[0]) };
+  }
+  function renderDay() {
+    const svg = $('#dayplan'); if (!svg) return;
+    const { kind, blocks } = dayPlan(), C = 150, R = 118, now = parts(new Date(), TZ, { hour: '2-digit', minute: '2-digit' }), nowH = +now.hour + +now.minute / 60;
+    const ang = h => h / 24 * Math.PI * 2 - Math.PI / 2, pt = (h, r) => [C + Math.cos(ang(h)) * r, C + Math.sin(ang(h)) * r];
+    const wedge = (h0, h1, r0, r1) => { const [a, b] = pt(h0, r1), [c, d] = pt(h1, r1), [e, f] = pt(h1, r0), [g, k] = pt(h0, r0), L = h1 - h0 > 12 ? 1 : 0; return `M${a},${b} A${r1},${r1} 0 ${L} 1 ${c},${d} L${e},${f} A${r0},${r0} 0 ${L} 0 ${g},${k} Z`; };
+    let h = '';
+    blocks.forEach(([s0, e0, cat, name]) => {
+      const past = e0 <= nowH, cur = s0 <= nowH && nowH < e0, col = PLAN_C[cat] || '#8fb0c4';
+      h += `<path d="${wedge(s0, e0, 22, R)}" fill="${col}" fill-opacity="${cur ? .55 : past ? .14 : .3}" stroke="#02060c" stroke-width="1.5"/>`;
+      const span = e0 - s0, mid = (s0 + e0) / 2, [tx, ty] = pt(mid, span >= 3 ? 72 : 84), label = name || cat;
+      if (span >= 1) h += `<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${span >= 3 ? 11 : 9.5}" fill="${cur ? '#fff' : past ? '#6b8597' : '#d8ecf7'}" font-family="Noto Sans KR" font-weight="${cur ? 700 : 500}">${esc(span >= 2 ? label : label.split(' ')[0])}</text>`;
+    });
+    // calendar events on the outer ring
+    eventsOn(state.today).filter(e => !e.holiday && e.time).forEach(e => {
+      const [sh, sm] = e.time.split(':').map(Number), s0 = sh + sm / 60, e0 = e.endTime ? (([a, b]) => a + b / 60)(e.endTime.split(':').map(Number)) : s0 + 1;
+      h += `<path d="${wedge(s0, Math.max(e0, s0 + .25), R + 4, R + 13)}" fill="#ff9d3c"/>`;
+    });
+    for (let i = 0; i < 24; i++) { const [x1, y1] = pt(i, R + 16), [x2, y2] = pt(i, R + (i % 6 ? 19 : 22)); h += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(79,214,255,.5)"/>`; if (i % 3 === 0) { const [x, y] = pt(i, R + 30); h += `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#8fb0c4" font-family="Inter">${i === 0 ? 24 : i}</text>`; } }
+    const [hx, hy] = pt(nowH, R + 8);
+    h += `<line x1="${C}" y1="${C}" x2="${hx}" y2="${hy}" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="${hx}" cy="${hy}" r="4" fill="#fff"/><circle cx="${C}" cy="${C}" r="20" fill="#02060c" stroke="rgba(79,214,255,.5)"/><text x="${C}" y="${C + 1}" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#fff" font-family="Inter" font-weight="700">${ampm(now.hour + ':' + now.minute).replace(' ', '')}</text>`;
+    svg.innerHTML = h;
+    $('#dayKind').textContent = kind === 'weekend' ? '주말 · 휴일' : '평일';
+    const cur = blocks.find(([s0, e0]) => s0 <= nowH && nowH < e0), next = blocks.find(([s0]) => s0 > nowH);
+    const ev = eventsOn(state.today).filter(e => !e.holiday && e.time).map(e => `${ampm(e.time)} ${esc(e.title)}`);
+    $('#dayNow').innerHTML = `지금은 <b>${esc(cur ? cur[3] || cur[2] : '—')}</b> 시간이에요.${next ? ` 다음은 ${ampm(String(Math.floor(next[0])).padStart(2, '0') + ':00')} ${esc(next[3] || next[2])}.` : ''}${ev.length ? `<br>오늘 일정: ${ev.join(', ')}` : ''}<br><span class="dim">바꾸려면 명령어 창에 "시간표 20-22 운동"처럼 입력하세요.</span>`;
   }
 
   // ---------------------------------------------------------------- year
@@ -701,6 +744,14 @@
       else { const d = m[3].match(/(\d{4})\D?(\d{1,2})\D?(\d{1,2})/); if (!d) return reply(q, '예: 하임 생일 2019-05-01'); o.birth = `${d[1]}-${d[2].padStart(2, '0')}-${d[3].padStart(2, '0')}`; }
       store.set('person.' + id, o); renderScene(); return reply(q, `저장했어요 (이 기기). ${m[1]} ${m[2]} → <b>${esc(o.sex === 'm' ? '남' : o.sex === 'f' ? '여' : o.birth)}</b>`);
     }
+    if (/^시간표\s*초기화/.test(q)) { const k = dayPlan().kind; store.set('plan.' + k, []); renderDay(); return reply(q, '시간표를 기본값으로 되돌렸어요.'); }
+    if ((m = q.match(/^시간표\s*(\d{1,2})(?::(\d{2}))?\s*[-~]\s*(\d{1,2})(?::(\d{2}))?\s+(.+)$/))) {
+      const s0 = +m[1] + (+m[2] || 0) / 60, e0 = +m[3] + (+m[4] || 0) / 60, name = m[5].trim();
+      if (!(e0 > s0 && e0 <= 24)) return reply(q, '예: 시간표 20-22 운동 (24시간 기준)');
+      const cat = Object.keys(PLAN_C).find(c => name.includes(c)) || (/(헬스|요가|필라테스|산책|러닝)/.test(name) ? '운동' : /(회의|미팅|일)/.test(name) ? '업무' : /(밥|식사)/.test(name) ? '식사' : '사이드');
+      const k = dayPlan().kind, ed = store.get('plan.' + k, []); ed.push([s0, e0, cat, name]); store.set('plan.' + k, ed); renderDay();
+      return reply(q, `${k === 'weekend' ? '주말' : '평일'} 시간표에 <b>${esc(name)}</b> (${m[1]}시–${m[3]}시)를 넣었어요. 이 기기에 저장돼요.`);
+    }
     if ((m = q.match(/^(?:검색|구글|google)\s+(.+)$/i))) return reply(q, `<a href="https://www.google.com/search?q=${encodeURIComponent(m[1])}" target="_blank" rel="noopener">🔎 "${esc(m[1])}" 구글 검색 열기</a>`);
     return reply(q, `이건 제가 여기서 바로 처리할 수 없는 요청이에요.<br><a href="https://claude.ai/new?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">✦ Claude에게 물어보기</a> &nbsp;·&nbsp; <a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">🔎 구글 검색</a> &nbsp;·&nbsp; <span class="muted">"도움말"로 명령어 보기</span>`);
   }
@@ -712,7 +763,7 @@
   });
 
   // ---------------------------------------------------------------- boot
-  function renderAll() { renderBio(); renderYear(); renderRitual(); renderNodes(); renderTree(); renderSchedule(); renderTodos(); renderBrief(); renderCities(); renderRepos(); renderStrip(); }
+  function renderAll() { renderDay(); renderBio(); renderYear(); renderRitual(); renderNodes(); renderTree(); renderSchedule(); renderTodos(); renderBrief(); renderCities(); renderRepos(); renderStrip(); }
   $('#lockBtn').addEventListener('click', e => { e.preventDefault(); window.AhranLock.lockNow(); });
   window.AhranLock.gate().then(pk => {
     state.pk = pk;

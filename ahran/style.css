@@ -576,3 +576,4 @@ body{word-break:keep-all;overflow-wrap:break-word;line-break:strict}
 .kv{display:grid;grid-template-columns:44px 1fr;gap:5px 10px;margin-top:10px;font-size:13px;line-height:1.5}
 .kv dt{color:var(--ink3)}
 .kv dd{margin:0;color:var(--ink)}
+#dayplan{width:100%;max-width:320px;height:auto;display:block;margin:0 auto}
