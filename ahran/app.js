@@ -281,15 +281,81 @@
     if (m === 3 || m === 4 || m === 5 || m === 9 || m === 10 || m === 11) { why.push(['−', '환절기 털갈이 시즌']); s -= 3; }
     if (aq) { const d = [0, 2, 0, -6, -12][aq.g]; s += d; if (aq.g >= 3) why.push(['−', `미세먼지 ${aq.name} · 환기 줄이기`]); else why.push(['+', `미세먼지 ${aq.name} · 환기 OK`]); }
     if (w) { if (w.lo <= 5) { s -= 5; why.push(['−', `최저 ${w.lo}° · 쌀쌀한 밤`]); } if (w.hi >= 30) { s -= 5; why.push(['−', `최고 ${w.hi}° · 더위`]); } if (w.hi - w.lo >= 10) { s -= 3; why.push(['−', `일교차 ${w.hi - w.lo}°`]); } }
-    const age = ageInfo(pp.birth).age; if (age >= 11) why.push(['·', '시니어 · 수분·체중 체크']);
+    const H = state.healthData && state.healthData.haim, rr = rrLast();
+    if (H) {
+      if (aq && aq.g >= 3) { s -= 8; }
+      if (w && w.lo <= 10) { s -= 4; why.unshift(['−', `찬 공기 ${w.lo}° · 기침 주의`]); }
+      if (rr && rr.d === state.today) { if (rr.v >= 30) { s -= 8; why.unshift(['−', `호흡수 ${rr.v}회/분 · 목표 30 미만`]); } else { s += 4; why.unshift(['+', `호흡수 ${rr.v}회/분 · 목표 안`]); } }
+      else why.unshift(['·', '오늘 수면 중 호흡수 아직 안 잼']);
+    }
+    const age = ageInfo(pp.birth).age; if (!H && age >= 11) why.push(['·', '시니어 · 수분·체중 체크']);
     s = Math.max(5, Math.min(99, Math.round(s)));
     const label = s >= 88 ? '최상' : s >= 75 ? '좋음' : s >= 60 ? '보통' : s >= 45 ? '주의' : '돌봄 필요';
     let tip = '물그릇 여러 곳 · 습식 사료로 수분 챙기기';
     if (m >= 9 && m <= 11) tip = '털갈이 시즌 · 하루 한 번 빗질 (헤어볼 예방)';
     if (w && w.lo <= 5) tip = '창가 대신 따뜻한 자리 마련해주기';
-    if (aq && aq.g >= 3) tip = '오늘은 창문 닫고 공기청정기';
+    if (aq && aq.g >= 3) tip = '오늘은 창문 닫고 공기청정기 (폐 질환 관리)';
+    if (H && !(rr && rr.d === state.today)) tip = '자는 동안 30초 호흡수 재기 — 목표 30회/분 미만';
     return { s, label, why: why.slice(0, 4), tip };
   }
+  function haimSummary() {
+    const H = state.healthData.haim, med = H.medications.current_daily, rr = rrLast();
+    return `<div class="hsum">
+      <div class="hsum-dx">${esc(H.main_condition.working_diagnosis.split(' (')[0])} <em>추정 · 확진 전</em></div>
+      <div class="hsum-row"><span>오늘 약</span>${med.map(m => `<b>${esc(m.name.split(' (')[0])} ${esc(m.dose.replace('/일', ''))}</b>`).join(' · ')}</div>
+      <div class="hsum-row"><span>호흡수</span>${rr ? `<b class="${rr.v >= 30 ? 'rd' : 'gr'}">${rr.v}회/분</b> ${esc(rr.d === state.today ? '오늘' : rr.d.slice(5).replace('-', '/'))}` : '<b class="dim">기록 없음</b>'} · 목표 30 미만</div>
+      <div class="hsum-row"><span>체중</span><b>${H.patient.weight_kg}kg</b> · ${esc(H.patient.sex)}</div>
+      <button type="button" class="hbtn" id="openHealth">건강 기록 · 호흡수 재기</button>
+    </div>`;
+  }
+  const li = a => a.map(x => `<li>${esc(typeof x === 'string' ? x : [x.name || x.issue, x.dose, x.period, x.status || x.result || x.purpose, x.note].filter(Boolean).join(' · '))}</li>`).join('');
+  function renderHealth() {
+    const H = state.healthData && state.healthData.haim; if (!H) return;
+    const mc = H.main_condition, f = mc.confirmed_findings, L = H.labs, M = H.medications, log = rrLog().slice(-10).reverse();
+    $('#hBody').innerHTML = `
+      <div class="h-head"><div class="pj-kind">러시안블루 · ${esc(H.patient.sex)} · 12살 · ${H.patient.weight_kg}kg</div><h2>하임이 건강 기록</h2><p class="dim">기준 ${esc(H.last_updated)} · ${esc(H.sources)} · 이 내용은 암호화되어 저장돼요</p></div>
+      <div class="h-rr">
+        <div><h3>수면 중 호흡수 재기</h3><p class="dim">자고 있을 때 가슴이 올라올 때마다 누르세요. 30초 뒤 1분 값으로 계산해요. 목표: 30회/분 미만</p></div>
+        <div class="rr-ctl"><button type="button" class="hbtn big" id="rrStart">30초 시작</button><button type="button" class="hbtn tap" id="rrTap" disabled>숨 ●</button><span class="rr-now" id="rrNow"></span>
+          <label class="rr-man">직접 입력 <input id="rrManual" type="number" min="5" max="120" inputmode="numeric" placeholder="회/분"><button type="button" class="hbtn" id="rrSave">저장</button></label></div>
+        <ol class="rr-log">${log.map(r => `<li><time>${esc(r.d.slice(5).replace('-', '/'))} ${esc(r.t || '')}</time><b class="${r.v >= 30 ? 'rd' : 'gr'}">${r.v}</b><span class="bar"><i style="width:${Math.min(100, r.v / 50 * 100)}%;background:${r.v >= 30 ? 'var(--rd)' : 'var(--gr)'}"></i></span></li>`).join('') || '<li class="dim">아직 기록이 없어요 (이 기기에 저장)</li>'}</ol>
+      </div>
+      <div class="h-grid">
+        <section><h3>진단 · 상태</h3><p><b>${esc(mc.working_diagnosis)}</b></p><p class="dim">${esc(mc.status)} · ${esc(mc.duration_note)}</p>
+          <h4>증상</h4><ul>${li([`안정 호흡수 ${mc.symptoms.resting_respiratory_rate}`, mc.symptoms.cough, mc.symptoms.breathing_sounds, mc.symptoms.notes])}</ul></section>
+        <section><h3>매일 약</h3><ul class="meds">${M.current_daily.map(m => `<li><b>${esc(m.name)}</b> ${esc(m.dose)}<small>${esc(m.note)}</small></li>`).join('')}</ul>
+          <h4>보조제 · 케어</h4><ul>${li(M.supplements_and_care)}</ul><h4>이전에 써본 것</h4><ul>${li(M.tried_before)}</ul></section>
+        <section><h3>검사 결과</h3><h4>CT 2024.09</h4><ul>${li(f.ct_2024_09)}</ul><h4>X-ray 2026.02.26</h4><ul>${li(f.xray_2026_02_26)}</ul><h4>기관 세척 2024</h4><ul>${li(f.tracheal_wash_2024)}</ul>
+          <h4>혈액 2026.02</h4><ul>${li([`fSAA ${L.blood_2026_02.fSAA} · globulin ${L.blood_2026_02.globulin}`, L.blood_2026_02.interpretation, `ALT ${L.blood_2026_02.ALT}`])}</ul>
+          <h4>모발 미네랄 2026.08</h4><ul>${li([`낮음: ${L.hair_mineral_analysis_2026_08.low.join(', ')}`, `높음: ${L.hair_mineral_analysis_2026_08.high.join(', ')}`, L.hair_mineral_analysis_2026_08.toxic, L.hair_mineral_analysis_2026_08.interpretation])}</ul></section>
+        <section><h3>아직 안 한 검사</h3><ul class="todo-ish">${li(L.never_done)}</ul><h3>다음 할 일</h3><ol class="todo-list">${H.next_steps.map(n => `<li>${esc(n)}</li>`).join('')}</ol></section>
+        <section><h3>감별 진단 (검토 중)</h3><ul>${li(H.differentials_under_consideration)}</ul><h3>기타 이슈</h3><ul>${li(H.other_issues)}</ul></section>
+        <section><h3>식단</h3><ul>${li(H.diet.current)}</ul><p class="dim">검토 중: ${esc(H.diet.considering)}</p><h3>병원</h3><ul>${li([`한국: ${H.clinics.korea.join(', ')}`, `미국: ${H.clinics.usa.join(', ')}`, `의뢰 후보: ${H.clinics.referral_candidates.join(', ')}`])}</ul>
+          <h3>환경 이력</h3><ul>${li(H.patient.environment_history)}</ul></section>
+      </div>
+      <p class="dim h-foot">이 페이지는 기록 정리용이에요. 약 변경·중단은 반드시 수의사와 상의하세요.</p>`;
+  }
+  let rrTimer = null;
+  function openHealth() { renderHealth(); $('#hModal').hidden = false; document.body.classList.add('modal-open'); $('#hSheet').scrollTop = 0; }
+  function closeHealth() { clearInterval(rrTimer); rrTimer = null; $('#hModal').hidden = true; document.body.classList.remove('modal-open'); }
+  function saveRR(v) {
+    const p = parts(new Date(), TZ, { hour: '2-digit', minute: '2-digit' }), l = rrLog();
+    l.push({ d: state.today, t: ampm(p.hour + ':' + p.minute), v }); store.set('haim.rr', l.slice(-200)); renderHealth(); renderScene();
+  }
+  document.addEventListener('click', e => {
+    if (e.target.closest('#openHealth')) return openHealth();
+    if (e.target.id === 'hModal' || e.target.closest('#hClose')) return closeHealth();
+    if (e.target.closest('#rrStart')) {
+      let n = 0, left = 30; const tap = $('#rrTap'), now = $('#rrNow'), start = $('#rrStart');
+      tap.disabled = false; start.disabled = true; now.textContent = `30초 · 0회`;
+      tap.onclick = () => { n++; now.textContent = `${left}초 · ${n}회`; };
+      rrTimer = setInterval(() => { left--; now.textContent = `${left}초 · ${n}회`; if (left <= 0) { clearInterval(rrTimer); rrTimer = null; tap.disabled = true; start.disabled = false; if (n > 0) saveRR(n * 2); } }, 1000);
+      return;
+    }
+    if (e.target.closest('#rrSave')) { const v = +$('#rrManual').value; if (v >= 5 && v <= 120) saveRR(Math.round(v)); }
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#hModal').hidden) closeHealth(); });
+
   function renderScene() {
     const people = FAMILY.map(person);
     const cfg = [{ ...people[0], x: 246 }, { ...people[1], x: 390 }];
@@ -299,7 +365,7 @@
       const known = !!p.info, side = i === 0 ? 'l' : 'r', top = Math.max(2, p.anchor.top / 600 * 100 - 2);
       return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'right' : 'left'}:${side === 'l' ? 100 - p.x / 620 * 100 + 13 : p.x / 620 * 100 + 13}%">
         <span class="nm">${esc(p.name)}</span>
-        ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${esc(p.breed)} · ${p.info.age}살 (사람 ${catHuman(p.info.age)}세)</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
+        ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${esc(p.breed)} · ${p.info.age}살 (사람 ${catHuman(p.info.age)}세)${rrLast() ? ` · 호흡 ${rrLast().v}/분` : ''}</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
         <span class="sc"><b>${p.cond.s}</b><small>${p.cond.label}</small></span>
       </div>`;
     }).join('');
@@ -310,7 +376,7 @@
       ${p.cond.b ? `<div class="cond-bio">신체 <b class="${bioColor(p.cond.b.p)}">${p.cond.b.p}</b> · 감성 <b class="${bioColor(p.cond.b.e)}">${p.cond.b.e}</b> · 지성 <b class="${bioColor(p.cond.b.i)}">${p.cond.b.i}</b></div>` : ''}
       <ul>${p.cond.why.map(([sg, t]) => `<li class="${sg === '+' ? 'gr' : sg === '·' ? 'dim' : 'rd'}"><span>${sg}</span>${esc(t)}</li>`).join('')}</ul>
       <p class="tip">오늘의 팁 · ${esc(p.cond.tip)}</p>
-      <p class="health dim">건강 정보 · ${state.health && state.health[p.id] ? esc(state.health[p.id]) : p.kind === 'cat' ? '진료 기록 미입력 · 러시안블루 시니어 일반 체크: 체중(비만 경향) · 신장 · 요로 · 치아, 6개월마다 검진 권장' : '아직 입력 전 (키·체중·혈액형·알레르기·복용약 등)'}</p>
+      ${p.kind === 'cat' && state.healthData && state.healthData.haim ? haimSummary() : ''}<p class="health dim" ${p.kind === 'cat' && state.healthData && state.healthData.haim ? 'hidden' : ''}>건강 정보 · ${state.health && state.health[p.id] ? esc(state.health[p.id]) : p.kind === 'cat' ? '진료 기록 미입력 · 러시안블루 시니어 일반 체크: 체중(비만 경향) · 신장 · 요로 · 치아, 6개월마다 검진 권장' : '아직 입력 전 (키·체중·혈액형·알레르기·복용약 등)'}</p>
     </div>`).join('');
   }
 
@@ -384,6 +450,16 @@
       state.calUpdated = j.updated; state.feeds.cal = 'ok';
     } catch (e) { state.events = []; state.feeds.cal = 'warn'; }
   }
+  async function loadHealth() {
+    if (!state.pk) return;
+    try {
+      const r = await fetch('data/health.enc.json', { cache: 'no-store' });
+      if (r.ok) state.healthData = await window.AhranLock.decryptJSON(state.pk, await r.json());
+    } catch (e) { state.healthData = null; }
+  }
+  // resting / sleeping respiratory rate log for 하임 (this device)
+  const rrLog = () => store.get('haim.rr', []);
+  const rrLast = () => { const l = rrLog(); return l.length ? l[l.length - 1] : null; };
   function allEvents() {
     const local = store.get('events', []).map(e => ({ ...e, local: true }));
     const hol = Object.entries(HOLIDAYS).map(([date, title]) => ({ date, title, allDay: true, holiday: true }));
@@ -566,7 +642,7 @@
   window.AhranLock.gate().then(pk => {
     state.pk = pk;
     renderAll(); tick(); setInterval(tick, 1000);
-    Promise.allSettled([loadSchedule(), loadWeather(), loadFx(), loadRepos()]).then(renderAll);
+    Promise.allSettled([loadSchedule(), loadHealth(), loadWeather(), loadFx(), loadRepos()]).then(renderAll);
   });
   setInterval(() => state.pk !== undefined && Promise.allSettled([loadWeather(), loadFx()]).then(() => { renderCities(); renderTree(); renderBrief(); renderStrip(); }), 15 * 6e4);
 })();

@@ -4,6 +4,7 @@
 //
 //   AHRAN_PASSWORD=... node secure.mjs init          -> writes ../data/key.json
 //   node secure.mjs encrypt schedule.json            -> writes ../data/schedule.enc.json
+//   node secure.mjs encrypt health.json health.enc.json -> writes ../data/health.enc.json
 //
 // key.json holds an RSA public key (anyone may encrypt, e.g. the daily calendar job,
 // which never needs the password) and the matching private key wrapped with a key
@@ -33,7 +34,7 @@ async function init() {
   console.log('wrote data/key.json');
 }
 
-async function encrypt(file) {
+async function encrypt(file, out = 'schedule.enc.json') {
   const key = JSON.parse(readFileSync(join(DATA, 'key.json'), 'utf8'));
   const pub = await subtle.importKey('spki', unb64(key.publicKey), { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt']);
   const plain = readFileSync(file);
@@ -42,11 +43,11 @@ async function encrypt(file) {
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const data = await subtle.encrypt({ name: 'AES-GCM', iv }, aes, plain);
   const wrappedKey = await subtle.encrypt({ name: 'RSA-OAEP' }, pub, await subtle.exportKey('raw', aes));
-  writeFileSync(join(DATA, 'schedule.enc.json'), JSON.stringify({ v: 1, updated: new Date().toISOString(), key: b64(wrappedKey), iv: b64(iv), data: b64(data) }) + '\n');
-  console.log('wrote data/schedule.enc.json');
+  writeFileSync(join(DATA, out), JSON.stringify({ v: 1, updated: new Date().toISOString(), key: b64(wrappedKey), iv: b64(iv), data: b64(data) }) + '\n');
+  console.log('wrote data/' + out);
 }
 
 const [cmd, arg] = process.argv.slice(2);
 if (cmd === 'init') await init();
-else if (cmd === 'encrypt' && arg) await encrypt(arg);
+else if (cmd === 'encrypt' && arg) await encrypt(arg, process.argv[4]);
 else { console.error('usage: secure.mjs init | encrypt <file.json>'); process.exit(1); }
