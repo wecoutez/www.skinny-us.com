@@ -419,3 +419,4 @@ body.modal-open{overflow:hidden}
 .cond .tip{font-size:13px;color:var(--c);margin-top:10px}
 .cond .health{font-size:12px;margin-top:8px}
 @media (max-width:760px){.cond-cards{grid-template-columns:1fr}.callout{min-width:0;padding:6px 9px}.callout .sc b{font-size:18px}}
+.cond li.dim span{color:var(--ink3)}

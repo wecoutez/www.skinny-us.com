@@ -29,6 +29,28 @@
     return { h, head };
   }
 
+  // sitting cat (front view), 0..260 tall, centred on x=0
+  function drawCat(root, c, eye) {
+    const body = 'M-24 92 C-44 118 -64 170 -64 214 C-64 236 -58 250 -44 252 L44 252 C58 250 64 236 64 214 C64 170 44 118 24 92 Z';
+    el('ellipse', { cx: 0, cy: 256, rx: 88, ry: 11, fill: c, opacity: .35, filter: 'url(#bsoft)' }, root);
+    el('ellipse', { cx: 0, cy: 256, rx: 60, ry: 6, fill: 'none', stroke: c, 'stroke-width': 1.5, opacity: .8 }, root);
+    el('path', { d: 'M52 240 C96 252 112 214 98 186 C90 170 76 170 74 182', fill: 'none', stroke: c, 'stroke-width': 9, 'stroke-linecap': 'round', opacity: .35 }, root);
+    el('path', { d: 'M52 240 C96 252 112 214 98 186 C90 170 76 170 74 182', fill: 'none', stroke: c, 'stroke-width': 1.6, filter: 'url(#bglow)' }, root);
+    el('path', { d: body, fill: 'url(#catfill)', stroke: c, 'stroke-width': 1.6, filter: 'url(#bglow)' }, root);
+    el('path', { d: 'M-40 32 L-44 -10 L-12 20 Z M40 32 L44 -10 L12 20 Z', fill: 'url(#catfill)', stroke: c, 'stroke-width': 1.6, 'stroke-linejoin': 'round', filter: 'url(#bglow)' }, root);
+    el('ellipse', { cx: 0, cy: 58, rx: 44, ry: 38, fill: 'url(#catfill)', stroke: c, 'stroke-width': 1.6, filter: 'url(#bglow)' }, root);
+    const sk = el('g', { stroke: c, fill: 'none', opacity: .5, 'stroke-width': 1 }, root);
+    for (let i = 0; i < 5; i++) { const y = 124 + i * 13, w = 30 - Math.abs(i - 2) * 3; el('path', { d: `M-2 ${y} Q${-w} ${y + 3} ${-w + 5} ${y + 11} M2 ${y} Q${w} ${y + 3} ${w - 5} ${y + 11}` }, sk); }
+    el('path', { d: 'M-18 180 V250 M18 180 V250', 'stroke-dasharray': '3 4' }, sk);
+    el('path', { d: 'M-30 66 L-62 60 M-30 70 L-62 72 M30 66 L62 60 M30 70 L62 72', opacity: .8 }, sk);
+    el('path', { d: 'M-4 70 L4 70 L0 75 Z', fill: '#ff9db0', stroke: 'none' }, root);
+    [[-16, 54], [16, 54]].forEach(([x, y]) => { el('ellipse', { cx: x, cy: y, rx: 8, ry: 6, fill: eye, filter: 'url(#bglow)' }, root); el('ellipse', { cx: x, cy: y, rx: 1.6, ry: 5, fill: '#04101d' }, root); });
+    const dots = el('g', { filter: 'url(#bglow)' }, root);
+    [[-18, 250], [18, 250], [-44, 214], [44, 214]].forEach(([x, y]) => el('circle', { cx: x, cy: y, r: 3, fill: c }, dots));
+    el('circle', { cx: 6, cy: 146, r: 6, fill: '#ff6b7d', opacity: .9, class: 'pulse' }, dots);
+    for (let i = 0; i < 18; i++) { const x = (Math.sin(i * 91.7) * 43758.5453 % 1) * 50, y = 40 + Math.abs(Math.cos(i * 33.1) * 1000 % 1) * 200; el('circle', { cx: x, cy: y, r: 1 + (i % 3) * .5, fill: '#e9fbff', opacity: .5, class: 'tw', style: `--t:${2 + (i % 4)}s;--d:${-(i % 5)}s` }, root); }
+  }
+
   function drawBodies(svg, people, H) {
     svg.innerHTML = '';
     H = H || 600;
@@ -38,8 +60,18 @@
     const m = el('feMerge', {}, g); el('feMergeNode', { in: 'b' }, m); el('feMergeNode', { in: 'b' }, m); el('feMergeNode', { in: 'SourceGraphic' }, m);
     const soft = el('filter', { id: 'bsoft', x: '-50%', y: '-50%', width: '200%', height: '200%' }, defs); el('feGaussianBlur', { stdDeviation: 10 }, soft);
 
+    const cg = el('linearGradient', { id: 'catfill', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
     people.forEach((p, idx) => {
-      const pr = proportions(p.age), c = p.color || '#4fd6ff';
+      const c = p.color || '#4fd6ff';
+      if (p.kind === 'cat') {
+        el('stop', { offset: 0, 'stop-color': c, 'stop-opacity': .32 }, cg); el('stop', { offset: 1, 'stop-color': c, 'stop-opacity': .08 }, cg);
+        const scale = (H - 70) / 520 * 0.9 * 1.05, baseY = H - 38;
+        const root = el('g', { transform: `translate(${p.x},${baseY - 256 * scale}) scale(${scale})` }, svg);
+        drawCat(root, c, p.eye || '#5fe3a1');
+        p.anchor = { top: baseY - (256 + 10) * scale };
+        return;
+      }
+      const pr = proportions(p.age);
       const scale = (H - 70) / 520 * 0.9 * pr.h, baseY = H - 38;
       const grad = el('linearGradient', { id: 'bfill' + idx, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
       el('stop', { offset: 0, 'stop-color': c, 'stop-opacity': .28 }, grad); el('stop', { offset: 1, 'stop-color': c, 'stop-opacity': .06 }, grad);

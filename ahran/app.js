@@ -18,7 +18,7 @@
   // people shown on the Today scene; 하임's details are filled in once known
   const FAMILY = [
     { id: 'ahran', name: '원아란', sex: 'f', birth: BIRTH, color: '#4fd6ff' },
-    { id: 'haim', name: '하임', sex: null, birth: null, color: '#ffb454' },
+    { id: 'haim', name: '하임', kind: 'cat', breed: '러시안블루', born: '시카고', birth: '2014-07-05', color: '#b7c6ff', eye: '#5fe3a1' },
   ];
   const AREAS = ['건강', '성장', '일', '관계', '마음', '재정'];
   const RITUAL = ['물 한 잔 · 스트레칭', '명상 15분', '오늘의 3가지 목표', '영어 / 일본어 20분', '감사 3줄'];
@@ -273,27 +273,44 @@
     else tip = child ? '바깥 산책하기 좋은 날' : '중요한 일은 오전에 몰아서';
     return { s, label, why: why.slice(0, 4), tip, b };
   }
+  // AAHA/AAFP guide: 1y≈15, 2y≈24, then +4 per year
+  const catHuman = y => y <= 0 ? 0 : y === 1 ? 15 : 24 + (y - 2) * 4;
+  function catCondition(pp) {
+    const w = cityWx(0), aq = cityAq(0), m = +state.today.slice(5, 7), why = [];
+    let s = 80;
+    if (m === 3 || m === 4 || m === 5 || m === 9 || m === 10 || m === 11) { why.push(['−', '환절기 털갈이 시즌']); s -= 3; }
+    if (aq) { const d = [0, 2, 0, -6, -12][aq.g]; s += d; if (aq.g >= 3) why.push(['−', `미세먼지 ${aq.name} · 환기 줄이기`]); else why.push(['+', `미세먼지 ${aq.name} · 환기 OK`]); }
+    if (w) { if (w.lo <= 5) { s -= 5; why.push(['−', `최저 ${w.lo}° · 쌀쌀한 밤`]); } if (w.hi >= 30) { s -= 5; why.push(['−', `최고 ${w.hi}° · 더위`]); } if (w.hi - w.lo >= 10) { s -= 3; why.push(['−', `일교차 ${w.hi - w.lo}°`]); } }
+    const age = ageInfo(pp.birth).age; if (age >= 11) why.push(['·', '시니어 · 수분·체중 체크']);
+    s = Math.max(5, Math.min(99, Math.round(s)));
+    const label = s >= 88 ? '최상' : s >= 75 ? '좋음' : s >= 60 ? '보통' : s >= 45 ? '주의' : '돌봄 필요';
+    let tip = '물그릇 여러 곳 · 습식 사료로 수분 챙기기';
+    if (m >= 9 && m <= 11) tip = '털갈이 시즌 · 하루 한 번 빗질 (헤어볼 예방)';
+    if (w && w.lo <= 5) tip = '창가 대신 따뜻한 자리 마련해주기';
+    if (aq && aq.g >= 3) tip = '오늘은 창문 닫고 공기청정기';
+    return { s, label, why: why.slice(0, 4), tip };
+  }
   function renderScene() {
     const people = FAMILY.map(person);
     const cfg = [{ ...people[0], x: 246 }, { ...people[1], x: 390 }];
-    cfg.forEach(p => { const a = ageInfo(p.birth); p.info = a; p.age = a ? a.age : null; p.cond = condition(p, p.age == null || p.age < 18); p.sex = p.sex || 'f'; });
+    cfg.forEach(p => { const a = ageInfo(p.birth); p.info = a; p.age = a ? a.age : null; p.cond = p.kind === 'cat' ? catCondition(p) : condition(p, p.age == null || p.age < 18); p.sex = p.sex || 'f'; });
     window.drawBodies($('#bodies'), cfg, 600);
     $('#callouts').innerHTML = cfg.map((p, i) => {
       const known = !!p.info, side = i === 0 ? 'l' : 'r', top = Math.max(2, p.anchor.top / 600 * 100 - 2);
       return `<div class="callout ${side} ${known ? '' : 'unknown'}" style="--c:${p.color};top:${top}%;${side === 'l' ? 'right' : 'left'}:${side === 'l' ? 100 - p.x / 620 * 100 + 13 : p.x / 620 * 100 + 13}%">
         <span class="nm">${esc(p.name)}</span>
-        ${known ? `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>` : '<span class="ag">생일 입력 전</span>'}
+        ${!known ? '<span class="ag">생일 입력 전</span>' : p.kind === 'cat' ? `<span class="ag">${esc(p.breed)} · ${p.info.age}살 (사람 ${catHuman(p.info.age)}세)</span>` : `<span class="ag">만 ${p.info.age}세 · ${esc(p.info.zod)}띠</span>`}
         <span class="sc"><b>${p.cond.s}</b><small>${p.cond.label}</small></span>
       </div>`;
     }).join('');
     $('#condCards').innerHTML = cfg.map((p, i) => `<div class="cond" style="--c:${p.color}">
       <div class="cond-h"><span class="nm">${esc(p.name)}</span><span class="cs"><b>${p.cond.s}</b> / 100 · ${p.cond.label}</span></div>
-      ${p.info ? `<div class="cond-age">만 ${p.info.age}세 · ${esc(p.birth.replace(/-/g, '.'))} · ${esc(p.info.zod)}띠 · ${esc(p.info.sign)}자리 · 생일 D-${p.info.dday}</div>`
+      ${p.kind === 'cat' ? `<div class="cond-age">${esc(p.breed)} · ${esc(p.birth.replace(/-/g, '.'))} ${esc(p.born)} 출생 · ${p.info.age}살 (사람 나이 약 ${catHuman(p.info.age)}세 · 시니어) · 생일 D-${p.info.dday}</div>` : p.info ? `<div class="cond-age">만 ${p.info.age}세 · ${esc(p.birth.replace(/-/g, '.'))} · ${esc(p.info.zod)}띠 · ${esc(p.info.sign)}자리 · 생일 D-${p.info.dday}</div>`
         : `<div class="cond-age dim">생년월일·성별을 알려주시면 나이·바이오리듬·체형이 반영돼요</div>`}
       ${p.cond.b ? `<div class="cond-bio">신체 <b class="${bioColor(p.cond.b.p)}">${p.cond.b.p}</b> · 감성 <b class="${bioColor(p.cond.b.e)}">${p.cond.b.e}</b> · 지성 <b class="${bioColor(p.cond.b.i)}">${p.cond.b.i}</b></div>` : ''}
-      <ul>${p.cond.why.map(([sg, t]) => `<li class="${sg === '+' ? 'gr' : 'rd'}"><span>${sg}</span>${esc(t)}</li>`).join('')}</ul>
+      <ul>${p.cond.why.map(([sg, t]) => `<li class="${sg === '+' ? 'gr' : sg === '·' ? 'dim' : 'rd'}"><span>${sg}</span>${esc(t)}</li>`).join('')}</ul>
       <p class="tip">오늘의 팁 · ${esc(p.cond.tip)}</p>
-      <p class="health dim">건강 정보 · ${state.health && state.health[p.id] ? esc(state.health[p.id]) : '아직 입력 전 (키·체중·혈액형·알레르기·복용약 등)'}</p>
+      <p class="health dim">건강 정보 · ${state.health && state.health[p.id] ? esc(state.health[p.id]) : p.kind === 'cat' ? '진료 기록 미입력 · 러시안블루 시니어 일반 체크: 체중(비만 경향) · 신장 · 요로 · 치아, 6개월마다 검진 권장' : '아직 입력 전 (키·체중·혈액형·알레르기·복용약 등)'}</p>
     </div>`).join('');
   }
 
