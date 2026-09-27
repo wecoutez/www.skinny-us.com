@@ -43,10 +43,10 @@
       staff.length ? `<span class="sc">AI 팀 ${staff.length}명</span>` : '',
     ].join('');
     const team = staff.length ? `<div class="team">${staff.map(st => `
-        <div class="agent">
+        <div class="agent" role="button" tabindex="0" data-agent="${esc(p.id || p.repo)}|${esc(st.id)}" aria-label="${esc(st.person)} 업무 보기">
           ${window.ahranAvatar(st.avatar, color, 88)}
           <div class="who"><b>${esc(st.person || '')}</b><span class="ttl" style="--c:${color}">${esc(st.title || '')}${st.title2 ? ' · ' + esc(st.title2) : ''}</span>
-          <span class="job">${esc(st.job || '')}</span><p>${esc(st.role)}</p><small>⏱ ${esc(String(st.schedule).replace(/^제안:\s*/, "").split(/ — | \(|\. 5회/)[0])}</small></div>
+          <span class="job">${esc(st.job || '')}</span><p>${esc(st.role)}</p><span class="more">할 일 ${(st.todo || []).length}개 보기 →</span><small>⏱ ${esc(String(st.schedule).replace(/^제안:\s*/, "").split(/ — | \(|\. 5회/)[0])}</small></div>
         </div>`).join('')}</div>` : (p.staff_note ? `<p class="team-note">${esc(p.staff_note)}</p>` : '');
     const tl = p.milestones.slice().reverse();
     const logRows = real.slice(0, 12).map(c => `<a class="cm" href="${esc(c.url)}" target="_blank" rel="noopener"><time>${kdate(c.date)}</time><span>${esc(c.msg)}</span></a>`).join('')
@@ -154,6 +154,28 @@
     $('#pjDetail').innerHTML = `<div class="pj-nav"><button type="button" class="all" data-parent="${sb.parent}">← ${esc(par.p.short)}</button><span class="hud-t">SUB · ${esc(par.p.short)}</span></div>` + card(sb.p, sb.log);
     openModal();
   }
+  const KIT = 'https://claude.ai/artifact/EZ18A8mqCWAbgJMMs1Az4G';
+  function askUrl(p, st, task) {
+    const q = `너는 ${p.name}(${p.url})의 ${st.title}${st.title2 ? '(' + st.title2 + ')' : ''} ${st.person}이야. 직무: ${st.job}. 역할: ${st.role}\n규칙: 초안까지만 만들고 발송·게시·결제는 하지 않아. 모르는 사실은 [확인 필요]로 표시해.\n\n할 일: ${task}`;
+    return 'https://claude.ai/new?q=' + encodeURIComponent(q);
+  }
+  function showAgent(key) {
+    const [pk, sid] = key.split('|'), it = items.find(x => (x.p.id || x.p.repo) === pk); if (!it) return;
+    const p = it.p, st = p.staff.find(x => x.id === sid), color = ['#8fb0c4', '#a896ff', '#ff9d3c', '#4fd6ff'][p.stage], back = items.indexOf(it);
+    $('#pjDetail').innerHTML = `<div class="pj-nav"><button type="button" class="all" data-back="${back}">← ${esc(p.short)}</button><span class="hud-t">AI STAFF · ${esc(p.short)}</span></div>
+      <section class="agent-page" style="--c:${color}">
+        <div class="ap-head">${window.ahranAvatar(st.avatar, color, 128)}<div><span class="ttl">${esc(st.title)}${st.title2 ? ' · ' + esc(st.title2) : ''}</span><h2>${esc(st.person)}</h2><p class="job">${esc(st.job)} · ${esc(p.name)}</p><p>${esc(st.role)}</p><span class="stt">${esc(st.status)}</span></div></div>
+        <div class="ap-grid">
+          <div><h3>이번 주 할 일</h3><ol class="ap-todo">${(st.todo || []).map(t => `<li><span>${esc(t)}</span><a class="hbtn" href="${askUrl(p, st, t)}" target="_blank" rel="noopener">Claude에게 시키기 ↗</a></li>`).join('')}</ol>
+            <form class="ap-ask" data-key="${esc(key)}"><label for="apTask">직접 일 시키기</label><textarea id="apTask" rows="3" placeholder="예: 이번 주 인스타 캡션 3개 더 써줘"></textarea><button class="hbtn" type="submit">Claude에게 보내기 ↗</button></form></div>
+          <div><h3>맡은 업무</h3><ul class="ap-du">${(st.duties || []).map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+            <h3>예약</h3><p class="dim">${esc(st.schedule)}</p>
+            <h3>지키는 규칙</h3><ul class="ap-du"><li>초안까지만 · 발송·게시·결제는 직접</li><li>모르는 사실은 [확인 필요]로 표시</li><li>커넥터는 읽기 전용으로 시작</li></ul>
+            <p class="dim ap-kit">더 정확하게 쓰려면 <a href="${KIT}" target="_blank" rel="noopener">세팅 키트</a>에서 이 직원의 프로젝트(지침·지식 파일)를 만들어 두세요.</p></div>
+        </div>
+      </section>`;
+    openModal();
+  }
   function showAll() { selected = null; drawSvg(); drawNodes(); showDetail(true); }
 
   async function render() {
@@ -186,8 +208,17 @@
       if (e.target.id === 'pjModal' || e.target.closest('#pjClose')) return closeModal();
       const st = e.target.closest('[data-step]'); if (st) return select(selected + +st.dataset.step);
       const pa = e.target.closest('[data-parent]'); if (pa) return select(+pa.dataset.parent);
+      const bk = e.target.closest('[data-back]'); if (bk) return select(+bk.dataset.back);
+      const ag = e.target.closest('.agent[data-agent]'); if (ag) return showAgent(ag.dataset.agent);
       if (e.target.closest('#showAll')) showAll();
     });
+    $('#pjModal').addEventListener('submit', e => {
+      const f = e.target.closest('.ap-ask'); if (!f) return; e.preventDefault();
+      const t = f.querySelector('textarea').value.trim(); if (!t) return;
+      const [pk, sid] = f.dataset.key.split('|'), it = items.find(x => (x.p.id || x.p.repo) === pk), st = it.p.staff.find(x => x.id === sid);
+      const a = document.createElement('a'); a.href = askUrl(it.p, st, t); a.target = '_blank'; a.rel = 'noopener'; a.click();
+    });
+    $('#pjModal').addEventListener('keydown', e => { const ag = e.target.closest && e.target.closest('.agent[data-agent]'); if (ag && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); showAgent(ag.dataset.agent); } });
     document.addEventListener('keydown', e => {
       if ($('#pjModal').hidden) return;
       if (e.key === 'Escape') closeModal();
