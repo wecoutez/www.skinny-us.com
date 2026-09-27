@@ -43,6 +43,8 @@
   const label = s => `${WD[wday(s)]} · ${s.slice(8)} ${MON[+s.slice(5, 7) - 1]}`;
   const fmt = (n, d = 2) => n == null || isNaN(n) ? '—' : n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
   const tzOffsetMin = (tz, date = new Date()) => { const p = parts(date, tz, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }); return (Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute) - Math.floor(date.getTime() / 6e4) * 6e4) / 6e4; };
+  const ampm = hhmm => { if (!hhmm) return ''; const [h, m] = hhmm.split(':').map(Number); return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`; };
+  const range = (a, b) => { if (!b) return ampm(a); const A = ampm(a), B = ampm(b); return A.slice(-2) === B.slice(-2) ? `${A.slice(0, -3)}–${B}` : `${A}–${B}`; };
   const mix = (a, b, t) => { const h = x => [1, 3, 5].map(i => parseInt(x.slice(i, i + 2), 16)); const A = h(a), B = h(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join(''); };
   const desat = (c, t) => { const v = [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16)); const g = Math.round(v.reduce((a, b) => a + b) / 3); return mix(c, '#' + [g, g, g].map(x => x.toString(16).padStart(2, '0')).join(''), t); };
 
@@ -69,7 +71,7 @@
   }
   function tick() {
     const now = new Date(), p = parts(now, TZ, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    $('#clock').innerHTML = `${p.hour}:${p.minute}<span>:${p.second} KST</span>`;
+    $('#clock').innerHTML = `${+p.hour % 12 || 12}:${p.minute}<span>:${p.second} ${+p.hour < 12 ? 'AM' : 'PM'} KST</span>`;
     const t = ymd(now);
     $('#clockDate').textContent = `${WD[wday(t)]} · ${t.slice(8)} ${MON[+t.slice(5, 7) - 1]} ${t.slice(0, 4)} · ${lunar(now)}`;
     if (t !== state.today) { state.today = t; renderAll(); }
@@ -221,7 +223,7 @@
       const icon = w ? (w.kind === 'clear' && !w.day ? ICON.night : ICON[w.kind]) : '';
       return `<div class="panel city">
         <div class="top"><div><h3><span class="flag">${c.flag}</span>${c.name}</h3><small>${c.ko}</small></div><span class="tag">${i === 0 ? '기준' : (diff > 0 ? '+' : diff < 0 ? '−' : '±') + Math.abs(diff) + 'H'}</span></div>
-        <div class="time">${p.hour}:${p.minute}<span>${ap}</span></div><div class="dt">${label(d)}</div>
+        <div class="time">${h % 12 || 12}:${p.minute}<span>${ap}</span></div><div class="dt">${label(d)}</div>
         <div class="dn"><i style="left:calc(${pos}% - 5px)"></i></div>
         <div class="wx">${w ? `${icon}<b>${w.t}°</b><span>${w.desc}</span><span class="hl">${w.hi}° / ${w.lo}°</span>` : '<span class="dim">날씨 불러오는 중…</span>'}</div>
         <div class="aq">${aq ? `${aq.emoji} 미세먼지 <span class="${aq.cls}">${aq.name}</span><span class="hl">PM2.5 ${Math.round(aq.pm25)}</span>` : '&nbsp;'}</div>
@@ -313,11 +315,11 @@
       const ev = eventsOn(d);
       if (i > 0 && !ev.length) return;
       const n = ev.filter(e => !e.holiday).length;
-      h += `<div class="day"><span>${i === 0 ? 'TODAY · ' : ''}${label(d)}</span><span class="${n >= 3 ? 'or' : 'dim'}">${ev.length && ev.every(e => e.holiday) ? 'HOLIDAY' : n + ' EVENTS'}</span></div>`;
+      h += `<div class="day"><span>${i === 0 ? 'TODAY · ' : ''}${label(d)}</span><span class="${n >= 3 ? 'or' : 'dim'}">${ev.length && ev.every(e => e.holiday) ? 'HOLIDAY' : n + (n === 1 ? ' EVENT' : ' EVENTS')}</span></div>`;
       if (!ev.length) h += `<div class="empty">등록된 일정 없음 · 자유 시간 ✦</div>`;
       ev.forEach(e => {
         const c = e.holiday ? 'var(--gr)' : e.allDay ? 'var(--or)' : e.local ? 'var(--vi)' : 'var(--cy)';
-        const t = e.allDay || !e.time ? 'ALL DAY' : e.time + (e.endTime ? '–' + e.endTime : '');
+        const t = e.allDay || !e.time ? 'ALL DAY' : range(e.time, e.endTime);
         const sub = [e.location && esc(e.location), e.meet && `<a href="${esc(e.meet)}" target="_blank" rel="noopener">Meet 참여</a>`, e.local && '직접 추가'].filter(Boolean).join(' · ');
         h += `<div class="ev" style="--c:${c}"><time>${t}</time><div class="n">${e.local ? `<button class="x" data-del="${esc(e.id)}" aria-label="삭제">✕</button>` : ''}${esc(e.title)}${sub ? `<small>${sub}</small>` : ''}</div></div>`;
       });
@@ -349,14 +351,14 @@
     const b = bio(), avg = (b.p + b.e + b.i) / 3, w = cityWx(0), aq = cityAq(0);
     const cond = avg > 50 ? '최상' : avg > 0 ? '양호' : avg > -50 ? '조금 낮은 편' : '전부 저점';
     let lead = `${hi}, 아란. 오늘은 `;
-    lead += today.length ? `<b>일정 ${today.length}건</b>이 있어요${today[0].time ? ` — 첫 일정은 <b>${today[0].time} ${esc(today[0].title)}</b>` : ''}.` : `<b>일정이 비어 있는 ${WDK[wday(state.today)]}요일</b>이에요${hol ? ` (${hol.title})` : ''}.`;
+    lead += today.length ? `<b>일정 ${today.length}건</b>이 있어요${today[0].time ? ` — 첫 일정은 <b>${ampm(today[0].time)} ${esc(today[0].title)}</b>` : ''}.` : `<b>일정이 비어 있는 ${WDK[wday(state.today)]}요일</b>이에요${hol ? ` (${hol.title})` : ''}.`;
     lead += ` 컨디션은 <b>${cond}</b>`;
     lead += w ? `, 서울은 <b>${w.desc} ${w.t}°</b>${aq ? ` · 미세먼지 <b>${aq.name}</b>` : ''}.` : '.';
     const items = [];
     const week = Array.from({ length: 7 }, (_, i) => addDays(state.today, i + 1)).map(d => [d, eventsOn(d).filter(e => !e.holiday)]);
     const busiest = week.slice().sort((a, c) => c[1].length - a[1].length)[0];
     if (busiest && busiest[1].length >= 2) items.push(`이번 주 핵심은 <b>${WDK[wday(busiest[0])]}요일 ${+busiest[0].slice(5, 7)}/${+busiest[0].slice(8)}</b> — ${busiest[1].map(e => esc(e.title)).join(' · ')}`);
-    if (scope === 'week') week.forEach(([d, ev]) => { if (ev.length) items.push(`${WDK[wday(d)]} ${+d.slice(5, 7)}/${+d.slice(8)} · ${ev.map(e => (e.time ? e.time + ' ' : '') + esc(e.title)).join(', ')}`); });
+    if (scope === 'week') week.forEach(([d, ev]) => { if (ev.length) items.push(`${WDK[wday(d)]} ${+d.slice(5, 7)}/${+d.slice(8)} · ${ev.map(e => (e.time ? ampm(e.time) + ' ' : '') + esc(e.title)).join(', ')}`); });
     const nextHol = week.map(([d]) => [d, HOLIDAYS[d]]).find(x => x[1]);
     if (nextHol) items.push(`${WDK[wday(nextHol[0])]}요일 ${+nextHol[0].slice(5, 7)}/${+nextHol[0].slice(8)} ${nextHol[1]} · 쉬는 날 계획 체크`);
     if (w && w.pop >= 50) items.push(`오늘 강수확률 ${w.pop}% · 우산 챙기기 ☂️`);
@@ -370,7 +372,7 @@
     const { lead, items } = briefing();
     $('#brief').innerHTML = `<p>${lead}</p>` + items.map((t, i) => `<div class="li"><i>${String(i + 1).padStart(2, '0')}</i><span>${t}</span></div>`).join('');
     const p = parts(new Date(), TZ, { hour: '2-digit', minute: '2-digit' });
-    $('#briefTime').textContent = `AUTO · ${p.hour}:${p.minute}`;
+    $('#briefTime').textContent = `AUTO · ${ampm(p.hour + ':' + p.minute)}`;
   }
 
   // ---------------------------------------------------------------- repos
@@ -397,7 +399,7 @@
   // ---------------------------------------------------------------- feeds strip
   function renderStrip() {
     const f = state.feeds, led = s => s === 'ok' ? 'ok' : s === 'warn' ? 'warn' : s === 'err' ? 'err' : '';
-    const cal = f.cal === 'ok' ? `${state.calUpdated ? '업데이트 ' + new Date(state.calUpdated).toLocaleString('ko-KR', { timeZone: TZ, month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'synced'}` : '일정 파일 없음';
+    const cal = f.cal === 'ok' ? `${state.calUpdated ? '업데이트 ' + (d => `${+d.slice(5, 7)}/${+d.slice(8)} ${ampm(parts(new Date(state.calUpdated), TZ, { hour: '2-digit', minute: '2-digit' }).hour + ':' + parts(new Date(state.calUpdated), TZ, { hour: '2-digit', minute: '2-digit' }).minute)}`)(ymd(new Date(state.calUpdated))) : 'synced'}` : '일정 파일 없음';
     $('#strip').innerHTML = [
       ['GOOGLE CALENDAR', cal, f.cal], ['GITHUB', state.repos ? `${state.repos.length} repos · live` : '연결 실패', f.gh],
       ['WEATHER · AIR', f.weather === 'ok' ? `5 cities · 15 min${f.air === 'ok' ? ' · PM ok' : ''}` : '연결 실패', f.weather === 'ok' && f.air !== 'ok' ? 'warn' : f.weather],
@@ -410,7 +412,7 @@
   const HELP = `<b>명령어</b><br>
     · 오늘 일정 정리 / 이번 주 브리핑<br>
     · 할 일 추가 <i>내용</i> · 할 일 · 완료 <i>번호</i><br>
-    · 일정 추가 <i>10/1 14:00 미팅</i> (시간 생략 가능)<br>
+    · 일정 추가 <i>10/1 오후 2시 미팅</i> (시간 생략 가능)<br>
     · 서울/도쿄/파리/LA/SF 날씨 · 미세먼지 · 환율 · 컨디션 · 루틴<br>
     · 점수 건강 80 (인생 영역 점수 설정)<br>
     · 검색 <i>검색어</i> · 그 외 문장은 Claude에게 바로 물어볼 수 있어요`;
@@ -431,18 +433,21 @@
       const open = store.get('todos', []).filter(x => !x.done);
       return reply(q, open.length ? open.map((x, i) => `${i + 1}. ${esc(x.text)}`).join('<br>') : '남은 할 일이 없어요 🎉');
     }
-    if ((m = q.match(/^일정\s*추가\s*(\d{1,2})[\/.\-월]\s*(\d{1,2})일?\s*(?:(\d{1,2})(?::(\d{2})|시))?\s*(.+)$/))) {
+    if ((m = q.match(/^일정\s*추가\s*(\d{1,2})[\/.\-월]\s*(\d{1,2})일?\s*(오전|오후|am|pm)?\s*(?:(\d{1,2})(?::(\d{2})|시)?\s*(am|pm)?)?\s+(.+)$/i))) {
+      const mer = (m[3] || m[6] || '').toLowerCase(); let hh = m[4] ? +m[4] : null;
+      if (hh != null && (mer === '오후' || mer === 'pm') && hh < 12) hh += 12; if (hh === 12 && (mer === '오전' || mer === 'am')) hh = 0;
+      m = [m[0], m[1], m[2], hh, m[5], m[7]];
       const y = +state.today.slice(0, 4), mm = String(m[1]).padStart(2, '0'), dd = String(m[2]).padStart(2, '0');
       let date = `${y}-${mm}-${dd}`; if (date < state.today) date = `${y + 1}-${mm}-${dd}`;
-      const time = m[3] ? `${String(m[3]).padStart(2, '0')}:${m[4] || '00'}` : '';
+      const time = m[3] != null ? `${String(m[3]).padStart(2, '0')}:${m[4] || '00'}` : '';
       const ev = store.get('events', []); ev.push({ id: 'l' + Date.now(), date, time, title: m[5], allDay: !time }); store.set('events', ev);
       renderSchedule(); renderBrief();
-      return reply(q, `🗓 일정 추가: <b>${+mm}/${+dd} ${WDK[wday(date)]}요일 ${time} ${esc(m[5])}</b><br><span class="muted">이 브라우저에만 저장돼요. 구글 캘린더에도 넣으려면 <a href="https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(m[5])}&dates=${date.replace(/-/g, '')}${time ? 'T' + time.replace(':', '') + '00' : ''}/${date.replace(/-/g, '')}${time ? 'T' + time.replace(':', '') + '00' : ''}&ctz=${TZ}" target="_blank" rel="noopener">여기를 눌러 구글 캘린더에 추가</a></span>`);
+      return reply(q, `🗓 일정 추가: <b>${+mm}/${+dd} ${WDK[wday(date)]}요일 ${ampm(time)} ${esc(m[5])}</b><br><span class="muted">이 브라우저에만 저장돼요. 구글 캘린더에도 넣으려면 <a href="https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(m[5])}&dates=${date.replace(/-/g, '')}${time ? 'T' + time.replace(':', '') + '00' : ''}/${date.replace(/-/g, '')}${time ? 'T' + time.replace(':', '') + '00' : ''}&ctz=${TZ}" target="_blank" rel="noopener">여기를 눌러 구글 캘린더에 추가</a></span>`);
     }
     if (/(이번\s*주|주간|week)/i.test(q) && /(일정|브리핑|스케줄|정리)/.test(q)) { const b = briefing('week'); return reply(q, b.lead + '<br><br>' + b.items.map(t => '· ' + t).join('<br>')); }
     if (/(일정|스케줄|브리핑|schedule|정리)/i.test(q)) {
       const ev = eventsOn(state.today), b = briefing();
-      return reply(q, b.lead + '<br><br>' + (ev.length ? '<b>오늘</b><br>' + ev.map(e => `· ${e.time || '종일'} ${esc(e.title)}`).join('<br>') + '<br><br>' : '') + b.items.map(t => '· ' + t).join('<br>'));
+      return reply(q, b.lead + '<br><br>' + (ev.length ? '<b>오늘</b><br>' + ev.map(e => `· ${e.time ? ampm(e.time) : '종일'} ${esc(e.title)}`).join('<br>') + '<br><br>' : '') + b.items.map(t => '· ' + t).join('<br>'));
     }
     const ci = CITIES.findIndex(c => q.toLowerCase().includes(c.ko.toLowerCase()) || q.toLowerCase().includes(c.name.toLowerCase()) || (c.id === 'la' && /\bla\b|로스/i.test(q)) || (c.id === 'sf' && /\bsf\b|샌프/i.test(q)));
     if (/(날씨|기온|weather)/i.test(q) || (ci >= 0 && !/(환율|먼지)/.test(q))) {

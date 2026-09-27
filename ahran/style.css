@@ -80,7 +80,7 @@ nav a.on{color:var(--cy);border-color:var(--line2);background:rgba(79,214,255,.0
 .day{font-size:11px;letter-spacing:.1em;color:var(--ink2);margin:22px 0 10px;display:flex;justify-content:space-between;font-weight:500}
 .day:first-child{margin-top:0}
 .empty{font-size:13px;color:var(--ink3);padding:14px 12px;border:1px dashed rgba(64,190,255,.14);border-radius:4px;text-align:center}
-.ev{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:12px 14px;border-left:2px solid var(--c,var(--cy));background:linear-gradient(90deg,rgba(79,214,255,.05),transparent);margin-bottom:10px;border-radius:0 4px 4px 0}
+.ev{display:grid;grid-template-columns:112px 1fr;gap:12px;padding:12px 14px;border-left:2px solid var(--c,var(--cy));background:linear-gradient(90deg,rgba(79,214,255,.05),transparent);margin-bottom:10px;border-radius:0 4px 4px 0}
 .ev time{font-family:var(--num);font-size:13px;color:var(--c,var(--cy));font-weight:600}
 .ev .n{font-size:13.5px;min-width:0}
 .ev .n small{display:block;font-size:11px;color:var(--ink2);margin-top:2px}
