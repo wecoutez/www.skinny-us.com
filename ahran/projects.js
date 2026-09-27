@@ -13,11 +13,11 @@
   const ago = iso => { const d = (Date.now() - new Date(iso)) / 864e5; return d < 1 ? '오늘' : d < 2 ? '어제' : d < 31 ? Math.floor(d) + '일 전' : Math.floor(d / 30) + '달 전'; };
   const NOISE = /^(Add files via upload|Update CNAME|Create CNAME|Delete |Rename |Merge pull request|Merge branch|clean|clear)/i;
 
-  async function commits(repo) {
-    const key = 'cache.commits.' + repo, c = store.get(key);
+  async function commits(repo, path) {
+    const key = 'cache.commits.' + repo + (path ? ':' + path : ''), c = store.get(key);
     if (c && Date.now() - c.t < 30 * 6e4) return c.v;
     try {
-      const r = await fetch(`https://api.github.com/repos/${GH}/${repo}/commits?per_page=40`);
+      const r = await fetch(`https://api.github.com/repos/${GH}/${repo}/commits?per_page=40${path ? '&path=' + encodeURIComponent(path) : ''}`);
       if (!r.ok) throw new Error(r.status);
       const v = (await r.json()).map(x => ({ msg: x.commit.message.split('\n')[0], date: x.commit.author.date, url: x.html_url }));
       store.set(key, { t: Date.now(), v }); return v;
@@ -64,7 +64,7 @@
   const W = 1200, H = 780, CX = 600, CY = 360, RX = 440, RY = 272, HUB = 96, NODE = 60;
   const STAGE_C = ['#8fb0c4', '#a896ff', '#ff9d3c', '#4fd6ff'];
   const ownLog = (p, log) => log && log.filter(c => (p.id === 'ahran') === /^AHRAN|dashboard at \/ahran/.test(c.msg));
-  let items = [], selected = null;
+  let items = [], subs = [], selected = null;
 
   function drawSvg() {
     const svg = $('#mmSvg');
@@ -92,6 +92,10 @@
       h += `<circle cx="${x1}" cy="${y1}" r="3" fill="${c}"/><circle cx="${x2}" cy="${y2}" r="3.5" fill="${c}" filter="url(#g)"/>`;
       if (it.fresh) h += `<circle r="3.2" fill="#fff" filter="url(#g)"><animateMotion dur="${2.2 + i * .25}s" repeatCount="indefinite"><mpath href="#ln${i}"/></animateMotion></circle>`;
     });
+    subs.forEach((sb, k) => {
+      const c = STAGE_C[sb.p.stage], par = items[sb.parent], dx = sb.x - par.x, dy = sb.y - par.y, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+      h += `<path d="M${par.x + ux * (NODE + 4)},${par.y + uy * (NODE + 4)} L${sb.x - ux * 34},${sb.y - uy * 34}" stroke="${c}" stroke-width="1.2" stroke-dasharray="3 5" opacity=".8" fill="none" filter="url(#g)"/>`;
+    });
     // projector under the hub
     const BY = H - 44;
     [[210, 26, .2], [168, 20, .4], [122, 14, .7], [74, 8, 1]].forEach(([rx, ry, o], i) => { h += `<ellipse cx="${CX}" cy="${BY + i * 4}" rx="${rx}" ry="${ry}" fill="none" stroke="${i % 2 ? '#ff9d3c' : '#4fd6ff'}" stroke-width="${i === 3 ? 2.2 : 1.2}" opacity="${o}" filter="url(#g)"/>`; });
@@ -108,7 +112,10 @@
         <span class="orb">${sat}<b>${esc(it.p.short)}</b><small>${STAGES[it.p.stage]}</small></span>
         <span class="cap ${where}"><em>${esc(it.p.kind.split('·').pop().trim())}</em>${esc(it.p.url.replace(/^https?:\/\//, '').replace(/\/$/, ''))}<span class="${it.fresh ? 'gr' : 'dim'}">● ${it.last.getTime() ? ago(it.last.toISOString()) : '—'}</span></span>
       </button>`;
-    }).join('');
+    }).join('') + subs.map((sb, k) => `<button class="mm-node sub ${selected === 's' + k ? 'sel' : ''}" data-s="${k}" style="left:${sb.x / W * 100}%;top:${sb.y / H * 100}%;--c:${STAGE_C[sb.p.stage]}" type="button">
+        <span class="orb"><b>${esc(sb.p.short)}</b><small>${STAGES[sb.p.stage]}</small></span>
+        <span class="cap ${sb.y > items[sb.parent].y ? 'bottom' : 'top'}"><em>${esc(sb.p.kind.split('·')[0].trim())}</em>${esc(sb.p.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</span>
+      </button>`).join('');
   }
 
   // detail opens as a floating 90% sheet over the map
@@ -131,6 +138,12 @@
   function select(i) {
     selected = (i + items.length) % items.length; drawSvg(); drawNodes(); showDetail(false);
   }
+  function showSub(k) {
+    selected = 's' + k; drawSvg(); drawNodes();
+    const sb = subs[k], par = items[sb.parent];
+    $('#pjDetail').innerHTML = `<div class="pj-nav"><button type="button" class="all" data-parent="${sb.parent}">← ${esc(par.p.short)}</button><span class="hud-t">SUB · ${esc(par.p.short)}</span></div>` + card(sb.p, sb.log);
+    openModal();
+  }
   function showAll() { selected = null; drawSvg(); drawNodes(); showDetail(true); }
 
   async function render() {
@@ -141,6 +154,14 @@
       return { p, log: l, last, fresh: (Date.now() - last) / 864e5 < 1, week: own ? own.filter(c => (Date.now() - new Date(c.date)) / 864e5 < 7).length : 0 }; })
       .sort((a, b) => b.last - a.last);
     items.forEach((it, i) => { const a = -Math.PI / 2 + i / items.length * Math.PI * 2; it.x = CX + Math.cos(a) * RX; it.y = CY + Math.sin(a) * RY; });
+    subs = [];
+    for (const [pi, it] of items.entries()) for (const sp of (it.p.subs || [])) {
+      const log = await commits(it.p.repo, sp.path);
+      const a = Math.atan2(it.y - CY, it.x - CX) + (it.x > CX ? -0.95 : 0.95), dist = 150;
+      let x = it.x + Math.cos(a) * dist, y = it.y + Math.sin(a) * dist;
+      x = Math.max(70, Math.min(W - 70, x)); y = Math.max(70, Math.min(H - 90, y));
+      subs.push({ p: sp, parent: pi, log, x, y });
+    }
     const live = d.projects.filter(p => p.stage === 3).length, launch = d.projects.filter(p => p.stage === 2).length, today = items.filter(x => x.fresh).length;
     $('#pjCount').innerHTML = `${d.projects.length}<span> SITES</span>`;
     $('#pjSub').textContent = `정리 기준일 ${d.updated.replace(/-/g, '.')}`;
@@ -149,18 +170,19 @@
     const hash = decodeURIComponent(location.hash.slice(1)), hi = items.findIndex(it => (it.p.id || it.p.repo) === hash);
     drawSvg(); drawNodes();
     if (hi >= 0) select(hi);
-    $('#mmNodes').addEventListener('click', e => { const n = e.target.closest('.mm-node'); if (n) select(+n.dataset.i); });
+    $('#mmNodes').addEventListener('click', e => { const n = e.target.closest('.mm-node'); if (!n) return; if (n.dataset.s != null) showSub(+n.dataset.s); else select(+n.dataset.i); });
     $('#mmHub').addEventListener('click', showAll);
     $('#pjModal').addEventListener('click', e => {
       if (e.target.id === 'pjModal' || e.target.closest('#pjClose')) return closeModal();
       const st = e.target.closest('[data-step]'); if (st) return select(selected + +st.dataset.step);
+      const pa = e.target.closest('[data-parent]'); if (pa) return select(+pa.dataset.parent);
       if (e.target.closest('#showAll')) showAll();
     });
     document.addEventListener('keydown', e => {
       if ($('#pjModal').hidden) return;
       if (e.key === 'Escape') closeModal();
-      else if (selected != null && e.key === 'ArrowRight') select(selected + 1);
-      else if (selected != null && e.key === 'ArrowLeft') select(selected - 1);
+      else if (typeof selected === 'number' && e.key === 'ArrowRight') select(selected + 1);
+      else if (typeof selected === 'number' && e.key === 'ArrowLeft') select(selected - 1);
     });
   }
 

@@ -348,3 +348,12 @@ body.modal-open{overflow:hidden}
 @keyframes rise{from{opacity:0;transform:translateY(14px) scale(.985)}}
 @media (prefers-reduced-motion:reduce){.pj-modal,.pj-sheet{animation:none}}
 @media (max-width:760px){.pj-sheet{padding:12px 8px 4px;border-radius:12px}.pj-nav{padding:6px 12px 0}}
+.mm-node.sub{width:6.2%}
+.mm-node.sub .orb{border-width:1.5px;border-style:dashed}
+.mm-node.sub .orb::before{inset:-6px}
+.mm-node.sub .orb b{font-size:clamp(10px,.95vw,12.5px)}
+.mm-node.sub .orb small{font-size:10px}
+.mm-node.sub .cap{font-size:11px}
+.mm-node.sub .cap.bottom{top:calc(100% + 10px)}
+.mm-node.sub .cap.top{bottom:calc(100% + 10px)}
+@media (max-width:900px){.mm-node.sub{width:84px}}
